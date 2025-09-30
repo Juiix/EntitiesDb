@@ -8,11 +8,6 @@ internal static class ForEachTemplates
 {
     public static string Create(IMethodSymbol method, StringBuilder stringBuilder, out string uniqueName)
     {
-        if (!Debugger.IsAttached)
-        {
-            //Debugger.Launch();
-        }
-
         ParseParameters(method, out var queryableType, out var funcParameter, out var stateParameter);
 
         uniqueName = GetUniqueName(stringBuilder, method, funcParameter, queryableType);

@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class ComponentRegistry
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var types = MethodCallMultilineArg(index, "IdOf");
+#>
+	/// <inheritdoc cref="GetSignature{T}()"/>
+	public Signature GetSignature<<#= generics #>>()
+	{
+		return Signature.MultipleBits(
+			<#= Indent(types, 12) #>
+		);
+	}
+<#
+	}
+#>
+}

@@ -1,0 +1,147 @@
+﻿using System;
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+internal unsafe static class ArchetypeUtils
+{
+	public static ComponentType[] BuildComponentTypes(ComponentRegistry registry, in Signature signature, out int unmanagedCount)
+	{
+		var componentTypes = new ComponentType[signature.PopCount()];
+		int unmanagedIndex = 0;
+		int managedIndex = componentTypes.Length - 1;
+		int nextId = 0;
+		while (signature.TryGetNextSetBit(nextId, out var id))
+		{
+			ref readonly var componentType = ref registry.GetComponentType(id);
+			if (componentType.IsUnmanaged)
+			{
+				componentTypes[unmanagedIndex++] = componentType;
+			}
+			else
+			{
+				componentTypes[managedIndex--] = componentType;
+			}
+
+			nextId = id + 1;
+		}
+
+		// reverse managed components to maintain component id linear order
+		var managedCount = componentTypes.Length - unmanagedIndex;
+		componentTypes.AsSpan(managedCount).Reverse();
+
+		unmanagedCount = unmanagedIndex;
+		return componentTypes;
+	}
+
+	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int chunkCapacity, int unmanagedCount)
+	{
+		if (componentTypes.Length == 0)
+			return [];
+
+		var idToOffsets = CreateTightIdArray<int>(componentTypes, unmanagedCount);
+
+		// assign unmanaged offsets
+		var unmanagedEntitySize = sizeof(Entity);
+		foreach (ref readonly var componentType in componentTypes.Slice(0, unmanagedCount))
+		{
+			idToOffsets[componentType.Id] = unmanagedEntitySize * chunkCapacity;
+			unmanagedEntitySize += componentType.Stride;
+		}
+
+		// assign managed offsets
+		int managedIndex = 0;
+		foreach (ref readonly var componentType in componentTypes.Slice(unmanagedCount))
+		{
+			idToOffsets[componentType.Id] = managedIndex++;
+		}
+
+		return idToOffsets;
+	}
+
+	public static int[] BuildChangeVersions(ReadOnlySpan<ComponentType> componentTypes, int[] globalChangeVersions, int unmanagedCount)
+	{
+		var changeVersions = CreateTightIdArray<int>(componentTypes, unmanagedCount);
+		globalChangeVersions.AsSpan(0, changeVersions.Length).CopyTo(changeVersions);
+		return changeVersions;
+	}
+
+	public static int CalculateChunkCapacity(ReadOnlySpan<ComponentType> componentTypes, int chunkSize)
+	{
+		// construct unmanaged offsets & calculate chunk capacity
+		var entitySize = sizeof(Entity);
+		foreach (ref readonly var componentType in componentTypes)
+		{
+			entitySize += componentType.ByteSize;
+		}
+
+		var chunkCapacity = chunkSize / entitySize;
+		return chunkCapacity;
+	}
+
+	public static int CalculateUnmanagedSize(ReadOnlySpan<ComponentType> unmanagedComponentTypes)
+	{
+		// construct unmanaged offsets & calculate chunk capacity
+		var entitySize = sizeof(Entity);
+		foreach (ref readonly var componentType in unmanagedComponentTypes)
+		{
+			entitySize += componentType.ByteSize;
+		}
+		return entitySize;
+	}
+
+	public static ArrayFactory[] CompileArrayFactories(ReadOnlySpan<ComponentType> managedComponentTypes, ComponentRegistry componentRegistry)
+	{
+		if (managedComponentTypes.Length == 0)
+			return [];
+
+		var factories = new ArrayFactory[managedComponentTypes.Length];
+		int index = 0;
+		foreach (ref readonly var type in managedComponentTypes)
+		{
+			factories[index++] = componentRegistry.GetArrayFactory(type.Id);
+		}
+		return factories;
+	}
+
+	public static Array[] CreateManagedComponentArrays(ArrayFactory[] factories, int entityCount)
+	{
+		var arrays = new Array[factories.Length];
+		int index = 0;
+		foreach (ref var type in factories.AsSpan())
+		{
+			var i = index++;
+			arrays[i] = factories[i](entityCount);
+		}
+		return arrays;
+	}
+
+	/// <summary>
+	/// Creates an array that is +1 the length of the maximum component id in the give span
+	/// </summary>
+	/// <typeparam name="T">The type of array to create</typeparam>
+	/// <param name="types">The component types</param>
+	/// <param name="unmanagedCount">The unmananged count boundary</param>
+	/// <returns>Newly created array</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static T[] CreateTightIdArray<T>(ReadOnlySpan<ComponentType> types, int unmanagedCount)
+	{
+		var maxId = GetMaxId(types, unmanagedCount);
+		return new T[maxId + 1];
+	}
+
+	/// <summary>
+	/// Returns the maximum id in a given list of component types
+	/// </summary>
+	/// <param name="types">The component types</param>
+	/// <param name="unmanagedCount">The unmananged count boundary</param>
+	/// <returns>Maximum id in <paramref name="types"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static int GetMaxId(ReadOnlySpan<ComponentType> types, int unmanagedCount)
+	{
+		// component types are ordered by id within (unamanged | managed) regions
+		// we only need to check the last of each
+		int maxId = Math.Max(types[Math.Max(unmanagedCount - 1, 0)].Id, types[^1].Id);
+		return maxId;
+	}
+}

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Authors>Tucker Ulrich</Authors>
@@ -9,7 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2022, Unnamed Studios, LLC</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <VersionPrefix>2.1.7</VersionPrefix>
+    <VersionPrefix>3.0.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
@@ -18,14 +18,104 @@
     <Title>EntitiesDb</Title>
     <Product>$(AssemblyName)</Product>
     <PackageId>UnnamedStudios.$(AssemblyName)</PackageId>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="..\EntitiesDb.SourceGenerators\bin\Release\netstandard2.0\publish\EntitiesDb.SourceGenerators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="Templates\ComponentRegistry.GetSignature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentRegistry.GetSignature.tt</DependentUpon>
+    </None>
+    <None Include="Templates\Generics.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Generics.ttinclude</DependentUpon>
+    </None>
+    <None Include="Templates\QueryBuilder.WithAny.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithAny.tt</DependentUpon>
+    </None>
+    <None Include="Templates\QueryBuilder.WithNone.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithNone.tt</DependentUpon>
+    </None>
+    <None Include="Templates\QueryBuilder.WithOnly.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithOnly.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\ComponentRegistry.GetSignature.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentRegistry.GetSignature.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Generics.ttinclude">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Generics.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\QueryBuilder.WithOnly.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QueryBuilder.WithOnly.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\QueryBuilder.WithNone.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QueryBuilder.WithNone.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\QueryBuilder.WithAny.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QueryBuilder.WithAny.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\QueryBuilder.WithAll.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>QueryBuilder.WithAll.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\ComponentRegistry.GetSignature.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentRegistry.GetSignature.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Generics.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Generics.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Helpers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Helpers.ttinclude</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\QueryBuilder.All.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.All.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\QueryBuilder.WithAll.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithAll.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\QueryBuilder.WithAny.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithAny.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

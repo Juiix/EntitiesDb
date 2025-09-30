@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class QueryBuilder
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var types = MethodCallMultilineArg(index, "GetComponentId");
+#>
+	/// <inheritdoc cref="WithOnly{T}()"/>
+	public QueryBuilder WithOnly<<#= generics #>>()
+	{
+		_all = _componentRegistry.GetSignature<<#= generics #>>();
+		_filterMode = QueryFilterMode.Exclusive;
+		return this;
+	}
+<#
+	}
+#>
+}

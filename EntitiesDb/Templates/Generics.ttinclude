@@ -1,0 +1,128 @@
+﻿<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+    int GenericCount = 25;
+
+    string Indent(StringBuilder sb, int spaces)
+    {
+        var indent = new string(' ', spaces);
+        return sb.ToString().Replace("\n", "\n" + indent);
+    }
+
+    // T0, T1, ...
+    string Generics(int amount)
+    {
+        var sb = new StringBuilder();
+        for (var i = 0; i < amount; i++)
+        {
+            if (i > 0) sb.Append(", ");
+            sb.Append($"T{i}");
+        }
+        return sb.ToString();
+    }
+
+    // ref T0 t0Component, ref T1 t1Component, ...
+    StringBuilder GenericRefParams(int amount)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"ref T{localIndex} t{localIndex}Component,");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+
+    // in T0 t0Component, in T1 t1Component, ...
+    StringBuilder GenericInParams(int amount)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"in T{localIndex}? t{localIndex}Component = default,");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+
+    // in t0Component, in t1Component, ...
+    StringBuilder GenericInArgs(int amount)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"in t{localIndex}Component,");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+    
+    // t0Component.fieldName, t1Component.fieldName, ...
+    StringBuilder GenericFieldArgs(int amount, string varName, string fieldName)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"t{localIndex}{varName}.{fieldName},");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+
+    // ref t0Component, ref t1Component,...
+    StringBuilder GenericRefArgs(int amount)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"ref t{localIndex}Component,");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+    
+    // ref var t0VarName = ref Method<T0>();
+    // ref var t1VarName = ref Method<T1>();
+    // ...
+    StringBuilder MethodCallRefReturn(int amount, string method, string varName)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendLine($"ref var t{localIndex}{varName} = ref {method}<T{localIndex}>();");
+        }
+        return sb;
+    }
+    
+    // ref var t0VarName = ref Method<T0>();
+    // ref var t1VarName = ref Method<T1>();
+    // ...
+    StringBuilder MethodCallMultilineArg(int amount, string method)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendLine($"{method}<T{localIndex}>(),");
+        }
+        sb.Length -= Environment.NewLine.Length + 1;
+        return sb;
+    }
+    
+    // ref readonly var t0VarName = ref Method<T0>();
+    // ref readonly var t1VarName = ref Method<T1>();
+    // ...
+    StringBuilder MethodCallReadOnlyRefReturn(int amount, string method, string varName)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendLine($"ref readonly var t{localIndex}{varName} = ref {method}<T{localIndex}>();");
+        }
+        return sb;
+    }
+#>

@@ -2,7 +2,7 @@
 using Sandbox;
 
 #if RELEASE
-BenchmarkRunner.Run<BufferTest>();
+BenchmarkRunner.Run<SeqEqBench>();
 #else
 var test = new BufferTest();
 test.Setup();
