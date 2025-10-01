@@ -2,10 +2,6 @@
 
 namespace EntitiesDb;
 
-public sealed class CodeGenerationException : Exception
+public sealed class CodeGenerationException() : Exception("Code not generated for this callsite!")
 {
-    public CodeGenerationException() : base("Code not generated for this callsite!")
-    {
-
-    }
 }

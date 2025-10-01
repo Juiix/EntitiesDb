@@ -134,7 +134,7 @@ public unsafe class ChunkTests : IDisposable
 		int srcIndex = 2, dstIndex = 5;
 
 		// Entity
-		var entity = new Entity(123u, 0);
+		var entity = new Entity(123, 0);
 		src.AddEntity(srcIndex, entity);
 
 		// Unmanaged components
@@ -150,11 +150,11 @@ public unsafe class ChunkTests : IDisposable
 		src.GetManaged<ManagedName>(nameArrayIndex, srcIndex) = new ManagedName("Alice");
 
 		// Act: transfer entity + all its components via AcceptEntity
-		uint accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex);
+		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex);
 
 		// Assert entity id
-		Assert.Equal(123u, accepted);
-		Assert.Equal(123u, dst.GetEntity(dstIndex).Id);
+		Assert.Equal(123, accepted);
+		Assert.Equal(123, dst.GetEntity(dstIndex).Id);
 
 		// Assert unmanaged copied
 		int intOffsetDst = offsets[ctInt.Id] + ctInt.Stride * dstIndex;

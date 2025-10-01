@@ -5,6 +5,16 @@ namespace EntitiesDb;
 
 internal unsafe static class ArchetypeUtils
 {
+	/// <summary>
+	/// Builds a <see cref="ComponentType"/> array from a given <see cref="Signature"/>
+	/// </summary>
+	/// <remarks>
+	/// Types are laid with a (unmanaged | managed) split, each group ordered by ascending id
+	/// </remarks>
+	/// <param name="registry">A component registery to get component types from</param>
+	/// <param name="signature">The bitset signature</param>
+	/// <param name="unmanagedCount">The output of how many unmanaged types there are (Use as the unmanaged/managed boundary).</param>
+	/// <returns>The built component type array</returns>
 	public static ComponentType[] BuildComponentTypes(ComponentRegistry registry, in Signature signature, out int unmanagedCount)
 	{
 		var componentTypes = new ComponentType[signature.PopCount()];
@@ -34,6 +44,13 @@ internal unsafe static class ArchetypeUtils
 		return componentTypes;
 	}
 
+	/// <summary>
+	/// Builds an id -> offset lookup array, sized to the max id in the component array
+	/// </summary>
+	/// <param name="componentTypes"></param>
+	/// <param name="chunkCapacity"></param>
+	/// <param name="unmanagedCount"></param>
+	/// <returns></returns>
 	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int chunkCapacity, int unmanagedCount)
 	{
 		if (componentTypes.Length == 0)

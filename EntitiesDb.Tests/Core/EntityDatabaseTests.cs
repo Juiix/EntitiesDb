@@ -37,7 +37,7 @@ public struct LargeBuf { public int V; public LargeBuf(int v) => V = v; }
 public sealed class EntityDatabaseTests
 {
 	private static EntityDatabase CreateDb(int chunkBytes = 4096, int maxEntities = 1_000)
-		=> new(new ComponentRegistry(), chunkBytes, maxEntities);
+		=> new(chunkBytes, maxEntities);
 
 	// -------------------- Entity lifecycle --------------------
 
@@ -193,7 +193,7 @@ public sealed class EntityDatabaseTests
 	public void Has_Throws_ForUnknownEntity()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.Has<Position>(999u));
+		Assert.Throws<EntityException>(() => db.Has<Position>(999));
 	}
 
 	// -------------------- Buffered components via [Buffered] --------------------
@@ -335,7 +335,7 @@ public sealed class EntityDatabaseTests
 	public void Set_UnknownEntity_Throws()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.Set(999u, new Position { X = 1, Y = 2 }));
+		Assert.Throws<EntityException>(() => db.Set(999, new Position { X = 1, Y = 2 }));
 	}
 
 	// Intentionally **not** testing Set<T> with buffered or zero-size types:
@@ -425,7 +425,7 @@ public sealed class EntityDatabaseTests
 	public void SetBuffer_UnknownEntity_Throws()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.SetBuffer<Damage>(999u, new[] { new Damage(1) }));
+		Assert.Throws<EntityException>(() => db.SetBuffer<Damage>(999, new[] { new Damage(1) }));
 	}
 
 	// -------------------- Guardrails around SetBuffer vs. GetBuffer --------------------

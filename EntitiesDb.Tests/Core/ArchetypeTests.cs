@@ -66,13 +66,13 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunkCount);
 
 			// Signature / HasComponent
-			Assert.True(arch.HasComponent(ctInt.Id));
-			Assert.True(arch.HasComponent(ctFloat.Id));
-			Assert.True(arch.HasComponent(ctName.Id));
+			Assert.True(arch.Has(ctInt.Id));
+			Assert.True(arch.Has(ctFloat.Id));
+			Assert.True(arch.Has(ctName.Id));
 
 			// A type not in the archetype
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
-			Assert.False(arch.HasComponent(ctGuid.Id));
+			Assert.False(arch.Has(ctGuid.Id));
 		}
 		finally
 		{
@@ -94,10 +94,10 @@ public sealed class ArchetypeTests
 			// Fill the first chunk
 			for (int i = 0; i < cap; i++)
 			{
-				var slot = arch.AddEntity(new Entity((uint)i, 0));
+				var slot = arch.AddEntity(new Entity(i, 0));
 				Assert.Equal(0, slot.ChunkIndex);
 				Assert.Equal(i, slot.Index);
-				Assert.Equal((uint)i, arch.GetEntity(slot).Id);
+				Assert.Equal(i, arch.GetEntity(slot).Id);
 			}
 
 			Assert.Equal(cap, arch.EntityCount);
@@ -109,7 +109,7 @@ public sealed class ArchetypeTests
 			Assert.Equal(2, arch.ChunkCount);
 			Assert.Equal(1, extra.ChunkIndex);
 			Assert.Equal(0, extra.Index);
-			Assert.Equal(999u, arch.GetEntity(extra).Id);
+			Assert.Equal(999, arch.GetEntity(extra).Id);
 		}
 		finally
 		{
@@ -128,16 +128,16 @@ public sealed class ArchetypeTests
 			int cap = arch.EntitiesPerChunk;
 
 			// Ensure 2 chunks exist (cap + 1 entities)
-			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity((uint)i, 0));
+			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity(i, 0));
 			var last = arch.AddEntity(new Entity(777, 0)); // second chunk, index 0
 
 			Assert.Equal(2, arch.ChunkCount);
 
 			// Remove first entity in first chunk; it should be replaced by "777" from the last chunk
 			var first = new EntitySlot(0, 0);
-			arch.RemoveEntity(first, out uint moved);
-			Assert.Equal(777u, moved);
-			Assert.Equal(777u, arch.GetEntity(first).Id);
+			arch.RemoveEntity(first, out int moved);
+			Assert.Equal(777, moved);
+			Assert.Equal(777, arch.GetEntity(first).Id);
 
 			// Because the last chunk had only 1 entity, removing it should drop the chunk
 			Assert.Equal(1, arch.ChunkCount);
@@ -265,7 +265,7 @@ public sealed class ArchetypeTests
 			// Force a new chunk
 			int cap = arch.EntitiesPerChunk;
 			for (int i = 0; i < cap + 1; i++)
-				arch.AddEntity(new Entity((uint)i, 0));
+				arch.AddEntity(new Entity(i, 0));
 
 			var lastPtr = arch.CurrentChunk.UnmanagedComponents;
 

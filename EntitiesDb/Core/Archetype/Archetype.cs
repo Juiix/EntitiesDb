@@ -96,9 +96,12 @@ public unsafe sealed class Archetype
 	/// <param name="componentTypeId"></param>
 	/// <returns></returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool HasComponent(int componentTypeId) =>
+	public bool Has(int componentTypeId) =>
 		Signature.Test(componentTypeId);
 
+	/// <summary>
+	/// Returns a chunk enumerator
+	/// </summary>
 	public ReadOnlyEnumerator<Chunk> GetEnumerator => new(_chunks.AsSpan(0, ChunkCount));
 
 	/// <summary>
@@ -228,7 +231,7 @@ public unsafe sealed class Archetype
 	/// </summary>
 	/// <param name="slot">The <see cref="EntitySlot"/> to remove</param>
 	/// <param name="movedEntityId">The entity id that filled the removed <see cref="EntitySlot"/></param>
-	internal void RemoveEntity(EntitySlot slot, out uint movedEntityId)
+	internal void RemoveEntity(EntitySlot slot, out int movedEntityId)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		var lastChunkIndex = ChunkCount - 1;

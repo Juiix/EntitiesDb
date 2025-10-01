@@ -1,14 +1,8 @@
 ﻿using System;
 
-namespace EntitiesDb
-{
-	public sealed class ComponentException : Exception
-	{
-		public ComponentException(Type componentType, string message) : base(message)
-		{
-			ComponentType = componentType;
-		}
+namespace EntitiesDb;
 
-		public Type ComponentType { get; }
-	}
+public sealed class ComponentException(Type componentType, string message) : Exception(message)
+{
+	public Type ComponentType { get; } = componentType;
 }

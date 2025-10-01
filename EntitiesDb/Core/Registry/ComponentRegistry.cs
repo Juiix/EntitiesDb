@@ -146,6 +146,16 @@ public sealed partial class ComponentRegistry
 	}
 
 	/// <summary>
+	/// Gets the component id for a given type
+	/// </summary>
+	/// <typeparam name="T">The target type</typeparam>
+	/// <returns>Component id for <typeparamref name="T"/></returns>
+	public int IdOf<T>()
+	{
+		return GetComponentType<T>().Id;
+	}
+
+	/// <summary>
 	/// Returns an array factory for a given id
 	/// </summary>
 	/// <param name="id">Id of the target component</param>
@@ -165,7 +175,7 @@ public sealed partial class ComponentRegistry
 	{
 		var id = Volatile.Read(ref _nextId);
 		if (id >= MaxComponents)
-			ThrowHelper.ThrowMaxComponentsReached(MaxComponents);
+			throw ThrowHelper.MaxComponentsReached(MaxComponents);
 
 		var type = typeof(T);
 		var internalCapacity = ComponentMeta<T>.InternalCapacity;
@@ -173,9 +183,9 @@ public sealed partial class ComponentRegistry
 		var isUnmanaged = ComponentMeta<T>.IsUnmanaged;
 
 		if (byteSize > ComponentType.MaxSize)
-			ThrowHelper.ThrowComponentSizeExceeded(type, ComponentType.MaxSize);
+			throw ThrowHelper.ComponentSizeExceeded(type, ComponentType.MaxSize);
 		if (byteSize == 0 && internalCapacity > 0)
-			ThrowHelper.ThrowComponentBufferZeroSize(typeof(T));
+			throw ThrowHelper.ComponentBufferZeroSize(typeof(T));
 
 		Volatile.Write(ref _nextId, id + 1);
 		_componentTypes[id] = new ComponentType(id, (short)internalCapacity, (short)byteSize, isUnmanaged);
@@ -183,15 +193,5 @@ public sealed partial class ComponentRegistry
 		_arrayFactories[id] = static (int length) => new T[length];
 		_typeMap[type] = id;
 		return ref _componentTypes[id];
-	}
-
-	/// <summary>
-	/// Gets the component id for a given type
-	/// </summary>
-	/// <typeparam name="T">The target type</typeparam>
-	/// <returns>Component id for <typeparamref name="T"/></returns>
-	private int IdOf<T>()
-	{
-		return GetComponentType<T>().Id;
 	}
 }

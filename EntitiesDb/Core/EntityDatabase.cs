@@ -10,13 +10,13 @@ public sealed partial class EntityDatabase
 	private readonly EntityMap _entityMap;
 	private readonly Queue<Entity> _recycledEntityIds = [];
 
-	public EntityDatabase(ComponentRegistry componentRegistry, int chunkByteSize, int maxEntities)
+	public EntityDatabase(int chunkByteSize, int maxEntities)
 	{
-		_componentRegistry = componentRegistry;
+		_componentRegistry = new();
 		_entityMap = new(maxEntities);
-		Archetypes = new(componentRegistry, chunkByteSize);
+		Archetypes = new(_componentRegistry, chunkByteSize);
 		MaxEntities = maxEntities;
-		QueryBuilder = new(Archetypes, componentRegistry);
+		QueryBuilder = new(Archetypes, _componentRegistry);
 	}
 
 	/// <summary>
@@ -50,26 +50,24 @@ public sealed partial class EntityDatabase
 	/// <param name="component">Component value</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ref T? Add<T>(uint entityId, T? component = default)
+	public ref T? Add<T>(int entityId, T? component = default)
 	{
-		ref readonly var componentType = ref GetComponentType<T>();
+		var componentId = GetId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentAlreadyAdded(typeof(T));
-		}
+		if (srcArchetype.Has(componentId))
+			throw ThrowHelper.ComponentAlreadyAdded(typeof(T));
 
-		var dstSignature = srcArchetype.Signature.WithSet(componentType.Id);
+		var dstSignature = srcArchetype.Signature.WithSet(componentId);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		ref var value = ref dstArchetype.Get<T>(componentType.Id, entityReference.Slot);
+		ref var value = ref dstArchetype.Get<T>(componentId, entityReference.Slot);
 		value = component;
 		return ref value;
 	}
@@ -85,19 +83,17 @@ public sealed partial class EntityDatabase
 	/// <param name="components">Components to initialize the buffer with</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ComponentBuffer<T> AddBuffer<T>(uint entityId, ReadOnlySpan<T> components) where T : unmanaged
+	public ComponentBuffer<T> AddBuffer<T>(int entityId, ReadOnlySpan<T> components) where T : unmanaged
 	{
-		ref readonly var componentType = ref GetComponentTypeBuffered<T>();
+		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentAlreadyAdded(typeof(T));
-		}
+		if (srcArchetype.Has(componentId))
+			throw ThrowHelper.ComponentAlreadyAdded(typeof(T));
 
-		var dstSignature = srcArchetype.Signature.WithSet(componentType.Id);
+		var dstSignature = srcArchetype.Signature.WithSet(componentId);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
@@ -105,7 +101,7 @@ public sealed partial class EntityDatabase
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		var buffer = dstArchetype.InitBuffer(componentType.Id, entityReference.Slot, components);
+		var buffer = dstArchetype.InitBuffer(componentId, entityReference.Slot, components);
 		return buffer;
 	}
 
@@ -116,7 +112,7 @@ public sealed partial class EntityDatabase
 	/// <returns>Id of the cloned entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="MaxReachedException"></exception>
-	public Entity CloneEntity(uint srcEntityId)
+	public Entity CloneEntity(int srcEntityId)
 	{
 		// get entity
 		ref var srcReference = ref GetEntity(srcEntityId);
@@ -153,7 +149,7 @@ public sealed partial class EntityDatabase
 	/// </summary>
 	/// <param name="entityId">Id of the entity to destroy</param>
 	/// <exception cref="EntityException"></exception>
-	public void Destroy(uint entityId)
+	public void Destroy(int entityId)
 	{
 		// get entity
 		ref var entityReference = ref GetEntity(entityId);
@@ -186,27 +182,17 @@ public sealed partial class EntityDatabase
 	/// <returns>Reference to the component for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ref T? Get<T>(uint entityId)
+	public ref T? Get<T>(int entityId)
 	{
-		ref readonly var componentType = ref GetComponentType<T>();
+		var componentId = GetId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check if has component
-		if (!entityReference.Archetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!entityReference.Archetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
-		ref var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var offset = chunk.IdToOffsets[componentType.Id];
-		if (componentType.IsUnmanaged)
-		{
-			return ref chunk.GetUnmanaged<T>(offset + componentType.Stride * entityReference.Slot.Index);
-		}
-		else
-		{
-			return ref chunk.GetManaged<T>(offset, entityReference.Slot.Index);
-		}
+		ref var component = ref entityReference.Archetype.Get<T>(componentId, entityReference.Slot);
+		return ref component;
 	}
 
 	/// <summary>
@@ -218,21 +204,16 @@ public sealed partial class EntityDatabase
 	/// <returns>Component buffer for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ComponentBuffer<T> GetBuffer<T>(uint entityId) where T : unmanaged
+	public ComponentBuffer<T> GetBuffer<T>(int entityId) where T : unmanaged
 	{
-		ref readonly var componentType = ref GetComponentTypeBuffered<T>();
+		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check if has component
-		if (!entityReference.Archetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!entityReference.Archetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
-		ref var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var offset = chunk.IdToOffsets[componentType.Id];
-		ref var header = ref chunk.GetUnmanaged<ComponentBufferHeader>(offset + componentType.Stride * entityReference.Slot.Index);
-		var buffer = new ComponentBuffer<T>(ref header);
+		var buffer = entityReference.Archetype.GetBuffer<T>(componentId, entityReference.Slot);
 		return buffer;
 	}
 
@@ -243,16 +224,10 @@ public sealed partial class EntityDatabase
 	/// <param name="entityId">Id of the entity</param>
 	/// <returns>If the entity has the given component type</returns>
 	/// <exception cref="EntityException"></exception>
-	public bool Has<T>(uint entityId)
+	public bool Has<T>(int entityId)
 	{
-		ref var reference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
-		if (!foundEntity)
-		{
-			ThrowHelper.ThrowEntityNotFound(entityId);
-		}
-
-		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
-		return reference.Archetype.HasComponent(componentType.Id);
+		ref var reference = ref GetEntity(entityId);
+		return reference.Archetype.Has(_componentRegistry.IdOf<T>());
 	}
 
 	/// <summary>
@@ -263,24 +238,17 @@ public sealed partial class EntityDatabase
 	/// <returns>If the component was found and removed</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public void Remove<T>(uint entityId)
+	public void Remove<T>(int entityId)
 	{
-		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
-		if (componentType.Buffered)
-		{
-			ThrowHelper.ThrowComponentBuffered(typeof(T));
-		}
-
+		var componentId = GetId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		var srcArchetype = entityReference.Archetype;
-		if (!srcArchetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!srcArchetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
-		var dstSignature = srcArchetype.Signature.WithCleared(componentType.Id);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+		var dstSignature = srcArchetype.Signature.WithCleared(componentId);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
@@ -294,27 +262,20 @@ public sealed partial class EntityDatabase
 	/// <returns>If the component was found and removed</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public void RemoveBuffer<T>(uint entityId) where T : unmanaged
+	public void RemoveBuffer<T>(int entityId) where T : unmanaged
 	{
-		ref readonly var componentType = ref GetComponentTypeBuffered<T>();
+		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		var srcArchetype = entityReference.Archetype;
-		if (!srcArchetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!srcArchetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
 		// get and clear existing buffer
-		srcArchetype.GetBuffer<T>(componentType.Id, entityReference.Slot);
-
-		ref var srcChunk = ref srcArchetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var offset = srcChunk.IdToOffsets[componentType.Id];
-		ref var header = ref srcChunk.GetUnmanaged<ComponentBufferHeader>(offset + componentType.Stride * entityReference.Slot.Index);
-		var buffer = new ComponentBuffer<T>(ref header);
+		var buffer = srcArchetype.GetBuffer<T>(componentId, entityReference.Slot);
 		buffer.Clear();
 
-		var dstSignature = srcArchetype.Signature.WithCleared(componentType.Id);
+		var dstSignature = srcArchetype.Signature.WithCleared(componentId);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
@@ -327,19 +288,17 @@ public sealed partial class EntityDatabase
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="entityId">The entity id</param>
 	/// <param name="component">The value to set</param>
-	public void Set<T>(uint entityId, T component)
+	public void Set<T>(int entityId, T component)
 	{
-		ref readonly var componentType = ref GetComponentType<T>();
+		var componentId = GetId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check if component exists
-		if (!entityReference.Archetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!entityReference.Archetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
 		// set value
-		entityReference.Archetype.Set(componentType.Id, entityReference.Slot, in component);
+		entityReference.Archetype.Set(componentId, entityReference.Slot, in component);
 	}
 
 	/// <summary>
@@ -352,19 +311,17 @@ public sealed partial class EntityDatabase
 	/// <typeparam name="T">The buffer type</typeparam>
 	/// <param name="entityId">The entity id</param>
 	/// <param name="values">The values to set</param>
-	public void SetBuffer<T>(uint entityId, ReadOnlySpan<T> values) where T : unmanaged
+	public void SetBuffer<T>(int entityId, ReadOnlySpan<T> values) where T : unmanaged
 	{
-		ref readonly var componentType = ref GetComponentTypeBuffered<T>();
+		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check if component exists
-		if (!entityReference.Archetype.HasComponent(componentType.Id))
-		{
-			ThrowHelper.ThrowComponentNotFound(entityId, typeof(T));
-		}
+		if (!entityReference.Archetype.Has(componentId))
+			throw ThrowHelper.ComponentNotFound(entityId, typeof(T));
 
 		// set values
-		entityReference.Archetype.SetBuffer(componentType.Id, entityReference.Slot, values);
+		entityReference.Archetype.SetBuffer(componentId, entityReference.Slot, values);
 	}
 
 	/// <summary>
@@ -376,12 +333,12 @@ public sealed partial class EntityDatabase
 	/// <typeparam name="T">The type to get</typeparam>
 	/// <returns>A readonly reference to the <see cref="ComponentType"/></returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private ref readonly ComponentType GetComponentType<T>()
+	private int GetId<T>()
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		if (componentType.Buffered)
-			ThrowHelper.ThrowComponentBuffered(typeof(T));
-		return ref componentType;
+			throw ThrowHelper.ComponentBuffered(typeof(T));
+		return componentType.Id;
 	}
 
 	/// <summary>
@@ -393,12 +350,12 @@ public sealed partial class EntityDatabase
 	/// <typeparam name="T">The type to get</typeparam>
 	/// <returns>A readonly reference to the <see cref="ComponentType"/></returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private ref readonly ComponentType GetComponentTypeBuffered<T>() where T : unmanaged
+	private int GetBufferedId<T>() where T : unmanaged
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		if (!componentType.Buffered)
-			ThrowHelper.ThrowComponentNotBuffered(typeof(T));
-		return ref componentType;
+			throw ThrowHelper.ComponentNotBuffered(typeof(T));
+		return componentType.Id;
 	}
 
 	/// <summary>
@@ -408,13 +365,11 @@ public sealed partial class EntityDatabase
 	/// <returns>A reference to the entity</returns>
 	/// <exception cref="EntityException"></exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private ref EntityReference GetEntity(uint entityId)
+	private ref EntityReference GetEntity(int entityId)
 	{
 		ref var entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
 		if (!foundEntity)
-		{
-			ThrowHelper.ThrowEntityNotFound(entityId);
-		}
+			throw ThrowHelper.EntityNotFound(entityId);
 		return ref entityReference;
 	}
 
@@ -448,7 +403,7 @@ public sealed partial class EntityDatabase
 	/// <param name="entityReference">A reference to the entity reference entry</param>
 	/// <param name="srcArchetype">The <see cref="Archetype"/> to move from</param>
 	/// <param name="dstArchetype">The <see cref="Archetype"/> to move to</param>
-	private void MoveEntity(uint entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
+	private void MoveEntity(int entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
 	{
 		// copy to new archetype
 		var srcSlot = entityReference.Slot;

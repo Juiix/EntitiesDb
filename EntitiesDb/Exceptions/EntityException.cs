@@ -1,14 +1,8 @@
 ﻿using System;
 
-namespace EntitiesDb
-{
-	public sealed class EntityException : Exception
-	{
-		public EntityException(uint entityId, string message) : base(message)
-		{
-			EntityId = entityId;
-		}
+namespace EntitiesDb;
 
-		public uint EntityId { get; }
-	}
+public sealed class EntityException(int entityId, string message) : Exception(message)
+{
+	public int EntityId { get; } = entityId;
 }

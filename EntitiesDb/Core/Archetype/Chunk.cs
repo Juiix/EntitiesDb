@@ -18,7 +18,7 @@ public struct Chunk
 	/// <summary>
 	/// Archetype component types for ease-of-access
 	/// </summary>
-	internal readonly ComponentType[] ComponentTypes { get; }
+	internal readonly ComponentType[] ComponentTypes { [Pure] get; }
 
 	/// <summary>
 	/// Archetype id to offsets for ease-of-access.
@@ -67,7 +67,7 @@ public struct Chunk
 	public readonly unsafe ref T GetFirst<T>(int typeId)
 	{
 		if (ComponentMeta<T>.IsBuffered)
-			ThrowHelper.ThrowComponentBuffered(typeof(T));
+			throw ThrowHelper.ComponentBuffered(typeof(T));
 
 		var offset = IdToOffsets[typeId];
 		return ref ComponentMeta<T>.IsUnmanaged
@@ -84,7 +84,7 @@ public struct Chunk
 	public readonly unsafe ComponentBuffer<T> GetFirstBuffer<T>(int typeId) where T : unmanaged
 	{
 		if (!ComponentMeta<T>.IsBuffered)
-			ThrowHelper.ThrowComponentNotBuffered(typeof(T));
+			throw ThrowHelper.ComponentNotBuffered(typeof(T));
 
 		var offset = IdToOffsets[typeId];
 		return new ComponentBuffer<T>((void*)(UnmanagedComponents + offset));
@@ -221,7 +221,7 @@ public struct Chunk
 	/// <param name="srcChunk">The source <see cref="Chunk"/></param>
 	/// <param name="srcIndex">the index to transfer from</param>
 	/// <returns>The entity id of the transferred entity</returns>
-	internal readonly unsafe uint AcceptEntity(int dstIndex, ref Chunk srcChunk, int srcIndex)
+	internal readonly unsafe int AcceptEntity(int dstIndex, ref Chunk srcChunk, int srcIndex)
 	{
 		// get src entity
 		var srcEntity = srcChunk.GetEntity(srcIndex);

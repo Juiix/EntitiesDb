@@ -12,7 +12,7 @@ internal sealed class EntityMap(int maxEntities)
 
 	private readonly int _maxEntities = maxEntities;
 	private readonly List<EntityReference[]> _blocks = [];
-	private uint _count = 0;
+	private int _count = 0;
 
 	/// <summary>
 	/// Adds a new entityId
@@ -20,10 +20,10 @@ internal sealed class EntityMap(int maxEntities)
 	/// <param name="entityId">The added id</param>
 	/// <returns>The new reference</returns>
 	/// <exception cref="OutOfMemoryException"></exception>
-	public ref EntityReference Add(out uint entityId)
+	public ref EntityReference Add(out int entityId)
 	{
 		if (_count >= _maxEntities)
-			ThrowHelper.ThrowMaxEntitiesReached(_maxEntities);
+			throw ThrowHelper.MaxEntitiesReached(_maxEntities);
 
 		entityId = _count++;
 		var block = entityId >> IndexShift;
@@ -36,14 +36,14 @@ internal sealed class EntityMap(int maxEntities)
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public ref EntityReference GetReference(uint entityId)
+	public ref EntityReference GetReference(int entityId)
 	{
 		var block = entityId >> IndexShift;
 		var i = entityId & BlockMask;
 		return ref _blocks[(int)block][i];
 	}
 
-	public void Move(uint entityId, in EntitySlot slot)
+	public void Move(int entityId, in EntitySlot slot)
 	{
 		ref var entityReference = ref GetReference(entityId);
 		entityReference = entityReference with
@@ -52,12 +52,12 @@ internal sealed class EntityMap(int maxEntities)
 		};
 	}
 
-	public void Remove(uint entityId)
+	public void Remove(int entityId)
 	{
 		GetReference(entityId) = default;
 	}
 
-	public ref EntityReference TryGetReference(uint entityId, out bool found)
+	public ref EntityReference TryGetReference(int entityId, out bool found)
 	{
 		if (entityId >= _count)
 		{
