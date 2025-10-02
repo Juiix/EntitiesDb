@@ -6,35 +6,35 @@ namespace EntitiesDb.Core;
 //  int Size; int InternalCapacity; nint Heap; const int DataOffset;
 // Memory layout: [Header ...] then inline storage starting at DataOffset.
 
-public unsafe class ComponentBufferTests
+public unsafe class DynamicBufferTests
 {
 	// Tag helpers must match the implementation (Size sign-bit = heap tag)
 	private const int HeapTag = unchecked((int)0x8000_0000);
 	private const int SizeMask = 0x7FFF_FFFF;
 
-	private static bool IsHeap(ComponentBufferHeader* h) => (h->Size & HeapTag) != 0;
-	private static int LogicalSize(ComponentBufferHeader* h) => h->Size & SizeMask;
+	private static bool IsHeap(BufferHeader* h) => (h->Size & HeapTag) != 0;
+	private static int LogicalSize(BufferHeader* h) => h->Size & SizeMask;
 
 	// ---------- Test fixture for allocating header + inline region ----------
 
 	private sealed class BufferHandle<T> : IDisposable where T : unmanaged
 	{
-		public ComponentBufferHeader* Header;
+		public BufferHeader* Header;
 		public IntPtr Owner;   // start of header+inline block
 
 		public BufferHandle(int internalCapacity)
 		{
-			int headerBytes = ComponentBufferHeader.DataOffset;
+			int headerBytes = BufferHeader.DataOffset;
 			nuint total = (nuint)headerBytes + (nuint)(internalCapacity * sizeof(T));
 			Owner = Marshal.AllocHGlobal((IntPtr)total);
 
-			Header = (ComponentBufferHeader*)Owner.ToPointer();
+			Header = (BufferHeader*)Owner.ToPointer();
 			Header->Size = 0; // tag cleared => inline
 			Header->InternalCapacity = internalCapacity;
 			// DO NOT write Header->Heap here; it may alias inline bytes
 		}
 
-		public ComponentBuffer<T> Buffer => new ComponentBuffer<T>((void*)Header);
+		public DynamicBuffer<T> Buffer => new DynamicBuffer<T>((void*)Header);
 
 		public void Dispose()
 		{
@@ -48,7 +48,7 @@ public unsafe class ComponentBufferTests
 		}
 	}
 
-	private static void FillSequential(ComponentBuffer<int> buf, int count)
+	private static void FillSequential(DynamicBuffer<int> buf, int count)
 	{
 		for (int i = 0; i < count; i++) buf.Add(i);
 	}

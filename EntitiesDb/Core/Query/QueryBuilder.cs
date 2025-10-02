@@ -9,17 +9,23 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	private Signature _none;
 	private QueryFilterMode _filterMode;
 
+	/// <summary>
+	/// Clears the current filters and disables ONLY filter
+	/// </summary>
 	public void Clear()
 	{
 		_all = default;
 		_any = default;
 		_none = default;
-		_filterMode = QueryFilterMode.Inclusive;
+		_filterMode = QueryFilterMode.All;
 	}
 
 	/// <summary>
 	/// Builds a <see cref="Query"/> instance based on the previous filter calls.
 	/// </summary>
+	/// <remarks>
+	/// <see cref="Clear"/> is automatically called after building the <see cref="Query"/>
+	/// </remarks>
 	/// <returns>The built <see cref="Query"/></returns>
 	public Query Build()
 	{
@@ -39,7 +45,7 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		_all = Signature.SingleBit(componentType.Id);
-		_filterMode = QueryFilterMode.Inclusive;
+		_filterMode = QueryFilterMode.All;
 		return this;
 	}
 
@@ -54,7 +60,7 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		_any = Signature.SingleBit(componentType.Id);
-		_filterMode = QueryFilterMode.Inclusive;
+		_filterMode = QueryFilterMode.All;
 		return this;
 	}
 
@@ -69,7 +75,7 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		_none = Signature.SingleBit(componentType.Id);
-		_filterMode = QueryFilterMode.Inclusive;
+		_filterMode = QueryFilterMode.All;
 		return this;
 	}
 
@@ -84,7 +90,9 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	{
 		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
 		_all = Signature.SingleBit(componentType.Id);
-		_filterMode = QueryFilterMode.Exclusive;
+		_any = Signature.Empty;
+		_none = Signature.Empty;
+		_filterMode = QueryFilterMode.Only;
 		return this;
 	}
 }

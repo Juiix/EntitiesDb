@@ -3,7 +3,7 @@
 namespace EntitiesDb;
 
 [StructLayout(LayoutKind.Explicit)]
-internal struct ComponentBufferHeader
+internal struct BufferHeader
 {
     public const int DataOffset = sizeof(int) * 2;
 

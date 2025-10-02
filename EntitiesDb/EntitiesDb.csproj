@@ -56,9 +56,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\Chunk.Set.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.Set.cs</LastGenOutput>
+    </None>
     <None Update="Templates\ComponentRegistry.GetSignature.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ComponentRegistry.GetSignature.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Create.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Create.cs</LastGenOutput>
     </None>
     <None Update="Templates\Generics.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -87,10 +95,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Templates\Chunk.Set.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.Set.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\ComponentRegistry.GetSignature.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ComponentRegistry.GetSignature.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Create.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Create.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Generics.cs">
       <DesignTime>True</DesignTime>
@@ -116,6 +134,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>QueryBuilder.WithAny.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\QueryBuilder.WithNone.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithNone.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\QueryBuilder.WithOnly.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QueryBuilder.WithOnly.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

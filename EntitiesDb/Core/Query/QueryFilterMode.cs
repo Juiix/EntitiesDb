@@ -2,6 +2,6 @@
 
 public enum QueryFilterMode
 {
-	Inclusive,
-	Exclusive
+	All,
+	Only
 }

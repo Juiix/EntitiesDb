@@ -28,7 +28,7 @@ public sealed partial class Query
 	{
 		return _filter.Mode switch
 		{
-			QueryFilterMode.Exclusive => signature.Equals(in _filter.All),
+			QueryFilterMode.Only => signature.Equals(in _filter.All),
 			_ =>   signature.HasAll(in _filter.All)
 				&& signature.HasAny(in _filter.Any)
 				&& signature.HasNone(in _filter.None),

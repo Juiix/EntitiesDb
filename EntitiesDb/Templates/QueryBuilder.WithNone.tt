@@ -16,7 +16,7 @@ public partial class QueryBuilder
 	public QueryBuilder WithNone<<#= generics #>>()
 	{
 		_none = _componentRegistry.GetSignature<<#= generics #>>();
-		_filterMode = QueryFilterMode.Inclusive;
+		_filterMode = QueryFilterMode.All;
 		return this;
 	}
 <#

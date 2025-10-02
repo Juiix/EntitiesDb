@@ -1,6 +1,6 @@
 ﻿namespace EntitiesDb;
 
-public readonly struct QueryFilter(Signature all, Signature any, Signature none, QueryFilterMode mode = QueryFilterMode.Inclusive)
+public readonly struct QueryFilter(Signature all, Signature any, Signature none, QueryFilterMode mode = QueryFilterMode.All)
 {
 	public readonly Signature All = all;
 	public readonly Signature Any = any;

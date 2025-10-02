@@ -53,6 +53,6 @@ public readonly struct ComponentType(int id, short internalCapacity, short byteS
 		if (internalCapacity <= 0)
 			return byteSize;
 
-		return ComponentBufferHeader.DataOffset + Math.Max(internalCapacity * byteSize, Marshal.SizeOf<nint>());
+		return BufferHeader.DataOffset + Math.Max(internalCapacity * byteSize, Marshal.SizeOf<nint>());
 	}
 }

@@ -50,6 +50,7 @@ public sealed partial class EntityDatabase
 	/// <param name="component">Component value</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
 	public ref T? Add<T>(int entityId, T? component = default)
 	{
 		var componentId = GetId<T>();
@@ -83,7 +84,8 @@ public sealed partial class EntityDatabase
 	/// <param name="components">Components to initialize the buffer with</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ComponentBuffer<T> AddBuffer<T>(int entityId, ReadOnlySpan<T> components) where T : unmanaged
+	[StructuralChange]
+	public DynamicBuffer<T> AddBuffer<T>(int entityId, ReadOnlySpan<T> components) where T : unmanaged
 	{
 		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
@@ -112,6 +114,7 @@ public sealed partial class EntityDatabase
 	/// <returns>Id of the cloned entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
 	public Entity CloneEntity(int srcEntityId)
 	{
 		// get entity
@@ -133,6 +136,7 @@ public sealed partial class EntityDatabase
 	/// </summary>
 	/// <returns>Id of the created entity</returns>
 	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
 	public Entity Create()
 	{
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
@@ -145,10 +149,28 @@ public sealed partial class EntityDatabase
 	}
 
 	/// <summary>
+	/// Creates an empty entity
+	/// </summary>
+	/// <returns>Id of the created entity</returns>
+	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
+	public Entity Create<T0>(in T0? t0Component = default)
+	{
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var archetype = Archetypes.GetOrCreateArchetype(Signature.Empty);
+		var dstSlot = archetype.AddEntity(dstEntityId, in t0Component);
+		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		EntityCount++;
+
+		return dstEntityId;
+	}
+
+	/// <summary>
 	/// Destroys a given entity
 	/// </summary>
 	/// <param name="entityId">Id of the entity to destroy</param>
 	/// <exception cref="EntityException"></exception>
+	[StructuralChange]
 	public void Destroy(int entityId)
 	{
 		// get entity
@@ -204,7 +226,7 @@ public sealed partial class EntityDatabase
 	/// <returns>Component buffer for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ComponentBuffer<T> GetBuffer<T>(int entityId) where T : unmanaged
+	public DynamicBuffer<T> GetBuffer<T>(int entityId) where T : unmanaged
 	{
 		var componentId = GetBufferedId<T>();
 		ref var entityReference = ref GetEntity(entityId);
@@ -238,6 +260,7 @@ public sealed partial class EntityDatabase
 	/// <returns>If the component was found and removed</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
 	public void Remove<T>(int entityId)
 	{
 		var componentId = GetId<T>();
@@ -262,6 +285,7 @@ public sealed partial class EntityDatabase
 	/// <returns>If the component was found and removed</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
 	public void RemoveBuffer<T>(int entityId) where T : unmanaged
 	{
 		var componentId = GetBufferedId<T>();
@@ -306,7 +330,7 @@ public sealed partial class EntityDatabase
 	/// </summary>
 	/// <remarks>
 	/// This method will overwrite any existing buffer values.
-	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="ComponentBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="DynamicBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
 	/// </remarks>
 	/// <typeparam name="T">The buffer type</typeparam>
 	/// <param name="entityId">The entity id</param>

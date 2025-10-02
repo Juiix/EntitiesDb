@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
-public struct Chunk
+public partial struct Chunk
 {
 	internal Chunk(ComponentType[] componentTypes, int[] idToOffsets, nint unmanagedComponents, Array[] managedComponents, int unmanagedComponentCount)
 	{
@@ -66,9 +66,20 @@ public struct Chunk
 	/// <returns>A reference at <paramref name="offset"/></returns>
 	public readonly unsafe ref T GetFirst<T>(int typeId)
 	{
-		if (ComponentMeta<T>.IsBuffered)
-			throw ThrowHelper.ComponentBuffered(typeof(T));
+		var offset = IdToOffsets[typeId];
+		return ref ComponentMeta<T>.IsUnmanaged
+			? ref Unsafe.AsRef<T>((void*)(UnmanagedComponents + offset))
+			: ref ((T[])ManagedComponents[offset])[0];
+	}
 
+	/// <summary>
+	/// Returns a reference to the first component of typeId
+	/// </summary>
+	/// <typeparam name="T">The component type</typeparam>
+	/// <param name="offset">The byte offset</param>
+	/// <returns>A reference at <paramref name="offset"/></returns>
+	public readonly unsafe ref readonly T GetFirstReadOnly<T>(int typeId)
+	{
 		var offset = IdToOffsets[typeId];
 		return ref ComponentMeta<T>.IsUnmanaged
 			? ref Unsafe.AsRef<T>((void*)(UnmanagedComponents + offset))
@@ -81,13 +92,10 @@ public struct Chunk
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="offset">The byte offset</param>
 	/// <returns>The first component buffer for <paramref name="typeId"/></returns>
-	public readonly unsafe ComponentBuffer<T> GetFirstBuffer<T>(int typeId) where T : unmanaged
+	public readonly unsafe DynamicBuffer<T> GetFirstBuffer<T>(int typeId) where T : unmanaged
 	{
-		if (!ComponentMeta<T>.IsBuffered)
-			throw ThrowHelper.ComponentNotBuffered(typeof(T));
-
 		var offset = IdToOffsets[typeId];
-		return new ComponentBuffer<T>((void*)(UnmanagedComponents + offset));
+		return new DynamicBuffer<T>((void*)(UnmanagedComponents + offset));
 	}
 
 	/// <summary>
@@ -110,10 +118,10 @@ public struct Chunk
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="offset">The byte offset</param>
 	/// <returns>A reference at <paramref name="offset"/></returns>
-	public readonly unsafe ComponentBuffer<T> GetBuffer<T>(int index, int typeId) where T : unmanaged
+	public readonly unsafe DynamicBuffer<T> GetBuffer<T>(int index, int typeId) where T : unmanaged
 	{
 		var offset = IdToOffsets[typeId];
-		return new ComponentBuffer<T>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
+		return new DynamicBuffer<T>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
 	}
 
 	/// <summary>
@@ -157,15 +165,15 @@ public struct Chunk
 	}
 
 	/// <summary>
-	/// Returns a <see cref="ComponentBuffer{T}"/> of an unmanaged component at a given offset
+	/// Returns a <see cref="DynamicBuffer{T}"/> of an unmanaged component at a given offset
 	/// </summary>
 	/// <typeparam name="T">The unmanaged type</typeparam>
 	/// <param name="offset">The byte offset</param>
-	/// <returns><see cref="ComponentBuffer{T}"/> at <paramref name="offset"/></returns>
-	public readonly unsafe ComponentBuffer<T> GetUnmanagedBuffer<T>(int offset) where T : unmanaged
+	/// <returns><see cref="DynamicBuffer{T}"/> at <paramref name="offset"/></returns>
+	public readonly unsafe DynamicBuffer<T> GetUnmanagedBuffer<T>(int offset) where T : unmanaged
 	{
 		var ptr = UnmanagedComponents + offset;
-		return new ComponentBuffer<T>((void*)ptr);
+		return new DynamicBuffer<T>((void*)ptr);
 	}
 
 	/// <summary>

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
-public unsafe sealed class Archetype
+public unsafe sealed partial class Archetype
 {
 	/// <summary>
 	/// Array of factories used to create managed component arrays
@@ -115,7 +115,7 @@ public unsafe sealed class Archetype
 		return ref chunk.Get<T>(slot.Index, typeId);
 	}
 
-	internal ComponentBuffer<T> GetBuffer<T>(int typeId, in EntitySlot slot) where T : unmanaged
+	internal DynamicBuffer<T> GetBuffer<T>(int typeId, in EntitySlot slot) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		return chunk.GetBuffer<T>(slot.Index, typeId);
@@ -135,12 +135,12 @@ public unsafe sealed class Archetype
 		buffer.AddRange(values);
 	}
 
-	internal ComponentBuffer<T> InitBuffer<T>(int typeId, in EntitySlot slot, ReadOnlySpan<T> values) where T : unmanaged
+	internal DynamicBuffer<T> InitBuffer<T>(int typeId, in EntitySlot slot, ReadOnlySpan<T> values) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		var offset = chunk.IdToOffsets[typeId];
-		ref var header = ref chunk.GetUnmanaged<ComponentBufferHeader>(offset + ComponentMeta<T>.Stride * slot.Index);
-		var buffer = new ComponentBuffer<T>(ref header);
+		ref var header = ref chunk.GetUnmanaged<BufferHeader>(offset + ComponentMeta<T>.Stride * slot.Index);
+		var buffer = new DynamicBuffer<T>(ref header);
 		buffer.Init(ComponentMeta<T>.InternalCapacity, values);
 		return buffer;
 	}
@@ -192,7 +192,7 @@ public unsafe sealed class Archetype
 	/// </summary>
 	/// <param name="entity">The <see cref="Entity"/> to add</param>
 	/// <returns>The filled <see cref="EntitySlot"/></returns>
-	internal EntitySlot AddEntity(Entity entity)
+	internal EntitySlot AddEntity(Entity entity, out Chunk chunk)
 	{
 		int index;
 		EntityCount++;
@@ -204,6 +204,7 @@ public unsafe sealed class Archetype
 		{
 			index = currentChunk.EntityCount++;
 			currentChunk.AddEntity(index, entity);
+			chunk = currentChunk;
 			return new EntitySlot(index, chunkIndex);
 		}
 
@@ -212,6 +213,7 @@ public unsafe sealed class Archetype
 		currentChunk = ref AddChunk();
 		currentChunk.EntityCount++;
 		currentChunk.AddEntity(index, entity);
+		chunk = currentChunk;
 		return new EntitySlot(index, chunkIndex + 1);
 	}
 

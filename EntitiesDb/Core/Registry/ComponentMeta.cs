@@ -25,6 +25,6 @@ public static class ComponentMeta<T>
 		if (!isUnmanaged || internalCapacity <= 0)
 			return byteSize;
 
-		return ComponentBufferHeader.DataOffset + Math.Max(internalCapacity * byteSize, nint.Size);
+		return BufferHeader.DataOffset + Math.Max(internalCapacity * byteSize, nint.Size);
 	}
 }
