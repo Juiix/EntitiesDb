@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class ComponentRegistry
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var asserts = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) throw ThrowHelper.ComponentBuffered(typeof(T{0}));");
+#>
+	/// <inheritdoc cref="AssertBuffered{T}()"/>
+	public void AssertNotBuffered<<#= generics #>>()
+	{
+		<#= Indent(asserts, 8) #>
+	}
+<#
+	}
+#>
+}

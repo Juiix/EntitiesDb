@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
+﻿namespace EntitiesDb;
 
-namespace EntitiesDb;
-
+/// <summary>
+/// A chunk of entities, stored as rows across tight component array columns
+/// </summary>
 public partial struct Chunk
 {
 	internal Chunk(ComponentType[] componentTypes, int[] idToOffsets, nint unmanagedComponents, Array[] managedComponents, int unmanagedComponentCount)
@@ -59,157 +58,137 @@ public partial struct Chunk
 	internal readonly ReadOnlySpan<ComponentType> ManagedComponentTypes => ComponentTypes.AsSpan(UnmanagedComponentCount);
 
 	/// <summary>
-	/// Returns a reference to the first component of typeId
-	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>A reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref T GetFirst<T>(int typeId)
-	{
-		var offset = IdToOffsets[typeId];
-		return ref ComponentMeta<T>.IsUnmanaged
-			? ref Unsafe.AsRef<T>((void*)(UnmanagedComponents + offset))
-			: ref ((T[])ManagedComponents[offset])[0];
-	}
-
-	/// <summary>
-	/// Returns a reference to the first component of typeId
-	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>A reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref readonly T GetFirstReadOnly<T>(int typeId)
-	{
-		var offset = IdToOffsets[typeId];
-		return ref ComponentMeta<T>.IsUnmanaged
-			? ref Unsafe.AsRef<T>((void*)(UnmanagedComponents + offset))
-			: ref ((T[])ManagedComponents[offset])[0];
-	}
-
-	/// <summary>
-	/// Returns a component buffer to the first buffer of typeId
-	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>The first component buffer for <paramref name="typeId"/></returns>
-	public readonly unsafe DynamicBuffer<T> GetFirstBuffer<T>(int typeId) where T : unmanaged
-	{
-		var offset = IdToOffsets[typeId];
-		return new DynamicBuffer<T>((void*)(UnmanagedComponents + offset));
-	}
-
-	/// <summary>
 	/// Returns a reference to a component at a given offset
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="offset">The byte offset</param>
 	/// <returns>A reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref T? Get<T>(int index, int typeId)
+	public readonly unsafe ref T? Get<T>(int index, in ComponentIds<T> ids)
 	{
-		var offset = IdToOffsets[typeId];
+		var offset = IdToOffsets[ids.T0];
 		return ref ComponentMeta<T>.IsUnmanaged
 			? ref Unsafe.AsRef<T?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride))
 			: ref ((T?[])ManagedComponents[offset])[index];
-	}
+    }
 
-	/// <summary>
-	/// Returns a reference to a component at a given offset
-	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>A reference at <paramref name="offset"/></returns>
-	public readonly unsafe DynamicBuffer<T> GetBuffer<T>(int index, int typeId) where T : unmanaged
+    /// <summary>
+    /// Returns a readonly reference to a component at a given offset
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>A readonly reference at <paramref name="offset"/></returns>
+    public readonly unsafe ref T? GetReadOnly<T>(int index, in ComponentIds<T> ids)
+    {
+        var offset = IdToOffsets[ids.T0];
+        return ref ComponentMeta<T>.IsUnmanaged
+            ? ref Unsafe.AsRef<T?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride))
+            : ref ((T?[])ManagedComponents[offset])[index];
+    }
+
+    /// <summary>
+    /// Returns a buffer of components at a given offset
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>A reference at <paramref name="offset"/></returns>
+    public readonly unsafe DynamicBuffer<T> GetBuffer<T>(int index, in ComponentIds<T> ids) where T : unmanaged
 	{
-		var offset = IdToOffsets[typeId];
+		var offset = IdToOffsets[ids.T0];
 		return new DynamicBuffer<T>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
-	}
+    }
+
+    /// <summary>
+    /// Returns a readonly buffer of components at a given offset
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>A reference at <paramref name="offset"/></returns>
+    public readonly unsafe ReadOnlyBuffer<T> GetBufferReadOnly<T>(int index, in ComponentIds<T> ids) where T : unmanaged
+    {
+        var offset = IdToOffsets[ids.T0];
+        return new ReadOnlyBuffer<T>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
+    }
 
 	/// <summary>
-	/// Returns a readonly reference to a component at a given offset
+	/// Sets and replaces component value values
 	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>A readonly reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref T? GetReadOnly<T>(int index, int typeId)
+	/// <param name="index">The chunk index</param>
+	/// <param name="ids"><see cref="ComponentIds{T0}"/> retrieved via <see cref=""/></param>
+	/// <param name="component"></param>
+	public void Set<T>(int index, in ComponentIds<T> ids, in T component)
+	{
+        GetById<T>(index, ids.T0) = component;
+    }
+
+    /// <summary>
+    /// Sets and replaces component value values
+    /// </summary>
+    /// <param name="index">The chunk index</param>
+    /// <param name="ids"><see cref="ComponentIds{T0}"/> retrieved via <see cref=""/></param>
+    /// <param name="component"></param>
+    public void Set<T>(int index, in ComponentIds<T> ids, in ReadOnlySpan<T> components)
+    {
+        GetBufferById<T>(index, ids.T0).Set(components);
+    }
+
+    /// <summary>
+    /// Returns a reference to an unmanaged component at a given offset
+    /// </summary>
+    /// <typeparam name="T">The unmanaged type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>An unmanaged reference at <paramref name="offset"/></returns>
+    internal readonly unsafe ref T? GetUnmanaged<T>(int offset)
+    {
+        var ptr = UnmanagedComponents + offset;
+        return ref Unsafe.AsRef<T?>((void*)ptr);
+    }
+
+	/// <summary>
+	/// Clears a buffer of components and releases allocated lists
+	/// </summary>
+	/// <param name="index">Index of the buffer to clear</param>
+	/// <param name="typeId">The component type id</param>
+    internal void ClearBuffer<T>(int index, int typeId)
 	{
 		var offset = IdToOffsets[typeId];
+		ref var header = ref GetUnmanaged<BufferHeader>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
+		DynamicBuffer.Clear(ref header);
+    }
 
-		// unmanaged component offsets are stored negative
-		return ref ComponentMeta<T>.IsUnmanaged
-			? ref Unsafe.AsRef<T?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride))
-			: ref ((T?[])ManagedComponents[offset])[index];
-	}
+    /// <summary>
+    /// Returns a reference to a component at a given offset
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>A reference at <paramref name="offset"/></returns>
+    internal readonly unsafe ref T? GetById<T>(int index, int typeId)
+    {
+        var offset = IdToOffsets[typeId];
+        return ref ComponentMeta<T>.IsUnmanaged
+            ? ref Unsafe.AsRef<T?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride))
+            : ref ((T?[])ManagedComponents[offset])[index];
+    }
 
-	/// <summary>
-	/// Returns a reference to an unmanaged component at a given offset
-	/// </summary>
-	/// <typeparam name="T">The unmanaged type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>An unmanaged reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref T? GetUnmanaged<T>(int offset)
+    /// <summary>
+    /// Returns a buffer of components at a given offset
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="offset">The byte offset</param>
+    /// <returns>A reference at <paramref name="offset"/></returns>
+    internal readonly unsafe DynamicBuffer<T> GetBufferById<T>(int index, int typeId) where T : unmanaged
+    {
+        var offset = IdToOffsets[typeId];
+        return new DynamicBuffer<T>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T>.Stride));
+    }
+
+    /// <summary>
+    /// Adds an entityId at the given index
+    /// </summary>
+    /// <param name="index">The index to set</param>
+    /// <param name="entityId">The entity id to add</param>
+    internal readonly unsafe void AddEntity(int index, Entity entityId)
 	{
-		var ptr = UnmanagedComponents + offset;
-		return ref Unsafe.AsRef<T?>((void*)ptr);
-	}
-
-	/// <summary>
-	/// Returns a readonly reference to an unmanaged component at a given offset
-	/// </summary>
-	/// <typeparam name="T">The unmanaged type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns>An unmanaged readonly reference at <paramref name="offset"/></returns>
-	public readonly unsafe ref readonly T? GetReadOnlyUnmanaged<T>(int offset)
-	{
-		var ptr = UnmanagedComponents + offset;
-		return ref Unsafe.AsRef<T?>((void*)ptr);
-	}
-
-	/// <summary>
-	/// Returns a <see cref="DynamicBuffer{T}"/> of an unmanaged component at a given offset
-	/// </summary>
-	/// <typeparam name="T">The unmanaged type</typeparam>
-	/// <param name="offset">The byte offset</param>
-	/// <returns><see cref="DynamicBuffer{T}"/> at <paramref name="offset"/></returns>
-	public readonly unsafe DynamicBuffer<T> GetUnmanagedBuffer<T>(int offset) where T : unmanaged
-	{
-		var ptr = UnmanagedComponents + offset;
-		return new DynamicBuffer<T>((void*)ptr);
-	}
-
-	/// <summary>
-	/// Returns a reference to an managed component at a given offset
-	/// </summary>
-	/// <typeparam name="T">The unmanaged type</typeparam>
-	/// <param name="offset">The component offset</param>
-	/// <param name="index">The array index</param>
-	/// <returns>An managed reference at <paramref name="offset"/></returns>
-	public readonly ref T? GetManaged<T>(int offset, int index = 0)
-	{
-		var array = (T?[])ManagedComponents[offset];
-		return ref array[index];
-	}
-
-	/// <summary>
-	/// Returns a readonly reference to an managed component at a given offset &amp; array index
-	/// </summary>
-	/// <typeparam name="T">The unmanaged type</typeparam>
-	/// <param name="offset">The component offset</param>
-	/// <param name="index">The array index</param>
-	/// <returns>An managed readonly reference at <paramref name="offset"/></returns>
-	public readonly ref readonly T? GetReadOnlyManaged<T>(int offset, int index = 0)
-	{
-		var array = (T?[])ManagedComponents[offset];
-		return ref array[index];
-	}
-
-	/// <summary>
-	/// Adds an entityId at the given index
-	/// </summary>
-	/// <param name="index">The index to set</param>
-	/// <param name="entityId">The entity id to add</param>
-	internal readonly unsafe void AddEntity(int index, Entity entityId)
-	{
-		GetUnmanaged<Entity>(index * sizeof(Entity)) = entityId;
+		GetEntity(index) = entityId;
 	}
 
 	/// <summary>

@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Archetype
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var sets = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) ClearBuffer(in slot, ids.T{0});");
+#>
+	/// <inheritdoc cref="Set{T0}(in EntitySlot, in ComponentIds{T0})"/>
+	internal void Set<<#= generics #>>(in EntitySlot slot, in ComponentIds<<#= generics #>> ids)
+	{
+		<#= Indent(sets, 8) #>
+	}
+<#
+	}
+#>
+}

@@ -1,0 +1,52 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int indexC = 1; indexC < GenericCount - 1; indexC++)
+	{
+		var genericsC = Generics(indexC);
+		var parametersC = GenericInParams(indexC);
+		var argsC = FormatCommaSep(indexC, "in t{0}Component");
+		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
+		{
+			var genericsB = Generics(indexB, indexC);
+			var parametersB = FormatCommaSep(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
+			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
+			var argsB = FormatCommaSep(indexB, "t{0}Components", indexC);
+#>
+	/// <inheritdoc cref="Add{T0}(int, in T0?)"/>
+	public void Add<<#= genericsC #>,<#= genericsB #>>(int entityId,<#= parametersC #>,<#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
+		ComponentMeta.AssertBuffered<<#= genericsB #>>();
+		var ids = ComponentRegistry.GetIds<<#= genericsC #>,<#= genericsB #>>();
+        var addedSignature = Signature.FromIds(in ids);
+		ref var entityReference = ref GetEntity(entityId);
+
+		// check already added
+		var srcArchetype = entityReference.Archetype;
+		if (srcArchetype.Signature.HasAny(in addedSignature))
+            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+
+        var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		dstArchetype.Set(in entityReference.Slot, in ids, <#= argsC #>,<#= argsB #>);
+	}
+<#
+		}
+	}
+#>
+}

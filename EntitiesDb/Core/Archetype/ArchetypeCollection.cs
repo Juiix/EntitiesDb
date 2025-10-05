@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
+/// <summary>
+/// A collection of archetypes
+/// </summary>
 public sealed class ArchetypeCollection
 {
 	private readonly ComponentRegistry _componentRegistry;
@@ -21,7 +24,12 @@ public sealed class ArchetypeCollection
 
 	public Span<Archetype> AsSpan() => CollectionsMarshal.AsSpan(_archetypes);
 
-	public Archetype GetOrCreateArchetype(in Signature signature)
+	/// <summary>
+	/// Gets an existing or Creates a new <see cref="Archetype"/> for the given <see cref="Signature"/>
+	/// </summary>
+	/// <param name="signature">The signature of the <see cref="Archetype"/> to get</param>
+	/// <returns>An <see cref="Archetype"/> for <paramref name="signature"/></returns>
+	internal Archetype GetOrCreateArchetype(in Signature signature)
 	{
 		if (_archetypeMap.TryGetValue(signature, out var archetype))
 			return archetype;

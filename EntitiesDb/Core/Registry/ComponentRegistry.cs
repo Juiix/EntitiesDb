@@ -143,24 +143,33 @@ public sealed partial class ComponentRegistry
 	public Signature GetSignature<T>()
 	{
 		return Signature.SingleBit(IdOf<T>());
-	}
+    }
 
-	/// <summary>
-	/// Gets the component id for a given type
-	/// </summary>
-	/// <typeparam name="T">The target type</typeparam>
-	/// <returns>Component id for <typeparamref name="T"/></returns>
-	public int IdOf<T>()
+    /// <summary>
+    /// Gets component ids for types
+    /// </summary>
+    /// <returns></returns>
+    public ComponentIds<T> GetIds<T>()
+    {
+        return new(GetComponentType<T>().Id);
+    }
+
+    /// <summary>
+    /// Gets the component id for a given type
+    /// </summary>
+    /// <typeparam name="T">The target type</typeparam>
+    /// <returns>Component id for <typeparamref name="T"/></returns>
+    public int IdOf<T>()
 	{
 		return GetComponentType<T>().Id;
 	}
 
-	/// <summary>
-	/// Returns an array factory for a given id
-	/// </summary>
-	/// <param name="id">Id of the target component</param>
-	/// <returns>An array factory for the component of the given id</returns>
-	internal ArrayFactory GetArrayFactory(int id) => _arrayFactories[id];
+    /// <summary>
+    /// Returns an array factory for a given id
+    /// </summary>
+    /// <param name="id">Id of the target component</param>
+    /// <returns>An array factory for the component of the given id</returns>
+    internal ArrayFactory GetArrayFactory(int id) => _arrayFactories[id];
 
 	/// <summary>
 	/// Adds a component type to the registry.

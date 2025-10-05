@@ -5,8 +5,16 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
+/// <summary>
+/// A collection of entities with the same <see cref="Signature"/> split into tight chunks.
+/// </summary>
 public unsafe sealed partial class Archetype
 {
+    /// <summary>
+    /// The component bitset signature
+    /// </summary>
+    public readonly Signature Signature;
+
 	/// <summary>
 	/// Array of factories used to create managed component arrays
 	/// </summary>
@@ -25,15 +33,20 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	private readonly int _unmanagedChunkByteSize;
 
-	/// <summary>
-	/// <see cref="ComponentType.Id"/> to offset lookup table
-	/// </summary>
-	private readonly int[] _idToOffsets;
+    /// <summary>
+    /// <see cref="ComponentType.Id"/> to index lookup table
+    /// </summary>
+    private readonly int[] _idToIndex;
 
-	/// <summary>
-	/// Array used to store chunks
-	/// </summary>
-	private Chunk[] _chunks;
+    /// <summary>
+    /// <see cref="ComponentType.Id"/> to offset lookup table
+    /// </summary>
+    private readonly int[] _idToOffsets;
+
+    /// <summary>
+    /// Array used to store chunks
+    /// </summary>
+    private Chunk[] _chunks;
 
 	/// <summary>
 	/// How many chunks are currently allocated
@@ -55,17 +68,13 @@ public unsafe sealed partial class Archetype
 		_unmanagedChunkByteSize = ArchetypeUtils.CalculateUnmanagedSize(componentTypes.AsSpan(0, unmanagedComponentCount)) * EntitiesPerChunk;
 
 		_chunks = ArrayPool<Chunk>.Shared.Rent(1);
-		_idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, EntitiesPerChunk, unmanagedComponentCount);
+		_idToIndex = ArchetypeUtils.BuildIdIndexLookup(componentTypes);
+        _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, EntitiesPerChunk, unmanagedComponentCount);
 
 		AddChunk();
 	}
 
 	~Archetype() => DoDispose();
-
-	/// <summary>
-	/// The component bitset signature
-	/// </summary>
-	public Signature Signature { get; }
 
 	/// <summary>
 	/// How many entities are stored per chunk
@@ -91,15 +100,6 @@ public unsafe sealed partial class Archetype
 	public int ChunkCount { get; internal set; }
 
 	/// <summary>
-	/// If this <see cref="Archetype"/> contains a given <see cref="ComponentType.Id"/>
-	/// </summary>
-	/// <param name="componentTypeId"></param>
-	/// <returns></returns>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool Has(int componentTypeId) =>
-		Signature.Test(componentTypeId);
-
-	/// <summary>
 	/// Returns a chunk enumerator
 	/// </summary>
 	public ReadOnlyEnumerator<Chunk> GetEnumerator => new(_chunks.AsSpan(0, ChunkCount));
@@ -109,41 +109,82 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	internal ref Chunk CurrentChunk => ref _chunks[ChunkCount - 1];
 
-	internal ref T? Get<T>(int typeId, in EntitySlot slot)
+    /// <summary>
+    /// If this <see cref="Archetype"/> contains a given component
+    /// </summary>
+    /// <param name="ids">Component ids from <see cref="ComponentRegistry.GetIds{T}()"/></param>
+    /// <returns>If this <see cref="Archetype"/> has <typeparamref name="T"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Has<T>(ComponentIds<T> ids) =>
+        Signature.Test(ids.T0);
+
+    /// <summary>
+    /// Clears a target slot and released buffer lists
+    /// </summary>
+    /// <param name="slot">The target slot</param>
+    /// <param name="ids">Component ids</param>
+    internal void Clear<T>(in EntitySlot slot, in ComponentIds<T> ids)
+	{
+		if (ComponentMeta<T>.IsBuffered) ClearBuffer(in slot, ids.T0);
+    }
+
+	/// <summary>
+	/// Clears a buffer component and releases allocated memory
+	/// </summary>
+	/// <remarks>
+	///	You must KNOW <typeparamref name="T"/> is a buffered type before calling this
+	/// </remarks>
+	/// <typeparam name="T">The component type</typeparam>
+	/// <param name="slot">The target slot</param>
+	/// <param name="typeId">Component id for <typeparamref name="T"/></param>
+    internal void ClearBuffer<T>(in EntitySlot slot, int typeId)
+    {
+        ref var chunk = ref _chunks[slot.ChunkIndex];
+        return chunk.ClearBuffer<T>(slot.Index, typeId);
+    }
+
+    internal ref T? Get<T>(in EntitySlot slot, in ComponentIds<T> ids)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return ref chunk.Get<T>(slot.Index, typeId);
+		return ref chunk.Get(slot.Index, in ids);
+    }
+
+    internal ref readonly T? GetReadOnly<T>(in EntitySlot slot, in ComponentIds<T> ids)
+    {
+        ref var chunk = ref _chunks[slot.ChunkIndex];
+        return ref chunk.GetReadOnly(slot.Index, in ids);
+    }
+
+    internal DynamicBuffer<T> GetBuffer<T>(in EntitySlot slot, in ComponentIds<T> ids) where T : unmanaged
+	{
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		return chunk.GetBuffer(slot.Index, in ids);
+    }
+
+    internal ReadOnlyBuffer<T> GetBufferReadOnly<T>(in EntitySlot slot, in ComponentIds<T> ids) where T : unmanaged
+    {
+        ref var chunk = ref _chunks[slot.ChunkIndex];
+        return chunk.GetBufferReadOnly(slot.Index, in ids);
+    }
+
+    internal void Init<T>(in EntitySlot slot, in ComponentIds<T> ids, ReadOnlySpan<T> components) where T : unmanaged
+    {
+        ref var chunk = ref _chunks[slot.ChunkIndex];
+		var buffer = chunk.GetBuffer<T>(slot.Index, ids.T0);
+		buffer.Init(ComponentMeta<T>.InternalCapacity, components);
+    }
+
+    internal void Set<T>(in EntitySlot slot, in ComponentIds<T> ids, in T? component)
+	{
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		chunk.Set(slot.Index, in ids, in component);
 	}
 
-	internal DynamicBuffer<T> GetBuffer<T>(int typeId, in EntitySlot slot) where T : unmanaged
+	internal void Set<T>(in EntitySlot slot, in ComponentIds<T> ids, ReadOnlySpan<T> components) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return chunk.GetBuffer<T>(slot.Index, typeId);
-	}
-
-	internal void Set<T>(int typeId, in EntitySlot slot, in T? value)
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		chunk.Get<T>(slot.Index, typeId) = value;
-	}
-
-	internal void SetBuffer<T>(int typeId, in EntitySlot slot, ReadOnlySpan<T> values) where T : unmanaged
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var buffer = chunk.GetBuffer<T>(slot.Index, typeId);
-		buffer.Clear();
-		buffer.AddRange(values);
-	}
-
-	internal DynamicBuffer<T> InitBuffer<T>(int typeId, in EntitySlot slot, ReadOnlySpan<T> values) where T : unmanaged
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = chunk.IdToOffsets[typeId];
-		ref var header = ref chunk.GetUnmanaged<BufferHeader>(offset + ComponentMeta<T>.Stride * slot.Index);
-		var buffer = new DynamicBuffer<T>(ref header);
-		buffer.Init(ComponentMeta<T>.InternalCapacity, values);
-		return buffer;
-	}
+        chunk.Set(slot.Index, in ids, components);
+    }
 
 	/// <summary>
 	/// Allocates of reuses a new <see cref="Chunk"/>
@@ -169,9 +210,9 @@ public unsafe sealed partial class Archetype
 		if (count >= _allocatedChunks)
 		{
 			_allocatedChunks++;
-			chunk = new Chunk(ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
+			chunk = new Chunk(ComponentRegistry, ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
 		}
-		
+
 		ChunkCount = ++count;
 
 		return ref chunk;
@@ -249,7 +290,7 @@ public unsafe sealed partial class Archetype
 		{
 			return;
 		}
-		
+
 		ChunkCount = Math.Max(ChunkCount - 1, 1);
 	}
 

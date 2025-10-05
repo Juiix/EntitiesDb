@@ -2,6 +2,8 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
 <#@ include file="Generics.ttinclude" #>
+using System;
+
 namespace EntitiesDb;
 
 public partial class EntityDatabase
@@ -10,12 +12,13 @@ public partial class EntityDatabase
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var types = MethodCallMultilineArg(index, "GetComponentId");
-		var parameters = GenericInParams(index);
-		var args = GenericInArgs(index);
+		var parameters = FormatCommaSep(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var args = FormatCommaSep(index, "t{0}Components");
 #>
 	/// <inheritdoc cref="Create{T0}(in T0?)"/>
 	public Entity Create<<#= generics #>>(<#= parameters #>)
+		<#= Indent(constraints, 8) #>
 	{
 		var signature = ComponentRegistry.GetSignature<<#= generics #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);

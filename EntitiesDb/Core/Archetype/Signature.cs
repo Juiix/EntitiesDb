@@ -4,7 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
-public readonly struct Signature : IEquatable<Signature>
+/// <summary>
+/// A bitset representing component types. 256-bit length
+/// </summary>
+public readonly partial struct Signature : IEquatable<Signature>
 {
 	public readonly ulong W0, W1, W2, W3;
 
@@ -51,11 +54,20 @@ public readonly struct Signature : IEquatable<Signature>
 			}
 		}
 		return new Signature(w0, w1, w2, w3);
-	}
+    }
 
-	// --- Queries --------------------------------------------------------------
+    /// <summary>
+    /// Gets the signature of given component ids
+    /// </summary>
+    /// <returns>Signature of component ids</returns>
+    public static Signature FromIds<T>(in ComponentIds<T0> ids)
+    {
+        return SingleBit(ids.T0);
+    }
 
-	public readonly bool IsEmpty => (W0 | W1 | W2 | W3) == 0;
+    // --- Queries --------------------------------------------------------------
+
+    public readonly bool IsEmpty => (W0 | W1 | W2 | W3) == 0;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly bool Test(int id)

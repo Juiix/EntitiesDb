@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index < GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var parameters = GenericParams(index, "int", "", "T");
+		var types = MethodCallMultilineArg(index, "GetComponentId");
+#>
+public readonly record struct ComponentIds<<#= generics #>>(
+	<#= parameters #>
+);
+<#
+	}
+#>

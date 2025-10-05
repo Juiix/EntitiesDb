@@ -1,0 +1,42 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var types = MethodCallMultilineArg(index, "GetComponentId");
+		var parameters = GenericInParams(index);
+		var args = GenericInArgs(index);
+#>
+	/// <inheritdoc cref="Add{T0}(int, in T0?)"/>
+	public void Add<<#= generics #>>(int entityId, <#= parameters #>)
+	{
+		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		var ids = ComponentRegistry.GetIds<<#= generics #>>();
+        var addedSignature = Signature.FromIds(in ids);
+		ref var entityReference = ref GetEntity(entityId);
+
+		// check already added
+		var srcArchetype = entityReference.Archetype;
+		if (srcArchetype.Signature.HasAny(in addedSignature))
+            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+
+        var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		dstArchetype.Set(in entityReference.Slot, in ids, <#= args #>);
+	}
+<#
+	}
+#>
+}

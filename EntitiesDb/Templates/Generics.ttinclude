@@ -10,13 +10,13 @@
     }
 
     // T0, T1, ...
-    string Generics(int amount)
+    string Generics(int amount, int offset = 0)
     {
         var sb = new StringBuilder();
         for (var i = 0; i < amount; i++)
         {
-            if (i > 0) sb.Append(", ");
-            sb.Append($"T{i}");
+            if (i > 0) sb.Append(",");
+            sb.Append($"T{i + offset}");
         }
         return sb.ToString();
     }
@@ -28,6 +28,19 @@
         for (var localIndex = 0; localIndex < amount; localIndex++)
         {
             sb.Append($"ref T{localIndex} t{localIndex}Component,");
+        }
+
+        sb.Length--;
+        return sb;
+    }
+
+    // in T0 t0Component, in T1 t1Component, ...
+    StringBuilder GenericParams(int amount, string type, string name, string prefix = "t")
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.Append($"{type} {prefix}{localIndex}{name},");
         }
 
         sb.Length--;
@@ -123,6 +136,42 @@
         {
             sb.AppendLine($"ref readonly var t{localIndex}{varName} = ref {method}<T{localIndex}>();");
         }
+        return sb;
+    }
+    
+    StringBuilder FormatSep(int amount, string line, string sep, int offset = 0)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendFormat(line, localIndex + offset);
+            sb.Append(sep);
+        }
+        sb.Length -= sep.Length;
+        return sb;
+    }
+    
+    StringBuilder FormatCommaSep(int amount, string line, int offset = 0)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendFormat(line, localIndex + offset);
+            sb.Append(',');
+        }
+        sb.Length--;
+        return sb;
+    }
+    
+    StringBuilder FormatLine(int amount, string line, int offset = 0)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendFormat(line, localIndex + offset);
+            sb.Append(Environment.NewLine);
+        }
+        sb.Length -= Environment.NewLine.Length;
         return sb;
     }
 #>

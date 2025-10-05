@@ -47,10 +47,10 @@ internal unsafe static class ArchetypeUtils
 	/// <summary>
 	/// Builds an id -> offset lookup array, sized to the max id in the component array
 	/// </summary>
-	/// <param name="componentTypes"></param>
-	/// <param name="chunkCapacity"></param>
-	/// <param name="unmanagedCount"></param>
-	/// <returns></returns>
+	/// <param name="componentTypes">The component types</param>
+	/// <param name="chunkCapacity">The chunk entity capacity</param>
+	/// <param name="unmanagedCount">The unmanaged component count</param>
+	/// <returns>An id -> offset lookup array</returns>
 	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int chunkCapacity, int unmanagedCount)
 	{
 		if (componentTypes.Length == 0)
@@ -74,15 +74,42 @@ internal unsafe static class ArchetypeUtils
 		}
 
 		return idToOffsets;
-	}
+    }
 
-	public static int[] BuildChangeVersions(ReadOnlySpan<ComponentType> componentTypes, int[] globalChangeVersions, int unmanagedCount)
+    /// <summary>
+    /// Builds an id -> index lookup array, sized to the max id in the component array
+    /// </summary>
+    /// <param name="componentTypes">The component types</param>
+    /// <returns>An id -> offset lookup array</returns>
+    public static int[] BuildIdIndexLookup(ReadOnlySpan<ComponentType> componentTypes)
+    {
+        if (componentTypes.Length == 0)
+            return [];
+
+        var idToIndices = CreateTightIdArray<int>(componentTypes, unmanagedCount);
+
+		int index = 0;
+        foreach (ref readonly var componentType in componentTypes)
+        {
+            idToIndices[componentType.Id] = index++;
+        }
+
+        return idToIndices;
+    }
+
+    public static int[] BuildChangeVersions(ReadOnlySpan<ComponentType> componentTypes, int[] globalChangeVersions, int unmanagedCount)
 	{
 		var changeVersions = CreateTightIdArray<int>(componentTypes, unmanagedCount);
 		globalChangeVersions.AsSpan(0, changeVersions.Length).CopyTo(changeVersions);
 		return changeVersions;
 	}
 
+	/// <summary>
+	/// Calculates the chunk entity capacity given a span of types and base chunk byte size
+	/// </summary>
+	/// <param name="componentTypes">The component types</param>
+	/// <param name="chunkSize">The desired chunk byte size</param>
+	/// <returns></returns>
 	public static int CalculateChunkCapacity(ReadOnlySpan<ComponentType> componentTypes, int chunkSize)
 	{
 		// construct unmanaged offsets & calculate chunk capacity
@@ -93,9 +120,14 @@ internal unsafe static class ArchetypeUtils
 		}
 
 		var chunkCapacity = chunkSize / entitySize;
-		return chunkCapacity;
+		return Math.Max(1, chunkCapacity);
 	}
 
+	/// <summary>
+	/// Calculates the unmanaged byte size of a span of component types
+	/// </summary>
+	/// <param name="unmanagedComponentTypes"></param>
+	/// <returns></returns>
 	public static int CalculateUnmanagedSize(ReadOnlySpan<ComponentType> unmanagedComponentTypes)
 	{
 		// construct unmanaged offsets & calculate chunk capacity
@@ -107,6 +139,12 @@ internal unsafe static class ArchetypeUtils
 		return entitySize;
 	}
 
+	/// <summary>
+	/// Compiles a array of <see cref="ArrayFactory"/> for each managed component type
+	/// </summary>
+	/// <param name="managedComponentTypes">Managed component types</param>
+	/// <param name="componentRegistry">The component registry</param>
+	/// <returns>An array of <see cref="ArrayFactory"/> for each managed type</returns>
 	public static ArrayFactory[] CompileArrayFactories(ReadOnlySpan<ComponentType> managedComponentTypes, ComponentRegistry componentRegistry)
 	{
 		if (managedComponentTypes.Length == 0)
@@ -121,6 +159,12 @@ internal unsafe static class ArchetypeUtils
 		return factories;
 	}
 
+	/// <summary>
+	/// Creates component arrays of length <paramref name="entityCount"/> from a given array of factories
+	/// </summary>
+	/// <param name="factories">Array of factories</param>
+	/// <param name="entityCount">The amount of components to create</param>
+	/// <returns>An array of component arrays</returns>
 	public static Array[] CreateManagedComponentArrays(ArrayFactory[] factories, int entityCount)
 	{
 		var arrays = new Array[factories.Length];

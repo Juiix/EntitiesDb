@@ -2,6 +2,8 @@
 <#@ output extension=".cs" #>
 <#@ import namespace="System.Text" #>
 <#@ include file="Generics.ttinclude" #>
+using System;
+
 namespace EntitiesDb;
 
 public partial struct Chunk
@@ -10,11 +12,13 @@ public partial struct Chunk
 	for (int index = 2; index < GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var parameters = GenericInParams(index);
-		var sets = FormatLine(index, "GetById<T{0}>(index, ids.T{0}) = t{0}Component;");
+		var parameters = FormatCommaSep(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var sets = FormatLine(index, "GetBufferById<T{0}>(index, ids.T{0}).Set(t{0}Components);");
 #>
 	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
 	public void Set<<#= generics #>>(int index,in ComponentIds<<#= generics #>> ids,<#= parameters #>)
+		<#= Indent(constraints, 8) #>
 	{
 		<#= Indent(sets, 8) #>
 	}

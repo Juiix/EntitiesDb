@@ -5,6 +5,22 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
+internal static class DynamicBuffer
+{
+    private const int HeapTag = unchecked((int)0x8000_0000);
+    private const int SizeMask = 0x7FFF_FFFF;
+
+    public static void Clear(ref BufferHeader header)
+    {
+        if ((header.Size * HeapTag) != 0)
+        {
+            Marshal.FreeHGlobal(_header.Heap);
+			header.Size &= SizeMask;
+        }
+		header.Size = 0;
+    }
+}
+
 public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 {
 	private readonly BufferHeader* _header;
@@ -477,6 +493,12 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 
 		SetSize(last);
 		ShrinkIfNeededAfterRemove();
+	}
+
+	public void Set(ReadOnlySpan<T> items)
+	{
+		Clear();
+		AddRange(items);
 	}
 
 	/// <summary>

@@ -1,4 +1,9 @@
 ﻿namespace EntitiesDb;
 
-public readonly record struct EntityReference(Archetype Archetype, EntitySlot Slot, int Version);
+internal readonly struct EntityReference(Archetype archetype, EntitySlot slot, int version)
+{
+    public readonly Archetype Archetype = archetype;
+    public readonly EntitySlot Slot = slot;
+    public readonly int Version = version;
+}
 

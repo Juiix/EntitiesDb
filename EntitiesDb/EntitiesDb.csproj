@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <Authors>Tucker Ulrich</Authors>
     <Company>Unnamed Studios, LLC</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -88,6 +88,94 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>QueryBuilder.WithAll.cs</LastGenOutput>
     </None>
+    <None Update="Templates\ComponentId.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentId.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentRegistry.GetIds.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentRegistry.GetIds.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentIds.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentIds.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.SetBuffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.SetBuffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.Set.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.Set.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.Set.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.Set.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Create.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Create.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Create.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Create.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentRegistry.AssertBuffered.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentRegistry.AssertBuffered.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentRegistry.AssertNotBuffered.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentRegistry.AssertNotBuffered.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentMeta.AssertBuffered.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentMeta.AssertBuffered.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentMeta.AssertNotBuffered.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentMeta.AssertNotBuffered.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.Clear.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Clear.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.ThrowComponentNotFound.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.ThrowComponentNotFound.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.Has.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Has.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.ThrowComponentAlreadyAdded.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.ThrowComponentAlreadyAdded.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.GetComponentNotFound.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.GetComponentNotFound.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.GetComponentAlreadyAdded.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.GetComponentAlreadyAdded.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Signature.FromIds.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Signature.FromIds.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Add.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Add.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Add.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Add.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Add.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Add.Mixed.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -144,6 +232,69 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>QueryBuilder.WithOnly.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentId.cs">
+      <DependentUpon>ComponentId.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentRegistry.GetIds.cs">
+      <DependentUpon>ComponentRegistry.GetIds.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentIds.cs">
+      <DependentUpon>ComponentIds.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.SetBuffer.cs">
+      <DependentUpon>Chunk.Set.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.Set.Mixed.cs">
+      <DependentUpon>Chunk.Set.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Create.Buffer.cs">
+      <DependentUpon>EntityDatabase.Create.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Create.Mixed.cs">
+      <DependentUpon>EntityDatabase.Create.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentRegistry.AssertBuffered.cs">
+      <DependentUpon>ComponentRegistry.AssertBuffered.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentRegistry.AssertNotBuffered.cs">
+      <DependentUpon>ComponentRegistry.AssertNotBuffered.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentMeta.AssertBuffered.cs">
+      <DependentUpon>ComponentMeta.AssertBuffered.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentMeta.AssertNotBuffered.cs">
+      <DependentUpon>ComponentMeta.AssertNotBuffered.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.Clear.cs">
+      <DependentUpon>Archetype.Clear.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.ThrowComponentNotFound.cs">
+      <DependentUpon>Archetype.ThrowComponentNotFound.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.Has.cs">
+      <DependentUpon>Archetype.Has.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.ThrowComponentAlreadyAdded.cs">
+      <DependentUpon>Archetype.ThrowComponentAlreadyAdded.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.GetComponentNotFound.cs">
+      <DependentUpon>Archetype.GetComponentNotFound.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.GetComponentAlreadyAdded.cs">
+      <DependentUpon>Archetype.GetComponentAlreadyAdded.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Signature.FromIds.cs">
+      <DependentUpon>Signature.FromIds.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Add.cs">
+      <DependentUpon>EntityDatabase.Add.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Add.Buffer.cs">
+      <DependentUpon>EntityDatabase.Add.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Add.Mixed.cs">
+      <DependentUpon>EntityDatabase.Add.Mixed.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

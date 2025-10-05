@@ -1,0 +1,35 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial struct Chunk
+{
+<#
+	for (int indexC = 1; indexC < GenericCount - 1; indexC++)
+	{
+		var genericsC = Generics(indexC);
+		var parametersC = GenericInParams(indexC);
+		var setsC = FormatLine(indexC, "GetById<T{0}>(index, ids.T{0}) = t{0}Component;");
+		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
+		{
+			var genericsB = Generics(indexB, indexC);
+			var parametersB = FormatCommaSep(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
+			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
+			var setsB = FormatLine(indexB, "GetBufferById<T{0}>(index, ids.T{0}).Set(t{0}Components);", indexC);
+#>
+	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
+	public void Set<<#= genericsC #>,<#= genericsB #>>(int index,in ComponentIds<<#= genericsC #>,<#= genericsB #>> ids,<#= parametersC #>,<#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		<#= Indent(setsC, 8) #>
+		<#= Indent(setsB, 8) #>
+	}
+<#
+		}
+	}
+#>
+}
