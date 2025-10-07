@@ -12,11 +12,12 @@ public partial class EntityDatabase
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var parameters = FormatCommaSep(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var args = FormatCommaSep(index, "t{0}Components");
+		var args = FormatComma(index, "t{0}Components");
 #>
 	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	[StructuralChange]
 	public void Add<<#= generics #>>(int entityId, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
@@ -37,7 +38,7 @@ public partial class EntityDatabase
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		dstArchetype.Set(in entityReference.Slot, in ids, <#= args #>);
+		dstArchetype.Init(in entityReference.Slot, in ids, <#= args #>);
 	}
 <#
 	}

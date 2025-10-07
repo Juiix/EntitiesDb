@@ -10,11 +10,11 @@ public partial class EntityDatabase
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var types = MethodCallMultilineArg(index, "GetComponentId");
-		var parameters = GenericInParams(index);
-		var args = GenericInArgs(index);
+		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
+		var args = FormatComma(index, "in t{0}Component");
 #>
 	/// <inheritdoc cref="Add{T0}(int, in T0?)"/>
+	[StructuralChange]
 	public void Add<<#= generics #>>(int entityId, <#= parameters #>)
 	{
 		ComponentMeta.AssertNotBuffered<<#= generics #>>();

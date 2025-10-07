@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+#>
+	/// <inheritdoc cref="Has{T0}(int)"/>
+	public bool Has<<#= generics #>>(int entityId)
+	{
+		ref var reference = ref GetEntity(entityId);
+		var ids = ComponentRegistry.GetIds<<#= generics #>>();
+		return reference.Archetype.Has(in ids);
+	}
+<#
+	}
+#>
+}

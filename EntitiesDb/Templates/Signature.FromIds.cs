@@ -1,9 +1,10 @@
+﻿
 namespace EntitiesDb;
 
 public readonly partial struct Signature
 {
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1>(in ComponentIds<T0,T1> ids)
+	public static Signature FromIds<T0, T1>(in ComponentIds<T0, T1> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -11,7 +12,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2>(in ComponentIds<T0,T1,T2> ids)
+	public static Signature FromIds<T0, T1, T2>(in ComponentIds<T0, T1, T2> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -20,7 +21,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3>(in ComponentIds<T0,T1,T2,T3> ids)
+	public static Signature FromIds<T0, T1, T2, T3>(in ComponentIds<T0, T1, T2, T3> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -30,7 +31,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4>(in ComponentIds<T0,T1,T2,T3,T4> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4>(in ComponentIds<T0, T1, T2, T3, T4> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -41,7 +42,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5>(in ComponentIds<T0,T1,T2,T3,T4,T5> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5>(in ComponentIds<T0, T1, T2, T3, T4, T5> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -53,7 +54,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -66,7 +67,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -80,7 +81,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -95,7 +96,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -111,7 +112,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -128,7 +129,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -146,7 +147,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -165,7 +166,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -185,7 +186,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -206,7 +207,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -228,7 +229,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -251,7 +252,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -275,7 +276,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -300,7 +301,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -326,7 +327,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -353,7 +354,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -381,7 +382,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> ids)
 	{
 		return MultipleBits(
 			ids.T0,
@@ -410,7 +411,7 @@ public readonly partial struct Signature
 		);
 	}
 	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23>(in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23> ids)
+	public static Signature FromIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> ids)
 	{
 		return MultipleBits(
 			ids.T0,

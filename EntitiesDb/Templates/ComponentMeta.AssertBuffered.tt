@@ -13,7 +13,7 @@ public static partial class ComponentMeta
 		var asserts = FormatLine(index, "if (!ComponentMeta<T{0}>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T{0}));");
 #>
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<<#= generics #>>()
+	internal static void AssertBuffered<<#= generics #>>()
 	{
 		<#= Indent(asserts, 8) #>
 	}

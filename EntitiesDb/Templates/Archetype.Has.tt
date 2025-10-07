@@ -12,7 +12,7 @@ public partial class Archetype
 		var generics = Generics(index);
 		var sets = FormatSep(index, "Signature.Test(ids.T{0})", " &&" + Environment.NewLine);
 #>
-	/// <inheritdoc cref="Has{T}(ComponentIds{T})"/>
+	/// <inheritdoc cref="Has{T0}(in ComponentIds{T0})"/>
 	public bool Has<<#= generics #>>(in ComponentIds<<#= generics #>> ids) =>
 		<#= Indent(sets, 8) #>
 		;

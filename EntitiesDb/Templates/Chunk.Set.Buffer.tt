@@ -12,12 +12,12 @@ public partial struct Chunk
 	for (int index = 2; index < GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var parameters = FormatCommaSep(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var sets = FormatLine(index, "GetBufferById<T{0}>(index, ids.T{0}).Set(t{0}Components);");
+		var sets = FormatLine(index, "GetBuffer<T{0}>(index, ids.T{0}).Set(t{0}Components);");
 #>
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<<#= generics #>>(int index,in ComponentIds<<#= generics #>> ids,<#= parameters #>)
+	/// <inheritdoc cref="Set{T0}(int, int, ReadOnlySpan{T0})"/>
+	public readonly void Set<<#= generics #>>(int index, in ComponentIds<<#= generics #>> ids, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		<#= Indent(sets, 8) #>

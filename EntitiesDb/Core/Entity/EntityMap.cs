@@ -46,10 +46,7 @@ internal sealed class EntityMap(int maxEntities)
 	public void Move(int entityId, in EntitySlot slot)
 	{
 		ref var entityReference = ref GetReference(entityId);
-		entityReference = entityReference with
-		{
-			Slot = slot
-		};
+		entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
 	}
 
 	public void Remove(int entityId)

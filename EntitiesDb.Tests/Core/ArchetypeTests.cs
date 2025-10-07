@@ -66,13 +66,13 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunkCount);
 
 			// Signature / HasComponent
-			Assert.True(arch.Has(ctInt.Id));
-			Assert.True(arch.Has(ctFloat.Id));
-			Assert.True(arch.Has(ctName.Id));
+			Assert.True(arch.Has(new ComponentIds<int>(ctInt.Id)));
+			Assert.True(arch.Has(new ComponentIds<float>(ctFloat.Id)));
+			Assert.True(arch.Has(new ComponentIds<ManagedName>(ctName.Id)));
 
 			// A type not in the archetype
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
-			Assert.False(arch.Has(ctGuid.Id));
+			Assert.False(arch.Has(new ComponentIds<Guid>(ctGuid.Id)));
 		}
 		finally
 		{
@@ -94,7 +94,7 @@ public sealed class ArchetypeTests
 			// Fill the first chunk
 			for (int i = 0; i < cap; i++)
 			{
-				var slot = arch.AddEntity(new Entity(i, 0));
+				var slot = arch.AddEntity(new Entity(i, 0), out _);
 				Assert.Equal(0, slot.ChunkIndex);
 				Assert.Equal(i, slot.Index);
 				Assert.Equal(i, arch.GetEntity(slot).Id);
@@ -104,7 +104,7 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunkCount);
 
 			// Adding one more should create a second chunk at index 0
-			var extra = arch.AddEntity(new Entity(999, 0));
+			var extra = arch.AddEntity(new Entity(999, 0), out _);
 			Assert.Equal(cap + 1, arch.EntityCount);
 			Assert.Equal(2, arch.ChunkCount);
 			Assert.Equal(1, extra.ChunkIndex);
@@ -128,8 +128,8 @@ public sealed class ArchetypeTests
 			int cap = arch.EntitiesPerChunk;
 
 			// Ensure 2 chunks exist (cap + 1 entities)
-			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity(i, 0));
-			var last = arch.AddEntity(new Entity(777, 0)); // second chunk, index 0
+			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity(i, 0), out _);
+			var last = arch.AddEntity(new Entity(777, 0), out _); // second chunk, index 0
 
 			Assert.Equal(2, arch.ChunkCount);
 
@@ -158,36 +158,26 @@ public sealed class ArchetypeTests
 		try
 		{
 			// Two entities in the same chunk
-			var src = arch.AddEntity(new Entity(1, 0));
-			var dst = arch.AddEntity(new Entity(2, 0));
-
-			// Access offsets via current chunk (internals)
-			ref var chunk = ref arch.CurrentChunk;
-			var offsets = chunk.IdToOffsets;
+			var src = arch.AddEntity(new Entity(1, 0), out var srcChunk);
+			var dst = arch.AddEntity(new Entity(2, 0), out var dstChunk);
 
 			// Seed source component data
-			int intOff = offsets[ctInt.Id] + ctInt.Stride * src.Index;
-			int floatOff = offsets[ctFloat.Id] + ctFloat.Stride * src.Index;
-			int nameIdx = offsets[ctName.Id];
-
-			chunk.GetUnmanaged<int>(intOff) = 1234;
-			chunk.GetUnmanaged<float>(floatOff) = -9.5f;
-			chunk.GetManaged<ManagedName>(nameIdx, src.Index) = new ManagedName("Alpha");
+			srcChunk.Get<int>(src.Index, ctInt.Id) = 1234;
+			srcChunk.Get<float>(src.Index, ctFloat.Id) = -9.5f;
+			srcChunk.Get<ManagedName>(src.Index, ctName.Id) = new ManagedName("Alpha");
 
 			// Different data in destination to ensure it changes
-			int intOffDst = offsets[ctInt.Id] + ctInt.Stride * dst.Index;
-			int floatOffDst = offsets[ctFloat.Id] + ctFloat.Stride * dst.Index;
-			chunk.GetUnmanaged<int>(intOffDst) = 0;
-			chunk.GetUnmanaged<float>(floatOffDst) = 0f;
-			chunk.GetManaged<ManagedName>(nameIdx, dst.Index) = new ManagedName("z");
+			dstChunk.Get<int>(dst.Index, ctInt.Id) = 0;
+			dstChunk.Get<float>(dst.Index, ctFloat.Id) = 0f;
+			dstChunk.Get<ManagedName>(dst.Index, ctName.Id) = new ManagedName("z");
 
 			// Act
 			arch.CloneComponents(src, dst);
 
 			// Assert: values copied
-			Assert.Equal(1234, chunk.GetUnmanaged<int>(intOffDst));
-			Assert.Equal(-9.5f, chunk.GetUnmanaged<float>(floatOffDst));
-			Assert.Equal("Alpha", chunk.GetManaged<ManagedName>(nameIdx, dst.Index).Name);
+			Assert.Equal(1234,		dstChunk.Get<int>(dst.Index, ctInt.Id));
+			Assert.Equal(-9.5f,		dstChunk.Get<float>(dst.Index, ctFloat.Id));
+			Assert.Equal("Alpha",	dstChunk.Get<ManagedName>(dst.Index, ctName.Id).Name);
 		}
 		finally
 		{
@@ -215,35 +205,24 @@ public sealed class ArchetypeTests
 		try
 		{
 			// Make one entity in each
-			var s = srcArch.AddEntity(new Entity(10, 0));
-			var d = dstArch.AddEntity(new Entity(20, 0));
+			var s = srcArch.AddEntity(new Entity(10, 0), out var sChunk);
+			var d = dstArch.AddEntity(new Entity(20, 0), out var dChunk);
 
 			// Seed source values
-			ref var sChunk = ref srcArch.GetChunk(s.ChunkIndex);
-			var sOffsets = sChunk.IdToOffsets;
-
-			int sIntOff = sOffsets[ctInt.Id] + ctInt.Stride * s.Index;
-			int sFloatOff = sOffsets[ctFloat.Id] + ctFloat.Stride * s.Index;
-			int sNameIdx = sOffsets[ctName.Id];
-
-			sChunk.GetUnmanaged<int>(sIntOff) = 7;
-			sChunk.GetUnmanaged<float>(sFloatOff) = 99.25f;
-			sChunk.GetManaged<ManagedName>(sNameIdx, s.Index) = new ManagedName("Carol");
+			sChunk.Get<int>(s.Index, ctInt.Id) = 7;
+			sChunk.Get<float>(s.Index, ctFloat.Id) = 99.25f;
+			sChunk.Get<ManagedName>(s.Index, ctName.Id) = new ManagedName("Carol");
 
 			// Seed destination with sentinels
-			ref var dChunk = ref dstArch.GetChunk(d.ChunkIndex);
-			var dOffsets = dChunk.IdToOffsets;
-			int dIntOff = dOffsets[dInt.Id] + dInt.Stride * d.Index;
-			int dNameIdx = dOffsets[dName.Id];
-			dChunk.GetUnmanaged<int>(dIntOff) = -1;
-			dChunk.GetManaged<ManagedName>(dNameIdx, d.Index) = new ManagedName("unset");
+			dChunk.Get<int>(s.Index, ctInt.Id) = -1;
+			dChunk.Get<ManagedName>(s.Index, ctName.Id) = new ManagedName("unset");
 
 			// Act: copy subset (int + name)
 			srcArch.CopyComponents(s, dstArch, d);
 
 			// Assert: int and name copied; float intentionally absent in dst archetype
-			Assert.Equal(7, dChunk.GetUnmanaged<int>(dIntOff));
-			Assert.Equal("Carol", dChunk.GetManaged<ManagedName>(dNameIdx, d.Index).Name);
+			Assert.Equal(7, dChunk.Get<int>(d.Index, ctInt.Id));
+			Assert.Equal("Carol", dChunk.Get<ManagedName>(d.Index, ctName.Id).Name);
 		}
 		finally
 		{
@@ -265,7 +244,7 @@ public sealed class ArchetypeTests
 			// Force a new chunk
 			int cap = arch.EntitiesPerChunk;
 			for (int i = 0; i < cap + 1; i++)
-				arch.AddEntity(new Entity(i, 0));
+				arch.AddEntity(new Entity(i, 0), out _);
 
 			var lastPtr = arch.CurrentChunk.UnmanagedComponents;
 

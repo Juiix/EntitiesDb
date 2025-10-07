@@ -10,11 +10,11 @@ public partial class EntityDatabase
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var types = MethodCallMultilineArg(index, "GetComponentId");
-		var parameters = GenericInParams(index);
-		var args = GenericInArgs(index);
+		var parameters = FormatComma(index, "in T{0}? t{0}Component");
+		var args = FormatComma(index, "in t{0}Component");
 #>
 	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	[StructuralChange]
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 	{
 		var signature = ComponentRegistry.GetSignature<<#= generics #>>();

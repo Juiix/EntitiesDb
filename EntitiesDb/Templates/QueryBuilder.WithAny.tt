@@ -10,7 +10,6 @@ public partial class QueryBuilder
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var types = MethodCallMultilineArg(index, "GetComponentId");
 #>
 	/// <inheritdoc cref="WithAny{T}()"/>
 	public QueryBuilder WithAny<<#= generics #>>()

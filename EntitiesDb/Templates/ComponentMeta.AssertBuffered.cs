@@ -1,22 +1,23 @@
+﻿
 namespace EntitiesDb;
 
 public static partial class ComponentMeta
 {
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1>()
+	internal static void AssertBuffered<T0, T1>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2>()
+	internal static void AssertBuffered<T0, T1, T2>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
         if (!ComponentMeta<T2>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T2));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3>()
+	internal static void AssertBuffered<T0, T1, T2, T3>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -24,7 +25,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T3>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T3));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -33,7 +34,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T4>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T4));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -43,7 +44,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T5>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T5));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -54,7 +55,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T6>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T6));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -66,7 +67,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T7>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T7));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -79,7 +80,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T8>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T8));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -93,7 +94,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T9>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T9));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -108,7 +109,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T10>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T10));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -124,7 +125,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T11>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T11));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -141,7 +142,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T12>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T12));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -159,7 +160,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T13>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T13));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -178,7 +179,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T14>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T14));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -198,7 +199,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T15>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T15));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -219,7 +220,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T16>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T16));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -241,7 +242,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T17>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T17));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -264,7 +265,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T18>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T18));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -288,7 +289,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T19>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T19));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -313,7 +314,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T20>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T20));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -339,7 +340,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T21>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T21));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));
@@ -366,7 +367,7 @@ public static partial class ComponentMeta
         if (!ComponentMeta<T22>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T22));
 	}
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	public static void AssertBuffered<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23>()
+	internal static void AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>()
 	{
 		if (!ComponentMeta<T0>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T0));
         if (!ComponentMeta<T1>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T1));

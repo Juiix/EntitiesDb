@@ -86,7 +86,8 @@ public sealed class EntityDatabaseTests
 
 		// Also add a small buffered component (stays inline: <= internalCapacity)
 		var dmgInit = new[] { new Damage(1), new Damage(2), new Damage(3) };
-		var buf = db.AddBuffer<Damage>(src.Id, dmgInit);
+		db.Add<Damage>(src.Id, dmgInit);
+		var buf = db.GetBuffer<Damage>(src.Id);
 		Assert.Equal(3, buf.Length);
 
 		var clone = db.CloneEntity(src.Id);
@@ -140,7 +141,8 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		ref var pos = ref db.Add<Position>(e.Id, new Position { X = 3, Y = 4 });
+		db.Add<Position>(e.Id, new Position { X = 3, Y = 4 });
+		ref var pos = ref db.Get<Position>(e.Id);
 		Assert.True(db.Has<Position>(e.Id));
 		ref var same = ref db.Get<Position>(e.Id);
 		Assert.True(Unsafe.AreSame(ref pos, ref same));
@@ -155,7 +157,8 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		ref var tag = ref db.Add<NameTag>(e.Id, new NameTag("alpha"));
+		db.Add<NameTag>(e.Id, new NameTag("alpha"));
+		ref var tag = ref db.Get<NameTag>(e.Id);
 		Assert.True(db.Has<NameTag>(e.Id));
 
 		ref var tag2 = ref db.Get<NameTag>(e.Id);
@@ -205,7 +208,8 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		var initial = new[] { new Damage(5), new Damage(6) };
-		var buf = db.AddBuffer<Damage>(e.Id, initial);
+		db.Add<Damage>(e.Id, initial);
+		var buf = db.GetBuffer<Damage>(e.Id);
 
 		Assert.Equal(2, buf.Length);
 		Assert.Equal(5, buf[0].Amount);
@@ -218,7 +222,7 @@ public sealed class EntityDatabaseTests
 		Assert.Equal(9, view[2].Amount);
 
 		// Removing buffer should drop the component
-		db.RemoveBuffer<Damage>(e.Id);
+		db.Remove<Damage>(e.Id);
 		Assert.Throws<ComponentException>(() => db.GetBuffer<Damage>(e.Id));
 		Assert.False(db.Has<Damage>(e.Id)); // presence-bit cleared in archetype
 	}
@@ -245,7 +249,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		Assert.Throws<ComponentException>(() => db.AddBuffer<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
+		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
 	}
 
 	[Fact]
@@ -253,7 +257,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		var ex = Assert.Throws<ComponentException>(() => db.RemoveBuffer<Damage>(e.Id));
+		var ex = Assert.Throws<ComponentException>(() => db.Remove<Damage>(e.Id));
 		Assert.Contains(nameof(Damage), ex.Message);
 	}
 
@@ -281,7 +285,7 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Buffer APIs must reject zero-size
-		Assert.Throws<ComponentException>(() => db.AddBuffer<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
+		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
 
 		// Accessing component data for a tag is not meaningful in many ECS.
 		// Your implementation throws ComponentException on missing component;
@@ -351,11 +355,11 @@ public sealed class EntityDatabaseTests
 
 		// initial small buffer
 		var initial = new[] { new Damage(1), new Damage(2), new Damage(3) };
-		db.AddBuffer<Damage>(e.Id, initial);
+		db.Add<Damage>(e.Id, initial);
 
 		// overwrite with fewer values
 		var newVals = new[] { new Damage(7), new Damage(8) };
-		db.SetBuffer<Damage>(e.Id, newVals);
+		db.Set<Damage>(e.Id, newVals);
 
 		var buf = db.GetBuffer<Damage>(e.Id);
 		Assert.Equal(2, buf.Length);
@@ -370,13 +374,13 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// internal capacity for LargeBuf is 2 -> start small
-		db.AddBuffer<LargeBuf>(e.Id, new[] { new LargeBuf(1), new LargeBuf(2) });
+		db.Add<LargeBuf>(e.Id, new[] { new LargeBuf(1), new LargeBuf(2) });
 
 		// overwrite with many items (forces promotion/resize)
 		var big = new LargeBuf[10];
 		for (int i = 0; i < big.Length; i++) big[i] = new LargeBuf(i * 10);
 
-		db.SetBuffer<LargeBuf>(e.Id, big);
+		db.Set<LargeBuf>(e.Id, big);
 
 		var buf = db.GetBuffer<LargeBuf>(e.Id);
 		Assert.Equal(10, buf.Length);
@@ -390,8 +394,8 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.AddBuffer<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
-		db.SetBuffer<Damage>(e.Id, ReadOnlySpan<Damage>.Empty);
+		db.Add<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
+		db.Set<Damage>(e.Id, ReadOnlySpan<Damage>.Empty);
 
 		var buf = db.GetBuffer<Damage>(e.Id);
 		Assert.Equal(0, buf.Length);
@@ -404,7 +408,7 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Damage buffer *not* attached yet
-		var ex = Assert.Throws<ComponentException>(() => db.SetBuffer<Damage>(e.Id, new[] { new Damage(1) }));
+		var ex = Assert.Throws<ComponentException>(() => db.Set<Damage>(e.Id, new[] { new Damage(1) }));
 		Assert.Contains(nameof(Damage), ex.Message);
 	}
 
@@ -417,7 +421,7 @@ public sealed class EntityDatabaseTests
 		// Attach a normal component so the entity exists; still SetBuffer should throw since Position isn't buffered
 		db.Add<Position>(e.Id, new Position { X = 0, Y = 0 });
 
-		var ex = Assert.Throws<ComponentException>(() => db.SetBuffer<Position>(e.Id, ReadOnlySpan<Position>.Empty));
+		var ex = Assert.Throws<ComponentException>(() => db.Set<Position>(e.Id, ReadOnlySpan<Position>.Empty));
 		Assert.Contains("buffer", ex.Message, StringComparison.OrdinalIgnoreCase);
 	}
 
@@ -425,7 +429,7 @@ public sealed class EntityDatabaseTests
 	public void SetBuffer_UnknownEntity_Throws()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.SetBuffer<Damage>(999, new[] { new Damage(1) }));
+		Assert.Throws<EntityException>(() => db.Set<Damage>(999, new[] { new Damage(1) }));
 	}
 
 	// -------------------- Guardrails around SetBuffer vs. GetBuffer --------------------
@@ -436,9 +440,9 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.AddBuffer<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
+		db.Add<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
 		// replace with just one value
-		db.SetBuffer<Damage>(e.Id, new[] { new Damage(99) });
+		db.Set<Damage>(e.Id, new[] { new Damage(99) });
 
 		var buf = db.GetBuffer<Damage>(e.Id);
 		Assert.Equal(1, buf.Length);

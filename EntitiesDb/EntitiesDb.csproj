@@ -56,6 +56,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\Archetype.Init.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Init.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.Set.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Set.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.Set.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Set.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Archetype.Set.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.Set.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.Init.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.Init.cs</LastGenOutput>
+    </None>
     <None Update="Templates\Chunk.Set.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Set.cs</LastGenOutput>
@@ -67,6 +87,26 @@
     <None Update="Templates\EntityDatabase.Create.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Create.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Has.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Has.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Remove.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Remove.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Set.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Set.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Set.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Set.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Set.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Set.cs</LastGenOutput>
     </None>
     <None Update="Templates\Generics.ttinclude">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -183,6 +223,36 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Templates\Archetype.Init.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Archetype.Init.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.Set.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Archetype.Set.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.Set.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Archetype.Set.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Archetype.Set.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Archetype.Set.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.Init.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.Init.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.Set.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.Set.Buffer.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\Chunk.Set.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -197,6 +267,31 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityDatabase.Create.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Has.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Has.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Remove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Remove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Set.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Set.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Set.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Set.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Set.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Set.Mixed.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Generics.cs">
       <DesignTime>True</DesignTime>
@@ -238,21 +333,31 @@
     </Compile>
     <Compile Update="Templates\ComponentRegistry.GetIds.cs">
       <DependentUpon>ComponentRegistry.GetIds.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\ComponentIds.cs">
       <DependentUpon>ComponentIds.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Chunk.SetBuffer.cs">
       <DependentUpon>Chunk.Set.Buffer.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Chunk.Set.Mixed.cs">
       <DependentUpon>Chunk.Set.Mixed.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Create.Buffer.cs">
       <DependentUpon>EntityDatabase.Create.Buffer.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Create.Mixed.cs">
       <DependentUpon>EntityDatabase.Create.Mixed.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\ComponentRegistry.AssertBuffered.cs">
       <DependentUpon>ComponentRegistry.AssertBuffered.tt</DependentUpon>
@@ -262,39 +367,59 @@
     </Compile>
     <Compile Update="Templates\ComponentMeta.AssertBuffered.cs">
       <DependentUpon>ComponentMeta.AssertBuffered.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\ComponentMeta.AssertNotBuffered.cs">
       <DependentUpon>ComponentMeta.AssertNotBuffered.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Archetype.Clear.cs">
       <DependentUpon>Archetype.Clear.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Archetype.ThrowComponentNotFound.cs">
       <DependentUpon>Archetype.ThrowComponentNotFound.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Archetype.Has.cs">
       <DependentUpon>Archetype.Has.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Archetype.ThrowComponentAlreadyAdded.cs">
       <DependentUpon>Archetype.ThrowComponentAlreadyAdded.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Archetype.GetComponentNotFound.cs">
       <DependentUpon>Archetype.GetComponentNotFound.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Archetype.GetComponentAlreadyAdded.cs">
       <DependentUpon>Archetype.GetComponentAlreadyAdded.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Signature.FromIds.cs">
       <DependentUpon>Signature.FromIds.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Add.cs">
       <DependentUpon>EntityDatabase.Add.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Add.Buffer.cs">
       <DependentUpon>EntityDatabase.Add.Buffer.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Add.Mixed.cs">
       <DependentUpon>EntityDatabase.Add.Mixed.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
 </Project>

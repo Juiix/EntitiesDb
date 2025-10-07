@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
@@ -8,20 +9,20 @@ public static partial class ComponentMeta
     /// Asserts that components are buffered
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static void AssertBuffered<T>()
+    internal static void AssertBuffered<T0>()
     {
-        if (!ComponentMeta<T>.IsBuffered)
-            throw ThrowHelper.ComponentNotBuffered(typeof(T));
+        if (!ComponentMeta<T0>.IsBuffered)
+            throw ThrowHelper.ComponentNotBuffered(typeof(T0));
     }
 
     /// <summary>
     /// Asserts that components are not buffered
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static void AssertNotBuffered<T>()
+    internal static void AssertNotBuffered<T0>()
     {
-        if (ComponentMeta<T>.IsBuffered)
-            throw ThrowHelper.ComponentBuffered(typeof(T));
+        if (ComponentMeta<T0>.IsBuffered)
+            throw ThrowHelper.ComponentBuffered(typeof(T0));
     }
 }
 

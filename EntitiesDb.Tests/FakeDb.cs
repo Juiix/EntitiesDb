@@ -44,13 +44,13 @@ internal static class FakeDb
 		var db = new EntityDatabase(4096, 1000);
 
 		// --- Helpers ---------------------------------------------------------
-		Entity New() => db.CreateEntity();
+		Entity New() => db.Create();
 
-		void Add<T>(in Entity e, T c) where T : struct => db.AddComponent<T>(e.Id, c);
-		void Tag<T>(in Entity e) where T : struct => db.AddComponent<T>(e.Id);
+		void Add<T>(in Entity e, T c) where T : struct => db.Add<T>(e.Id, c);
+		void Tag<T>(in Entity e) where T : struct => db.Add<T>(e.Id);
 
 		void Buf<T>(in Entity e, params T[] items) where T : unmanaged
-			=> db.AddBuffer<T>(e.Id, items);
+			=> db.Add<T>(e.Id, items);
 
 		// --- Archetype builders ---------------------------------------------
 

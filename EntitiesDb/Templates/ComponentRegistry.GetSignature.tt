@@ -10,13 +10,13 @@ public partial class ComponentRegistry
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var types = MethodCallMultilineArg(index, "IdOf");
+		var ids = FormatSep(index, "IdOf<T{0}>()", "," + Environment.NewLine);
 #>
-	/// <inheritdoc cref="GetSignature{T}()"/>
+	/// <inheritdoc cref="GetSignature{T0}()"/>
 	public Signature GetSignature<<#= generics #>>()
 	{
 		return Signature.MultipleBits(
-			<#= Indent(types, 12) #>
+			<#= Indent(ids, 12) #>
 		);
 	}
 <#

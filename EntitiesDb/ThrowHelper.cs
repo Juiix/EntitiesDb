@@ -15,8 +15,8 @@ internal static class ThrowHelper
 
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ComponentException ComponentAlreadyAdded(Type componentType) =>
-		new(componentType, $"Component '{componentType}' has already been added to the entity, use Set instead.");
+	public static ComponentException ComponentAlreadyAdded(int entityId, Type componentType) =>
+		new(componentType, $"Component '{componentType}' has already been added to the entity {entityId}, use Set instead.");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentBufferNotRequired(Type componentType) =>

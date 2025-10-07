@@ -20,7 +20,13 @@ public sealed class ArchetypeCollection
 		_chunkByteSize = chunkByteSize;
 	}
 
-	public int Version { get; internal set; }
+	/// <summary>
+	/// A version number representing the archetype list version
+	/// </summary>
+	/// <remarks>
+	/// When this number changes, Queries should rematch archetypes
+	/// </remarks>
+	internal int Version { get; private set; }
 
 	public Span<Archetype> AsSpan() => CollectionsMarshal.AsSpan(_archetypes);
 

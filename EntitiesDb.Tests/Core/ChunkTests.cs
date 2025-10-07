@@ -84,7 +84,7 @@ public unsafe class ChunkTests : IDisposable
 		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, chunkSize);
 
 		// Offsets via ArchetypeUtils
-		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, capacity, unmanagedCount);
+		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
 
 		// Allocate unmanaged region of appropriate size
 		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
@@ -111,7 +111,7 @@ public unsafe class ChunkTests : IDisposable
 		var (types, unmanagedCount) = BuildComponentTypes();
 		int chunkSize = 4096;
 		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, chunkSize);
-		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, capacity, unmanagedCount);
+		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
 
 		// Unmanaged blocks
 		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
@@ -139,15 +139,12 @@ public unsafe class ChunkTests : IDisposable
 
 		// Unmanaged components
 		// int
-		int intOffset = offsets[ctInt.Id] + ctInt.Stride * srcIndex;
-		src.GetUnmanaged<int>(intOffset) = 42;
+		src.Get<int>(srcIndex, ctInt.Id) = 42;
 		// float
-		int floatOffset = offsets[ctFloat.Id] + ctFloat.Stride * srcIndex;
-		src.GetUnmanaged<float>(floatOffset) = 3.5f;
+		src.Get<float>(srcIndex, ctFloat.Id) = 3.5f;
 
-		// Managed component: ManagedName (offset is the managed array index)
-		int nameArrayIndex = offsets[ctName.Id];
-		src.GetManaged<ManagedName>(nameArrayIndex, srcIndex) = new ManagedName("Alice");
+		// Managed component: ManagedName
+		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Alice");
 
 		// Act: transfer entity + all its components via AcceptEntity
 		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex);
@@ -157,14 +154,11 @@ public unsafe class ChunkTests : IDisposable
 		Assert.Equal(123, dst.GetEntity(dstIndex).Id);
 
 		// Assert unmanaged copied
-		int intOffsetDst = offsets[ctInt.Id] + ctInt.Stride * dstIndex;
-		int floatOffsetDst = offsets[ctFloat.Id] + ctFloat.Stride * dstIndex;
-
-		Assert.Equal(42, dst.GetUnmanaged<int>(intOffsetDst));
-		Assert.Equal(3.5f, dst.GetUnmanaged<float>(floatOffsetDst));
+		Assert.Equal(42, dst.Get<int>(dstIndex, ctInt.Id));
+		Assert.Equal(3.5f, dst.Get<float>(dstIndex, ctFloat.Id));
 
 		// Assert managed copied
-		Assert.Equal("Alice", dst.GetManaged<ManagedName>(nameArrayIndex, dstIndex).Name);
+		Assert.Equal("Alice", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
 	}
 
 
@@ -174,7 +168,7 @@ public unsafe class ChunkTests : IDisposable
 		// Arrange
 		var (types, unmanagedCount) = BuildComponentTypes();
 		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, 4096);
-		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, capacity, unmanagedCount);
+		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
 
 		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
 		_srcBlock = Marshal.AllocHGlobal(unmanagedBytes);
@@ -193,17 +187,17 @@ public unsafe class ChunkTests : IDisposable
 		int srcIndex = 1, dstIndex = 7;
 
 		// Seed source values
-		src.GetUnmanaged<int>(offsets[ctInt.Id] + ctInt.Stride * srcIndex) = 1001;
-		src.GetUnmanaged<float>(offsets[ctFloat.Id] + ctFloat.Stride * srcIndex) = -2.25f;
-		src.GetManaged<ManagedName>(offsets[ctName.Id], srcIndex) = new ManagedName("Bob");
+		src.Get<int>(srcIndex, ctInt.Id) = 1001;
+		src.Get<float>(srcIndex, ctFloat.Id) = -2.25f;
+		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Bob");
 
 		// Act
 		src.CloneComponents(srcIndex, ref dst, dstIndex);
 
 		// Assert
-		Assert.Equal(1001, dst.GetUnmanaged<int>(offsets[ctInt.Id] + ctInt.Stride * dstIndex));
-		Assert.Equal(-2.25f, dst.GetUnmanaged<float>(offsets[ctFloat.Id] + ctFloat.Stride * dstIndex));
-		Assert.Equal("Bob", dst.GetManaged<ManagedName>(offsets[ctName.Id], dstIndex).Name);
+		Assert.Equal(1001, dst.Get<int>(dstIndex, ctInt.Id));
+		Assert.Equal(-2.25f, dst.Get<float>(dstIndex, ctFloat.Id));
+		Assert.Equal("Bob", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
 	}
 
 	[Fact]
@@ -212,7 +206,7 @@ public unsafe class ChunkTests : IDisposable
 		// Src archetype: int, float, ManagedName
 		var (srcTypes, srcUnmanagedCount) = BuildComponentTypes();
 		int srcCap = ArchetypeUtils.CalculateChunkCapacity(srcTypes, 4096);
-		var srcOffsets = ArchetypeUtils.BuildIdOffsetLookup(srcTypes, srcCap, srcUnmanagedCount);
+		var srcOffsets = ArchetypeUtils.BuildIdOffsetLookup(srcTypes, srcUnmanagedCount, srcCap);
 
 		// Dst archetype: int, ManagedName (drop float)
 		ref readonly var ctInt = ref _registry.GetComponentType<int>();
@@ -222,7 +216,7 @@ public unsafe class ChunkTests : IDisposable
 		var dstTypes = new[] { ctInt, ctName }; // unmanaged first (int), then managed
 		int dstUnmanagedCount = dstTypes.Count(t => t.IsUnmanaged);
 		int dstCap = ArchetypeUtils.CalculateChunkCapacity(dstTypes, 4096);
-		var dstOffsets = ArchetypeUtils.BuildIdOffsetLookup(dstTypes, dstCap, 1);
+		var dstOffsets = ArchetypeUtils.BuildIdOffsetLookup(dstTypes, 1, dstCap);
 
 		// Allocate unmanaged blocks
 		int srcUnmanagedBytes = ComputeUnmanagedBytesTotal(srcTypes, srcCap);
@@ -240,21 +234,21 @@ public unsafe class ChunkTests : IDisposable
 		int srcIndex = 0, dstIndex = 3;
 
 		// Seed source values
-		src.GetUnmanaged<int>(srcOffsets[ctInt.Id] + ctInt.Stride * srcIndex) = 7;
-		src.GetUnmanaged<float>(srcOffsets[ctFloat.Id] + ctFloat.Stride * srcIndex) = 9.25f;
-		src.GetManaged<ManagedName>(srcOffsets[ctName.Id], srcIndex) = new ManagedName("Carol");
+		src.Get<int>(srcIndex, ctInt.Id) = 7;
+		src.Get<float>(srcIndex, ctFloat.Id) = 9.25f;
+		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Carol");
 
 		// Destination starts with sentinel values
-		dst.GetUnmanaged<int>(dstOffsets[ctInt.Id] + ctInt.Stride * dstIndex) = -1;
+		dst.Get<int>(dstIndex, ctInt.Id) = -1;
 		// No float in destination
-		dst.GetManaged<ManagedName>(dstOffsets[ctName.Id], dstIndex) = new ManagedName("unset");
+		dst.Get<ManagedName>(dstIndex, ctName.Id) = new ManagedName("unset");
 
 		// Copy only types present in destination: int + name
 		var dstSig = BuildSignatureFor(ctInt, ctName);
 		src.CopyComponents(srcIndex, in dstSig, ref dst, dstIndex);
 
 		// Assert: int copied, name copied, float untouched (no float slot in dst)
-		Assert.Equal(7, dst.GetUnmanaged<int>(dstOffsets[ctInt.Id] + ctInt.Stride * dstIndex));
-		Assert.Equal("Carol", dst.GetManaged<ManagedName>(dstOffsets[ctName.Id], dstIndex).Name);
+		Assert.Equal(7, dst.Get<int>(dstIndex, ctInt.Id));
+		Assert.Equal("Carol", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
 	}
 }

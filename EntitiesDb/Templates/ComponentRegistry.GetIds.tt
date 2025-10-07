@@ -10,9 +10,9 @@ public partial class ComponentRegistry
 	for (int index = 2; index < GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var ids = MethodCallMultilineArg(index, "IdOf");
+		var ids = FormatSep(index, "IdOf<T{0}>()", "," + Environment.NewLine);
 #>
-	/// <inheritdoc cref="GetIds{T}()"/>
+	/// <inheritdoc cref="GetIds{T0}()"/>
 	public ComponentIds<<#= generics #>> GetIds<<#= generics #>>()
 	{
 		return new(

@@ -140,18 +140,18 @@ public sealed partial class ComponentRegistry
 	/// Gets the signature of given components
 	/// </summary>
 	/// <returns>Signature of component types</returns>
-	public Signature GetSignature<T>()
+	public Signature GetSignature<T0>()
 	{
-		return Signature.SingleBit(IdOf<T>());
+		return Signature.SingleBit(IdOf<T0>());
     }
 
     /// <summary>
     /// Gets component ids for types
     /// </summary>
     /// <returns></returns>
-    public ComponentIds<T> GetIds<T>()
+    public ComponentIds<T0> GetIds<T0>()
     {
-        return new(GetComponentType<T>().Id);
+        return new(IdOf<T0>());
     }
 
     /// <summary>

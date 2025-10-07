@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var args = FormatComma(index, "t{0}Components");
+#>
+	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
+	public void Set<<#= generics #>>(int entityId, <#= parameters #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertBuffered<<#= generics #>>();
+		var ids = ComponentRegistry.GetIds<<#= generics #>>();
+        var checkSignature = Signature.FromIds(in ids);
+		ref var entityReference = ref GetEntity(entityId);
+
+		// check already added
+		var archetype = entityReference.Archetype;
+		if (!archetype.Signature.HasAny(in checkSignature))
+			throw archetype.GetComponentNotFound(entityId, in ids);
+
+		// set component value
+		archetype.Set(in entityReference.Slot, in ids, <#= args #>);
+	}
+<#
+	}
+#>
+}

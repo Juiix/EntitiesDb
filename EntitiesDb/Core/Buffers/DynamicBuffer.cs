@@ -14,7 +14,7 @@ internal static class DynamicBuffer
     {
         if ((header.Size * HeapTag) != 0)
         {
-            Marshal.FreeHGlobal(_header.Heap);
+            Marshal.FreeHGlobal(header.Heap);
 			header.Size &= SizeMask;
         }
 		header.Size = 0;

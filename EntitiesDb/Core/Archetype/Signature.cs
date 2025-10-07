@@ -60,7 +60,7 @@ public readonly partial struct Signature : IEquatable<Signature>
     /// Gets the signature of given component ids
     /// </summary>
     /// <returns>Signature of component ids</returns>
-    public static Signature FromIds<T>(in ComponentIds<T0> ids)
+    public static Signature FromIds<T0>(in ComponentIds<T0> ids)
     {
         return SingleBit(ids.T0);
     }

@@ -48,10 +48,10 @@ internal unsafe static class ArchetypeUtils
 	/// Builds an id -> offset lookup array, sized to the max id in the component array
 	/// </summary>
 	/// <param name="componentTypes">The component types</param>
-	/// <param name="chunkCapacity">The chunk entity capacity</param>
 	/// <param name="unmanagedCount">The unmanaged component count</param>
+	/// <param name="chunkCapacity">The chunk entity capacity</param>
 	/// <returns>An id -> offset lookup array</returns>
-	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int chunkCapacity, int unmanagedCount)
+	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int unmanagedCount, int chunkCapacity)
 	{
 		if (componentTypes.Length == 0)
 			return [];
@@ -81,7 +81,7 @@ internal unsafe static class ArchetypeUtils
     /// </summary>
     /// <param name="componentTypes">The component types</param>
     /// <returns>An id -> offset lookup array</returns>
-    public static int[] BuildIdIndexLookup(ReadOnlySpan<ComponentType> componentTypes)
+    public static int[] BuildIdIndexLookup(ReadOnlySpan<ComponentType> componentTypes, int unmanagedCount)
     {
         if (componentTypes.Length == 0)
             return [];

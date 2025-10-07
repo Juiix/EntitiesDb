@@ -1,396 +1,397 @@
+﻿
 namespace EntitiesDb;
 
 public partial struct Chunk
 {
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1>(int index,in ComponentIds<T0,T1> ids,in T0? t0Component = default,in T1? t1Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1>(int index, in ComponentIds<T0, T1> ids, in T0? t0Component = default, in T1? t1Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2>(int index,in ComponentIds<T0,T1,T2> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2>(int index, in ComponentIds<T0, T1, T2> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3>(int index,in ComponentIds<T0,T1,T2,T3> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3>(int index, in ComponentIds<T0, T1, T2, T3> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4>(int index,in ComponentIds<T0,T1,T2,T3,T4> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4>(int index, in ComponentIds<T0, T1, T2, T3, T4> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default,in T19? t19Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default, in T19? t19Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
-        GetById<T19>(index, ids.T19) = t19Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
+        Get<T19>(index, ids.T19) = t19Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default,in T19? t19Component = default,in T20? t20Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default, in T19? t19Component = default, in T20? t20Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
-        GetById<T19>(index, ids.T19) = t19Component;
-        GetById<T20>(index, ids.T20) = t20Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
+        Get<T19>(index, ids.T19) = t19Component;
+        Get<T20>(index, ids.T20) = t20Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default,in T19? t19Component = default,in T20? t20Component = default,in T21? t21Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default, in T19? t19Component = default, in T20? t20Component = default, in T21? t21Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
-        GetById<T19>(index, ids.T19) = t19Component;
-        GetById<T20>(index, ids.T20) = t20Component;
-        GetById<T21>(index, ids.T21) = t21Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
+        Get<T19>(index, ids.T19) = t19Component;
+        Get<T20>(index, ids.T20) = t20Component;
+        Get<T21>(index, ids.T21) = t21Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default,in T19? t19Component = default,in T20? t20Component = default,in T21? t21Component = default,in T22? t22Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default, in T19? t19Component = default, in T20? t20Component = default, in T21? t21Component = default, in T22? t22Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
-        GetById<T19>(index, ids.T19) = t19Component;
-        GetById<T20>(index, ids.T20) = t20Component;
-        GetById<T21>(index, ids.T21) = t21Component;
-        GetById<T22>(index, ids.T22) = t22Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
+        Get<T19>(index, ids.T19) = t19Component;
+        Get<T20>(index, ids.T20) = t20Component;
+        Get<T21>(index, ids.T21) = t21Component;
+        Get<T22>(index, ids.T22) = t22Component;
 	}
-	/// <inheritdoc cref="Set{T}(int, in ComponentIds{T}, in T)"/>
-	public void Set<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23>(int index,in ComponentIds<T0,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22,T23> ids,in T0? t0Component = default,in T1? t1Component = default,in T2? t2Component = default,in T3? t3Component = default,in T4? t4Component = default,in T5? t5Component = default,in T6? t6Component = default,in T7? t7Component = default,in T8? t8Component = default,in T9? t9Component = default,in T10? t10Component = default,in T11? t11Component = default,in T12? t12Component = default,in T13? t13Component = default,in T14? t14Component = default,in T15? t15Component = default,in T16? t16Component = default,in T17? t17Component = default,in T18? t18Component = default,in T19? t19Component = default,in T20? t20Component = default,in T21? t21Component = default,in T22? t22Component = default,in T23? t23Component = default)
+	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(int index, in ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> ids, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default, in T16? t16Component = default, in T17? t17Component = default, in T18? t18Component = default, in T19? t19Component = default, in T20? t20Component = default, in T21? t21Component = default, in T22? t22Component = default, in T23? t23Component = default)
 	{
-		GetById<T0>(index, ids.T0) = t0Component;
-        GetById<T1>(index, ids.T1) = t1Component;
-        GetById<T2>(index, ids.T2) = t2Component;
-        GetById<T3>(index, ids.T3) = t3Component;
-        GetById<T4>(index, ids.T4) = t4Component;
-        GetById<T5>(index, ids.T5) = t5Component;
-        GetById<T6>(index, ids.T6) = t6Component;
-        GetById<T7>(index, ids.T7) = t7Component;
-        GetById<T8>(index, ids.T8) = t8Component;
-        GetById<T9>(index, ids.T9) = t9Component;
-        GetById<T10>(index, ids.T10) = t10Component;
-        GetById<T11>(index, ids.T11) = t11Component;
-        GetById<T12>(index, ids.T12) = t12Component;
-        GetById<T13>(index, ids.T13) = t13Component;
-        GetById<T14>(index, ids.T14) = t14Component;
-        GetById<T15>(index, ids.T15) = t15Component;
-        GetById<T16>(index, ids.T16) = t16Component;
-        GetById<T17>(index, ids.T17) = t17Component;
-        GetById<T18>(index, ids.T18) = t18Component;
-        GetById<T19>(index, ids.T19) = t19Component;
-        GetById<T20>(index, ids.T20) = t20Component;
-        GetById<T21>(index, ids.T21) = t21Component;
-        GetById<T22>(index, ids.T22) = t22Component;
-        GetById<T23>(index, ids.T23) = t23Component;
+		Get<T0>(index, ids.T0) = t0Component;
+        Get<T1>(index, ids.T1) = t1Component;
+        Get<T2>(index, ids.T2) = t2Component;
+        Get<T3>(index, ids.T3) = t3Component;
+        Get<T4>(index, ids.T4) = t4Component;
+        Get<T5>(index, ids.T5) = t5Component;
+        Get<T6>(index, ids.T6) = t6Component;
+        Get<T7>(index, ids.T7) = t7Component;
+        Get<T8>(index, ids.T8) = t8Component;
+        Get<T9>(index, ids.T9) = t9Component;
+        Get<T10>(index, ids.T10) = t10Component;
+        Get<T11>(index, ids.T11) = t11Component;
+        Get<T12>(index, ids.T12) = t12Component;
+        Get<T13>(index, ids.T13) = t13Component;
+        Get<T14>(index, ids.T14) = t14Component;
+        Get<T15>(index, ids.T15) = t15Component;
+        Get<T16>(index, ids.T16) = t16Component;
+        Get<T17>(index, ids.T17) = t17Component;
+        Get<T18>(index, ids.T18) = t18Component;
+        Get<T19>(index, ids.T19) = t19Component;
+        Get<T20>(index, ids.T20) = t20Component;
+        Get<T21>(index, ids.T21) = t21Component;
+        Get<T22>(index, ids.T22) = t22Component;
+        Get<T23>(index, ids.T23) = t23Component;
 	}
 }
