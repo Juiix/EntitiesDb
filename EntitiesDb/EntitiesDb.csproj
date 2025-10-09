@@ -72,6 +72,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Archetype.Set.cs</LastGenOutput>
     </None>
+    <None Update="Templates\BulkCreate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BulkCreate.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.Has.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.Has.cs</LastGenOutput>
+    </None>
     <None Update="Templates\Chunk.Init.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Init.cs</LastGenOutput>
@@ -88,6 +96,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Create.cs</LastGenOutput>
     </None>
+    <None Update="Templates\EntityDatabase.GetBulkCreate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.GetBulkCreate.cs</LastGenOutput>
+    </None>
     <None Update="Templates\EntityDatabase.Has.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Has.cs</LastGenOutput>
@@ -95,6 +107,10 @@
     <None Update="Templates\EntityDatabase.Remove.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Remove.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.Reserve.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.Reserve.cs</LastGenOutput>
     </None>
     <None Update="Templates\EntityDatabase.Set.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -243,6 +259,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Archetype.Set.Mixed.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\BulkCreate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BulkCreate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.Has.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.Has.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\Chunk.Init.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -268,6 +294,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityDatabase.Create.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\EntityDatabase.GetBulkCreate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.GetBulkCreate.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\EntityDatabase.Has.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -277,6 +308,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityDatabase.Remove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.Reserve.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.Reserve.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Set.Buffer.cs">
       <DesignTime>True</DesignTime>

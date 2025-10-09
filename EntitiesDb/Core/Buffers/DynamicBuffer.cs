@@ -7,18 +7,19 @@ namespace EntitiesDb;
 
 internal static class DynamicBuffer
 {
-    private const int HeapTag = unchecked((int)0x8000_0000);
-    private const int SizeMask = 0x7FFF_FFFF;
+	private const int HeapTag = unchecked((int)0x8000_0000);
+	private const int SizeMask = 0x7FFF_FFFF;
 
-    public static void Clear(ref BufferHeader header)
-    {
-        if ((header.Size * HeapTag) != 0)
-        {
-            Marshal.FreeHGlobal(header.Heap);
-			header.Size &= SizeMask;
-        }
+	public static void Clear(ref BufferHeader header)
+	{
+		if ((header.Size & HeapTag) != 0)
+		{
+			Marshal.FreeHGlobal(header.Heap);
+			header.Size &= SizeMask; // clear heap tag
+		}
 		header.Size = 0;
-    }
+		// keep header.Capacity as-is; it will be reset on next init if needed
+	}
 }
 
 public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
@@ -60,30 +61,34 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 
 	/// <summary>
 	/// Initializes from data, promoting to heap if needed.
+	/// Uses ComponentMeta&lt;T&gt;.InternalCapacity as the inline base,
+	/// and sets header.Capacity to the effective capacity (base or base*2^k).
 	/// </summary>
-	internal void Init(int internalCapacity, ReadOnlySpan<T> data)
+	public void Init(ReadOnlySpan<T> data)
 	{
-		_header->InternalCapacity = internalCapacity;
+		int baseCap = ComponentMeta<T>.InternalCapacity;
+		if (baseCap <= 0) throw new ArgumentOutOfRangeException(nameof(baseCap));
+
+		_header->Capacity = baseCap;
 		SetSize(data.Length);
-		MarkInline(); // start inline
+		MarkInline();
 
-		if (data.Length == 0) return;
+		if (data.Length == 0)
+			return;
 
-		var needCap = ComputeCapacity(_header->InternalCapacity, GetSize());
-		if (needCap > _header->InternalCapacity)
-		{
-			// Promote to heap
-			var bytes = checked((nuint)needCap * (nuint)sizeof(T));
-			void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
-			data.CopyTo(new Span<T>(dst, data.Length));
-			_header->Heap = (nint)dst;   // writing here is OK; we’re switching to heap
-			MarkHeap();
-		}
-		else
+		if (data.Length <= baseCap)
 		{
 			data.CopyTo(new Span<T>(InlinePtr, data.Length));
-			// DO NOT touch _header->Heap while inline (overlaps inline data bytes)
+			return;
 		}
+
+		int needCap = GrowPow2(baseCap, data.Length);
+		var bytes = checked((nuint)needCap * (nuint)sizeof(T));
+		void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
+		data.CopyTo(new Span<T>(dst, data.Length));
+		_header->Heap = (nint)dst;
+		_header->Capacity = needCap;
+		MarkHeap();
 	}
 
 	// --- Indexing / Views ----------------------------------------------------
@@ -99,52 +104,59 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		}
 	}
 
-	/// <summary>The number of items currently in the buffer.</summary>
 	public int Length
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => GetSize();
 	}
 
-	/// <summary>Writable span view of the live elements. Do not hold across Add/Remove calls.</summary>
 	public Span<T> Span
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => new(DataPtr, GetSize());
 	}
 
-	/// <summary>Read-only span view of the live elements.</summary>
 	public ReadOnlySpan<T> ReadOnlySpan
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => new(DataPtr, GetSize());
 	}
 
-	/// <summary>Provides a pinnable reference to the first element (or null ref if empty).</summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref T GetPinnableReference()
 		=> ref (Length == 0 ? ref Unsafe.NullRef<T>() : ref Unsafe.AsRef<T>(DataPtr));
 
-	// --- Core helpers --------------------------------------------------------
+	// --- Helpers: power-of-two scaling on top of baseCap --------------------
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static int ComputeCapacity(int baseCap, int size)
+	private static int GrowPow2(int baseCap, int target)
 	{
-		if (baseCap <= 0) throw new ArgumentOutOfRangeException(nameof(baseCap));
-		if (size <= baseCap) return baseCap;
-
-		long blocks = ((long)size + baseCap - 1) / baseCap;
-		blocks--;
-		blocks |= blocks >> 1;
-		blocks |= blocks >> 2;
-		blocks |= blocks >> 4;
-		blocks |= blocks >> 8;
-		blocks |= blocks >> 16;
-		blocks++;
-		long cap = blocks * (long)baseCap;
-		if (cap > int.MaxValue) throw new OutOfMemoryException("Capacity overflow.");
+		if (target <= baseCap) return baseCap;
+		long cap = baseCap;
+		// multiply by 2 until >= target
+		while (cap < target)
+		{
+			cap <<= 1;
+			if (cap > int.MaxValue) throw new OutOfMemoryException("Capacity overflow.");
+		}
 		return (int)cap;
 	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static int MinimalPow2AtLeast(int baseCap, int size)
+	{
+		// Smallest baseCap * 2^k such that >= size
+		if (size <= baseCap) return baseCap;
+		long cap = baseCap;
+		while (cap < size)
+		{
+			cap <<= 1;
+			if (cap > int.MaxValue) throw new OutOfMemoryException("Capacity overflow.");
+		}
+		return (int)cap;
+	}
+
+	internal void* Header => _header;
 
 	private void* InlinePtr
 	{
@@ -155,29 +167,27 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 	private void* DataPtr
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => IsHeap() ? (void*)_header->Heap : InlinePtr; // never consult Heap when inline
+		get => IsHeap() ? (void*)_header->Heap : InlinePtr;
 	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int EffectiveCapacity()
-		=> IsHeap() ? ComputeCapacity(_header->InternalCapacity, GetSize())
-					: _header->InternalCapacity;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void EnsureCapacityFor(int targetSize)
 	{
 		if (targetSize <= 0) return;
 
-		int currentCap = EffectiveCapacity();
+		int currentCap = _header->Capacity;
 		if (targetSize <= currentCap) return;
 
-		int size = GetSize();
-		int newCap = ComputeCapacity(_header->InternalCapacity, targetSize);
+		int baseCap = ComponentMeta<T>.InternalCapacity;
+		if (baseCap <= 0) throw new ArgumentOutOfRangeException(nameof(baseCap));
 
-		var bytesToCopy = checked((nuint)size * (nuint)sizeof(T));
+		int oldSize = GetSize();
+		int newCap = GrowPow2(baseCap, targetSize);
+
+		var bytesToCopy = checked((nuint)oldSize * (nuint)sizeof(T));
 		var newBytes = checked((nuint)newCap * (nuint)sizeof(T));
 
-		void* src = DataPtr; // safe: if inline, this is InlinePtr
+		void* src = DataPtr;
 		void* dst = (void*)Marshal.AllocHGlobal((IntPtr)newBytes);
 
 		Buffer.MemoryCopy(src, dst, newBytes, bytesToCopy);
@@ -187,7 +197,8 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 			Marshal.FreeHGlobal(_header->Heap);
 		}
 
-		_header->Heap = (nint)dst; // OK to write; we are (or are becoming) heap
+		_header->Heap = (nint)dst;
+		_header->Capacity = newCap;
 		MarkHeap();
 	}
 
@@ -195,43 +206,52 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 	private void ShrinkIfNeededAfterRemove()
 	{
 		int size = GetSize();
+		int baseCap = ComponentMeta<T>.InternalCapacity;
+		int cap = _header->Capacity;
+
 		if (size == 0)
 		{
 			if (IsHeap())
 			{
 				Marshal.FreeHGlobal(_header->Heap);
-				// DO NOT zero _header->Heap; that memory overlaps inline data
+				_header->Capacity = baseCap; // reset to inline
 				MarkInline();
 			}
 			return;
 		}
 
-		// Only consider shrink at InternalCapacity boundaries to avoid thrash.
-		if ((size % _header->InternalCapacity) != 0) return;
+		// Only shrink when strictly less than 1/3 of current capacity
+		if (size * 3 >= cap) return;
 
-		int cap = ComputeCapacity(_header->InternalCapacity, size);
-		if (size != cap) return;
+		// Compute target capacity using power-of-two scaling
+		int targetCap = MinimalPow2AtLeast(baseCap, size);
 
 		if (!IsHeap())
-			return; // already inline; nothing to do
-
-		var bytes = checked((nuint)cap * (nuint)sizeof(T));
-		void* src = (void*)_header->Heap;
-
-		if (cap == _header->InternalCapacity)
 		{
-			// Move back to inline
+			// already inline; nothing to do
+			return;
+		}
+
+		if (targetCap <= baseCap)
+		{
+			// Demote to inline
+			var bytes = checked((nuint)size * (nuint)sizeof(T));
+			void* src = (void*)_header->Heap;
 			Buffer.MemoryCopy(src, InlinePtr, bytes, bytes);
 			Marshal.FreeHGlobal(_header->Heap);
-			MarkInline(); // do not write _header->Heap = 0 (overlaps inline!)
+			_header->Capacity = baseCap;
+			MarkInline();
 		}
-		else
+		else if (targetCap < cap)
 		{
-			// Allocate a smaller heap
+			// Reallocate a smaller heap
+			var bytes = checked((nuint)targetCap * (nuint)sizeof(T));
+			void* src = (void*)_header->Heap;
 			void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
-			Buffer.MemoryCopy(src, dst, bytes, bytes);
+			Buffer.MemoryCopy(src, dst, bytes, checked((nuint)size * (nuint)sizeof(T)));
 			Marshal.FreeHGlobal(_header->Heap);
-			_header->Heap = (nint)dst; // still heap
+			_header->Heap = (nint)dst;
+			_header->Capacity = targetCap;
 			MarkHeap();
 		}
 	}
@@ -251,85 +271,82 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 
 	// --- Surface area: state & capacity --------------------------------------
 
-	/// <summary>Configured inline-chunk capacity used for geometric growth steps.</summary>
-	public int InternalCapacity
-	{
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => _header->InternalCapacity;
-	}
+	public static int MetaInternalCapacity
+		=> ComponentMeta<T>.InternalCapacity;
 
-	/// <summary>Effective capacity based on current representation (inline or heap).</summary>
+	/// <summary>Current effective capacity (inline or heap).</summary>
 	public int Capacity
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => IsHeap() ? ComputeCapacity(_header->InternalCapacity, Length)
-						: _header->InternalCapacity;
+		get => _header->Capacity;
 	}
 
-	/// <summary>True if the buffer is stored inline (i.e., not on the heap).</summary>
 	public bool IsInline
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => !IsHeap();
 	}
 
-	/// <summary>True if the buffer contains no elements.</summary>
 	public bool IsEmpty
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => Length == 0;
 	}
 
-	/// <summary>
-	/// Ensure capacity for at least <paramref name="targetSize"/> elements (no change to Length).
-	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void Reserve(int targetSize) => EnsureCapacityFor(targetSize);
 
-	/// <summary>Ensure capacity for current Length + <paramref name="additional"/>.</summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void ReserveAdditional(int additional)
 		=> Reserve(checked(Length + Math.Max(0, additional)));
 
 	/// <summary>
-	/// Trim backing storage to the minimal geometric capacity for current Length.
-	/// May move from heap back to inline when size ≤ InternalCapacity.
+	/// Trim backing storage using power-of-two scaling and the 1/3 rule.
 	/// </summary>
 	public void TrimExcess()
 	{
 		int size = Length;
+		int baseCap = ComponentMeta<T>.InternalCapacity;
+
 		if (size == 0)
 		{
 			if (IsHeap())
 			{
 				Marshal.FreeHGlobal(_header->Heap);
+				_header->Capacity = baseCap;
 				MarkInline();
 			}
 			return;
 		}
 
-		int cap = ComputeCapacity(_header->InternalCapacity, size);
+		int cap = _header->Capacity;
+
+		// Only shrink when strictly less than 1/3 of current capacity
+		if (size * 3 >= cap) return;
+
+		int targetCap = MinimalPow2AtLeast(baseCap, size);
+
 		if (!IsHeap())
-		{
-			// Already inline; nothing to do.
-			return;
-		}
+			return; // already inline
 
-		var bytes = checked((nuint)cap * (nuint)sizeof(T));
-		void* src = (void*)_header->Heap;
-
-		if (cap == _header->InternalCapacity)
+		if (targetCap <= baseCap)
 		{
+			var bytes = checked((nuint)size * (nuint)sizeof(T));
+			void* src = (void*)_header->Heap;
 			Buffer.MemoryCopy(src, InlinePtr, bytes, bytes);
 			Marshal.FreeHGlobal(_header->Heap);
+			_header->Capacity = baseCap;
 			MarkInline();
 		}
-		else
+		else if (targetCap < cap)
 		{
+			var bytes = checked((nuint)targetCap * (nuint)sizeof(T));
+			void* src = (void*)_header->Heap;
 			void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
-			Buffer.MemoryCopy(src, dst, bytes, bytes);
+			Buffer.MemoryCopy(src, dst, bytes, checked((nuint)size * (nuint)sizeof(T)));
 			Marshal.FreeHGlobal(_header->Heap);
 			_header->Heap = (nint)dst;
+			_header->Capacity = targetCap;
 			MarkHeap();
 		}
 	}
@@ -389,12 +406,11 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		return false;
 	}
 
-	/// <summary>Returns a read-only view over the same header.</summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ReadOnlyBuffer<T> AsReadOnly()
 		=> new ReadOnlyBuffer<T>(_header);
 
-	// --- API (existing mutators) ---------------------------------------------
+	// --- Mutators ------------------------------------------------------------
 
 	public void Add(T item) => Add(ref item);
 
@@ -416,25 +432,20 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		int newSize = checked(oldSize + count);
 
 		EnsureCapacityFor(newSize);
-
-		// Safe even if source comes from this buffer (span copy handles overlap).
 		items.CopyTo(new Span<T>(((T*)DataPtr) + oldSize, count));
-
 		SetSize(newSize);
 	}
 
 	public void AddRange(T[] items) => AddRange(items.AsSpan());
 
-	/// <summary>Adds the contents of a read-only buffer without materializing a temporary array.</summary>
-	public void AddRange(ReadOnlyBuffer<T> other)
-		=> AddRange(other.Span);
+	public void AddRange(ReadOnlyBuffer<T> other) => AddRange(other.Span);
 
 	public void Clear()
 	{
 		if (IsHeap())
 		{
 			Marshal.FreeHGlobal(_header->Heap);
-			// DO NOT zero Heap in inline state; it overlaps inline bytes
+			_header->Capacity = ComponentMeta<T>.InternalCapacity;
 			MarkInline();
 		}
 		SetSize(0);
@@ -472,7 +483,6 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		return true;
 	}
 
-	/// <summary>Try-remove by value (no throw paths).</summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool TryRemove(T item)
 	{
@@ -501,10 +511,6 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		AddRange(items);
 	}
 
-	/// <summary>
-	/// Swap-back removal that returns the element moved into <paramref name="index"/> (or the removed element if it was last).
-	/// Returns false if index out of range.
-	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved)
 	{

@@ -9,152 +9,152 @@ namespace EntitiesDb;
 internal static class FakeDb
 {
 	// --- Core components already present ---
-	private record struct Position(float X, float Y);
-	private record struct Health(int Value, int Max);
+	public record struct Position(float X, float Y);
+	public record struct Health(int Value, int Max);
 
 	// --- Extra components for richer archetypes ---
-	private record struct Velocity(float dX, float dY);
-	private record struct Mana(int Value, int Max);
-	private record struct Stamina(int Value, int Max);
+	public record struct Velocity(float dX, float dY);
+	public record struct Mana(int Value, int Max);
+	public record struct Stamina(int Value, int Max);
 
 	// Managed (has a reference)
-	private record struct NameTag(string Text);
+	public record struct NameTag(string Text);
 
 	// Buffered components (arrays-per-entity; internal capacities chosen to let some stay inline and some promote to heap)
-	[Buffered(4)] private record struct InventoryItem(int ItemId, int Count);
-	[Buffered(8)] private record struct Damage(int Amount);
+	[Buffered(4)] public record struct InventoryItem(int ItemId, int Count);
+	[Buffered(8)] public record struct Damage(int Amount);
 
 	// Tags (zero-size)
-	[ZeroSize] private record struct PlayerTag;
-	[ZeroSize] private record struct NpcTag;
-	[ZeroSize] private record struct EnemyTag;
-	[ZeroSize] private record struct BossTag;
-	[ZeroSize] private record struct FriendlyTag;
-	[ZeroSize] private record struct DeadTag;
-	[ZeroSize] private record struct FlyingTag;
-	[ZeroSize] private record struct MerchantTag;
-	[ZeroSize] private record struct QuestGiverTag;
-	[ZeroSize] private record struct GroundedTag;
-	[ZeroSize] private record struct ProjectileTag;
+	[ZeroSize] public record struct PlayerTag;
+	[ZeroSize] public record struct NpcTag;
+	[ZeroSize] public record struct EnemyTag;
+	[ZeroSize] public record struct BossTag;
+	[ZeroSize] public record struct FriendlyTag;
+	[ZeroSize] public record struct DeadTag;
+	[ZeroSize] public record struct FlyingTag;
+	[ZeroSize] public record struct MerchantTag;
+	[ZeroSize] public record struct QuestGiverTag;
+	[ZeroSize] public record struct GroundedTag;
+	[ZeroSize] public record struct ProjectileTag;
 
 	// NOTE: If your EntityDatabase ctor is (ComponentRegistry, chunkBytes, maxEntities), use the commented line.
-	private static EntityDatabase CreateDb()
+	public static EntityDatabase CreateDb()
 	{
 		// var db = new EntityDatabase(new ComponentRegistry(), 4096, 1000);
 		var db = new EntityDatabase(4096, 1000);
 
-		// --- Helpers ---------------------------------------------------------
-		Entity New() => db.Create();
-
-		void Add<T>(in Entity e, T c) where T : struct => db.Add<T>(e.Id, c);
-		void Tag<T>(in Entity e) where T : struct => db.Add<T>(e.Id);
-
-		void Buf<T>(in Entity e, params T[] items) where T : unmanaged
-			=> db.Add<T>(e.Id, items);
-
 		// --- Archetype builders ---------------------------------------------
 
 		// Players: Position + Velocity + Health + Stamina + Mana + Inventory + PlayerTag + FriendlyTag + NameTag
-		void AddPlayer(float x, float y, float dx, float dy, int hp, int hpMax, int stam, int stamMax, int mana, int manaMax, string name, InventoryItem[] inv)
+		void AddPlayer(float x, float y, float dx, float dy, int hp, int hpMax, int stam, int stamMax, int mana, int manaMax, string name, ReadOnlySpan<InventoryItem> inv)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new Velocity(dx, dy));
-			Add(e, new Health(hp, hpMax));
-			Add(e, new Stamina(stam, stamMax));
-			Add(e, new Mana(mana, manaMax));
-			Add(e, new NameTag(name));
-			Tag<PlayerTag>(e);
-			Tag<FriendlyTag>(e);
-			Buf(e, inv);
+			db.Create(
+				new Position(x, y),
+				new Velocity(dx, dy),
+				new Health(hp, hpMax),
+				new Stamina(stam, stamMax),
+				new Mana(mana, manaMax),
+				new NameTag(name),
+				new PlayerTag(),
+				new FriendlyTag(),
+				inv
+			);
 		}
 
 		// Enemy grunts: Position + Health + DamageBuffer + EnemyTag + NameTag
-		void AddEnemy(float x, float y, int hp, int hpMax, string name, Damage[] dmg)
+		void AddEnemy(float x, float y, int hp, int hpMax, string name, ReadOnlySpan<Damage> dmg)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new Health(hp, hpMax));
-			Add(e, new NameTag(name));
-			Tag<EnemyTag>(e);
-			Buf(e, dmg);
+			db.Create(
+				new Position(x, y),
+				new Health(hp, hpMax),
+				new NameTag(name),
+				new EnemyTag(),
+				dmg
+			);
 		}
 
 		// Bosses: Position + Health + Mana + DamageBuffer + EnemyTag + BossTag + NameTag
-		void AddBoss(float x, float y, int hp, int hpMax, int mana, int manaMax, string name, Damage[] dmg)
+		void AddBoss(float x, float y, int hp, int hpMax, int mana, int manaMax, string name, ReadOnlySpan<Damage> dmg)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new Health(hp, hpMax));
-			Add(e, new Mana(mana, manaMax));
-			Add(e, new NameTag(name));
-			Tag<EnemyTag>(e);
-			Tag<BossTag>(e);
-			Buf(e, dmg);
+			db.Create(
+				new Position(x, y),
+				new Health(hp, hpMax),
+				new Mana(mana, manaMax),
+				new NameTag(name),
+				new EnemyTag(),
+				new BossTag(),
+				dmg
+			);
 		}
 
 		// NPCs: Position + NpcTag + (Merchant|QuestGiver) + NameTag
 		void AddNpcMerchant(float x, float y, string name)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new NameTag(name));
-			Tag<NpcTag>(e);
-			Tag<MerchantTag>(e);
+			db.Create(
+				new Position(x, y),
+				new NameTag(name),
+				new NpcTag(),
+				new MerchantTag()
+			);
 		}
 
 		void AddNpcQuestGiver(float x, float y, string name)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new NameTag(name));
-			Tag<NpcTag>(e);
-			Tag<QuestGiverTag>(e);
+			db.Create(
+				new Position(x, y),
+				new NameTag(name),
+				new NpcTag(),
+				new QuestGiverTag()
+			);
 		}
 
 		// Critters: Health + GroundedTag (no Position)
 		void AddCritter(int hp, int hpMax)
 		{
-			var e = New();
-			Add(e, new Health(hp, hpMax));
-			Tag<GroundedTag>(e);
+			db.Create(
+				new Health(hp, hpMax),
+				new GroundedTag()
+			);
 		}
 
 		// Ghosts: Position + Velocity + FlyingTag + EnemyTag
 		void AddGhost(float x, float y, float dx, float dy)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new Velocity(dx, dy));
-			Tag<FlyingTag>(e);
-			Tag<EnemyTag>(e);
+			db.Create(
+				new Position(x, y),
+				new Velocity(dx, dy),
+				new FlyingTag(),
+				new EnemyTag()
+			);
 		}
 
 		// Projectiles: Position + Velocity + ProjectileTag
 		void AddProjectile(float x, float y, float dx, float dy)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Add(e, new Velocity(dx, dy));
-			Tag<ProjectileTag>(e);
+			db.Create(
+				new Position(x, y),
+				new Velocity(dx, dy),
+				new ProjectileTag()
+			);
 		}
 
 		// Corpses: Position + DeadTag
 		void AddCorpse(float x, float y)
 		{
-			var e = New();
-			Add(e, new Position(x, y));
-			Tag<DeadTag>(e);
+			db.Create(
+				new Position(x, y),
+				new DeadTag()
+			);
 		}
 
 		// Position-only movers
-		void AddMover(float x, float y) { var e = New(); Add(e, new Position(x, y)); }
+		void AddMover(float x, float y) { db.Create(new Position(x, y)); }
 
 		// Health-only (healers’ pool, structures, etc.)
-		void AddHealthOnly(int hp, int hpMax) { var e = New(); Add(e, new Health(hp, hpMax)); }
+		void AddHealthOnly(int hp, int hpMax) { db.Create(new Health(hp, hpMax)); }
 
 		// Empty (Signature.Empty)
-		void AddEmpty() => New();
+		void AddEmpty() => db.Create();
 
 		// --- Seed data across many archetypes -------------------------------
 
@@ -175,7 +175,7 @@ internal static class FakeDb
 		AddBoss(18, 6, 50, 50, 20, 30, "Dragon",
 			new[] { new Damage(10), new Damage(12), new Damage(15), new Damage(18), new Damage(20), new Damage(10), new Damage(12), new Damage(15), new Damage(18), new Damage(20), });
 		AddBoss(22, 8, 60, 60, 25, 40, "Lich",
-			new[] { new Damage(8), new Damage(8), new Damage(16), new Damage(16), new Damage(32), new Damage(4), new Damage(4), new Damage(4), });
+			new[] { new Damage(8), new Damage(8), new Damage(16), new Damage(16), new Damage(32), new Damage(4), new Damage(4), new Damage(4), new Damage(24), });
 
 		// NPCs
 		AddNpcMerchant(20, 20, "Vendor A");

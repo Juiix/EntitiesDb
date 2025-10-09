@@ -10,7 +10,7 @@ public partial class ComponentRegistry
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var ids = FormatSep(index, "IdOf<T{0}>()", "," + Environment.NewLine);
+		var ids = FormatSep(index, "GetId<T{0}>()", "," + Environment.NewLine);
 #>
 	/// <inheritdoc cref="GetSignature{T0}()"/>
 	public Signature GetSignature<<#= generics #>>()

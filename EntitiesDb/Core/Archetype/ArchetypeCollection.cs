@@ -35,37 +35,31 @@ public sealed class ArchetypeCollection
 	/// </summary>
 	/// <param name="signature">The signature of the <see cref="Archetype"/> to get</param>
 	/// <returns>An <see cref="Archetype"/> for <paramref name="signature"/></returns>
-	internal Archetype GetOrCreateArchetype(in Signature signature)
+	public Archetype GetOrCreateArchetype(in Signature signature)
 	{
 		if (_archetypeMap.TryGetValue(signature, out var archetype))
 			return archetype;
 
-		var componentTypes = new ComponentType[signature.PopCount()];
-		int unmanagedIndex = 0;
-		int managedIndex = componentTypes.Length - 1;
-		int nextId = 0;
-		while (signature.TryGetNextSetBit(nextId, out var id))
-		{
-			ref readonly var componentType = ref _componentRegistry.GetComponentType(id);
-			if (componentType.IsUnmanaged)
-			{
-				componentTypes[unmanagedIndex++] = componentType;
-			}
-			else
-			{
-				componentTypes[managedIndex--] = componentType;
-			}
-
-			nextId = id + 1;
-		}
-
-		var managedSpan = componentTypes.AsSpan(unmanagedIndex, componentTypes.Length - unmanagedIndex);
+		var componentTypes = ArchetypeUtils.BuildComponentTypes(_componentRegistry, in signature, out var unmanagedCount);
+		var managedSpan = componentTypes.AsSpan(unmanagedCount);
 		var arrayFactories = ArchetypeUtils.CompileArrayFactories(managedSpan, _componentRegistry);
 
-		archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedIndex, _chunkByteSize);
+		archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, _chunkByteSize);
 		_archetypes.Add(archetype);
 		_archetypeMap.Add(signature, archetype);
 		Version++;
 		return archetype;
+	}
+
+	/// <summary>
+	/// Disposes Archetype resources
+	/// </summary>
+	internal void Dispose()
+	{
+		foreach (var archetype in _archetypes)
+		{
+			archetype.Dispose();
+		}
+		_archetypes.Clear();
 	}
 }

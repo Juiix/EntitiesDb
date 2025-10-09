@@ -12,8 +12,10 @@ public partial class EntityDatabase
 	for (int indexC = 1; indexC < GenericCount - 1; indexC++)
 	{
 		var genericsC = Generics(indexC);
-		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component");
+		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
 		var argsC = FormatComma(indexC, "in t{0}Component");
+		var idArgsC = FormatComma(indexC, "ids.T{0}");
+		var idArgsCBulk = FormatComma(indexC, "bulk.Ids.T{0}");
 		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
@@ -21,19 +23,43 @@ public partial class EntityDatabase
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 			var setsB = FormatLine(indexB, "GetBuffer<T{0}>(index, ids.T{0}Id).Set(t{0}Components);", indexC);
 			var argsB = FormatComma(indexB, "t{0}Components", indexC);
+			var idArgsB = FormatComma(indexB, "ids.T{0}", indexC);
+			var idArgsBBulk = FormatComma(indexB, "bulk.Ids.T{0}", indexC);
 #>
 	/// <inheritdoc cref="Create{T0}(in T0?)"/>
 	[StructuralChange]
 	public Entity Create<<#= genericsC #>, <#= genericsB #>>(<#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
-		var signature = ComponentRegistry.GetSignature<<#= genericsC #>, <#= genericsB #>>();
+		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
+		ComponentMeta.AssertBuffered<<#= genericsB #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
 		var ids = ComponentRegistry.GetIds<<#= genericsC #>, <#= genericsB #>>();
-        chunk.Set(dstSlot.Index, in ids, <#= argsC #>, <#= argsB #>);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsC #>);
+        chunk.Set(slot.Index, in cIds, <#= argsC #>);
+		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsB #>);
+        chunk.Init(slot.Index, in bIds, <#= argsB #>);
+		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
+		EntityCount++;
+		return dstEntityId;
+	}
+	/// <inheritdoc cref="Create{T0}(in ArchetypeIds{T0}, in T0?)"/>
+	[StructuralChange]
+	public Entity Create<<#= genericsC #>, <#= genericsB #>>(in BulkCreate<<#= genericsC #>, <#= genericsB #>> bulk, <#= parametersC #>, <#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
+		ComponentMeta.AssertBuffered<<#= genericsB #>>();
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
+		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsCBulk #>);
+        chunk.Set(slot.Index, in cIds, <#= argsC #>);
+		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsBBulk #>);
+        chunk.Init(slot.Index, in bIds, <#= argsB #>);
+		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}

@@ -118,7 +118,7 @@ public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
 	public T[] ToArray()
 	{
 		int size = GetSize();
-		if (size == 0) return Array.Empty<T>();
+		if (size == 0) return [];
 		var arr = new T[size];
 		new ReadOnlySpan<T>(DataPtr, size).CopyTo(arr);
 		return arr;
@@ -126,7 +126,7 @@ public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
 
 	// --- Enumeration ----------------------------------------------------------
 
-	public Enumerator GetEnumerator() => new Enumerator(this);
+	public Enumerator GetEnumerator() => new(this);
 
 	public ref struct Enumerator
 	{
@@ -153,6 +153,7 @@ public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
 	}
 
 	// --- Core helpers (read-only) --------------------------------------------
+	internal void* Header => _header;
 
 	private void* InlinePtr
 	{

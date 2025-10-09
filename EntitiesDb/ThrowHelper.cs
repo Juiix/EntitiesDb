@@ -31,12 +31,21 @@ internal static class ThrowHelper
 		new(componentType, $"Component {componentType} not found for entity id: {entityId}");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ComponentException ComponentNotFound(Type componentType) =>
+		new(componentType, $"Component {componentType} not found");
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentBufferZeroSize(Type componentType) =>
 		new(componentType, $"Zero-size components cannot be used in buffers, invalid component type: {componentType}");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentSizeExceeded(Type componentType, int maxSize) =>
 		new(componentType, $"Component '{componentType}' byte size exceeds the max component size of {maxSize:n0}");
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ComponentException ComponentZeroSize(Type componentType) =>
+		new(componentType, $"Cannot get a reference to a zero-size component: {componentType}");
+
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static EntityException EntityNotFound(int entityId) =>

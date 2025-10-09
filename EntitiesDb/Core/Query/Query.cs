@@ -24,7 +24,7 @@ public sealed partial class Query
 	/// </summary>
 	/// <param name="signature">The <see cref="Signature"/> to match</param>
 	/// <returns>If <paramref name="signature"/> matches</returns>
-	public bool Matches(Signature signature)
+	public bool Matches(in Signature signature)
 	{
 		return _filter.Mode switch
 		{
@@ -65,7 +65,7 @@ public sealed partial class Query
 	/// <summary>
 	/// Match and update <see cref="_matchingArchetypes"/> against <see cref="_archetypes"/>
 	/// </summary>
-	private void Match()
+	public void Match()
 	{
 		if (_matchVersion == _archetypes.Version)
 			return;
@@ -73,7 +73,7 @@ public sealed partial class Query
 		_matchingArchetypes.Clear();
 		foreach (var archetype in _archetypes.AsSpan())
 		{
-			if (Matches(archetype.Signature))
+			if (Matches(in archetype.Signature))
 			{
 				_matchingArchetypes.Add(archetype);
 			}

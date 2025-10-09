@@ -270,7 +270,7 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Add zero-size tag as a normal component
-		db.Add<PlayerTag>(e.Id);
+		db.Add(e.Id, new PlayerTag());
 		Assert.True(db.Has<PlayerTag>(e.Id));
 
 		// Removing should flip signature/archetype, no data to preserve
@@ -290,7 +290,7 @@ public sealed class EntityDatabaseTests
 		// Accessing component data for a tag is not meaningful in many ECS.
 		// Your implementation throws ComponentException on missing component;
 		// we add the tag and then validate Has<T> rather than data access.
-		db.Add<PlayerTag>(e.Id);
+		db.Add(e.Id, new PlayerTag());
 		Assert.True(db.Has<PlayerTag>(e.Id));
 	}
 

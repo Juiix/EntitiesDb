@@ -49,11 +49,6 @@ public unsafe sealed partial class Archetype
     private Chunk[] _chunks;
 
 	/// <summary>
-	/// How many chunks are currently allocated
-	/// </summary>
-	private int _allocatedChunks;
-
-	/// <summary>
 	/// If this has been disposed
 	/// </summary>
 	private bool _disposed;
@@ -97,17 +92,17 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// How many chunks are in use
 	/// </summary>
-	public int ChunkCount { get; internal set; }
+	public int ChunksInUse { get; internal set; }
 
 	/// <summary>
-	/// Returns a chunk enumerator
+	/// How many chunks are currently allocated
 	/// </summary>
-	public ReadOnlyEnumerator<Chunk> GetEnumerator => new(_chunks.AsSpan(0, ChunkCount));
+	public int ChunksAllocated { get; internal set; }
 
 	/// <summary>
 	/// The current working chunk (last chunk)
 	/// </summary>
-	internal ref Chunk CurrentChunk => ref _chunks[ChunkCount - 1];
+	internal ref Chunk CurrentChunk => ref _chunks[ChunksInUse - 1];
 
 	/// <summary>
 	/// If this <see cref="Archetype"/> contains a given component
@@ -126,12 +121,17 @@ public unsafe sealed partial class Archetype
     public bool Has<T0>(in ComponentIds<T0> ids) =>
         Signature.Test(ids.T0);
 
-    /// <summary>
-    /// Clears a target slot and released buffer lists
-    /// </summary>
-    /// <param name="slot">The target slot</param>
-    /// <param name="ids">Component ids</param>
-    internal void Clear<T0>(in EntitySlot slot, in ComponentIds<T0> ids)
+	/// <summary>
+	/// Returns a chunk enumerator
+	/// </summary>
+	public ReadOnlyEnumerator<Chunk> GetEnumerator() => new(_chunks.AsSpan(0, ChunksInUse));
+
+	/// <summary>
+	/// Clears a target slot and released buffer lists
+	/// </summary>
+	/// <param name="slot">The target slot</param>
+	/// <param name="ids">Component ids</param>
+	internal void Clear<T0>(in EntitySlot slot, in ComponentIds<T0> ids)
 	{
 		if (ComponentMeta<T0>.IsBuffered) ClearBuffer<T0>(in slot, ids.T0);
     }
@@ -181,7 +181,7 @@ public unsafe sealed partial class Archetype
 	internal void Init<T0>(in EntitySlot slot, in ComponentIds<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-		chunk.GetBuffer<T0>(slot.Index, ids.T0).Init(ComponentMeta<T0>.InternalCapacity, components);
+		chunk.GetBuffer<T0>(slot.Index, ids.T0).Init(components);
     }
 
 	/// <summary>
@@ -203,12 +203,40 @@ public unsafe sealed partial class Archetype
     }
 
 	/// <summary>
+	/// Reserves space for additional entities
+	/// </summary>
+	/// <param name="entityCount">The amount of entities to reserve for</param>
+	internal void Reserve(int entityCount)
+	{
+		var newTotal = EntityCount + entityCount;
+		var newChunkCount = (newTotal + EntitiesPerChunk - 1) / EntitiesPerChunk;
+
+		if (newChunkCount > _chunks.Length)
+		{
+			// expand array
+			var newArray = ArrayPool<Chunk>.Shared.Rent(newChunkCount);
+			Array.Copy(_chunks, newArray, ChunksAllocated);
+			ArrayPool<Chunk>.Shared.Return(_chunks, true);
+			_chunks = newArray;
+		}
+
+		for (var i = ChunksAllocated; i < newChunkCount; i++)
+		{
+			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
+			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
+			//var changeVersions = ArchetypeUtils.BuildChangeVersions(ComponentTypes, _globalChangeVersions);
+			_chunks[i] = new Chunk(ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
+		}
+		ChunksAllocated = newChunkCount;
+	}
+
+	/// <summary>
 	/// Allocates of reuses a new <see cref="Chunk"/>
 	/// </summary>
 	/// <returns></returns>
 	internal ref Chunk AddChunk()
 	{
-		var count = ChunkCount;
+		var count = ChunksInUse;
 		if (count == _chunks.Length)
 		{
 			// expand array
@@ -218,19 +246,17 @@ public unsafe sealed partial class Archetype
 			_chunks = newArray;
 		}
 
-		var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
-		var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
-		//var changeVersions = ArchetypeUtils.BuildChangeVersions(ComponentTypes, _globalChangeVersions);
-
 		ref var chunk = ref _chunks[count];
-		if (count >= _allocatedChunks)
+		if (count >= ChunksAllocated)
 		{
-			_allocatedChunks++;
+			ChunksAllocated++;
+			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
+			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
+			//var changeVersions = ArchetypeUtils.BuildChangeVersions(ComponentTypes, _globalChangeVersions);
 			chunk = new Chunk(ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
 		}
 
-		ChunkCount = ++count;
-
+		ChunksInUse = ++count;
 		return ref chunk;
 	}
 
@@ -255,7 +281,7 @@ public unsafe sealed partial class Archetype
 		EntityCount++;
 
 		// add to existing
-		var chunkIndex = ChunkCount - 1;
+		var chunkIndex = ChunksInUse - 1;
 		ref var currentChunk = ref _chunks[chunkIndex];
 		if (currentChunk.EntityCount < EntitiesPerChunk)
 		{
@@ -282,7 +308,7 @@ public unsafe sealed partial class Archetype
 	internal ref Entity GetEntity(in EntitySlot entitySlot)
 	{
 		ref var chunk = ref _chunks[entitySlot.ChunkIndex];
-		return ref chunk.GetEntity(entitySlot.Index);
+		return ref chunk.GetEntityMutable(entitySlot.Index);
 	}
 
 	/// <summary>
@@ -293,7 +319,7 @@ public unsafe sealed partial class Archetype
 	internal void RemoveEntity(in EntitySlot slot, out int movedEntityId)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var lastChunkIndex = ChunkCount - 1;
+		var lastChunkIndex = ChunksInUse - 1;
 		ref var lastChunk = ref GetChunk(lastChunkIndex);
 
 		var removedIndex = lastChunk.EntityCount - 1;
@@ -302,12 +328,12 @@ public unsafe sealed partial class Archetype
 		lastChunk.EntityCount--;
 		EntityCount--;
 
-		if (removedIndex > 0 || ChunkCount <= 0)
+		if (removedIndex > 0 || ChunksInUse <= 0)
 		{
 			return;
 		}
 
-		ChunkCount = Math.Max(ChunkCount - 1, 1);
+		ChunksInUse = Math.Max(ChunksInUse - 1, 1);
 	}
 
 	/// <summary>
@@ -341,7 +367,7 @@ public unsafe sealed partial class Archetype
 
 	private void DoDispose()
 	{
-		foreach (ref var chunk in _chunks.AsSpan(0, _allocatedChunks))
+		foreach (ref var chunk in _chunks.AsSpan(0, ChunksAllocated))
 		{
 			Marshal.FreeHGlobal(chunk.UnmanagedComponents);
 		}

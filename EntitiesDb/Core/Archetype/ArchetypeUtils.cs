@@ -37,8 +37,7 @@ internal unsafe static class ArchetypeUtils
 		}
 
 		// reverse managed components to maintain component id linear order
-		var managedCount = componentTypes.Length - unmanagedIndex;
-		componentTypes.AsSpan(managedCount).Reverse();
+		componentTypes.AsSpan(unmanagedIndex).Reverse();
 
 		unmanagedCount = unmanagedIndex;
 		return componentTypes;
@@ -57,6 +56,7 @@ internal unsafe static class ArchetypeUtils
 			return [];
 
 		var idToOffsets = CreateTightIdArray<int>(componentTypes, unmanagedCount);
+		Array.Fill(idToOffsets, -1);
 
 		// assign unmanaged offsets
 		var unmanagedEntitySize = sizeof(Entity);

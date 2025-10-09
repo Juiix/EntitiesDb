@@ -9,7 +9,7 @@ namespace EntitiesDb;
 public partial class EntityDatabase
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 1; index < GenericCount; index++)
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
@@ -21,13 +21,27 @@ public partial class EntityDatabase
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
-		var signature = ComponentRegistry.GetSignature<<#= generics #>>();
+		ComponentMeta.AssertBuffered<<#= generics #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        chunk.Set(dstSlot.Index, in ids, <#= args #>);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+        chunk.Init(slot.Index, in ids, <#= args #>);
+		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
+		EntityCount++;
+		return dstEntityId;
+	}
+	/// <inheritdoc cref="Create{T0}(in ArchetypeIds{T0}, in T0?)"/>
+	[StructuralChange]
+	public Entity Create<<#= generics #>>(in BulkCreate<<#= generics #>> bulk, <#= parameters #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertBuffered<<#= generics #>>();
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
+        chunk.Init(slot.Index, in bulk.Ids, <#= args #>);
+		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}

@@ -101,10 +101,19 @@ public readonly partial struct Signature : IEquatable<Signature>
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly bool HasAny(in Signature other)
-		=> ((W0 & other.W0) | (W1 & other.W1) | (W2 & other.W2) | (W3 & other.W3)) != 0;
+	{
+		// if 'other' has no bits set, there is no constraint -> allow
+		ulong otherAny = other.W0 | other.W1 | other.W2 | other.W3;
+		if (otherAny == 0) return true;
+
+		// otherwise require at least one shared bit
+		ulong hit = (W0 & other.W0) | (W1 & other.W1) | (W2 & other.W2) | (W3 & other.W3);
+		return hit != 0;
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public readonly bool HasNone(in Signature other) => !HasAny(other);
+	public readonly bool HasNone(in Signature other)
+		=> ((W0 & other.W0) | (W1 & other.W1) | (W2 & other.W2) | (W3 & other.W3)) == 0;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly bool IsSubsetOf(in Signature sup) => sup.HasAll(in this);

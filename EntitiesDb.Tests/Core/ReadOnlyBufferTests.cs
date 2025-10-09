@@ -11,16 +11,12 @@ public sealed unsafe class ReadOnlyBufferTests
 		public BufferHeader* Header;
 		public IntPtr Owner; // start of header + inline block
 
-		public unsafe BufferHandle(int internalCapacity)
+		public unsafe BufferHandle()
 		{
 			int headerBytes = BufferHeader.DataOffset;
-			nuint total = (nuint)headerBytes + (nuint)(internalCapacity * sizeof(T));
+			nuint total = (nuint)headerBytes + (nuint)(ComponentMeta<BufferedInt>.InternalCapacity * sizeof(T));
 			Owner = Marshal.AllocHGlobal((IntPtr)total);
-
 			Header = (BufferHeader*)Owner.ToPointer();
-			Header->Size = 0; // tag cleared => inline
-			Header->InternalCapacity = internalCapacity;
-			// DO NOT write Header->Heap here; it may alias inline bytes
 		}
 
 		public unsafe DynamicBuffer<T> Buffer => new((void*)Header);
@@ -37,20 +33,23 @@ public sealed unsafe class ReadOnlyBufferTests
 		}
 	}
 
+	[Buffered(4)] private record struct BufferedInt(int Value);
+
 	// ------------------------ Helpers ------------------------------------
-	private static ReadOnlySpan<int> Seq(params int[] xs) => xs;
+	private static ReadOnlySpan<BufferedInt> Seq(params int[] xs) => Arr(xs);
+	private static BufferedInt[] Arr(params int[] xs) => xs.Select(x => new BufferedInt(x)).ToArray();
 
 	// Throw-path helpers that DO NOT capture ref structs:
-	private static void TouchIndexer(BufferHandle<int> h, int index)
+	private static void TouchIndexer(BufferHandle<BufferedInt> h, int index)
 	{
 		var ro = h.Buffer.AsReadOnly();
 		var _ = ro[index]; // throws for OOR
 	}
 
-	private static void CopyToInto(BufferHandle<int> h, int destLen)
+	private static void CopyToInto(BufferHandle<BufferedInt> h, int destLen)
 	{
 		var ro = h.Buffer.AsReadOnly();
-		var dst = new int[destLen];
+		var dst = new BufferedInt[destLen];
 		ro.CopyTo(dst); // throws if dst too small
 	}
 
@@ -59,9 +58,9 @@ public sealed unsafe class ReadOnlyBufferTests
 	[Fact]
 	public unsafe void Empty_Init_ZeroLength_NoCrash()
 	{
-		using var h = new BufferHandle<int>(internalCapacity: 4);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(4, ReadOnlySpan<int>.Empty);
+		buf.Init(ReadOnlySpan<BufferedInt>.Empty);
 
 		var ro = buf.AsReadOnly();
 
@@ -73,47 +72,47 @@ public sealed unsafe class ReadOnlyBufferTests
 	[Fact]
 	public unsafe void Length_Span_Indexer_Basic()
 	{
-		using var h = new BufferHandle<int>(4);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(4, Seq(1, 2, 3, 4));
+		buf.Init(Seq(1, 2, 3, 4));
 
 		var ro = buf.AsReadOnly();
 
 		Assert.Equal(4, ro.Length);
-		Assert.Equal(new[] { 1, 2, 3, 4 }, ro.Span.ToArray());
-		Assert.Equal(1, ro[0]);
-		Assert.Equal(4, ro[3]);
+		Assert.Equal(Arr([1, 2, 3, 4]), ro.Span.ToArray());
+		Assert.Equal(1, ro[0].Value);
+		Assert.Equal(4, ro[3].Value);
 	}
 
 	[Fact]
 	public unsafe void Contains_And_IndexOf_Work()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(10, 20, 30));
+		buf.Init(Seq(10, 20, 30));
 
 		var ro = buf.AsReadOnly();
 
-		Assert.True(ro.Contains(10));
-		Assert.False(ro.Contains(25));
-		Assert.Equal(1, ro.IndexOf(20));
-		Assert.Equal(-1, ro.IndexOf(99));
+		Assert.True(ro.Contains(new BufferedInt(10)));
+		Assert.False(ro.Contains(new BufferedInt(25)));
+		Assert.Equal(1, ro.IndexOf(new BufferedInt(20)));
+		Assert.Equal(-1, ro.IndexOf(new BufferedInt(99)));
 	}
 
 	[Fact]
 	public unsafe void CopyTo_And_TryCopyTo_And_ToArray()
 	{
-		using var h = new BufferHandle<int>(4);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(4, Seq(7, 8, 9));
+		buf.Init(Seq(7, 8, 9));
 
 		var ro = buf.AsReadOnly();
 
-		var dst = new int[3];
+		var dst = new BufferedInt[3];
 		ro.CopyTo(dst);
-		Assert.Equal(new[] { 7, 8, 9 }, dst);
+		Assert.Equal(Arr(new[] { 7, 8, 9 }), dst);
 
-		var small = new int[2];
+		var small = new BufferedInt[2];
 		Assert.False(ro.TryCopyTo(small));
 
 		bool threw = false;
@@ -121,46 +120,46 @@ public sealed unsafe class ReadOnlyBufferTests
 		catch (ArgumentException) { threw = true; }
 		Assert.True(threw);
 
-		Assert.Equal(new[] { 7, 8, 9 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 7, 8, 9 }), ro.ToArray());
 	}
 
 	[Fact]
 	public unsafe void GetPinnableReference_Empty_ReturnsNullRef()
 	{
-		using var h = new BufferHandle<int>(4);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(4, ReadOnlySpan<int>.Empty);
+		buf.Init(ReadOnlySpan<BufferedInt>.Empty);
 
 		var ro = buf.AsReadOnly();
 
-		ref readonly int r = ref ro.GetPinnableReference();
+		ref readonly BufferedInt r = ref ro.GetPinnableReference();
 		Assert.True(Unsafe.IsNullRef(ref Unsafe.AsRef(in r)));
 	}
 
 	[Fact]
 	public unsafe void GetPinnableReference_NonEmpty_IsPinnable()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(42));
+		buf.Init(Seq(42));
 
 		var ro = buf.AsReadOnly();
 
-		ref readonly int r = ref ro.GetPinnableReference();
+		ref readonly BufferedInt r = ref ro.GetPinnableReference();
 		Assert.False(Unsafe.IsNullRef(ref Unsafe.AsRef(in r)));
 
-		fixed (int* p = &Unsafe.AsRef(in r))
+		fixed (BufferedInt* p = &Unsafe.AsRef(in r))
 		{
-			Assert.Equal(42, *p);
+			Assert.Equal(new BufferedInt(42), *p);
 		}
 	}
 
 	[Fact]
 	public unsafe void Enumerator_Iterates_InOrder()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(5, 6, 7, 8, 9));
+		buf.Init(Seq(5, 6, 7, 8, 9));
 
 		var ro = buf.AsReadOnly();
 
@@ -168,7 +167,7 @@ public sealed unsafe class ReadOnlyBufferTests
 		int[] expect = { 5, 6, 7, 8, 9 };
 		foreach (ref readonly var v in ro)
 		{
-			Assert.Equal(expect[i++], v);
+			Assert.Equal(new BufferedInt(expect[i++]), v);
 		}
 		Assert.Equal(expect.Length, i);
 	}
@@ -176,55 +175,55 @@ public sealed unsafe class ReadOnlyBufferTests
 	[Fact]
 	public unsafe void ReadOnlyView_Reflects_AddedElements()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(1, 2));
+		buf.Init(Seq(1, 2));
 		var ro = buf.AsReadOnly();
 
 		Assert.Equal(2, ro.Length);
-		Assert.Equal(new[] { 1, 2 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 1, 2 }), ro.ToArray());
 
-		buf.Add(3);
-		buf.Add(4);
+		buf.Add(new BufferedInt(3));
+		buf.Add(new BufferedInt(4));
 
 		Assert.Equal(4, ro.Length);
-		Assert.Equal(new[] { 1, 2, 3, 4 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 1, 2, 3, 4 }), ro.ToArray());
 	}
 
 	[Fact]
 	public unsafe void StoragePromotionAndDemotion_AreTransparentToReadOnly()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(100, 200));
+		buf.Init(Seq(100, 200));
 		var ro = buf.AsReadOnly();
 
 		// Start inline
 		Assert.Equal(2, ro.Length);
-		Assert.Equal(new[] { 100, 200 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 100, 200 }), ro.ToArray());
 
 		// Promote to heap
 		buf.AddRange(Seq(300, 400, 500));
 		Assert.Equal(5, ro.Length);
-		Assert.Equal(new[] { 100, 200, 300, 400, 500 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 100, 200, 300, 400, 500 }), ro.ToArray());
 
 		// Clear (demotes to inline)
 		buf.Clear();
 		Assert.Equal(0, ro.Length);
 
 		// Small growth (stays inline)
-		buf.Add(7);
-		buf.Add(8);
+		buf.Add(new BufferedInt(7));
+		buf.Add(new BufferedInt(8));
 		Assert.Equal(2, ro.Length);
-		Assert.Equal(new[] { 7, 8 }, ro.ToArray());
+		Assert.Equal(Arr(new[] { 7, 8 }), ro.ToArray());
 	}
 
 	[Fact]
 	public unsafe void Indexer_OutOfRange_Throws_UsingHandleHelpers()
 	{
-		using var h = new BufferHandle<int>(2);
+		using var h = new BufferHandle<BufferedInt>();
 		var buf = h.Buffer;
-		buf.Init(2, Seq(1, 2, 3));
+		buf.Init(Seq(1, 2, 3));
 
 		bool threwLower = false, threwUpper = false;
 		try { TouchIndexer(h, -1); }

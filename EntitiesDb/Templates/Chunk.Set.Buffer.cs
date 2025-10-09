@@ -6,6 +6,12 @@ namespace EntitiesDb;
 public partial struct Chunk
 {
 	/// <inheritdoc cref="Set{T0}(int, int, ReadOnlySpan{T0})"/>
+	public readonly void Set<T0>(int index, in ComponentIds<T0> ids, ReadOnlySpan<T0> t0Components = default)
+		where T0 : unmanaged
+	{
+		GetBuffer<T0>(index, ids.T0).Set(t0Components);
+	}
+	/// <inheritdoc cref="Set{T0}(int, int, ReadOnlySpan{T0})"/>
 	public readonly void Set<T0, T1>(int index, in ComponentIds<T0, T1> ids, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged

@@ -14,7 +14,7 @@ public partial class Archetype
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var sets = FormatLine(index, "chunk.GetBuffer<T{0}>(slot.Index, ids.T{0}).Init(ComponentMeta<T{0}>.InternalCapacity, t{0}Components);");
+		var sets = FormatLine(index, "chunk.GetBuffer<T{0}>(slot.Index, ids.T{0}).Init(t{0}Components);");
 #>
 	/// <inheritdoc cref="Init{T0}(in EntitySlot, in ComponentIds{T0}, ReadOnlySpan{T0})"/>
 	internal void Init<<#= generics #>>(in EntitySlot slot, in ComponentIds<<#= generics #>> ids, <#= parameters #>)

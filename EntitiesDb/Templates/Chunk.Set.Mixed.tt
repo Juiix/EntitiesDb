@@ -13,7 +13,7 @@ public partial struct Chunk
 	{
 		var genericsC = Generics(indexC);
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
-		var setsC = FormatLine(indexC, "Get<T{0}>(index, ids.T{0}) = t{0}Component;");
+		var setsC = FormatLine(indexC, "if (!ComponentMeta<T{0}>.IsZeroSize) Get<T{0}>(index, ids.T{0}) = t{0}Component;");
 		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);

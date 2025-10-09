@@ -8,6 +8,7 @@ public ref struct ChunkEnumerator
 {
 	private ArchetypeEnumerator _archetypes;
 	private int _index;
+	private ref Chunk _chunk;
 
 	[SkipLocalsInit]
 	public ChunkEnumerator(Span<Archetype> archetypes)
@@ -17,7 +18,9 @@ public ref struct ChunkEnumerator
 		// Make it move once, otherwise we can not check directly for Current.Size which results in bad behaviour
 		if (_archetypes.MoveNext())
 		{
-			_index = _archetypes.Current.ChunkCount + 1;
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_chunk = ref archetype.GetChunk(0);
 		}
 	}
 	[SkipLocalsInit]
@@ -37,7 +40,9 @@ public ref struct ChunkEnumerator
 				return false;
 			}
 
-			_index = _archetypes.Current.ChunkCount;
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse - 1;
+			_chunk = ref archetype.GetChunk(0);
 			return true;
 		}
 	}
@@ -51,13 +56,15 @@ public ref struct ChunkEnumerator
 		// Make it move once, otherwise we can not check directly for Current.Size which results in bad behaviour
 		if (_archetypes.MoveNext())
 		{
-			_index = _archetypes.Current.ChunkCount + 1;
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_chunk = ref archetype.GetChunk(0);
 		}
 	}
 
-	public readonly ref Chunk Current
+	public readonly ref readonly Chunk Current
 	{
 		[SkipLocalsInit]
-		get => ref _archetypes.Current.GetChunk(_index);
+		get => ref Unsafe.Add(ref _chunk, _index);
 	}
 }

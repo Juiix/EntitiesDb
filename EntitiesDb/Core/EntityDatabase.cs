@@ -8,13 +8,22 @@ namespace EntitiesDb;
 /// An Archetype and Chunk based entity component database.
 /// Stores entities with the same components in tight arrays for enumeration and cache friendliness.
 /// </summary>
-public sealed partial class EntityDatabase
+public sealed partial class EntityDatabase : IDisposable
 {
 	private readonly EntityMap _entityMap;
 	private readonly Queue<Entity> _recycledEntityIds = [];
 
+	/// <summary>
+	/// Creates a new <see cref="EntityDatabase"/> instance
+	/// </summary>
+	/// <param name="chunkByteSize">The size in bytes of a chunk</param>
+	/// <param name="maxEntities">The maximum entities to store</param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public EntityDatabase(int chunkByteSize, int maxEntities)
 	{
+		ArgumentOutOfRangeException.ThrowIfNegative(chunkByteSize);
+		ArgumentOutOfRangeException.ThrowIfNegative(maxEntities);
+
 		_entityMap = new(maxEntities);
         ComponentRegistry = new();
         Archetypes = new(ComponentRegistry, chunkByteSize);
@@ -163,32 +172,29 @@ public sealed partial class EntityDatabase
 	{
         ComponentMeta.AssertNotBuffered<T0>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var signature = ComponentRegistry.GetSignature<T0>();
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
 		var ids = ComponentRegistry.GetIds<T0>();
-        chunk.Set(dstSlot.Index, ids.T0, t0Component);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+        chunk.Set(slot.Index, ids.T0, in t0Component);
+		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
 
 	/// <summary>
-	/// Creates an entity with components
+	/// Creates an entity with components, using a prepared archetype id pairing
 	/// </summary>
 	/// <returns>Id of the created entity</returns>
 	/// <exception cref="MaxReachedException"></exception>
 	[StructuralChange]
-	public Entity Create<T0>(ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
+	public Entity Create<T0>(in BulkCreate<T0> bulk, in T0? t0Component = default)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var signature = ComponentRegistry.GetSignature<T0>();
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
-		var ids = ComponentRegistry.GetIds<T0>();
-		chunk.Init(dstSlot.Index, in ids, t0Components);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
+		chunk.Set(slot.Index, bulk.Ids.T0, in t0Component);
+		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
@@ -358,6 +364,20 @@ public sealed partial class EntityDatabase
 	}
 
 	/// <summary>
+	/// Reserves space for a given amounts of entities in a matching <see cref="Archetype"/>
+	/// </summary>
+	/// <typeparam name="T0"></typeparam>
+	/// <param name="entityCount">The amount of entity space to reserve</param>
+	[StructuralChange]
+	public void Reserve<T0>(int entityCount)
+	{
+		_entityMap.EnsureCapacity(EntityCount + entityCount - _recycledEntityIds.Count);
+		var signature = ComponentRegistry.GetSignature<T0>();
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		archetype.Reserve(entityCount);
+	}
+
+	/// <summary>
 	/// Sets the component value for <typeparamref name="T"/> at a given entity id
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
@@ -404,6 +424,23 @@ public sealed partial class EntityDatabase
 	}
 
 	/// <summary>
+	/// Pairs an archetype and component ids for bulk operations
+	/// </summary>
+	public BulkCreate<T0> GetBulkCreate<T0>()
+	{
+		var ids = ComponentRegistry.GetIds<T0>();
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		return new BulkCreate<T0>(archetype, in ids);
+	}
+
+	/// <inheritdoc cref="IDisposable.Dispose"/>
+	public void Dispose()
+	{
+		Archetypes.Dispose();
+	}
+
+	/// <summary>
 	/// Gets an internal <see cref="EntityReference"/> to a given entity id
 	/// </summary>
 	/// <param name="entityId">The entity id</param>
@@ -423,6 +460,7 @@ public sealed partial class EntityDatabase
 	/// </summary>
 	/// <param name="entity">The assigned entity</param>
 	/// <returns>A <see cref="EntityReference"/> for storing entity data</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private ref EntityReference GetNextEntityId(out Entity entity)
 	{
 		// try recycle

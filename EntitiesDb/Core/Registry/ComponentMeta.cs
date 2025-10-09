@@ -53,6 +53,11 @@ public static class ComponentMeta<T>
 	/// </summary>
 	public readonly static bool IsBuffered;
 
+	/// <summary>
+	/// If this component is zero size
+	/// </summary>
+	public static bool IsZeroSize => ByteSize == 0;
+
 	static ComponentMeta()
 	{
 		var byteSize = TypeUtils.GetByteSize<T>();

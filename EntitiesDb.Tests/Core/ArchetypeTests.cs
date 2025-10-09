@@ -63,7 +63,7 @@ public sealed class ArchetypeTests
 		{
 			Assert.True(arch.EntitiesPerChunk > 0);
 			Assert.Equal(0, arch.EntityCount);
-			Assert.Equal(1, arch.ChunkCount);
+			Assert.Equal(1, arch.ChunksInUse);
 
 			// Signature / HasComponent
 			Assert.True(arch.Has(new ComponentIds<int>(ctInt.Id)));
@@ -101,12 +101,12 @@ public sealed class ArchetypeTests
 			}
 
 			Assert.Equal(cap, arch.EntityCount);
-			Assert.Equal(1, arch.ChunkCount);
+			Assert.Equal(1, arch.ChunksInUse);
 
 			// Adding one more should create a second chunk at index 0
 			var extra = arch.AddEntity(new Entity(999, 0), out _);
 			Assert.Equal(cap + 1, arch.EntityCount);
-			Assert.Equal(2, arch.ChunkCount);
+			Assert.Equal(2, arch.ChunksInUse);
 			Assert.Equal(1, extra.ChunkIndex);
 			Assert.Equal(0, extra.Index);
 			Assert.Equal(999, arch.GetEntity(extra).Id);
@@ -131,7 +131,7 @@ public sealed class ArchetypeTests
 			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity(i, 0), out _);
 			var last = arch.AddEntity(new Entity(777, 0), out _); // second chunk, index 0
 
-			Assert.Equal(2, arch.ChunkCount);
+			Assert.Equal(2, arch.ChunksInUse);
 
 			// Remove first entity in first chunk; it should be replaced by "777" from the last chunk
 			var first = new EntitySlot(0, 0);
@@ -140,7 +140,7 @@ public sealed class ArchetypeTests
 			Assert.Equal(777, arch.GetEntity(first).Id);
 
 			// Because the last chunk had only 1 entity, removing it should drop the chunk
-			Assert.Equal(1, arch.ChunkCount);
+			Assert.Equal(1, arch.ChunksInUse);
 			Assert.Equal(cap, arch.EntityCount); // cap + 1 - 1
 		}
 		finally
@@ -248,8 +248,209 @@ public sealed class ArchetypeTests
 
 			var lastPtr = arch.CurrentChunk.UnmanagedComponents;
 
-			Assert.Equal(2, arch.ChunkCount);
+			Assert.Equal(2, arch.ChunksInUse);
 			Assert.NotEqual(firstPtr, lastPtr);
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Has_ByTypeId_Works_For_Present_And_Absent()
+	{
+		var (arch, reg, ctInt, ctFloat, ctName) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			// present
+			Assert.True(arch.Has(ctInt.Id));
+			Assert.True(arch.Has(ctFloat.Id));
+			Assert.True(arch.Has(ctName.Id));
+
+			// absent
+			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
+			Assert.False(arch.Has(ctGuid.Id));
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Reserve_WithZero_DoesNotChangeCounts()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			Assert.Equal(0, arch.EntityCount);
+			Assert.Equal(1, arch.ChunksInUse);
+
+			// Act
+			arch.Reserve(0);
+
+			// Assert
+			Assert.Equal(0, arch.EntityCount);
+			Assert.Equal(1, arch.ChunksInUse);
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Reserve_DoesNotAllocate_NewChunk_WhenCapacityNotCrossed()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			int cap = arch.EntitiesPerChunk;
+
+			// Pre-fill some entities but don't reach capacity
+			for (int i = 0; i < cap / 2; i++)
+				arch.AddEntity(new Entity(i, 0), out _);
+
+			Assert.Equal(1, arch.ChunksInUse);
+
+			// Reserve so that total still fits in a single chunk
+			int remaining = cap - arch.EntityCount; // enough to exactly fill the chunk
+			arch.Reserve(remaining - 1);           // leave headroom so we shouldn't need a new chunk
+
+			Assert.Equal(1, arch.ChunksInUse);       // still a single chunk
+			Assert.Equal(cap / 2, arch.EntityCount);// reserve should NOT change EntityCount
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Reserve_Allocates_Ceil_NewChunks_ForTargetTotal()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			int cap = arch.EntitiesPerChunk;
+
+			// Request space for more than 2 chunks worth
+			int toReserve = cap * 2 + 1; // requires 3 chunks total when empty
+			arch.Reserve(toReserve);
+
+			// Expect 3 chunks allocated/available to use
+			Assert.Equal(3, arch.ChunksAllocated);
+
+			// Reserve should not change EntityCount (just capacity)
+			Assert.Equal(0, arch.EntityCount);
+
+			// Adding entities now should use the already-reserved chunks without growing ChunkCount
+			for (int i = 0; i < toReserve; i++)
+				arch.AddEntity(new Entity(i, 0), out _);
+
+			Assert.Equal(toReserve, arch.EntityCount);
+			Assert.Equal(3, arch.ChunksInUse);
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Reserve_FollowedBy_AddEntity_DoesNotOverAllocate()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			int cap = arch.EntitiesPerChunk * 2;
+
+			// Reserve exactly 2 full chunks worth
+			arch.Reserve(cap);
+
+			Assert.Equal(2, arch.ChunksAllocated);
+			Assert.Equal(0, arch.EntityCount);
+
+			// Fill exactly cap entities; ChunkCount should remain 2
+			for (int i = 0; i < cap; i++)
+				arch.AddEntity(new Entity(i, 0), out _);
+
+			Assert.Equal(cap, arch.EntityCount);
+			Assert.Equal(2, arch.ChunksInUse);
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void GetChunk_ReturnsRef_ToCorrectChunk()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			int cap = arch.EntitiesPerChunk;
+
+			// Ensure multiple chunks
+			for (int i = 0; i < cap + 5; i++)
+				arch.AddEntity(new Entity(i, 0), out _);
+
+			Assert.Equal(2, arch.ChunksInUse);
+
+			ref var first = ref arch.GetChunk(0);
+			ref var last = ref arch.GetChunk(1);
+
+			Assert.NotEqual(first.UnmanagedComponents, last.UnmanagedComponents);
+			Assert.Equal(last.UnmanagedComponents, arch.CurrentChunk.UnmanagedComponents);
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
+	public void Chunk_Enumerator_Yields_AllActiveChunks_InOrder()
+	{
+		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		try
+		{
+			int cap = arch.EntitiesPerChunk;
+
+			// 3 chunks total
+			for (int i = 0; i < cap * 2 + 3; i++)
+				arch.AddEntity(new Entity(i, 0), out _);
+
+			Assert.Equal(3, arch.ChunksInUse);
+
+			int seen = 0;
+			var lastPtr = IntPtr.Zero;
+
+			foreach (ref readonly var chunk in arch)
+			{
+				seen++;
+				// ensure strictly increasing (by identity) across chunks
+				Assert.NotEqual(lastPtr, chunk.UnmanagedComponents);
+				lastPtr = chunk.UnmanagedComponents;
+			}
+
+			Assert.Equal(3, seen);
 		}
 		finally
 		{
