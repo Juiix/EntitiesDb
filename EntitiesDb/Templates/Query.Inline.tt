@@ -1,0 +1,35 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Query
+{
+<#
+	for (int index = 2; index < GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var handles = FormatLine(index, "var t{0}Handle = chunk.GetHandle(ids.T{0});");
+		var refArgs = FormatSep(index, "ref t{0}Handle[index]", "," + Environment.NewLine);
+#>
+	/// <inheritdoc cref="Inline{TForEach, T0}(ref TForEach)"/>
+	public void Inline<TForEach, <#= generics #>>(ref TForEach forEach)
+		where TForEach : IForEach<<#= generics #>>
+	{
+		var ids = _componentRegistry.GetIds<<#= generics #>>();
+		foreach (ref readonly var chunk in GetChunkIterator())
+		{
+			<#= Indent(handles, 12) #>
+			foreach (var index in chunk)
+			{
+				forEach.ForEach(
+					<#= Indent(refArgs, 20) #>
+				);
+			}
+		}
+	}
+<#
+	}
+#>
+}

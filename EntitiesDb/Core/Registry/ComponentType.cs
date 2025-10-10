@@ -3,14 +3,14 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
-public readonly struct ComponentType(int id, short internalCapacity, short byteSize, bool isUnmanaged)
+public readonly struct ComponentType(byte id, short internalCapacity, short byteSize, bool isUnmanaged)
 {
 	public const int MaxSize = short.MaxValue;
 
 	/// <summary>
 	/// The unique type id assigned by the component registry
 	/// </summary>
-	public readonly int Id { get; } = id;
+	public readonly byte Id { get; } = id;
 
 	/// <summary>
 	/// The internal buffer capacity of the component, -1 if the type is not buffered
@@ -43,7 +43,7 @@ public readonly struct ComponentType(int id, short internalCapacity, short byteS
 	/// <summary>
 	/// If the component contains no data
 	/// </summary>
-	public readonly bool ZeroSize => ByteSize == 0;
+	public readonly bool IsZeroSize => ByteSize == 0;
 
 	private static int GetStride(short byteSize, bool isUnmanaged, int internalCapacity)
 	{

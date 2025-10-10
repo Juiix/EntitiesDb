@@ -4,7 +4,7 @@ namespace EntitiesDb;
 public partial class ComponentRegistry
 {
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1> GetIds<T0, T1>()
+	public Ids<T0, T1> GetIds<T0, T1>()
 	{
 		return new(
 			GetId<T0>(),
@@ -12,7 +12,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2> GetIds<T0, T1, T2>()
+	public Ids<T0, T1, T2> GetIds<T0, T1, T2>()
 	{
 		return new(
 			GetId<T0>(),
@@ -21,7 +21,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3> GetIds<T0, T1, T2, T3>()
+	public Ids<T0, T1, T2, T3> GetIds<T0, T1, T2, T3>()
 	{
 		return new(
 			GetId<T0>(),
@@ -31,7 +31,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4> GetIds<T0, T1, T2, T3, T4>()
+	public Ids<T0, T1, T2, T3, T4> GetIds<T0, T1, T2, T3, T4>()
 	{
 		return new(
 			GetId<T0>(),
@@ -42,7 +42,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5> GetIds<T0, T1, T2, T3, T4, T5>()
+	public Ids<T0, T1, T2, T3, T4, T5> GetIds<T0, T1, T2, T3, T4, T5>()
 	{
 		return new(
 			GetId<T0>(),
@@ -54,7 +54,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6> GetIds<T0, T1, T2, T3, T4, T5, T6>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6> GetIds<T0, T1, T2, T3, T4, T5, T6>()
 	{
 		return new(
 			GetId<T0>(),
@@ -67,7 +67,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7> GetIds<T0, T1, T2, T3, T4, T5, T6, T7>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7> GetIds<T0, T1, T2, T3, T4, T5, T6, T7>()
 	{
 		return new(
 			GetId<T0>(),
@@ -81,7 +81,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
 	{
 		return new(
 			GetId<T0>(),
@@ -96,7 +96,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
 	{
 		return new(
 			GetId<T0>(),
@@ -112,7 +112,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
 	{
 		return new(
 			GetId<T0>(),
@@ -129,7 +129,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>()
 	{
 		return new(
 			GetId<T0>(),
@@ -147,7 +147,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>()
 	{
 		return new(
 			GetId<T0>(),
@@ -166,7 +166,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>()
 	{
 		return new(
 			GetId<T0>(),
@@ -186,7 +186,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>()
 	{
 		return new(
 			GetId<T0>(),
@@ -207,7 +207,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>()
 	{
 		return new(
 			GetId<T0>(),
@@ -229,7 +229,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>()
 	{
 		return new(
 			GetId<T0>(),
@@ -252,7 +252,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>()
 	{
 		return new(
 			GetId<T0>(),
@@ -276,7 +276,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>()
 	{
 		return new(
 			GetId<T0>(),
@@ -301,7 +301,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>()
 	{
 		return new(
 			GetId<T0>(),
@@ -327,7 +327,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>()
 	{
 		return new(
 			GetId<T0>(),
@@ -354,7 +354,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>()
 	{
 		return new(
 			GetId<T0>(),
@@ -382,7 +382,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>()
 	{
 		return new(
 			GetId<T0>(),
@@ -411,7 +411,7 @@ public partial class ComponentRegistry
 		);
 	}
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>()
+	public Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>()
 	{
 		return new(
 			GetId<T0>(),

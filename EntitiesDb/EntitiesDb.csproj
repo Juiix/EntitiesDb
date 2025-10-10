@@ -56,6 +56,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Templates\Archetype.GetOffsets.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Archetype.GetOffsets.cs</LastGenOutput>
+    </None>
     <None Update="Templates\Archetype.Init.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Archetype.Init.cs</LastGenOutput>
@@ -76,6 +80,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BulkCreate.cs</LastGenOutput>
     </None>
+    <None Update="Templates\Chunk.GetOffsets.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.GetOffsets.cs</LastGenOutput>
+    </None>
     <None Update="Templates\Chunk.Has.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Has.cs</LastGenOutput>
@@ -87,6 +95,18 @@
     <None Update="Templates\Chunk.Set.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Set.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEach.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEach.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachBuffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachBuffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Offsets.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Offsets.cs</LastGenOutput>
     </None>
     <None Update="Templates\ComponentRegistry.GetSignature.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -128,6 +148,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Generics.cs</LastGenOutput>
     </None>
+    <None Update="Templates\Query.Inline.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Query.Inline.cs</LastGenOutput>
+    </None>
     <None Update="Templates\QueryBuilder.WithOnly.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>QueryBuilder.WithOnly.cs</LastGenOutput>
@@ -152,9 +176,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ComponentRegistry.GetIds.cs</LastGenOutput>
     </None>
-    <None Update="Templates\ComponentIds.tt">
+    <None Update="Templates\Ids.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ComponentIds.cs</LastGenOutput>
+      <LastGenOutput>Ids.cs</LastGenOutput>
     </None>
     <None Update="Templates\Chunk.SetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -239,6 +263,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Templates\Archetype.GetOffsets.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Archetype.GetOffsets.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\Archetype.Init.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -264,6 +293,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BulkCreate.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\Chunk.GetOffsets.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.GetOffsets.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\Chunk.Has.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -283,6 +317,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Chunk.Set.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEach.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEach.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachBuffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachBuffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Offsets.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Offsets.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\ComponentRegistry.GetSignature.cs">
       <DesignTime>True</DesignTime>
@@ -339,6 +388,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Helpers.ttinclude</DependentUpon>
     </Compile>
+    <Compile Update="Templates\Query.Inline.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Query.Inline.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\QueryBuilder.All.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -372,8 +426,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Templates\ComponentIds.cs">
-      <DependentUpon>ComponentIds.tt</DependentUpon>
+    <Compile Update="Templates\Ids.cs">
+      <DependentUpon>Ids.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>

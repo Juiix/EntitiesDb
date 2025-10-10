@@ -39,10 +39,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsC #>);
+		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);
 		archetype.Set(in entityReference.Slot, in cIds, <#= argsC #>);
 
-		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsB #>);
+		var bIds = new Ids<<#= genericsB #>>(<#= idArgsB #>);
 		archetype.Init(in entityReference.Slot, in bIds, <#= argsB #>);
 	}
 <#

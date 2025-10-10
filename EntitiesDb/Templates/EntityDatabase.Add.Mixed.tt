@@ -46,10 +46,10 @@ public partial class EntityDatabase
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsC #>);
+		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);
 		dstArchetype.Set(in entityReference.Slot, in cIds, <#= argsC #>);
 
-		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsB #>);
+		var bIds = new Ids<<#= genericsB #>>(<#= idArgsB #>);
 		dstArchetype.Init(in entityReference.Slot, in bIds, <#= argsB #>);
 	}
 <#

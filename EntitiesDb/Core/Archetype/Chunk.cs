@@ -76,13 +76,24 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A reference at <paramref name="index"/></returns>
-	public readonly unsafe ref T0? Get<T0>(int index, int typeId)
+	public readonly unsafe ref T0? Get<T0>(int index, Id<T0> id)
 	{
-		var offset = GetOffset<T0>(typeId);
+		var offset = GetOffset(id);
+		return ref Get(index, offset);
+	}
+
+	/// <summary>
+	/// Returns a reference to a component at a given index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <param name="index">The index to get</param>
+	/// <returns>A reference at <paramref name="index"/></returns>
+	public readonly unsafe ref T0? Get<T0>(int index, Offset<T0> offset)
+	{
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
-			: ref ((T0?[])ManagedComponents[offset])[index];
-    }
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride))
+			: ref ((T0?[])ManagedComponents[offset.Value])[index];
+	}
 
 	/// <summary>
 	/// Returns a readonly reference to a component at a given index
@@ -90,13 +101,24 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly reference at <paramref name="index"/></returns>
-	public readonly unsafe ref T0? GetReadOnly<T0>(int index, int typeId)
+	public readonly unsafe ref T0? GetReadOnly<T0>(int index, Id<T0> id)
 	{
-		var offset = GetOffset<T0>(typeId);
+		var offset = GetOffset(id);
+		return ref GetReadOnly(index, offset);
+	}
+
+	/// <summary>
+	/// Returns a readonly reference to a component at a given index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <param name="index">The index to get</param>
+	/// <returns>A readonly reference at <paramref name="index"/></returns>
+	public readonly unsafe ref T0? GetReadOnly<T0>(int index, Offset<T0> offset)
+	{
 		return ref ComponentMeta<T0>.IsUnmanaged
-            ? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
-            : ref ((T0?[])ManagedComponents[offset])[index];
-    }
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride))
+			: ref ((T0?[])ManagedComponents[offset.Value])[index];
+	}
 
 	/// <summary>
 	/// Returns a buffer of components at a given index
@@ -104,11 +126,22 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A buffer of components at <paramref name="index"/></returns>
-	public readonly unsafe DynamicBuffer<T0> GetBuffer<T0>(int index, int typeId) where T0 : unmanaged
+	public readonly unsafe DynamicBuffer<T0> GetBuffer<T0>(int index, Id<T0> id) where T0 : unmanaged
 	{
-		var offset = GetOffset<T0>(typeId);
-		return new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride));
-    }
+		var offset = GetOffset(id);
+		return GetBuffer(index, offset);
+	}
+
+	/// <summary>
+	/// Returns a buffer of components at a given index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <param name="index">The index to get</param>
+	/// <returns>A buffer of components at <paramref name="index"/></returns>
+	public readonly unsafe DynamicBuffer<T0> GetBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	{
+		return new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+	}
 
 	/// <summary>
 	/// Returns a readonly buffer of components at a given index
@@ -116,10 +149,21 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
-	public readonly unsafe ReadOnlyBuffer<T0> GetBufferReadOnly<T0>(int index, int typeId) where T0 : unmanaged
+	public readonly unsafe ReadOnlyBuffer<T0> GetBufferReadOnly<T0>(int index, Id<T0> id) where T0 : unmanaged
 	{
-		var offset = GetOffset<T0>(typeId);
-		return new ReadOnlyBuffer<T0>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride));
+		var offset = GetOffset(id);
+		return GetBufferReadOnly(index, offset);
+	}
+
+	/// <summary>
+	/// Returns a readonly buffer of components at a given index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <param name="index">The index to get</param>
+	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
+	public readonly unsafe ReadOnlyBuffer<T0> GetBufferReadOnly<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	{
+		return new ReadOnlyBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
 	}
 
 	/// <summary>
@@ -137,9 +181,23 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="Handle{T}"/> to the first index</returns>
-	public readonly Handle<T0?> GetHandle<T0>(int typeId)
+	public unsafe readonly Handle<T0?> GetHandle<T0>(Id<T0> id)
 	{
-		return new Handle<T0?>(ref Get<T0>(0, typeId));
+		var offset = GetOffset(id);
+		return GetHandle(offset);
+	}
+
+	/// <summary>
+	/// Returns a handle to a component at the first index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <returns>A <see cref="Handle{T}"/> to the first index</returns>
+	public unsafe readonly Handle<T0?> GetHandle<T0>(Offset<T0> offset)
+	{
+		ref var first = ref ComponentMeta<T0>.IsUnmanaged
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
+			: ref ((T0?[])ManagedComponents[offset.Value])[0];
+		return new Handle<T0?>(ref first);
 	}
 
 	/// <summary>
@@ -147,9 +205,23 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="ReadOnlyHandle{T}"/> to the first index</returns>
-	public readonly ReadOnlyHandle<T0?> GetHandleReadOnly<T0>(int typeId)
+	public unsafe readonly ReadOnlyHandle<T0?> GetHandleReadOnly<T0>(Id<T0> id)
 	{
-		return new ReadOnlyHandle<T0?>(ref GetReadOnly<T0>(0, typeId));
+		var offset = GetOffset(id);
+		return GetHandleReadOnly(offset);
+	}
+
+	/// <summary>
+	/// Returns a readonly handle to a component at the first index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <returns>A <see cref="ReadOnlyHandle{T}"/> to the first index</returns>
+	public unsafe readonly ReadOnlyHandle<T0?> GetHandleReadOnly<T0>(Offset<T0> offset)
+	{
+		ref var first = ref ComponentMeta<T0>.IsUnmanaged
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
+			: ref ((T0?[])ManagedComponents[offset.Value])[0];
+		return new ReadOnlyHandle<T0?>(ref first);
 	}
 
 	/// <summary>
@@ -157,9 +229,21 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="DynamicBufferHandle{T}"/> to the first index</returns>
-	public readonly DynamicBufferHandle<T0> GetBufferHandle<T0>(int typeId) where T0 : unmanaged
+	public unsafe readonly DynamicBufferHandle<T0> GetBufferHandle<T0>(Id<T0> id) where T0 : unmanaged
 	{
-		return new DynamicBufferHandle<T0>(GetBuffer<T0>(0, typeId));
+		var offset = GetOffset(id);
+		return GetBufferHandle(offset);
+	}
+
+	/// <summary>
+	/// Returns a handle to a buffer of components at the first index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <returns>A <see cref="DynamicBufferHandle{T}"/> to the first index</returns>
+	public unsafe readonly DynamicBufferHandle<T0> GetBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
+	{
+		var buffer = new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		return new DynamicBufferHandle<T0>(buffer);
 	}
 
 	/// <summary>
@@ -167,9 +251,21 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="ReadOnlyBufferHandle{T}"/> to the first index</returns>
-	public readonly unsafe ReadOnlyBufferHandle<T0> GetBufferHandleReadOnly<T0>(int typeId) where T0 : unmanaged
+	public readonly unsafe ReadOnlyBufferHandle<T0> GetBufferHandleReadOnly<T0>(Id<T0> id) where T0 : unmanaged
 	{
-		return new ReadOnlyBufferHandle<T0>(GetBufferReadOnly<T0>(0, typeId));
+		var offset = GetOffset(id);
+		return GetBufferHandleReadOnly(offset);
+	}
+
+	/// <summary>
+	/// Returns a readonly handle to a buffer of components at the first index
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <returns>A <see cref="ReadOnlyBufferHandle{T}"/> to the first index</returns>
+	public readonly unsafe ReadOnlyBufferHandle<T0> GetBufferHandleReadOnly<T0>(Offset<T0> offset) where T0 : unmanaged
+	{
+		var buffer = new ReadOnlyBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		return new ReadOnlyBufferHandle<T0>(buffer);
 	}
 
 	/// <summary>
@@ -181,37 +277,87 @@ public partial struct Chunk
 		TryGetOffset(typeId, out _);
 
 	/// <summary>
+	/// Returns if the chunk contains a component type of the given id
+	/// </summary>
+	/// <param name="typeId">The component type id</param>
+	/// <returns>If the chunk contains a component type of <paramref name="typeId"/></returns>
+	public readonly bool Has<T>(Id<T> id) =>
+		TryGetOffset(id.Value, out _);
+
+	/// <summary>
 	/// Returns if the chunk contains components types of the given ids
 	/// </summary>
 	/// <param name="ids">The component type ids</param>
 	/// <returns>If the chunk contains component types of <paramref name="ids"/></returns>
-	public readonly bool Has<T0>(in ComponentIds<T0> ids) =>
-		Has(ids.T0);
+	public readonly bool Has<T0>(in Ids<T0> ids) =>
+		TryGetOffset(ids.T0.Value, out _);
 
 	/// <summary>
 	/// Sets and replaces component value values
 	/// </summary>
 	/// <param name="index">The chunk index</param>
-	/// <param name="ids"><see cref="ComponentIds{T0}"/> retrieved via <see cref=""/></param>
 	/// <param name="component"></param>
-	public readonly void Set<T0>(int index, int typeId, in T0? component)
+	public unsafe readonly void Set<T0>(int index, Id<T0> id, in T0? component)
 	{
-		if (ComponentMeta<T0>.IsZeroSize)
-			return;
-		Get<T0>(index, typeId) = component;
+		var offset = GetOffset(id);
+		Set(index, offset, in component);
 	}
 
 	/// <summary>
 	/// Sets and replaces component value values
 	/// </summary>
 	/// <param name="index">The chunk index</param>
-	/// <param name="ids"><see cref="ComponentIds{T0}"/> retrieved via <see cref=""/></param>
-	/// <param name="components"></param>
-	public readonly void Set<T0>(int index, int typeId, in ReadOnlySpan<T0> components) where T0 : unmanaged
+	/// <param name="component"></param>
+	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, in T0? component)
 	{
-		if (ComponentMeta<T0>.IsZeroSize)
-			return;
-		GetBuffer<T0>(index, typeId).Set(components);
+		ref var value = ref ComponentMeta<T0>.IsUnmanaged
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride))
+			: ref ((T0?[])ManagedComponents[offset.Value])[index];
+		value = component;
+	}
+
+	/// <summary>
+	/// Sets and replaces component value values
+	/// </summary>
+	/// <param name="index">The chunk index</param>
+	/// <param name="components"></param>
+	public unsafe readonly void Set<T0>(int index, Id<T0> id, ReadOnlySpan<T0> components) where T0 : unmanaged
+	{
+		var offset = GetOffset(id);
+		Set(index, offset, components);
+	}
+
+	/// <summary>
+	/// Sets and replaces component value values
+	/// </summary>
+	/// <param name="index">The chunk index</param>
+	/// <param name="components"></param>
+	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, ReadOnlySpan<T0> components) where T0 : unmanaged
+	{
+		var buffer = new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+		buffer.Set(components);
+	}
+
+	/// <summary>
+	/// Gets offsets for given ids
+	/// </summary>
+	/// <returns>Offsets for <paramref name="ids"/></returns>
+	public readonly Offset<T0> GetOffset<T0>(in Id<T0> id)
+	{
+		var offsets = IdToOffsets;
+		return new Offset<T0>(offsets[id.Value]);
+	}
+
+	/// <summary>
+	/// Gets offsets for given ids
+	/// </summary>
+	/// <returns>Offsets for <paramref name="ids"/></returns>
+	public readonly Offsets<T0> GetOffsets<T0>(in Ids<T0> ids)
+	{
+		var offsets = IdToOffsets;
+		return new Offsets<T0>(
+			new Offset<T0>(offsets[ids.T0.Value])
+		);
 	}
 
 	/// <summary>
@@ -226,7 +372,7 @@ public partial struct Chunk
 	/// <summary>
 	/// Initializes component value values
 	/// </summary>
-	internal readonly void Init<T0>(int index, in ComponentIds<T0> ids, in ReadOnlySpan<T0> components) where T0 : unmanaged
+	internal readonly void Init<T0>(int index, in Ids<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
 	{
 		GetBuffer<T0>(index, ids.T0).Init(components);
 	}
@@ -248,9 +394,9 @@ public partial struct Chunk
 	/// </summary>
 	/// <param name="index">Index of the buffer to clear</param>
 	/// <param name="typeId">The component type id</param>
-    internal readonly void ClearBuffer<T>(int index, int typeId)
+	internal readonly void ClearBuffer<T>(int index, Id<T> id)
 	{
-		var offset = IdToOffsets[typeId];
+		var offset = IdToOffsets[id.Value];
 		ref var header = ref GetUnmanaged<BufferHeader>(offset + index * ComponentMeta<T>.Stride);
 		DynamicBuffer.Clear(ref header);
 	}
@@ -270,27 +416,10 @@ public partial struct Chunk
 	/// </summary>
 	/// <param name="index">The index of the <see cref="Entity"/> to get</param>
 	/// <returns>A <c>ref</c> of the <see cref="Entity"/> retrieved</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly unsafe ref Entity GetEntityMutable(int index)
 	{
 		return ref GetUnmanaged<Entity>(index * sizeof(Entity));
-	}
-
-	/// <summary>
-	/// Gets the offset for a component type of a given id
-	/// </summary>
-	/// <param name="typeId">The component type id</param>
-	/// <returns>Offset for a component type of <paramref name="typeId"/></returns>
-	internal readonly int GetOffset<T>(int typeId)
-	{
-		if (ComponentMeta<T>.IsZeroSize)
-			throw ThrowHelper.ComponentZeroSize(typeof(T));
-
-		if (typeId >= IdToOffsets.Length)
-			throw ThrowHelper.ComponentNotFound(typeof(T));
-		var offset = IdToOffsets[typeId];
-		if (offset < 0)
-			throw ThrowHelper.ComponentNotFound(typeof(T));
-		return offset;
 	}
 
 	/// <summary>

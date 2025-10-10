@@ -115,11 +115,31 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// If this <see cref="Archetype"/> contains a given component
 	/// </summary>
+	/// <returns>If this <see cref="Archetype"/> has component with <paramref name="typeId"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool Has<T>(Id<T> id) =>
+		Signature.Test(id.Value);
+
+	/// <summary>
+	/// If this <see cref="Archetype"/> contains a given component
+	/// </summary>
 	/// <param name="ids">Component ids from <see cref="ComponentRegistry.GetIds{T}()"/></param>
 	/// <returns>If this <see cref="Archetype"/> has <typeparamref name="T"/></returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Has<T0>(in ComponentIds<T0> ids) =>
-        Signature.Test(ids.T0);
+    public bool Has<T0>(in Ids<T0> ids) =>
+        Signature.Test(ids.T0.Value);
+
+	/// <summary>
+	/// Gets offsets for given ids
+	/// </summary>
+	/// <returns>Offsets for <paramref name="ids"/></returns>
+	public Offsets<T0> GetOffsets<T0>(in Ids<T0> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0>(
+			new Offset<T0>(offsets[ids.T0.Value])
+		);
+	}
 
 	/// <summary>
 	/// Returns a chunk enumerator
@@ -131,7 +151,7 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	/// <param name="slot">The target slot</param>
 	/// <param name="ids">Component ids</param>
-	internal void Clear<T0>(in EntitySlot slot, in ComponentIds<T0> ids)
+	internal void Clear<T0>(in EntitySlot slot, in Ids<T0> ids)
 	{
 		if (ComponentMeta<T0>.IsBuffered) ClearBuffer<T0>(in slot, ids.T0);
     }
@@ -145,40 +165,40 @@ public unsafe sealed partial class Archetype
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="slot">The target slot</param>
 	/// <param name="typeId">Component id for <typeparamref name="T"/></param>
-    internal void ClearBuffer<T>(in EntitySlot slot, int typeId)
+    internal void ClearBuffer<T>(in EntitySlot slot, Id<T> id)
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-        chunk.ClearBuffer<T>(slot.Index, typeId);
+        chunk.ClearBuffer<T>(slot.Index, id);
     }
 
-    internal ref T? Get<T>(in EntitySlot slot, int typeId)
+    internal ref T? Get<T>(in EntitySlot slot, Id<T> id)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return ref chunk.Get<T>(slot.Index, typeId);
+		return ref chunk.Get<T>(slot.Index, id);
     }
 
-    internal ref readonly T? GetReadOnly<T>(in EntitySlot slot, int typeId)
+    internal ref readonly T? GetReadOnly<T>(in EntitySlot slot, Id<T> id)
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-        return ref chunk.GetReadOnly<T>(slot.Index, typeId);
+        return ref chunk.GetReadOnly<T>(slot.Index, id);
     }
 
-    internal DynamicBuffer<T> GetBuffer<T>(in EntitySlot slot, int typeId) where T : unmanaged
+    internal DynamicBuffer<T> GetBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return chunk.GetBuffer<T>(slot.Index, typeId);
+		return chunk.GetBuffer<T>(slot.Index, id);
     }
 
-    internal ReadOnlyBuffer<T> GetBufferReadOnly<T>(in EntitySlot slot, int typeId) where T : unmanaged
+    internal ReadOnlyBuffer<T> GetBufferReadOnly<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-        return chunk.GetBufferReadOnly<T>(slot.Index, typeId);
+        return chunk.GetBufferReadOnly<T>(slot.Index, id);
     }
 
 	/// <summary>
 	/// Initializes a buffer of components at a given slot
 	/// </summary>
-	internal void Init<T0>(in EntitySlot slot, in ComponentIds<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
+	internal void Init<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
 		chunk.GetBuffer<T0>(slot.Index, ids.T0).Init(components);
@@ -187,7 +207,7 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// Sets a component at a given slot
 	/// </summary>
-	internal void Set<T0>(in EntitySlot slot, in ComponentIds<T0> ids, in T0? component = default)
+	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, in T0? component = default)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		chunk.Set(slot.Index, ids.T0, in component);
@@ -196,7 +216,7 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// Sets a buffer of components at a given slot
 	/// </summary>
-	internal void Set<T0>(in EntitySlot slot, in ComponentIds<T0> ids, ReadOnlySpan<T0> components = default) where T0 : unmanaged
+	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components = default) where T0 : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
         chunk.Set(slot.Index, ids.T0, components);

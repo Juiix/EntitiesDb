@@ -10,10 +10,10 @@ public partial class Archetype
 	for (int index = 2; index < GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var sets = FormatSep(index, "Signature.Test(ids.T{0})", " &&" + Environment.NewLine);
+		var sets = FormatSep(index, "Signature.Test(ids.T{0}.Value)", " &&" + Environment.NewLine);
 #>
-	/// <inheritdoc cref="Has{T0}(in ComponentIds{T0})"/>
-	public bool Has<<#= generics #>>(in ComponentIds<<#= generics #>> ids) =>
+	/// <inheritdoc cref="Has{T0}(in Ids{T0})"/>
+	public bool Has<<#= generics #>>(in Ids<<#= generics #>> ids) =>
 		<#= Indent(sets, 8) #>
 		;
 <#

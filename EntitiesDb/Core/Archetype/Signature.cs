@@ -54,15 +54,24 @@ public readonly partial struct Signature : IEquatable<Signature>
 			}
 		}
 		return new Signature(w0, w1, w2, w3);
-    }
+	}
 
-    /// <summary>
-    /// Gets the signature of given component ids
-    /// </summary>
-    /// <returns>Signature of component ids</returns>
-    public static Signature FromIds<T0>(in ComponentIds<T0> ids)
+	/// <summary>
+	/// Gets the signature of given component id
+	/// </summary>
+	/// <returns>Signature of component ids</returns>
+	public static Signature FromId<T0>(Id<T0> id)
+	{
+		return SingleBit(id.Value);
+	}
+
+	/// <summary>
+	/// Gets the signature of given component ids
+	/// </summary>
+	/// <returns>Signature of component ids</returns>
+	public static Signature FromIds<T0>(in Ids<T0> ids)
     {
-        return SingleBit(ids.T0);
+        return SingleBit(ids.T0.Value);
     }
 
     // --- Queries --------------------------------------------------------------

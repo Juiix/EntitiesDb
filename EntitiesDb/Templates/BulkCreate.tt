@@ -13,9 +13,9 @@ namespace EntitiesDb;
 public readonly struct BulkCreate<<#= generics #>>
 {
 	public readonly Archetype Archetype;
-	public readonly ComponentIds<<#= generics #>> Ids;
+	public readonly Ids<<#= generics #>> Ids;
 
-	internal BulkCreate(Archetype archetype, in ComponentIds<<#= generics #>> ids)
+	internal BulkCreate(Archetype archetype, in Ids<<#= generics #>> ids)
 	{
 		Archetype = archetype;
 		Ids = ids;

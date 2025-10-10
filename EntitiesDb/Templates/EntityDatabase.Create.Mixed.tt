@@ -38,9 +38,9 @@ public partial class EntityDatabase
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsC #>);
+		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);
         chunk.Set(slot.Index, in cIds, <#= argsC #>);
-		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsB #>);
+		var bIds = new Ids<<#= genericsB #>>(<#= idArgsB #>);
         chunk.Init(slot.Index, in bIds, <#= argsB #>);
 		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
@@ -55,9 +55,9 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<<#= genericsB #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
 		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-		var cIds = new ComponentIds<<#= genericsC #>>(<#= idArgsCBulk #>);
+		var cIds = new Ids<<#= genericsC #>>(<#= idArgsCBulk #>);
         chunk.Set(slot.Index, in cIds, <#= argsC #>);
-		var bIds = new ComponentIds<<#= genericsB #>>(<#= idArgsBBulk #>);
+		var bIds = new Ids<<#= genericsB #>>(<#= idArgsBBulk #>);
         chunk.Init(slot.Index, in bIds, <#= argsB #>);
 		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;

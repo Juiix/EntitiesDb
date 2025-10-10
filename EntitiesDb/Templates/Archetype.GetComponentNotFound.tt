@@ -10,9 +10,9 @@ public partial class Archetype
 	for (int index = 1; index < GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var throws = FormatLine(index, "if (!Signature.Test(ids.T{0})) return ThrowHelper.ComponentNotFound(entityId, typeof(T{0}));");
+		var throws = FormatLine(index, "if (!Signature.Test(ids.T{0}.Value)) return ThrowHelper.ComponentNotFound(entityId, typeof(T{0}));");
 #>
-	internal ComponentException GetComponentNotFound<<#= generics #>>(int entityId, in ComponentIds<<#= generics #>> ids)
+	internal ComponentException GetComponentNotFound<<#= generics #>>(int entityId, in Ids<<#= generics #>> ids)
 	{
 		<#= Indent(throws, 8) #>
 		throw new CodeGenerationException();

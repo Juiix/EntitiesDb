@@ -8,12 +8,14 @@ public sealed partial class Query
 {
 	private readonly QueryFilter _filter;
 	private readonly ArchetypeCollection _archetypes;
+	private readonly ComponentRegistry _componentRegistry;
 	private readonly List<Archetype> _matchingArchetypes = [];
 	private int _matchVersion;
 
-	internal Query(ArchetypeCollection archetypes, QueryFilter filter)
+	internal Query(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, QueryFilter filter)
 	{
 		_archetypes = archetypes;
+		_componentRegistry = componentRegistry;
 		_filter = filter;
 	}
 
@@ -79,5 +81,19 @@ public sealed partial class Query
 			}
 		}
 		_matchVersion = _archetypes.Version;
+	}
+
+	public void Inline<TForEach, T0>(ref TForEach forEach)
+		where TForEach : IForEach<T0>
+	{
+		var id = _componentRegistry.GetId<T0>();
+		foreach (ref readonly var chunk in GetChunkIterator())
+		{
+			var handle = chunk.GetHandle(id);
+			foreach (var index in chunk)
+			{
+				forEach.ForEach(ref handle[index]);
+			}
+		}
 	}
 }

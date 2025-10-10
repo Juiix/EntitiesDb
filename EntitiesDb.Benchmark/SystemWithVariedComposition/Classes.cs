@@ -45,7 +45,7 @@ public partial class SystemWithVariedComposition
 
 	[BenchmarkCategory(Categories.Classes)]
 	[Benchmark]
-	public void Classes_Enumerate()
+	public void Classes()
 	{
 		var entitySpanA = CollectionsMarshal.AsSpan(_classes.OneComponentEntities);
 		foreach (ref var entity in entitySpanA)

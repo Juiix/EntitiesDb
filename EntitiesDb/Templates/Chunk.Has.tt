@@ -12,8 +12,8 @@ public partial struct Chunk
 		var generics = Generics(index);
 		var checks = FormatSep(index, "Has(ids.T{0})", " &&" + Environment.NewLine);
 #>
-	/// <inheritdoc cref="Has{T0}(in ComponentIds{T0})"/>
-	public readonly bool Has<<#= generics #>>(in ComponentIds<<#= generics #>> ids) =>
+	/// <inheritdoc cref="Has{T0}(in Ids{T0})"/>
+	public readonly bool Has<<#= generics #>>(in Ids<<#= generics #>> ids) =>
 		<#= Indent(checks, 8) #>
 		;
 <#

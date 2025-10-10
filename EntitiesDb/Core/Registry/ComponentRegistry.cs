@@ -142,16 +142,16 @@ public sealed partial class ComponentRegistry
 	/// <returns>Signature of component types</returns>
 	public Signature GetSignature<T0>()
 	{
-		return Signature.SingleBit(GetId<T0>());
+		return Signature.SingleBit(GetId<T0>().Value);
     }
 
     /// <summary>
     /// Gets component ids for types
     /// </summary>
     /// <returns></returns>
-    public ComponentIds<T0> GetIds<T0>()
+    public Ids<T0> GetIds<T0>()
     {
-        return new(GetId<T0>());
+        return new Ids<T0>(GetId<T0>());
     }
 
     /// <summary>
@@ -159,9 +159,9 @@ public sealed partial class ComponentRegistry
     /// </summary>
     /// <typeparam name="T">The target type</typeparam>
     /// <returns>Component id for <typeparamref name="T"/></returns>
-    public int GetId<T>()
+    public Id<T> GetId<T>()
 	{
-		return GetComponentType<T>().Id;
+		return new Id<T>(GetComponentType<T>().Id);
 	}
 
     /// <summary>
@@ -197,7 +197,7 @@ public sealed partial class ComponentRegistry
 			throw ThrowHelper.ComponentBufferZeroSize(typeof(T));
 
 		Volatile.Write(ref _nextId, id + 1);
-		_componentTypes[id] = new ComponentType(id, (short)internalCapacity, (short)byteSize, isUnmanaged);
+		_componentTypes[id] = new ComponentType((byte)id, (short)internalCapacity, (short)byteSize, isUnmanaged);
 		_types[id] = type;
 		_arrayFactories[id] = static (int length) => new T[length];
 		_typeMap[type] = id;

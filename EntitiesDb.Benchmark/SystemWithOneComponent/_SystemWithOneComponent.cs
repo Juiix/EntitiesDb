@@ -4,7 +4,7 @@ namespace EntitiesDb.Benchmark;
 
 [BenchmarkCategory(Categories.System)]
 [MemoryDiagnoser]
-[HardwareCounters(BenchmarkDotNet.Diagnosers.HardwareCounter.CacheMisses)]
+//[HardwareCounters(BenchmarkDotNet.Diagnosers.HardwareCounter.CacheMisses)]
 public partial class SystemWithOneComponent
 {
 	[Params(100_000)]

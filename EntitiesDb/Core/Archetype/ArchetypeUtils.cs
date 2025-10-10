@@ -62,7 +62,7 @@ internal unsafe static class ArchetypeUtils
 		var unmanagedEntitySize = sizeof(Entity);
 		foreach (ref readonly var componentType in componentTypes.Slice(0, unmanagedCount))
 		{
-			idToOffsets[componentType.Id] = unmanagedEntitySize * chunkCapacity;
+			idToOffsets[componentType.Id] = componentType.IsZeroSize ? -1 : unmanagedEntitySize * chunkCapacity;
 			unmanagedEntitySize += componentType.Stride;
 		}
 

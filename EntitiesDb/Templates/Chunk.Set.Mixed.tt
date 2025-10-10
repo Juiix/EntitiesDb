@@ -21,8 +21,8 @@ public partial struct Chunk
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 			var setsB = FormatLine(indexB, "GetBuffer<T{0}>(index, ids.T{0}).Set(t{0}Components);", indexC);
 #>
-	/// <inheritdoc cref="Set{T0}(int, int, in T0?)"/>
-	public readonly void Set<<#= genericsC #>, <#= genericsB #>>(int index, in ComponentIds<<#= genericsC #>, <#= genericsB #>> ids, <#= parametersC #>, <#= parametersB #>)
+	/// <inheritdoc cref="Set{T0}(int, Id{T0}, in T0?)"/>
+	public readonly void Set<<#= genericsC #>, <#= genericsB #>>(int index, in Ids<<#= genericsC #>, <#= genericsB #>> ids, <#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
 		<#= Indent(setsC, 8) #>

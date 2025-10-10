@@ -5,16 +5,16 @@ using Xunit;
 
 namespace EntitiesDb.Core;
 
-// Simple managed component (struct containing a reference)
-file struct ManagedName
-{
-	public string Name;
-	public ManagedName(string name) => Name = name;
-	public override string ToString() => Name ?? string.Empty;
-}
-
 public sealed class ArchetypeTests
 {
+	// Simple managed component (struct containing a reference)
+	private struct ManagedName
+	{
+		public string Name;
+		public ManagedName(string name) => Name = name;
+		public override string ToString() => Name ?? string.Empty;
+	}
+
 	private static Signature Sig(params int[] ids)
 	{
 		var s = Signature.Empty;
@@ -29,9 +29,9 @@ public sealed class ArchetypeTests
 
 	private static (Archetype archetype,
 					ComponentRegistry reg,
-					ComponentType ctInt,
-					ComponentType ctFloat,
-					ComponentType ctName)
+					Id<int> ctInt,
+					Id<float> ctFloat,
+					Id<ManagedName> ctName)
 		BuildArchetype_Int_Float_Name(int chunkBytes = 4096)
 	{
 		var reg = new ComponentRegistry();
@@ -52,7 +52,7 @@ public sealed class ArchetypeTests
 		var arrayFactories = FactoriesForManaged(reg, componentTypes);
 
 		var archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, chunkBytes);
-		return (archetype, reg, ctInt, ctFloat, ctName);
+		return (archetype, reg, new Id<int>(ctInt.Id), new Id<float>(ctFloat.Id), new Id<ManagedName>(ctName.Id));
 	}
 
 	[Fact]
@@ -66,13 +66,13 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunksInUse);
 
 			// Signature / HasComponent
-			Assert.True(arch.Has(new ComponentIds<int>(ctInt.Id)));
-			Assert.True(arch.Has(new ComponentIds<float>(ctFloat.Id)));
-			Assert.True(arch.Has(new ComponentIds<ManagedName>(ctName.Id)));
+			Assert.True(arch.Has(ctInt));
+			Assert.True(arch.Has(ctFloat));
+			Assert.True(arch.Has(ctName));
 
 			// A type not in the archetype
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
-			Assert.False(arch.Has(new ComponentIds<Guid>(ctGuid.Id)));
+			Assert.False(arch.Has(ctGuid.Id));
 		}
 		finally
 		{
@@ -162,22 +162,22 @@ public sealed class ArchetypeTests
 			var dst = arch.AddEntity(new Entity(2, 0), out var dstChunk);
 
 			// Seed source component data
-			srcChunk.Get<int>(src.Index, ctInt.Id) = 1234;
-			srcChunk.Get<float>(src.Index, ctFloat.Id) = -9.5f;
-			srcChunk.Get<ManagedName>(src.Index, ctName.Id) = new ManagedName("Alpha");
+			srcChunk.Get<int>(src.Index, ctInt) = 1234;
+			srcChunk.Get<float>(src.Index, ctFloat) = -9.5f;
+			srcChunk.Get<ManagedName>(src.Index, ctName) = new ManagedName("Alpha");
 
 			// Different data in destination to ensure it changes
-			dstChunk.Get<int>(dst.Index, ctInt.Id) = 0;
-			dstChunk.Get<float>(dst.Index, ctFloat.Id) = 0f;
-			dstChunk.Get<ManagedName>(dst.Index, ctName.Id) = new ManagedName("z");
+			dstChunk.Get<int>(dst.Index, ctInt) = 0;
+			dstChunk.Get<float>(dst.Index, ctFloat) = 0f;
+			dstChunk.Get<ManagedName>(dst.Index, ctName) = new ManagedName("z");
 
 			// Act
 			arch.CloneComponents(src, dst);
 
 			// Assert: values copied
-			Assert.Equal(1234,		dstChunk.Get<int>(dst.Index, ctInt.Id));
-			Assert.Equal(-9.5f,		dstChunk.Get<float>(dst.Index, ctFloat.Id));
-			Assert.Equal("Alpha",	dstChunk.Get<ManagedName>(dst.Index, ctName.Id).Name);
+			Assert.Equal(1234,		dstChunk.Get<int>(dst.Index, ctInt));
+			Assert.Equal(-9.5f,		dstChunk.Get<float>(dst.Index, ctFloat));
+			Assert.Equal("Alpha",	dstChunk.Get<ManagedName>(dst.Index, ctName).Name);
 		}
 		finally
 		{
@@ -209,20 +209,20 @@ public sealed class ArchetypeTests
 			var d = dstArch.AddEntity(new Entity(20, 0), out var dChunk);
 
 			// Seed source values
-			sChunk.Get<int>(s.Index, ctInt.Id) = 7;
-			sChunk.Get<float>(s.Index, ctFloat.Id) = 99.25f;
-			sChunk.Get<ManagedName>(s.Index, ctName.Id) = new ManagedName("Carol");
+			sChunk.Get<int>(s.Index, ctInt) = 7;
+			sChunk.Get<float>(s.Index, ctFloat) = 99.25f;
+			sChunk.Get<ManagedName>(s.Index, ctName) = new ManagedName("Carol");
 
 			// Seed destination with sentinels
-			dChunk.Get<int>(s.Index, ctInt.Id) = -1;
-			dChunk.Get<ManagedName>(s.Index, ctName.Id) = new ManagedName("unset");
+			dChunk.Get<int>(s.Index, ctInt) = -1;
+			dChunk.Get<ManagedName>(s.Index, ctName) = new ManagedName("unset");
 
 			// Act: copy subset (int + name)
 			srcArch.CopyComponents(s, dstArch, d);
 
 			// Assert: int and name copied; float intentionally absent in dst archetype
-			Assert.Equal(7, dChunk.Get<int>(d.Index, ctInt.Id));
-			Assert.Equal("Carol", dChunk.Get<ManagedName>(d.Index, ctName.Id).Name);
+			Assert.Equal(7, dChunk.Get<int>(d.Index, ctInt));
+			Assert.Equal("Carol", dChunk.Get<ManagedName>(d.Index, ctName).Name);
 		}
 		finally
 		{
@@ -266,9 +266,9 @@ public sealed class ArchetypeTests
 		try
 		{
 			// present
-			Assert.True(arch.Has(ctInt.Id));
-			Assert.True(arch.Has(ctFloat.Id));
-			Assert.True(arch.Has(ctName.Id));
+			Assert.True(arch.Has(ctInt));
+			Assert.True(arch.Has(ctFloat));
+			Assert.True(arch.Has(ctName));
 
 			// absent
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();

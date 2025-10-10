@@ -16,8 +16,8 @@ public partial class Archetype
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
 		var sets = FormatLine(index, "chunk.Set(slot.Index, ids.T{0}, t{0}Components);");
 #>
-	/// <inheritdoc cref="Set{T0}(in EntitySlot, in ComponentIds{T0}, ReadOnlySpan{T0})"/>
-	internal void Set<<#= generics #>>(in EntitySlot slot, in ComponentIds<<#= generics #>> ids, <#= parameters #>)
+	/// <inheritdoc cref="Set{T0}(in EntitySlot, in Ids{T0}, ReadOnlySpan{T0})"/>
+	internal void Set<<#= generics #>>(in EntitySlot slot, in Ids<<#= generics #>> ids, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];

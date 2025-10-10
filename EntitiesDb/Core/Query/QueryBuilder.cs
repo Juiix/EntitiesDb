@@ -29,7 +29,7 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	/// <returns>The built <see cref="Query"/></returns>
 	public Query Build()
 	{
-		var query = new Query(_archetypes, new QueryFilter(_all, _any, _none, _filterMode));
+		var query = new Query(_archetypes, _componentRegistry, new QueryFilter(_all, _any, _none, _filterMode));
 		Clear();
 		return query;
 	}

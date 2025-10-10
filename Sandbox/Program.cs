@@ -7,12 +7,10 @@ int entityCount = 100000;
 using var entities = new EntityDatabase(16384, int.MaxValue);
 entities.Reserve<Component1>(entityCount);
 
-var ids = entities.ComponentRegistry.GetIds<Component1>();
-var signature = Signature.FromIds(in ids);
-var archetype = entities.Archetypes.GetOrCreateArchetype(in signature);
+var bulk = entities.GetBulkCreate<Component1>();
 for (int i = 0; i < entityCount; ++i)
 {
-	entities.Create(archetype, in ids, new Component1());
+	entities.Create(in bulk, new Component1());
 }
 
 var query = entities.QueryBuilder
@@ -22,22 +20,26 @@ var query = entities.QueryBuilder
 for (int it = 0; it < 100000; it++)
 {
 	Vector256<int> sum = Vector256.Create(1);
-	var componentId = entities.ComponentRegistry.GetId<Component1>();
-	foreach (ref readonly var chunk in query)
+	var ids = entities.ComponentRegistry.GetIds<Component1>();
+	foreach (var archetype in query.GetArchetypeIterator())
 	{
-		var ec = chunk.EntityCount;
-		var alignedLength = ec - (ec & 7);
-		var handle = chunk.GetHandle<Component1>(componentId);
-		var simdHandle = handle.Reinterpret<Vector256<int>>();
-		var simdLength = alignedLength / 8;
-		for (int i = 0; i < simdLength; i++)
+		var offsets = archetype.GetOffsets(in ids);
+		foreach (ref readonly var chunk in archetype)
 		{
-			simdHandle[i] += sum;
-		}
+			var ec = chunk.EntityCount;
+			var alignedLength = ec - (ec & 7);
+			var handle = chunk.GetHandle<Component1>(offsets.T0);
+			var simdHandle = handle.Reinterpret<Vector256<int>>();
+			var simdLength = alignedLength / 8;
+			for (int i = 0; i < simdLength; i++)
+			{
+				simdHandle[i] += sum;
+			}
 
-		for (int i = alignedLength; i < ec; i++)
-		{
-			handle[i].Value++;
+			for (int i = alignedLength; i < ec; i++)
+			{
+				handle[i].Value++;
+			}
 		}
 	}
 }

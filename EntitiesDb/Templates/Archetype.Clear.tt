@@ -12,8 +12,8 @@ public partial class Archetype
 		var generics = Generics(index);
 		var sets = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) ClearBuffer<T{0}>(in slot, ids.T{0});");
 #>
-	/// <inheritdoc cref="Clear{T0}(in EntitySlot, in ComponentIds{T0})"/>
-	internal void Clear<<#= generics #>>(in EntitySlot slot, in ComponentIds<<#= generics #>> ids)
+	/// <inheritdoc cref="Clear{T0}(in EntitySlot, in Ids{T0})"/>
+	internal void Clear<<#= generics #>>(in EntitySlot slot, in Ids<<#= generics #>> ids)
 	{
 		<#= Indent(sets, 8) #>
 	}

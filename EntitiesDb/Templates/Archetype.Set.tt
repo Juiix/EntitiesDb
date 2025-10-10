@@ -13,8 +13,8 @@ public partial class Archetype
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
 		var sets = FormatLine(index, "chunk.Set(slot.Index, ids.T{0}, in t{0}Component);");
 #>
-	/// <inheritdoc cref="Set{T0}(in EntitySlot, in ComponentIds{T0}, in T0?)"/>
-	internal void Set<<#= generics #>>(in EntitySlot slot, in ComponentIds<<#= generics #>> ids, <#= parameters #>)
+	/// <inheritdoc cref="Set{T0}(in EntitySlot, in Ids{T0}, in T0?)"/>
+	internal void Set<<#= generics #>>(in EntitySlot slot, in Ids<<#= generics #>> ids, <#= parameters #>)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		<#= Indent(sets, 8) #>

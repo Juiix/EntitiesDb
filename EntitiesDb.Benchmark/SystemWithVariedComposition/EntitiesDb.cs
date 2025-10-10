@@ -38,16 +38,15 @@ public partial class SystemWithVariedComposition
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
 	[Benchmark]
-	public void EntitiesDb_Enumerate()
+	public void EntitiesDb()
 	{
-		var componentId = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
+		var id = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
 		foreach (ref readonly var chunk in _entitiesDb.Query)
 		{
-			var entityCount = chunk.EntityCount;
-			var handle = chunk.GetHandle<Component1>(componentId);
-			for (int i = 0; i < entityCount; i++)
+			var handle = chunk.GetHandle(id);
+			foreach (var index in chunk)
 			{
-				handle[i].Value++;
+				handle[index].Value++;
 			}
 		}
 	}
@@ -57,12 +56,12 @@ public partial class SystemWithVariedComposition
 	public void EntitiesDb_Simd()
 	{
 		Vector256<int> sum = Vector256.Create(1);
-		var componentId = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
+		var id = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
 		foreach (ref readonly var chunk in _entitiesDb.Query)
 		{
 			var entityCount = chunk.EntityCount;
 			var alignedLength = entityCount - (entityCount & 7);
-			var handle = chunk.GetHandle<Component1>(componentId);
+			var handle = chunk.GetHandle(id);
 			var simdHandle = handle.Reinterpret<Vector256<int>>();
 			var simdLength = alignedLength / 8;
 			for (int i = 0; i < simdLength; i++)

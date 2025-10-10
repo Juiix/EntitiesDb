@@ -10,10 +10,10 @@ public readonly partial struct Signature
 	for (int index = 2; index < GenericCount; index++)
 	{
         var generics = Generics(index);
-		var accessors = FormatSep(index, "ids.T{0}", "," + Environment.NewLine);
+		var accessors = FormatSep(index, "ids.T{0}.Value", "," + Environment.NewLine);
 #>
-	/// <inheritdoc cref="FromIds{T}(in ComponentIds{T0})"/>
-	public static Signature FromIds<<#= generics #>>(in ComponentIds<<#= generics #>> ids)
+	/// <inheritdoc cref="FromIds{T}(in Ids{T0})"/>
+	public static Signature FromIds<<#= generics #>>(in Ids<<#= generics #>> ids)
 	{
 		return MultipleBits(
 			<#= Indent(accessors, 12) #>

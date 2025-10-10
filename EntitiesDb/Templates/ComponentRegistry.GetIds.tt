@@ -13,7 +13,7 @@ public partial class ComponentRegistry
 		var ids = FormatSep(index, "GetId<T{0}>()", "," + Environment.NewLine);
 #>
 	/// <inheritdoc cref="GetIds{T0}()"/>
-	public ComponentIds<<#= generics #>> GetIds<<#= generics #>>()
+	public Ids<<#= generics #>> GetIds<<#= generics #>>()
 	{
 		return new(
 			<#= Indent(ids, 12) #>

@@ -8,9 +8,9 @@ namespace EntitiesDb;
 	for (int index = 1; index < GenericCount; index++)
 	{
 		var generics = FormatComma(index, "C{0}");
-		var parameters = FormatComma(index, "int T{0}");
+		var parameters = FormatComma(index, "Offset<C{0}> T{0}");
 #>
-public readonly record struct ComponentIds<<#= generics #>>(
+public readonly record struct Offsets<<#= generics #>>(
 	<#= parameters #>
 );
 <#

@@ -21,10 +21,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1>(ids.T1);
+		var bIds = new Ids<T1>(ids.T1);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -44,10 +44,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2>(ids.T1, ids.T2);
+		var bIds = new Ids<T1, T2>(ids.T1, ids.T2);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -68,10 +68,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3>(ids.T1, ids.T2, ids.T3);
+		var bIds = new Ids<T1, T2, T3>(ids.T1, ids.T2, ids.T3);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -93,10 +93,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4>(ids.T1, ids.T2, ids.T3, ids.T4);
+		var bIds = new Ids<T1, T2, T3, T4>(ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -119,10 +119,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var bIds = new Ids<T1, T2, T3, T4, T5>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -146,10 +146,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -174,10 +174,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -203,10 +203,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -233,10 +233,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -264,10 +264,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -296,10 +296,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -329,10 +329,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -363,10 +363,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -398,10 +398,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -434,10 +434,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -471,10 +471,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -509,10 +509,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -548,10 +548,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -588,10 +588,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -629,10 +629,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -671,10 +671,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -714,10 +714,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -758,10 +758,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0>(ids.T0);
+		var cIds = new Ids<T0>(ids.T0);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component);
 
-		var bIds = new ComponentIds<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -780,10 +780,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2>(ids.T2);
+		var bIds = new Ids<T2>(ids.T2);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -803,10 +803,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3>(ids.T2, ids.T3);
+		var bIds = new Ids<T2, T3>(ids.T2, ids.T3);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -827,10 +827,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4>(ids.T2, ids.T3, ids.T4);
+		var bIds = new Ids<T2, T3, T4>(ids.T2, ids.T3, ids.T4);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -852,10 +852,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5>(ids.T2, ids.T3, ids.T4, ids.T5);
+		var bIds = new Ids<T2, T3, T4, T5>(ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -878,10 +878,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var bIds = new Ids<T2, T3, T4, T5, T6>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -905,10 +905,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -933,10 +933,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -962,10 +962,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -992,10 +992,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1023,10 +1023,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1055,10 +1055,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1088,10 +1088,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1122,10 +1122,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1157,10 +1157,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1193,10 +1193,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1230,10 +1230,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1268,10 +1268,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1307,10 +1307,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1347,10 +1347,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1388,10 +1388,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1430,10 +1430,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1473,10 +1473,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1>(ids.T0, ids.T1);
+		var cIds = new Ids<T0, T1>(ids.T0, ids.T1);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component);
 
-		var bIds = new ComponentIds<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1495,10 +1495,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3>(ids.T3);
+		var bIds = new Ids<T3>(ids.T3);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1518,10 +1518,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4>(ids.T3, ids.T4);
+		var bIds = new Ids<T3, T4>(ids.T3, ids.T4);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1542,10 +1542,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5>(ids.T3, ids.T4, ids.T5);
+		var bIds = new Ids<T3, T4, T5>(ids.T3, ids.T4, ids.T5);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1567,10 +1567,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6>(ids.T3, ids.T4, ids.T5, ids.T6);
+		var bIds = new Ids<T3, T4, T5, T6>(ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1593,10 +1593,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var bIds = new Ids<T3, T4, T5, T6, T7>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1620,10 +1620,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1648,10 +1648,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1677,10 +1677,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1707,10 +1707,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1738,10 +1738,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1770,10 +1770,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1803,10 +1803,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1837,10 +1837,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1872,10 +1872,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1908,10 +1908,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1945,10 +1945,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -1983,10 +1983,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2022,10 +2022,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2062,10 +2062,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2103,10 +2103,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2145,10 +2145,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
+		var cIds = new Ids<T0, T1, T2>(ids.T0, ids.T1, ids.T2);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component);
 
-		var bIds = new ComponentIds<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2167,10 +2167,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4>(ids.T4);
+		var bIds = new Ids<T4>(ids.T4);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2190,10 +2190,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5>(ids.T4, ids.T5);
+		var bIds = new Ids<T4, T5>(ids.T4, ids.T5);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2214,10 +2214,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6>(ids.T4, ids.T5, ids.T6);
+		var bIds = new Ids<T4, T5, T6>(ids.T4, ids.T5, ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2239,10 +2239,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7>(ids.T4, ids.T5, ids.T6, ids.T7);
+		var bIds = new Ids<T4, T5, T6, T7>(ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2265,10 +2265,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T4, T5, T6, T7, T8>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2292,10 +2292,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2320,10 +2320,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2349,10 +2349,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2379,10 +2379,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2410,10 +2410,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2442,10 +2442,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2475,10 +2475,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2509,10 +2509,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2544,10 +2544,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2580,10 +2580,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2617,10 +2617,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2655,10 +2655,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2694,10 +2694,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2734,10 +2734,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2775,10 +2775,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
+		var cIds = new Ids<T0, T1, T2, T3>(ids.T0, ids.T1, ids.T2, ids.T3);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component);
 
-		var bIds = new ComponentIds<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2797,10 +2797,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5>(ids.T5);
+		var bIds = new Ids<T5>(ids.T5);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2820,10 +2820,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6>(ids.T5, ids.T6);
+		var bIds = new Ids<T5, T6>(ids.T5, ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2844,10 +2844,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7>(ids.T5, ids.T6, ids.T7);
+		var bIds = new Ids<T5, T6, T7>(ids.T5, ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2869,10 +2869,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8>(ids.T5, ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T5, T6, T7, T8>(ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2895,10 +2895,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T5, T6, T7, T8, T9>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2922,10 +2922,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2950,10 +2950,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -2979,10 +2979,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3009,10 +3009,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3040,10 +3040,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3072,10 +3072,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3105,10 +3105,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3139,10 +3139,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3174,10 +3174,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3210,10 +3210,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3247,10 +3247,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3285,10 +3285,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3324,10 +3324,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3364,10 +3364,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
+		var cIds = new Ids<T0, T1, T2, T3, T4>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
 
-		var bIds = new ComponentIds<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3386,10 +3386,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6>(ids.T6);
+		var bIds = new Ids<T6>(ids.T6);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3409,10 +3409,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7>(ids.T6, ids.T7);
+		var bIds = new Ids<T6, T7>(ids.T6, ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3433,10 +3433,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8>(ids.T6, ids.T7, ids.T8);
+		var bIds = new Ids<T6, T7, T8>(ids.T6, ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3458,10 +3458,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9>(ids.T6, ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T6, T7, T8, T9>(ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3484,10 +3484,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T6, T7, T8, T9, T10>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3511,10 +3511,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3539,10 +3539,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3568,10 +3568,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3598,10 +3598,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3629,10 +3629,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3661,10 +3661,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3694,10 +3694,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3728,10 +3728,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3763,10 +3763,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3799,10 +3799,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3836,10 +3836,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3874,10 +3874,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3913,10 +3913,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
 
-		var bIds = new ComponentIds<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3935,10 +3935,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7>(ids.T7);
+		var bIds = new Ids<T7>(ids.T7);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3958,10 +3958,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8>(ids.T7, ids.T8);
+		var bIds = new Ids<T7, T8>(ids.T7, ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -3982,10 +3982,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9>(ids.T7, ids.T8, ids.T9);
+		var bIds = new Ids<T7, T8, T9>(ids.T7, ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4007,10 +4007,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10>(ids.T7, ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T7, T8, T9, T10>(ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4033,10 +4033,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T7, T8, T9, T10, T11>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4060,10 +4060,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4088,10 +4088,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4117,10 +4117,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4147,10 +4147,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4178,10 +4178,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4210,10 +4210,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4243,10 +4243,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4277,10 +4277,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4312,10 +4312,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4348,10 +4348,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4385,10 +4385,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4423,10 +4423,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
 
-		var bIds = new ComponentIds<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4445,10 +4445,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8>(ids.T8);
+		var bIds = new Ids<T8>(ids.T8);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4468,10 +4468,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9>(ids.T8, ids.T9);
+		var bIds = new Ids<T8, T9>(ids.T8, ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4492,10 +4492,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10>(ids.T8, ids.T9, ids.T10);
+		var bIds = new Ids<T8, T9, T10>(ids.T8, ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4517,10 +4517,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11>(ids.T8, ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T8, T9, T10, T11>(ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4543,10 +4543,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T8, T9, T10, T11, T12>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4570,10 +4570,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4598,10 +4598,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4627,10 +4627,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4657,10 +4657,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4688,10 +4688,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4720,10 +4720,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4753,10 +4753,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4787,10 +4787,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4822,10 +4822,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4858,10 +4858,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4895,10 +4895,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
 
-		var bIds = new ComponentIds<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4917,10 +4917,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9>(ids.T9);
+		var bIds = new Ids<T9>(ids.T9);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4940,10 +4940,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10>(ids.T9, ids.T10);
+		var bIds = new Ids<T9, T10>(ids.T9, ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4964,10 +4964,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11>(ids.T9, ids.T10, ids.T11);
+		var bIds = new Ids<T9, T10, T11>(ids.T9, ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -4989,10 +4989,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12>(ids.T9, ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T9, T10, T11, T12>(ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5015,10 +5015,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T9, T10, T11, T12, T13>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5042,10 +5042,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5070,10 +5070,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5099,10 +5099,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5129,10 +5129,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5160,10 +5160,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5192,10 +5192,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5225,10 +5225,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5259,10 +5259,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5294,10 +5294,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5330,10 +5330,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
 
-		var bIds = new ComponentIds<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5352,10 +5352,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10>(ids.T10);
+		var bIds = new Ids<T10>(ids.T10);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5375,10 +5375,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11>(ids.T10, ids.T11);
+		var bIds = new Ids<T10, T11>(ids.T10, ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5399,10 +5399,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12>(ids.T10, ids.T11, ids.T12);
+		var bIds = new Ids<T10, T11, T12>(ids.T10, ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5424,10 +5424,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13>(ids.T10, ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T10, T11, T12, T13>(ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5450,10 +5450,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T10, T11, T12, T13, T14>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5477,10 +5477,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5505,10 +5505,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5534,10 +5534,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5564,10 +5564,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5595,10 +5595,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5627,10 +5627,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5660,10 +5660,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5694,10 +5694,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5729,10 +5729,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
 
-		var bIds = new ComponentIds<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5751,10 +5751,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11>(ids.T11);
+		var bIds = new Ids<T11>(ids.T11);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5774,10 +5774,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12>(ids.T11, ids.T12);
+		var bIds = new Ids<T11, T12>(ids.T11, ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5798,10 +5798,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13>(ids.T11, ids.T12, ids.T13);
+		var bIds = new Ids<T11, T12, T13>(ids.T11, ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5823,10 +5823,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14>(ids.T11, ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T11, T12, T13, T14>(ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5849,10 +5849,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T11, T12, T13, T14, T15>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5876,10 +5876,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5904,10 +5904,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5933,10 +5933,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5963,10 +5963,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -5994,10 +5994,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6026,10 +6026,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6059,10 +6059,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6093,10 +6093,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
 
-		var bIds = new ComponentIds<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t11Components, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6115,10 +6115,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12>(ids.T12);
+		var bIds = new Ids<T12>(ids.T12);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6138,10 +6138,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13>(ids.T12, ids.T13);
+		var bIds = new Ids<T12, T13>(ids.T12, ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6162,10 +6162,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14>(ids.T12, ids.T13, ids.T14);
+		var bIds = new Ids<T12, T13, T14>(ids.T12, ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6187,10 +6187,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15>(ids.T12, ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T12, T13, T14, T15>(ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6213,10 +6213,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T12, T13, T14, T15, T16>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6240,10 +6240,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6268,10 +6268,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6297,10 +6297,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18, T19>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18, T19>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6327,10 +6327,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6358,10 +6358,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6390,10 +6390,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6423,10 +6423,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
 
-		var bIds = new ComponentIds<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t12Components, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6445,10 +6445,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13>(ids.T13);
+		var bIds = new Ids<T13>(ids.T13);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6468,10 +6468,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14>(ids.T13, ids.T14);
+		var bIds = new Ids<T13, T14>(ids.T13, ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6492,10 +6492,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15>(ids.T13, ids.T14, ids.T15);
+		var bIds = new Ids<T13, T14, T15>(ids.T13, ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6517,10 +6517,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16>(ids.T13, ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T13, T14, T15, T16>(ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6543,10 +6543,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T13, T14, T15, T16, T17>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6570,10 +6570,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6598,10 +6598,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18, T19>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18, T19>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6627,10 +6627,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18, T19, T20>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18, T19, T20>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6657,10 +6657,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6688,10 +6688,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6720,10 +6720,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
 
-		var bIds = new ComponentIds<T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t13Components, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6742,10 +6742,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14>(ids.T14);
+		var bIds = new Ids<T14>(ids.T14);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6765,10 +6765,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15>(ids.T14, ids.T15);
+		var bIds = new Ids<T14, T15>(ids.T14, ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6789,10 +6789,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16>(ids.T14, ids.T15, ids.T16);
+		var bIds = new Ids<T14, T15, T16>(ids.T14, ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6814,10 +6814,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17>(ids.T14, ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T14, T15, T16, T17>(ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6840,10 +6840,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T14, T15, T16, T17, T18>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6867,10 +6867,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18, T19>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T14, T15, T16, T17, T18, T19>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6895,10 +6895,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18, T19, T20>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T14, T15, T16, T17, T18, T19, T20>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6924,10 +6924,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18, T19, T20, T21>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T14, T15, T16, T17, T18, T19, T20, T21>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6954,10 +6954,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -6985,10 +6985,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
 
-		var bIds = new ComponentIds<T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t14Components, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7007,10 +7007,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15>(ids.T15);
+		var bIds = new Ids<T15>(ids.T15);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7030,10 +7030,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16>(ids.T15, ids.T16);
+		var bIds = new Ids<T15, T16>(ids.T15, ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7054,10 +7054,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17>(ids.T15, ids.T16, ids.T17);
+		var bIds = new Ids<T15, T16, T17>(ids.T15, ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7079,10 +7079,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18>(ids.T15, ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T15, T16, T17, T18>(ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7105,10 +7105,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18, T19>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T15, T16, T17, T18, T19>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7132,10 +7132,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18, T19, T20>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T15, T16, T17, T18, T19, T20>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7160,10 +7160,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18, T19, T20, T21>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T15, T16, T17, T18, T19, T20, T21>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7189,10 +7189,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18, T19, T20, T21, T22>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T15, T16, T17, T18, T19, T20, T21, T22>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7219,10 +7219,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
 
-		var bIds = new ComponentIds<T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T15, T16, T17, T18, T19, T20, T21, T22, T23>(ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t15Components, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7241,10 +7241,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16>(ids.T16);
+		var bIds = new Ids<T16>(ids.T16);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7264,10 +7264,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17>(ids.T16, ids.T17);
+		var bIds = new Ids<T16, T17>(ids.T16, ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7288,10 +7288,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18>(ids.T16, ids.T17, ids.T18);
+		var bIds = new Ids<T16, T17, T18>(ids.T16, ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7313,10 +7313,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18, T19>(ids.T16, ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T16, T17, T18, T19>(ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7339,10 +7339,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18, T19, T20>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T16, T17, T18, T19, T20>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7366,10 +7366,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18, T19, T20, T21>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T16, T17, T18, T19, T20, T21>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7394,10 +7394,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18, T19, T20, T21, T22>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T16, T17, T18, T19, T20, T21, T22>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7423,10 +7423,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
 
-		var bIds = new ComponentIds<T16, T17, T18, T19, T20, T21, T22, T23>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T16, T17, T18, T19, T20, T21, T22, T23>(ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t16Components, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7445,10 +7445,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17>(ids.T17);
+		var bIds = new Ids<T17>(ids.T17);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7468,10 +7468,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18>(ids.T17, ids.T18);
+		var bIds = new Ids<T17, T18>(ids.T17, ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7492,10 +7492,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18, T19>(ids.T17, ids.T18, ids.T19);
+		var bIds = new Ids<T17, T18, T19>(ids.T17, ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7517,10 +7517,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18, T19, T20>(ids.T17, ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T17, T18, T19, T20>(ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7543,10 +7543,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18, T19, T20, T21>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T17, T18, T19, T20, T21>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7570,10 +7570,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18, T19, T20, T21, T22>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T17, T18, T19, T20, T21, T22>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7598,10 +7598,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component);
 
-		var bIds = new ComponentIds<T17, T18, T19, T20, T21, T22, T23>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T17, T18, T19, T20, T21, T22, T23>(ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t17Components, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7620,10 +7620,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18>(ids.T18);
+		var bIds = new Ids<T18>(ids.T18);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7643,10 +7643,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18, T19>(ids.T18, ids.T19);
+		var bIds = new Ids<T18, T19>(ids.T18, ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7667,10 +7667,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18, T19, T20>(ids.T18, ids.T19, ids.T20);
+		var bIds = new Ids<T18, T19, T20>(ids.T18, ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7692,10 +7692,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18, T19, T20, T21>(ids.T18, ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T18, T19, T20, T21>(ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7718,10 +7718,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18, T19, T20, T21, T22>(ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T18, T19, T20, T21, T22>(ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7745,10 +7745,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component);
 
-		var bIds = new ComponentIds<T18, T19, T20, T21, T22, T23>(ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T18, T19, T20, T21, T22, T23>(ids.T18, ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t18Components, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7767,10 +7767,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component);
 
-		var bIds = new ComponentIds<T19>(ids.T19);
+		var bIds = new Ids<T19>(ids.T19);
 		archetype.Init(in entityReference.Slot, in bIds, t19Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7790,10 +7790,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component);
 
-		var bIds = new ComponentIds<T19, T20>(ids.T19, ids.T20);
+		var bIds = new Ids<T19, T20>(ids.T19, ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t19Components, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7814,10 +7814,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component);
 
-		var bIds = new ComponentIds<T19, T20, T21>(ids.T19, ids.T20, ids.T21);
+		var bIds = new Ids<T19, T20, T21>(ids.T19, ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t19Components, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7839,10 +7839,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component);
 
-		var bIds = new ComponentIds<T19, T20, T21, T22>(ids.T19, ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T19, T20, T21, T22>(ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t19Components, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7865,10 +7865,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component);
 
-		var bIds = new ComponentIds<T19, T20, T21, T22, T23>(ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T19, T20, T21, T22, T23>(ids.T19, ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t19Components, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7887,10 +7887,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component);
 
-		var bIds = new ComponentIds<T20>(ids.T20);
+		var bIds = new Ids<T20>(ids.T20);
 		archetype.Init(in entityReference.Slot, in bIds, t20Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7910,10 +7910,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component);
 
-		var bIds = new ComponentIds<T20, T21>(ids.T20, ids.T21);
+		var bIds = new Ids<T20, T21>(ids.T20, ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t20Components, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7934,10 +7934,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component);
 
-		var bIds = new ComponentIds<T20, T21, T22>(ids.T20, ids.T21, ids.T22);
+		var bIds = new Ids<T20, T21, T22>(ids.T20, ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t20Components, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7959,10 +7959,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component);
 
-		var bIds = new ComponentIds<T20, T21, T22, T23>(ids.T20, ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T20, T21, T22, T23>(ids.T20, ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t20Components, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -7981,10 +7981,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component);
 
-		var bIds = new ComponentIds<T21>(ids.T21);
+		var bIds = new Ids<T21>(ids.T21);
 		archetype.Init(in entityReference.Slot, in bIds, t21Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -8004,10 +8004,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component);
 
-		var bIds = new ComponentIds<T21, T22>(ids.T21, ids.T22);
+		var bIds = new Ids<T21, T22>(ids.T21, ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t21Components, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -8028,10 +8028,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component);
 
-		var bIds = new ComponentIds<T21, T22, T23>(ids.T21, ids.T22, ids.T23);
+		var bIds = new Ids<T21, T22, T23>(ids.T21, ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t21Components, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -8050,10 +8050,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component, in t21Component);
 
-		var bIds = new ComponentIds<T22>(ids.T22);
+		var bIds = new Ids<T22>(ids.T22);
 		archetype.Init(in entityReference.Slot, in bIds, t22Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -8073,10 +8073,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component, in t21Component);
 
-		var bIds = new ComponentIds<T22, T23>(ids.T22, ids.T23);
+		var bIds = new Ids<T22, T23>(ids.T22, ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t22Components, t23Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
@@ -8095,10 +8095,10 @@ public partial class EntityDatabase
 			throw archetype.GetComponentNotFound(entityId, in ids);
 
 		// set component value
-		var cIds = new ComponentIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
+		var cIds = new Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>(ids.T0, ids.T1, ids.T2, ids.T3, ids.T4, ids.T5, ids.T6, ids.T7, ids.T8, ids.T9, ids.T10, ids.T11, ids.T12, ids.T13, ids.T14, ids.T15, ids.T16, ids.T17, ids.T18, ids.T19, ids.T20, ids.T21, ids.T22);
 		archetype.Set(in entityReference.Slot, in cIds, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component, in t16Component, in t17Component, in t18Component, in t19Component, in t20Component, in t21Component, in t22Component);
 
-		var bIds = new ComponentIds<T23>(ids.T23);
+		var bIds = new Ids<T23>(ids.T23);
 		archetype.Init(in entityReference.Slot, in bIds, t23Components);
 	}
 }

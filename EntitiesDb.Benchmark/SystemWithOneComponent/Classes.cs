@@ -28,7 +28,7 @@ public partial class SystemWithOneComponent
 
 	[BenchmarkCategory(Categories.Classes)]
 	[Benchmark]
-	public void Classes_Enumerate()
+	public void Classes()
 	{
 		var entitySpan = CollectionsMarshal.AsSpan(_classes.OneComponentEntities);
 		foreach (ref var entity in entitySpan)
