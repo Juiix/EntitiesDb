@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public partial class EntityDatabase
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
@@ -19,7 +19,8 @@ public partial class EntityDatabase
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		return new BulkCreate<<#= generics #>>(archetype, in ids);
+		var offsets = archetype.GetOffsets(in ids);
+		return new BulkCreate<<#= generics #>>(archetype, in offsets);
 	}
 <#
 	}

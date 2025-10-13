@@ -7,13 +7,13 @@ namespace EntitiesDb;
 public static partial class ComponentMeta
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var asserts = FormatLine(index, "if (!ComponentMeta<T{0}>.IsBuffered) throw ThrowHelper.ComponentNotBuffered(typeof(T{0}));");
 #>
 	/// <inheritdoc cref="AssertBuffered{T}()"/>
-	internal static void AssertBuffered<<#= generics #>>()
+	public static void AssertBuffered<<#= generics #>>()
 	{
 		<#= Indent(asserts, 8) #>
 	}

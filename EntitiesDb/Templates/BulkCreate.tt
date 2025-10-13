@@ -5,7 +5,7 @@
 namespace EntitiesDb;
 
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = FormatComma(index, "T{0}");
 #>
@@ -13,12 +13,12 @@ namespace EntitiesDb;
 public readonly struct BulkCreate<<#= generics #>>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<<#= generics #>> Ids;
+	public readonly Offsets<<#= generics #>> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<<#= generics #>> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<<#= generics #>> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 <#

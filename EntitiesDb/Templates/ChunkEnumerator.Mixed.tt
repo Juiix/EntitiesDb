@@ -1,0 +1,88 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+<#
+	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
+	{
+		var genericsC = FormatComma(indexC, "T{0}");
+		
+		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
+		{
+			var genericsB = Generics(indexB, indexC);
+			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
+#>
+public ref struct ChunkMixed<#= indexC #>Enumerator<<#= genericsC #>, <#= genericsB #>>
+	<#= Indent(constraints, 4) #>
+{
+	private ArchetypeEnumerator _archetypes;
+	private Ids<<#= genericsC #>, <#= genericsB #>> _ids;
+	private int _index;
+	private ref Chunk _chunk;
+	private Offsets<<#= genericsC #>, <#= genericsB #>> _offsets;
+
+	[SkipLocalsInit]
+	public ChunkMixed<#= indexC #>Enumerator(Span<Archetype> archetypes, Ids<<#= genericsC #>, <#= genericsB #>> ids)
+	{
+		_archetypes = new ArchetypeEnumerator(archetypes);
+		_ids = ids;
+		if (_archetypes.MoveNext())
+		{
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_chunk = ref archetype.GetChunk(0);
+			_offsets = archetype.GetOffsets(in _ids);
+		}
+	}
+
+	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool MoveNext()
+	{
+		unchecked
+		{
+			if (--_index >= 0)
+				return true;
+
+			if (!_archetypes.MoveNext())
+				return false;
+
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse - 1;
+			_chunk = ref archetype.GetChunk(0);
+			_offsets = archetype.GetOffsets(in _ids);
+			return true;
+		}
+	}
+
+	[SkipLocalsInit]
+	public void Reset()
+	{
+		_index = -1;
+		_archetypes.Reset();
+
+		if (_archetypes.MoveNext())
+		{
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_chunk = ref archetype.GetChunk(0);
+			_offsets = archetype.GetOffsets(in _ids);
+		}
+	}
+
+	public readonly ChunkMixed<#= indexC #><<#= genericsC #>, <#= genericsB #>> Current
+	{
+		[SkipLocalsInit]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+	}
+}
+<#
+		}
+	}
+#>

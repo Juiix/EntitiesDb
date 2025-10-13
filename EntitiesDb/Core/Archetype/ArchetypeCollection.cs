@@ -52,6 +52,26 @@ public sealed class ArchetypeCollection
 	}
 
 	/// <summary>
+	/// Trims excess empty chunks and archetypes
+	/// </summary>
+	internal void TrimExcess()
+	{
+		for (int i = _archetypes.Count; i >= 0; i--)
+		{
+			var archetype = _archetypes[i];
+			if (archetype.EntityCount == 0)
+			{
+				archetype.Dispose();
+				_archetypes.RemoveAt(i);
+				_archetypeMap.Remove(archetype.Signature);
+				continue;
+			}
+
+			archetype.TrimExcess();
+		}
+	}
+
+	/// <summary>
 	/// Disposes Archetype resources
 	/// </summary>
 	internal void Dispose()

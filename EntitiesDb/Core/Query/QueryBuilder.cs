@@ -1,13 +1,23 @@
-﻿namespace EntitiesDb;
+﻿using Schedulers;
 
-public sealed partial class QueryBuilder(ArchetypeCollection archetypes, ComponentRegistry componentRegistry)
+namespace EntitiesDb;
+
+public sealed partial class QueryBuilder
 {
-	private readonly ArchetypeCollection _archetypes = archetypes;
-	private readonly ComponentRegistry _componentRegistry = componentRegistry;
+	private readonly ArchetypeCollection _archetypes;
+	private readonly ComponentRegistry _componentRegistry;
+	private readonly ParallelJobRunner? _parallelRunner;
 	private Signature _all;
 	private Signature _any;
 	private Signature _none;
 	private QueryFilterMode _filterMode;
+
+	internal QueryBuilder(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, ParallelJobRunner? parallelRunner)
+	{
+		_archetypes = archetypes;
+		_componentRegistry = componentRegistry;
+		_parallelRunner = parallelRunner;
+	}
 
 	/// <summary>
 	/// Clears the current filters and disables ONLY filter
@@ -29,7 +39,7 @@ public sealed partial class QueryBuilder(ArchetypeCollection archetypes, Compone
 	/// <returns>The built <see cref="Query"/></returns>
 	public Query Build()
 	{
-		var query = new Query(_archetypes, _componentRegistry, new QueryFilter(_all, _any, _none, _filterMode));
+		var query = new Query(_archetypes, _componentRegistry, _parallelRunner, new QueryFilter(_all, _any, _none, _filterMode));
 		Clear();
 		return query;
 	}

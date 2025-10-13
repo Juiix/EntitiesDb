@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public readonly partial struct Signature
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
 		var accessors = FormatSep(index, "ids.T{0}.Value", "," + Environment.NewLine);

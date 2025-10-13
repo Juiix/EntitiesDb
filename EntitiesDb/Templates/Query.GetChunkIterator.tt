@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Query
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+#>
+	public ChunkIterator<<#= generics #>> GetChunkIterator<<#= generics #>>()
+	{
+		var ids = _componentRegistry.GetIds<<#= generics #>>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+<#
+	}
+#>
+}

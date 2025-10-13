@@ -9,15 +9,15 @@ namespace EntitiesDb;
 public partial struct Chunk
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var sets = FormatLine(index, "GetBuffer<T{0}>(index, ids.T{0}).Init(t{0}Components);");
+		var sets = FormatLine(index, "GetBuffer<T{0}>(index, offsets.T{0}).Init(t{0}Components);");
 #>
-	/// <inheritdoc cref="Init{T0}(int, in Ids{T0}, ReadOnlySpan{T0})"/>
-	internal readonly void Init<<#= generics #>>(int index, in Ids<<#= generics #>> ids, <#= parameters #>)
+	/// <inheritdoc cref="Init{T0}(int, in Offsets{T0}, ReadOnlySpan{T0})"/>
+	internal readonly void Init<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		<#= Indent(sets, 8) #>

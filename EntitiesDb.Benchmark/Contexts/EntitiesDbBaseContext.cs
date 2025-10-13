@@ -1,30 +1,23 @@
-﻿namespace EntitiesDb.Benchmark.Contexts
+﻿using Schedulers;
+
+namespace EntitiesDb.Benchmark.Contexts
 {
 	namespace EntitiesDb_Components
 	{
-		internal struct Component1
-		{
-			public int Value;
-		}
-
-		internal struct Component2
-		{
-			public int Value;
-		}
-
-		internal struct Component3
-		{
-			public int Value;
-		}
+		internal record struct Component1(int Value);
+		internal record struct Component2(int Value);
+		internal record struct Component3(int Value);
+		internal record struct Component4(int Value);
 	}
 
 	internal class EntitiesDbBaseContext : IDisposable
 	{
 		public EntityDatabase Entities { get; }
 
-		public EntitiesDbBaseContext()
+		public EntitiesDbBaseContext() : this(-1) { }
+		public EntitiesDbBaseContext(int threadCount)
 		{
-			Entities = new(16384, int.MaxValue);
+			Entities = new(new(16384, int.MaxValue, threadCount));
 		}
 
 		public virtual void Dispose()

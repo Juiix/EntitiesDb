@@ -9,7 +9,7 @@ namespace EntitiesDb;
 public partial class EntityDatabase
 {
 <#
-	for (int index = 1; index < GenericCount; index++)
+	for (int index = 1; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
@@ -27,7 +27,8 @@ public partial class EntityDatabase
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-        chunk.Init(slot.Index, in ids, <#= args #>);
+		var offsets = archetype.GetOffsets<<#= generics #>>(in ids);
+        chunk.Init(slot.Index, in offsets, <#= args #>);
 		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
@@ -40,7 +41,7 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<<#= generics #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
 		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-        chunk.Init(slot.Index, in bulk.Ids, <#= args #>);
+        chunk.Init(slot.Index, in bulk.Offsets, <#= args #>);
 		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;

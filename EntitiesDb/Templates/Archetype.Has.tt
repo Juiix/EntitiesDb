@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public partial class Archetype
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var sets = FormatSep(index, "Signature.Test(ids.T{0}.Value)", " &&" + Environment.NewLine);

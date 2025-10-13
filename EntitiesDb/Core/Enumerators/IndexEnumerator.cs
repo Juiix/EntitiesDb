@@ -12,6 +12,8 @@ public ref struct IndexEnumerator(int length)
 	/// Moves to the next index
 	/// </summary>
 	/// <returns>True if theres a next index, otherwise false.</returns>
+	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool MoveNext()
 	{
 		return unchecked(--_index >= 0);
@@ -30,6 +32,8 @@ public ref struct IndexEnumerator(int length)
 	/// </summary>
 	public readonly int Current
 	{
+		[SkipLocalsInit]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => _index;
 	}
 }

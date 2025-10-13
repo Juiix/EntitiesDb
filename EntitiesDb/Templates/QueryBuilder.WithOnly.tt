@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public partial class QueryBuilder
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
 #>

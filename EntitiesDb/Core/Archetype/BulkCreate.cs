@@ -6,11 +6,11 @@
 public readonly struct BulkCreate<T0>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0> Ids;
+	public readonly Offsets<T0> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }

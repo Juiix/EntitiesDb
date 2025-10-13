@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Schedulers;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -6,17 +7,19 @@ namespace EntitiesDb;
 
 public sealed partial class Query
 {
-	private readonly QueryFilter _filter;
 	private readonly ArchetypeCollection _archetypes;
 	private readonly ComponentRegistry _componentRegistry;
+	private readonly ParallelJobRunner? _parallelRunner;
+	private readonly QueryFilter _filter;
 	private readonly List<Archetype> _matchingArchetypes = [];
 	private int _matchVersion;
 
-	internal Query(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, QueryFilter filter)
+	internal Query(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, ParallelJobRunner? parallelRunner, QueryFilter filter)
 	{
 		_archetypes = archetypes;
 		_componentRegistry = componentRegistry;
 		_filter = filter;
+		_parallelRunner = parallelRunner;
 	}
 
 	private Span<Archetype> MatchingArchetypesSpan => CollectionsMarshal.AsSpan(_matchingArchetypes);
@@ -38,7 +41,7 @@ public sealed partial class Query
 	}
 
 	/// <summary>
-	/// Returns <see cref="ArchetypeIterator"/> for matching <see cref="Archetype"/>'s entities
+	/// Returns <see cref="ArchetypeIterator"/> for matching <see cref="Archetype"/> entities
 	/// </summary>
 	public ArchetypeIterator GetArchetypeIterator()
 	{
@@ -56,12 +59,12 @@ public sealed partial class Query
 	}
 
 	/// <summary>
-	/// <see cref="ChunkEnumerator"/> for matching <see cref="Chunk"/>'s of entities
+	/// <see cref="ChunkEnumerator"/> for matching <see cref="Archetype"/> entities
 	/// </summary>
-	public ChunkEnumerator GetEnumerator()
+	public ArchetypeEnumerator GetEnumerator()
 	{
 		Match();
-		return new ChunkEnumerator(MatchingArchetypesSpan);
+		return new ArchetypeEnumerator(MatchingArchetypesSpan);
 	}
 
 	/// <summary>
@@ -83,17 +86,15 @@ public sealed partial class Query
 		_matchVersion = _archetypes.Version;
 	}
 
-	public void Inline<TForEach, T0>(ref TForEach forEach)
-		where TForEach : IForEach<T0>
+	/// <inheritdoc cref="ComponentRegistry.GetId{T0}()" />
+	public Id<T0> GetId<T0>()
 	{
-		var id = _componentRegistry.GetId<T0>();
-		foreach (ref readonly var chunk in GetChunkIterator())
-		{
-			var handle = chunk.GetHandle(id);
-			foreach (var index in chunk)
-			{
-				forEach.ForEach(ref handle[index]);
-			}
-		}
+		return _componentRegistry.GetId<T0>();
+	}
+
+	/// <inheritdoc cref="ComponentRegistry.GetIds{T0}()" />
+	public Ids<T0> GetIds<T0>()
+	{
+		return _componentRegistry.GetIds<T0>();
 	}
 }

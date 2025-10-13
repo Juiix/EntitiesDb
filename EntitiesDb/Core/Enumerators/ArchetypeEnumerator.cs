@@ -4,17 +4,12 @@ using System.Runtime.CompilerServices;
 namespace EntitiesDb;
 
 [SkipLocalsInit]
-public ref struct ArchetypeEnumerator
+public ref struct ArchetypeEnumerator(Span<Archetype> archetypes)
 {
-	private ReadOnlyEnumerator<Archetype> _archetypes;
+	private ReadOnlyEnumerator<Archetype> _archetypes = new(archetypes);
 
 	[SkipLocalsInit]
-	public ArchetypeEnumerator(Span<Archetype> archetypes)
-	{
-		_archetypes = new ReadOnlyEnumerator<Archetype>(archetypes);
-	}
-
-	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool MoveNext()
 	{
 		// Caching query locally for less lookups, improved speed
@@ -39,6 +34,7 @@ public ref struct ArchetypeEnumerator
 	public readonly Archetype Current
 	{
 		[SkipLocalsInit]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => _archetypes.Current;
 	}
 }

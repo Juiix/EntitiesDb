@@ -29,9 +29,9 @@ public sealed class ArchetypeTests
 
 	private static (Archetype archetype,
 					ComponentRegistry reg,
-					Id<int> ctInt,
-					Id<float> ctFloat,
-					Id<ManagedName> ctName)
+					Offset<int> ctInt,
+					Offset<float> ctFloat,
+					Offset<ManagedName> ctName)
 		BuildArchetype_Int_Float_Name(int chunkBytes = 4096)
 	{
 		var reg = new ComponentRegistry();
@@ -52,7 +52,7 @@ public sealed class ArchetypeTests
 		var arrayFactories = FactoriesForManaged(reg, componentTypes);
 
 		var archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, chunkBytes);
-		return (archetype, reg, new Id<int>(ctInt.Id), new Id<float>(ctFloat.Id), new Id<ManagedName>(ctName.Id));
+		return (archetype, reg, archetype.GetOffset<int>(ctInt.Id), archetype.GetOffset<float>(ctFloat.Id), archetype.GetOffset<ManagedName>(ctName.Id));
 	}
 
 	[Fact]
@@ -66,9 +66,9 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunksInUse);
 
 			// Signature / HasComponent
-			Assert.True(arch.Has(ctInt));
-			Assert.True(arch.Has(ctFloat));
-			Assert.True(arch.Has(ctName));
+			Assert.True(ctInt.Exists);
+			Assert.True(ctFloat.Exists);
+			Assert.True(ctName.Exists);
 
 			// A type not in the archetype
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
@@ -266,9 +266,9 @@ public sealed class ArchetypeTests
 		try
 		{
 			// present
-			Assert.True(arch.Has(ctInt));
-			Assert.True(arch.Has(ctFloat));
-			Assert.True(arch.Has(ctName));
+			Assert.True(ctInt.Exists);
+			Assert.True(ctFloat.Exists);
+			Assert.True(ctName.Exists);
 
 			// absent
 			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();

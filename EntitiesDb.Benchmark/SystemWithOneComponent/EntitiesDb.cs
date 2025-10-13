@@ -10,6 +10,7 @@ public partial class SystemWithOneComponent
 	private class EntitiesDbContext : EntitiesDbBaseContext
 	{
 		public Query Query;
+		public Id<Component1> Id;
 
 		public EntitiesDbContext(int entityCount)
 		{
@@ -21,7 +22,7 @@ public partial class SystemWithOneComponent
 			Query = Entities.QueryBuilder
 				.WithAll<Component1>()
 				.Build();
-			Query.Match();
+			Id = Entities.ComponentRegistry.GetId<Component1>();
 		}
 	}
 
@@ -30,41 +31,49 @@ public partial class SystemWithOneComponent
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
 	[Benchmark]
-	public void EntitiesDb()
-	{
-		var id = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
-		foreach (ref readonly var chunk in _entitiesDb.Query)
-		{
-			var handle = chunk.GetHandle(id);
-			foreach (var index in chunk)
-			{
-				handle[index].Value++;
-			}
-		}
-	}
-
-	[BenchmarkCategory(Categories.EntitiesDb)]
-	[Benchmark]
 	public void EntitiesDb_Simd()
 	{
 		Vector256<int> sum = Vector256.Create(1);
-		var id = _entitiesDb.Entities.ComponentRegistry.GetId<Component1>();
-		foreach (ref readonly var chunk in _entitiesDb.Query)
+		foreach (var (handle, length) in _entitiesDb.Query.GetChunkIterator<Component1>())
 		{
-			var entityCount = chunk.EntityCount;
-			var alignedLength = entityCount - (entityCount & 7);
-			var handle = chunk.GetHandle(id);
-			var simdHandle = handle.Reinterpret<Vector256<int>>();
+			var alignedLength = length - (length & 7);
+			var simdHandle = handle.Reinterpret<Component1, Vector256<int>>();
 			var simdLength = alignedLength / 8;
 			for (int i = 0; i < simdLength; i++)
 			{
 				simdHandle[i] += sum;
 			}
 
-			for (int i = alignedLength; i < entityCount; i++)
+			for (int i = alignedLength; i < length; i++)
 			{
 				handle[i].Value++;
 			}
+		}
+	}
+
+	[BenchmarkCategory(Categories.EntitiesDb)]
+	[Benchmark]
+	public void EntitiesDb_SourceGen()
+	{
+		_entitiesDb.Query.ForEach((Entity entity, ref Component1 a) =>
+		{
+			a.Value++;
+		});
+	}
+
+	[BenchmarkCategory(Categories.EntitiesDb)]
+	[Benchmark]
+	public void EntitiesDb_Inline()
+	{
+		var add = new Add();
+		_entitiesDb.Query.Inline<Add, Component1>(ref add);
+	}
+
+	private struct Add : IForEach<Component1>
+	{
+		public void ForEach(ref Component1 t0Component)
+		{
+			t0Component.Value++;
 		}
 	}
 }

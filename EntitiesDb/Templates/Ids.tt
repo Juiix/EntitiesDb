@@ -5,14 +5,16 @@
 namespace EntitiesDb;
 
 <#
-	for (int index = 1; index < GenericCount; index++)
+	for (int index = 1; index <= GenericCount; index++)
 	{
 		var generics = FormatComma(index, "C{0}");
-		var parameters = FormatComma(index, "Id<C{0}> T{0}");
+		var parameters = FormatComma(index, "Id<C{0}> t{0}");
+		var fields = FormatLine(index, "public readonly Id<C{0}> T{0} = t{0};");
 #>
-public readonly record struct Ids<<#= generics #>>(
-	<#= parameters #>
-);
+public readonly struct Ids<<#= generics #>>(<#= parameters #>)
+{
+	<#= Indent(fields, 4) #>
+}
 <#
 	}
 #>

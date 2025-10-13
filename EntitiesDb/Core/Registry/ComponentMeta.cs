@@ -9,7 +9,7 @@ public static partial class ComponentMeta
     /// Asserts that components are buffered
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static void AssertBuffered<T0>()
+	public static void AssertBuffered<T0>()
     {
         if (!ComponentMeta<T0>.IsBuffered)
             throw ThrowHelper.ComponentNotBuffered(typeof(T0));
@@ -19,7 +19,7 @@ public static partial class ComponentMeta
     /// Asserts that components are not buffered
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static void AssertNotBuffered<T0>()
+    public static void AssertNotBuffered<T0>()
     {
         if (ComponentMeta<T0>.IsBuffered)
             throw ThrowHelper.ComponentBuffered(typeof(T0));

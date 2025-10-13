@@ -9,22 +9,21 @@ namespace EntitiesDb;
 public partial class EntityDatabase
 {
 <#
-	for (int indexC = 1; indexC < GenericCount - 1; indexC++)
+	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
 	{
 		var genericsC = Generics(indexC);
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
 		var argsC = FormatComma(indexC, "in t{0}Component");
-		var idArgsC = FormatComma(indexC, "ids.T{0}");
-		var idArgsCBulk = FormatComma(indexC, "bulk.Ids.T{0}");
-		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
+		var offsetArgsC = FormatComma(indexC, "offsets.T{0}");
+		var offsetArgsCBulk = FormatComma(indexC, "bulk.Offsets.T{0}");
+		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
 			var parametersB = FormatComma(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
-			var setsB = FormatLine(indexB, "GetBuffer<T{0}>(index, ids.T{0}Id).Set(t{0}Components);", indexC);
 			var argsB = FormatComma(indexB, "t{0}Components", indexC);
-			var idArgsB = FormatComma(indexB, "ids.T{0}", indexC);
-			var idArgsBBulk = FormatComma(indexB, "bulk.Ids.T{0}", indexC);
+			var offsetArgsB = FormatComma(indexB, "offsets.T{0}", indexC);
+			var offsetArgsBBulk = FormatComma(indexB, "bulk.Offsets.T{0}", indexC);
 #>
 	/// <inheritdoc cref="Create{T0}(in T0?)"/>
 	[StructuralChange]
@@ -38,10 +37,11 @@ public partial class EntityDatabase
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);
-        chunk.Set(slot.Index, in cIds, <#= argsC #>);
-		var bIds = new Ids<<#= genericsB #>>(<#= idArgsB #>);
-        chunk.Init(slot.Index, in bIds, <#= argsB #>);
+		var offsets = archetype.GetOffsets<<#= genericsC #>, <#= genericsB #>>(in ids);
+		var cOffsets = new Offsets<<#= genericsC #>>(<#= offsetArgsC #>);
+        chunk.Set(slot.Index, in cOffsets, <#= argsC #>);
+		var bOffsets = new Offsets<<#= genericsB #>>(<#= offsetArgsB #>);
+        chunk.Init(slot.Index, in bOffsets, <#= argsB #>);
 		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
@@ -55,10 +55,10 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<<#= genericsB #>>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
 		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-		var cIds = new Ids<<#= genericsC #>>(<#= idArgsCBulk #>);
-        chunk.Set(slot.Index, in cIds, <#= argsC #>);
-		var bIds = new Ids<<#= genericsB #>>(<#= idArgsBBulk #>);
-        chunk.Init(slot.Index, in bIds, <#= argsB #>);
+		var cOffsets = new Offsets<<#= genericsC #>>(<#= offsetArgsCBulk #>);
+        chunk.Set(slot.Index, in cOffsets, <#= argsC #>);
+		var bOffsets = new Offsets<<#= genericsB #>>(<#= offsetArgsBBulk #>);
+        chunk.Init(slot.Index, in bOffsets, <#= argsB #>);
 		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;

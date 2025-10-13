@@ -1,60 +1,61 @@
 ﻿using BenchmarkDotNet.Running;
 using EntitiesDb;
 using Sandbox;
+using System.Diagnostics;
 using System.Runtime.Intrinsics;
 
 int entityCount = 100000;
-using var entities = new EntityDatabase(16384, int.MaxValue);
+using var entities = new EntityDatabase(new(16384, int.MaxValue, Environment.ProcessorCount));
 entities.Reserve<Component1>(entityCount);
 
-var bulk = entities.GetBulkCreate<Component1>();
+var bulk = entities.GetBulkCreate<Component1, Component2>();
 for (int i = 0; i < entityCount; ++i)
 {
-	entities.Create(in bulk, new Component1());
+	entities.Create(in bulk, new Component1(), new Component2(1));
 }
 
 var query = entities.QueryBuilder
-	.WithAll<Component1>()
+	.WithAll<Component1, Component2>()
 	.Build();
 
+var ids = entities.ComponentRegistry.GetIds<Component1, Component2>();
 for (int it = 0; it < 100000; it++)
 {
-	Vector256<int> sum = Vector256.Create(1);
-	var ids = entities.ComponentRegistry.GetIds<Component1>();
-	foreach (var archetype in query.GetArchetypeIterator())
-	{
-		var offsets = archetype.GetOffsets(in ids);
-		foreach (ref readonly var chunk in archetype)
-		{
-			var ec = chunk.EntityCount;
-			var alignedLength = ec - (ec & 7);
-			var handle = chunk.GetHandle<Component1>(offsets.T0);
-			var simdHandle = handle.Reinterpret<Vector256<int>>();
-			var simdLength = alignedLength / 8;
-			for (int i = 0; i < simdLength; i++)
-			{
-				simdHandle[i] += sum;
-			}
+	var add = new AddParallel(ids);
+	query.InlineChunkJobParallel(in add);
+}
 
-			for (int i = alignedLength; i < ec; i++)
-			{
-				handle[i].Value++;
-			}
+internal struct AddParallel(Ids<Component1, Component2> ids) : IChunkJob
+{
+	private readonly Ids<Component1, Component2> _ids = ids;
+	private Offsets<Component1, Component2> _offsets;
+
+	public void Enter(Archetype archetype)
+	{
+		_offsets = archetype.GetOffsets(in _ids);
+	}
+
+	public void ForEach(in Chunk chunk)
+	{
+		var length = chunk.EntityCount;
+		var alignedLength = length - (length & 7);
+		var handleA = chunk.GetHandle(_offsets.T0);
+		var handleB = chunk.GetHandle(_offsets.T1);
+		var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
+		var simdHandleB = handleB.Reinterpret<Component2, Vector256<int>>();
+		var simdLength = alignedLength / 8;
+		for (int i = 0; i < simdLength; i++)
+		{
+			simdHandleA[i] += simdHandleB[i];
+		}
+
+		for (int i = alignedLength; i < length; i++)
+		{
+			handleA[i].Value += handleB[i].Value;
 		}
 	}
 }
 
-internal struct Component1
-{
-	public int Value;
-}
-
-internal struct Component2
-{
-	public int Value;
-}
-
-internal struct Component3
-{
-	public int Value;
-}
+internal record struct Component1(int Value);
+internal record struct Component2(int Value);
+internal record struct Component3(int Value);

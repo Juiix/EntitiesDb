@@ -9,23 +9,24 @@ namespace EntitiesDb;
 public partial class Archetype
 {
 <#
-	for (int indexC = 1; indexC < GenericCount - 1; indexC++)
+	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
 	{
 		var genericsC = Generics(indexC);
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
-		var setsC = FormatLine(indexC, "chunk.Set(slot.Index, ids.T{0}, in t{0}Component);");
-		for (int indexB = 1; indexC + indexB < GenericCount; indexB++)
+		var setsC = FormatLine(indexC, "chunk.Set(slot.Index, offsets.T{0}, in t{0}Component);");
+		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
 			var parametersB = FormatComma(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
-			var setsB = FormatLine(indexB, "chunk.Set(slot.Index, ids.T{0}, t{0}Components);", indexC);
+			var setsB = FormatLine(indexB, "chunk.Set(slot.Index, offsets.T{0}, t{0}Components);", indexC);
 #>
 	/// <inheritdoc cref="Set{T0}(in EntitySlot, in Ids{T0}, in T0?)"/>
-	internal void Set<<#= genericsC #>,<#= genericsB #>>(in EntitySlot slot, in Ids<<#= genericsC #>, <#= genericsB #>> ids, <#= parametersC #>, <#= parametersB #>)
+	internal void Set<<#= genericsC #>, <#= genericsB #>>(in EntitySlot slot, in Ids<<#= genericsC #>, <#= genericsB #>> ids, <#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
+		var offsets = GetOffsets(in ids);
 		<#= Indent(setsC, 8) #>
 		<#= Indent(setsB, 8) #>
 	}

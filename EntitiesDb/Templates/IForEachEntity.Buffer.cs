@@ -1,0 +1,203 @@
+﻿
+namespace EntitiesDb;
+
+public interface IForEachEntityBuffer<T0>
+	where T0 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1>
+	where T0 : unmanaged
+    where T1 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+    where T11 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer, DynamicBuffer<T11> t11Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+    where T11 : unmanaged
+    where T12 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer, DynamicBuffer<T11> t11Buffer, DynamicBuffer<T12> t12Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+    where T11 : unmanaged
+    where T12 : unmanaged
+    where T13 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer, DynamicBuffer<T11> t11Buffer, DynamicBuffer<T12> t12Buffer, DynamicBuffer<T13> t13Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+    where T11 : unmanaged
+    where T12 : unmanaged
+    where T13 : unmanaged
+    where T14 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer, DynamicBuffer<T11> t11Buffer, DynamicBuffer<T12> t12Buffer, DynamicBuffer<T13> t13Buffer, DynamicBuffer<T14> t14Buffer);
+}
+public interface IForEachEntityBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+	where T0 : unmanaged
+    where T1 : unmanaged
+    where T2 : unmanaged
+    where T3 : unmanaged
+    where T4 : unmanaged
+    where T5 : unmanaged
+    where T6 : unmanaged
+    where T7 : unmanaged
+    where T8 : unmanaged
+    where T9 : unmanaged
+    where T10 : unmanaged
+    where T11 : unmanaged
+    where T12 : unmanaged
+    where T13 : unmanaged
+    where T14 : unmanaged
+    where T15 : unmanaged
+{
+	void ForEach(Entity entity, DynamicBuffer<T0> t0Buffer, DynamicBuffer<T1> t1Buffer, DynamicBuffer<T2> t2Buffer, DynamicBuffer<T3> t3Buffer, DynamicBuffer<T4> t4Buffer, DynamicBuffer<T5> t5Buffer, DynamicBuffer<T6> t6Buffer, DynamicBuffer<T7> t7Buffer, DynamicBuffer<T8> t8Buffer, DynamicBuffer<T9> t9Buffer, DynamicBuffer<T10> t10Buffer, DynamicBuffer<T11> t11Buffer, DynamicBuffer<T12> t12Buffer, DynamicBuffer<T13> t13Buffer, DynamicBuffer<T14> t14Buffer, DynamicBuffer<T15> t15Buffer);
+}

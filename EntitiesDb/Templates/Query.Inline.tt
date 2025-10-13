@@ -7,25 +7,29 @@ namespace EntitiesDb;
 public partial class Query
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
-		var handles = FormatLine(index, "var t{0}Handle = chunk.GetHandle(ids.T{0});");
-		var refArgs = FormatSep(index, "ref t{0}Handle[index]", "," + Environment.NewLine);
+		var handles = FormatLine(index, "var t{0}Handle = chunk.GetHandle(offsets.T{0});");
+		var args = FormatSep(index, "ref t{0}Handle[index]", "," + Environment.NewLine);
 #>
-	/// <inheritdoc cref="Inline{TForEach, T0}(ref TForEach)"/>
-	public void Inline<TForEach, <#= generics #>>(ref TForEach forEach)
-		where TForEach : IForEach<<#= generics #>>
+	/// <inheritdoc cref="Inline{T, T0}(ref T)"/>
+	public void Inline<T, <#= generics #>>(ref T forEach)
+		where T : IForEach<<#= generics #>>
 	{
 		var ids = _componentRegistry.GetIds<<#= generics #>>();
-		foreach (ref readonly var chunk in GetChunkIterator())
+		foreach (var archetype in GetArchetypeIterator())
 		{
-			<#= Indent(handles, 12) #>
-			foreach (var index in chunk)
+			var offsets = archetype.GetOffsets(in ids);
+			foreach (ref readonly var chunk in archetype)
 			{
-				forEach.ForEach(
-					<#= Indent(refArgs, 20) #>
-				);
+				<#= Indent(handles, 16) #>
+				foreach (var index in chunk)
+				{
+					forEach.ForEach(
+						<#= Indent(args, 24) #>
+					);
+				}
 			}
 		}
 	}

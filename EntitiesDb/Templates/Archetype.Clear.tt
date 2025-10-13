@@ -7,14 +7,16 @@ namespace EntitiesDb;
 public partial class Archetype
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
-		var sets = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) ClearBuffer<T{0}>(in slot, ids.T{0});");
+		var sets = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) chunk.ClearBuffer<T{0}>(slot.Index, offsets.T{0});");
 #>
 	/// <inheritdoc cref="Clear{T0}(in EntitySlot, in Ids{T0})"/>
 	internal void Clear<<#= generics #>>(in EntitySlot slot, in Ids<<#= generics #>> ids)
 	{
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		var offsets = GetOffsets(in ids);
 		<#= Indent(sets, 8) #>
 	}
 <#

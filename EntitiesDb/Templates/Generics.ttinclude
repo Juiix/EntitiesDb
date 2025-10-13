@@ -1,12 +1,14 @@
 ﻿<#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#+
-    int GenericCount = 25;
+    int GenericCount = 16;
+    int GenericMixedCount = 10;
 
-    StringBuilder Indent(StringBuilder sb, int spaces)
+    string Indent(StringBuilder sb, int spaces)
     {
         var indent = new string(' ', spaces);
-        return sb.Replace("\n", "\n" + indent);
+        var str = sb.ToString();
+        return str.Replace(Environment.NewLine, Environment.NewLine + indent);
     }
 
     // T0, T1, ...

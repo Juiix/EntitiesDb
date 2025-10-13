@@ -5,7 +5,7 @@
 namespace EntitiesDb;
 
 <#
-	for (int index = 1; index < GenericCount; index++)
+	for (int index = 1; index <= GenericCount; index++)
 	{
 		var generics = FormatComma(index, "T{0}");
 		var parameters = FormatComma(index, "ref T{0}? t{0}Component");

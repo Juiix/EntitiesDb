@@ -7,14 +7,14 @@ namespace EntitiesDb;
 public partial struct Chunk
 {
 <#
-	for (int index = 1; index < GenericCount; index++)
+	for (int index = 1; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
-		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) Get<T{0}>(index, ids.T{0}) = t{0}Component;");
+		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) Get<T{0}>(index, offsets.T{0}) = t{0}Component;");
 #>
-	/// <inheritdoc cref="Set{T0}(int, Id{T0}, in T0?)"/>
-	public readonly void Set<<#= generics #>>(int index, in Ids<<#= generics #>> ids, <#= parameters #>)
+	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	public readonly void Set<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
 	{
 		<#= Indent(sets, 8) #>
 	}

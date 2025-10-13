@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public partial class ComponentRegistry
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var ids = FormatSep(index, "GetId<T{0}>()", "," + Environment.NewLine);

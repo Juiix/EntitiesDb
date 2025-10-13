@@ -5,275 +5,179 @@ namespace EntitiesDb;
 public readonly struct BulkCreate<T0, T1>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1> Ids;
+	public readonly Offsets<T0, T1> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2> Ids;
+	public readonly Offsets<T0, T1, T2> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3> Ids;
+	public readonly Offsets<T0, T1, T2, T3> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }
 /// <inheritdoc cref="BulkCreate{T0}"/>
 public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
 {
 	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> Ids;
+	public readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> Offsets;
 
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ids)
+	internal BulkCreate(Archetype archetype, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> offsets)
 	{
 		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
-	}
-}
-/// <inheritdoc cref="BulkCreate{T0}"/>
-public readonly struct BulkCreate<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>
-{
-	public readonly Archetype Archetype;
-	public readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> Ids;
-
-	internal BulkCreate(Archetype archetype, in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23> ids)
-	{
-		Archetype = archetype;
-		Ids = ids;
+		Offsets = offsets;
 	}
 }

@@ -34,14 +34,9 @@ public unsafe sealed partial class Archetype
 	private readonly int _unmanagedChunkByteSize;
 
     /// <summary>
-    /// <see cref="ComponentType.Id"/> to index lookup table
-    /// </summary>
-    private readonly int[] _idToIndex;
-
-    /// <summary>
     /// <see cref="ComponentType.Id"/> to offset lookup table
     /// </summary>
-    private readonly int[] _idToOffsets;
+    private readonly short[] _idToOffsets;
 
     /// <summary>
     /// Array used to store chunks
@@ -63,7 +58,6 @@ public unsafe sealed partial class Archetype
 		_unmanagedChunkByteSize = ArchetypeUtils.CalculateUnmanagedSize(componentTypes.AsSpan(0, unmanagedComponentCount)) * EntitiesPerChunk;
 
 		_chunks = ArrayPool<Chunk>.Shared.Rent(1);
-		_idToIndex = ArchetypeUtils.BuildIdIndexLookup(componentTypes, unmanagedComponentCount);
         _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, unmanagedComponentCount, EntitiesPerChunk);
 
 		AddChunk();
@@ -105,6 +99,16 @@ public unsafe sealed partial class Archetype
 	internal ref Chunk CurrentChunk => ref _chunks[ChunksInUse - 1];
 
 	/// <summary>
+	/// A span helper for unmanaged component types
+	/// </summary>
+	internal ReadOnlySpan<ComponentType> UnmanagedComponentTypes => ComponentTypes.AsSpan(0, _unmangedComponentCount);
+
+	/// <summary>
+	/// A span helper for managed component types
+	/// </summary>
+	internal ReadOnlySpan<ComponentType> ManagedComponentTypes => ComponentTypes.AsSpan(_unmangedComponentCount);
+
+	/// <summary>
 	/// If this <see cref="Archetype"/> contains a given component
 	/// </summary>
 	/// <returns>If this <see cref="Archetype"/> has component with <paramref name="typeId"/></returns>
@@ -130,6 +134,16 @@ public unsafe sealed partial class Archetype
         Signature.Test(ids.T0.Value);
 
 	/// <summary>
+	/// Gets offset for a given id
+	/// </summary>
+	/// <returns>Offsets for <paramref name="ids"/></returns>
+	public Offset<T0> GetOffset<T0>(Id<T0> id)
+	{
+		var offsets = _idToOffsets;
+		return new Offset<T0>(offsets[id.Value]);
+	}
+
+	/// <summary>
 	/// Gets offsets for given ids
 	/// </summary>
 	/// <returns>Offsets for <paramref name="ids"/></returns>
@@ -153,46 +167,37 @@ public unsafe sealed partial class Archetype
 	/// <param name="ids">Component ids</param>
 	internal void Clear<T0>(in EntitySlot slot, in Ids<T0> ids)
 	{
-		if (ComponentMeta<T0>.IsBuffered) ClearBuffer<T0>(in slot, ids.T0);
-    }
-
-	/// <summary>
-	/// Clears a buffer component and releases allocated memory
-	/// </summary>
-	/// <remarks>
-	///	You must KNOW <typeparamref name="T"/> is a buffered type before calling this
-	/// </remarks>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="slot">The target slot</param>
-	/// <param name="typeId">Component id for <typeparamref name="T"/></param>
-    internal void ClearBuffer<T>(in EntitySlot slot, Id<T> id)
-    {
-        ref var chunk = ref _chunks[slot.ChunkIndex];
-        chunk.ClearBuffer<T>(slot.Index, id);
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		var offsets = GetOffsets(in ids);
+		if (ComponentMeta<T0>.IsBuffered) chunk.ClearBuffer(slot.Index, offsets.T0);
     }
 
     internal ref T? Get<T>(in EntitySlot slot, Id<T> id)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return ref chunk.Get<T>(slot.Index, id);
+		var offset = GetOffset(id);
+		return ref chunk.Get<T>(slot.Index, offset);
     }
 
     internal ref readonly T? GetReadOnly<T>(in EntitySlot slot, Id<T> id)
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-        return ref chunk.GetReadOnly<T>(slot.Index, id);
+		var offset = GetOffset(id);
+		return ref chunk.GetReadOnly<T>(slot.Index, offset);
     }
 
     internal DynamicBuffer<T> GetBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		return chunk.GetBuffer<T>(slot.Index, id);
+		var offset = GetOffset(id);
+		return chunk.GetBuffer<T>(slot.Index, offset);
     }
 
     internal ReadOnlyBuffer<T> GetBufferReadOnly<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-        return chunk.GetBufferReadOnly<T>(slot.Index, id);
+		var offset = GetOffset(id);
+		return chunk.GetBufferReadOnly<T>(slot.Index, offset);
     }
 
 	/// <summary>
@@ -201,8 +206,9 @@ public unsafe sealed partial class Archetype
 	internal void Init<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
-		chunk.GetBuffer<T0>(slot.Index, ids.T0).Init(components);
-    }
+		var offset = GetOffset(ids.T0);
+		chunk.GetBuffer<T0>(slot.Index, offset).Init(components);
+	}
 
 	/// <summary>
 	/// Sets a component at a given slot
@@ -210,7 +216,8 @@ public unsafe sealed partial class Archetype
 	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, in T0? component = default)
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-		chunk.Set(slot.Index, ids.T0, in component);
+		var offset = GetOffset(ids.T0);
+		chunk.Set(slot.Index, offset, in component);
 	}
 
 	/// <summary>
@@ -219,7 +226,8 @@ public unsafe sealed partial class Archetype
 	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components = default) where T0 : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
-        chunk.Set(slot.Index, ids.T0, components);
+		var offset = GetOffset(ids.T0);
+		chunk.Set(slot.Index, offset, components);
     }
 
 	/// <summary>
@@ -245,7 +253,7 @@ public unsafe sealed partial class Archetype
 			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			//var changeVersions = ArchetypeUtils.BuildChangeVersions(ComponentTypes, _globalChangeVersions);
-			_chunks[i] = new Chunk(ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
+			_chunks[i] = new Chunk(unmanagedComponents, managedComponents);
 		}
 		ChunksAllocated = newChunkCount;
 	}
@@ -273,7 +281,7 @@ public unsafe sealed partial class Archetype
 			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			//var changeVersions = ArchetypeUtils.BuildChangeVersions(ComponentTypes, _globalChangeVersions);
-			chunk = new Chunk(ComponentTypes, _idToOffsets, unmanagedComponents, managedComponents, _unmangedComponentCount);
+			chunk = new Chunk(unmanagedComponents, managedComponents);
 		}
 
 		ChunksInUse = ++count;
@@ -343,7 +351,9 @@ public unsafe sealed partial class Archetype
 		ref var lastChunk = ref GetChunk(lastChunkIndex);
 
 		var removedIndex = lastChunk.EntityCount - 1;
-		movedEntityId = chunk.AcceptEntity(slot.Index, ref lastChunk, removedIndex);
+		movedEntityId = chunk.AcceptEntity(
+			slot.Index, ref lastChunk, removedIndex,
+			_idToOffsets, UnmanagedComponentTypes);
 
 		lastChunk.EntityCount--;
 		EntityCount--;
@@ -363,7 +373,9 @@ public unsafe sealed partial class Archetype
 	{
 		ref var srcChunk = ref GetChunk(srcSlot.ChunkIndex);
 		ref var dstChunk = ref GetChunk(dstSlot.ChunkIndex);
-		srcChunk.CloneComponents(srcSlot.Index, ref dstChunk, dstSlot.Index);
+		srcChunk.CloneComponents(
+			srcSlot.Index, ref dstChunk, dstSlot.Index,
+			_idToOffsets, UnmanagedComponentTypes);
 	}
 
 	/// <summary>
@@ -373,7 +385,37 @@ public unsafe sealed partial class Archetype
 	{
 		ref var srcChunk = ref GetChunk(srcSlot.ChunkIndex);
 		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
-		srcChunk.CopyComponents(srcSlot.Index, dstArchetype.Signature, ref dstChunk, dstSlot.Index);
+		srcChunk.CopyComponents(
+			srcSlot.Index, _idToOffsets,
+			dstArchetype.Signature, ref dstChunk, dstSlot.Index, dstArchetype._idToOffsets,
+			UnmanagedComponentTypes, ManagedComponentTypes);
+	}
+
+	/// <summary>
+	/// Trims excess allocated chunks
+	/// </summary>
+	internal void TrimExcess()
+	{
+		// dealloc extra chunks
+		for (int i = ChunksInUse; i < ChunksAllocated; i++)
+		{
+			ref var chunk = ref _chunks[i];
+			Marshal.FreeHGlobal(chunk.UnmanagedComponents);
+			chunk = default;
+		}
+		ChunksAllocated = ChunksInUse;
+
+		// try resize chunk array
+		var newArray = ArrayPool<Chunk>.Shared.Rent(ChunksAllocated);
+		if (newArray.Length == _chunks.Length)
+		{
+			ArrayPool<Chunk>.Shared.Return(newArray);
+			return;
+		}
+
+		Array.Copy(_chunks, newArray, ChunksAllocated);
+		ArrayPool<Chunk>.Shared.Return(_chunks, true);
+		_chunks = newArray;
 	}
 
 	internal void Dispose()

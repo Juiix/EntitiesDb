@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Buffers;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
 internal sealed class EntityMap(int maxEntities)
 {
+	private const int MinReferenceSize = 1024;
+
 	private readonly int _maxEntities = maxEntities;
-	private EntityReference[] _references = new EntityReference[Math.Min(1024, maxEntities)];
+	private EntityReference[] _references = new EntityReference[Math.Min(MinReferenceSize, maxEntities)];
+	private int[] _versions = new int[Math.Min(MinReferenceSize, maxEntities)];
 	private int _count = 0;
+
+	public int NextEntityId => _count;
 
 	/// <summary>
 	/// Adds a new entityId
@@ -18,12 +21,14 @@ internal sealed class EntityMap(int maxEntities)
 	/// <returns>The new reference</returns>
 	/// <exception cref="OutOfMemoryException"></exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public ref EntityReference Add(out int entityId)
+	public ref EntityReference Add(out Entity entity)
 	{
 		if (_count >= _maxEntities)
 			throw ThrowHelper.MaxEntitiesReached(_maxEntities);
-		entityId = _count++;
+		var entityId = _count++;
 		EnsureCapacity(_count);
+		var version = _versions[entityId];
+		entity = new Entity(entityId, version);
 		return ref GetReference(entityId);
 	}
 
@@ -53,9 +58,11 @@ internal sealed class EntityMap(int maxEntities)
 		entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
 	}
 
-	public void Remove(int entityId)
+	public void Remove(int entityId, out int version)
 	{
-		GetReference(entityId) = default;
+		ref var reference = ref GetReference(entityId);
+		version = _versions[entityId] = reference.Version;
+		reference = default;
 	}
 
 	public void EnsureCapacity(int capacity)
@@ -71,6 +78,33 @@ internal sealed class EntityMap(int maxEntities)
 		if (newLen > _maxEntities) newLen = _maxEntities;
 
 		Array.Resize(ref _references, newLen);
+
+		if (newLen > _versions.Length)
+			Array.Resize(ref _versions, newLen);
+	}
+
+	public void TrimExcess(bool keepVersions = true)
+	{
+		var liveCount = _count;
+		do
+		{
+			if (_references[liveCount - 1].Archetype != null)
+				break;
+		}
+		while (--liveCount > 0);
+
+		_count = liveCount;
+		var newCapacity = Math.Min(_maxEntities, Math.Max(MinReferenceSize, NextPow2(Math.Max(1, liveCount))));
+		if (newCapacity != _references.Length)
+		{
+			Array.Resize(ref _references, newCapacity);
+		}
+		
+		if (!keepVersions &&
+			newCapacity != _versions.Length)
+		{
+			Array.Resize(ref _versions, newCapacity);
+		}
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

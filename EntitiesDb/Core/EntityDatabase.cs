@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Schedulers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
@@ -11,24 +13,26 @@ namespace EntitiesDb;
 public sealed partial class EntityDatabase : IDisposable
 {
 	private readonly EntityMap _entityMap;
-	private readonly Queue<Entity> _recycledEntityIds = [];
+	private Queue<Entity> _recycledEntityIds = [];
 
 	/// <summary>
 	/// Creates a new <see cref="EntityDatabase"/> instance
 	/// </summary>
 	/// <param name="chunkByteSize">The size in bytes of a chunk</param>
 	/// <param name="maxEntities">The maximum entities to store</param>
+	/// <param name="parallelRunner">The <see cref="ParallelJobRunner"/> used for parallel support</param>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public EntityDatabase(int chunkByteSize, int maxEntities)
+	public EntityDatabase(EntityDatabaseOptions options)
 	{
-		ArgumentOutOfRangeException.ThrowIfNegative(chunkByteSize);
-		ArgumentOutOfRangeException.ThrowIfNegative(maxEntities);
+		ArgumentOutOfRangeException.ThrowIfNegative(options.ChunkByteSize);
+		ArgumentOutOfRangeException.ThrowIfNegative(options.MaxEntities);
 
-		_entityMap = new(maxEntities);
+		_entityMap = new(options.MaxEntities);
         ComponentRegistry = new();
-        Archetypes = new(ComponentRegistry, chunkByteSize);
-		MaxEntities = maxEntities;
-		QueryBuilder = new(Archetypes, ComponentRegistry);
+        Archetypes = new(ComponentRegistry, options.ChunkByteSize);
+		MaxEntities = options.MaxEntities;
+		ParallelRunner = options.ParallelThreads > 1 ? new ParallelJobRunner(options.ParallelThreads) : null;
+		QueryBuilder = new(Archetypes, ComponentRegistry, ParallelRunner);
 	}
 
 	/// <summary>
@@ -55,6 +59,8 @@ public sealed partial class EntityDatabase : IDisposable
 	/// A re-usable query builder
 	/// </summary>
 	public QueryBuilder QueryBuilder { get; }
+
+	internal ParallelJobRunner? ParallelRunner { get; }
 
 	/// <summary>
 	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
@@ -176,7 +182,8 @@ public sealed partial class EntityDatabase : IDisposable
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-        chunk.Set(slot.Index, ids.T0, in t0Component);
+		var offset = archetype.GetOffset<T0>(ids.T0);
+        chunk.Set(slot.Index, offset, in t0Component);
 		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
@@ -193,7 +200,7 @@ public sealed partial class EntityDatabase : IDisposable
 		ComponentMeta.AssertNotBuffered<T0>();
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
 		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.Set(slot.Index, bulk.Ids.T0, in t0Component);
+		chunk.Set(slot.Index, bulk.Offsets.T0, in t0Component);
 		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
@@ -213,8 +220,9 @@ public sealed partial class EntityDatabase : IDisposable
 		archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
 
 		_entityMap.Move(movedEntityId, in entityReference.Slot);
-		_entityMap.Remove(entityId);
+		_entityMap.Remove(entityId, out var version);
 		EntityCount--;
+		_recycledEntityIds.Enqueue(new Entity(entityId, version));
 	}
 
 	/// <summary>
@@ -431,13 +439,32 @@ public sealed partial class EntityDatabase : IDisposable
 		var ids = ComponentRegistry.GetIds<T0>();
 		var signature = Signature.FromIds(in ids);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		return new BulkCreate<T0>(archetype, in ids);
+		var offsets = archetype.GetOffsets(in ids);
+		return new BulkCreate<T0>(archetype, in offsets);
 	}
 
 	/// <inheritdoc cref="IDisposable.Dispose"/>
 	public void Dispose()
 	{
 		Archetypes.Dispose();
+		ParallelRunner?.Dispose();
+	}
+
+	/// <summary>
+	/// Trims excess memory and allocations.
+	/// </summary>
+	/// <remarks>
+	/// This method should NOT be called per tick, only periodically or when memory is needed.
+	/// </remarks>
+	/// <param name="keepVersions">If stored entity versions should be persisted. If <c>false</c>, entity versions above the resulting max entity id will be lost.</param>
+	[StructuralChange]
+	public void TrimExcess(bool keepVersions = true)
+	{
+		_entityMap.TrimExcess(keepVersions);
+		var maxEntityId = _entityMap.NextEntityId;
+
+		Archetypes.TrimExcess();
+		_recycledEntityIds = new Queue<Entity>(_recycledEntityIds.Where(x => x.Id < maxEntityId));
 	}
 
 	/// <summary>
@@ -474,8 +501,7 @@ public sealed partial class EntityDatabase : IDisposable
 		}
 
 		// add entity
-		ref var entityReference = ref _entityMap.Add(out var id);
-		entity = new Entity(id, 0);
+		ref var entityReference = ref _entityMap.Add(out entity);
 		return ref entityReference;
 	}
 

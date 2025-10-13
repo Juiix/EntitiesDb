@@ -37,7 +37,7 @@ public struct LargeBuf { public int V; public LargeBuf(int v) => V = v; }
 public sealed class EntityDatabaseTests
 {
 	private static EntityDatabase CreateDb(int chunkBytes = 4096, int maxEntities = 1_000)
-		=> new(chunkBytes, maxEntities);
+		=> new(new(chunkBytes, maxEntities));
 
 	// -------------------- Entity lifecycle --------------------
 

@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
 using EntitiesDb.Benchmark;
@@ -16,9 +15,12 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 BenchmarkSwitcher benchmark = BenchmarkSwitcher.FromTypes(new[]
 {
+	typeof(SystemWithTwoComponents),
+	/*
 	typeof(CreateEntityWithOneComponent),
 	typeof(SystemWithOneComponent),
-	typeof(SystemWithVariedComposition),
+	typeof(SystemWithTwoComponentsVariedComposition),
+	*/
 });
 
 IConfig configuration = DefaultConfig.Instance

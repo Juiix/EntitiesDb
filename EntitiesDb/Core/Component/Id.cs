@@ -1,6 +1,7 @@
 ﻿namespace EntitiesDb;
 
-public readonly record struct Id<T>(byte Value)
+public readonly struct Id<T>(byte value)
 {
+	public readonly byte Value = value;
 	public static implicit operator Id<T>(byte value) => new(value);
 }

@@ -1,0 +1,21 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var parameters = FormatComma(index, "DynamicBuffer<T{0}> t{0}Buffer");
+#>
+public interface IForEachBuffer<<#= generics #>>
+	<#= Indent(constraints, 4) #>
+{
+	void ForEach(<#= parameters #>);
+}
+<#
+	}
+#>

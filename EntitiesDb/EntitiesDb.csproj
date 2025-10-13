@@ -26,6 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Templates\IForEachChunkEntity.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunkEntity.Buffer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="..\EntitiesDb.SourceGenerators\bin\Release\netstandard2.0\publish\EntitiesDb.SourceGenerators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="Templates\ComponentRegistry.GetSignature.cs">
@@ -56,6 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ZeroAllocJobScheduler" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Templates\Archetype.GetOffsets.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Archetype.GetOffsets.cs</LastGenOutput>
@@ -80,14 +91,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BulkCreate.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Chunk.GetOffsets.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Chunk.GetOffsets.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Chunk.Has.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Chunk.Has.cs</LastGenOutput>
-    </None>
     <None Update="Templates\Chunk.Init.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Init.cs</LastGenOutput>
@@ -96,13 +99,133 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Chunk.Set.cs</LastGenOutput>
     </None>
+    <None Update="Templates\Chunk.View.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.View.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.View.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.View.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Chunk.View.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chunk.View.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkEnumerator.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkEnumerator.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkEnumerator.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkEnumerator.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkEnumerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkEnumerator.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkIterator.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkIterator.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkIterator.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkIterator.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ChunkIterator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChunkIterator.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkEntityJob.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkEntityJob.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkEntityJob.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkEntityJob.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkEntityJob.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkEntityJob.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkJob.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkJob.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkJob.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkJob.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachChunkJob.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachChunkJob.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJobEntity.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJobEntity.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJobEntity.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJobEntity.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJobEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJobEntity.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJob.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJob.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJob.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJob.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ForEachJob.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEachJob.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachChunk.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunk.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachChunk.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunk.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachChunkEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunkEntity.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachChunkEntity.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunkEntity.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachChunk.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachChunk.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachEntity.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachEntity.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachEntity.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEachEntity.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEachEntity.Mixed.cs</LastGenOutput>
+    </None>
     <None Update="Templates\IForEach.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IForEach.cs</LastGenOutput>
     </None>
-    <None Update="Templates\IForEachBuffer.tt">
+    <None Update="Templates\IForEach.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IForEachBuffer.cs</LastGenOutput>
+      <LastGenOutput>IForEach.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\IForEach.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IForEach.Mixed.cs</LastGenOutput>
     </None>
     <None Update="Templates\Offsets.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -148,9 +271,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Generics.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.Inline.tt">
+    <None Update="Templates\Query.GetChunkIterator.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.Inline.cs</LastGenOutput>
+      <LastGenOutput>Query.GetChunkIterator.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Query.GetChunkIterator.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Query.GetChunkIterator.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Query.GetChunkIterator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Query.GetChunkIterator.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\Query.GetIds.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Query.GetIds.cs</LastGenOutput>
     </None>
     <None Update="Templates\QueryBuilder.WithOnly.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -293,16 +428,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BulkCreate.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Chunk.GetOffsets.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Chunk.GetOffsets.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Chunk.Has.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Chunk.Has.tt</DependentUpon>
-    </Compile>
     <Compile Update="Templates\Chunk.Init.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -318,15 +443,170 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Chunk.Set.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\Chunk.View.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.View.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.View.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.View.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Chunk.View.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chunk.View.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkEnumerator.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkEnumerator.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkEnumerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkEnumerator.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkEnumerator.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkEnumerator.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkIterator.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkIterator.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkIterator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkIterator.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ChunkIterator.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChunkIterator.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkEntityJob.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkEntityJob.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkEntityJob.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkEntityJob.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkEntityJob.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkEntityJob.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkJob.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkJob.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkJob.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkJob.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachChunkJob.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachChunkJob.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJobEntity.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJobEntity.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJobEntity.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJobEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJob.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJob.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJob.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJob.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJob.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJob.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ForEachJobEntity.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEachJobEntity.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunk.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunk.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunk.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunk.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunkEntity.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunkEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunkEntity.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunkEntity.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunkEntity.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunkEntity.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachChunk.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachChunk.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachEntity.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachEntity.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachEntity.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEachEntity.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEachEntity.Mixed.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\IForEach.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>IForEach.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\IForEachBuffer.cs">
+    <Compile Update="Templates\IForEach.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>IForEachBuffer.tt</DependentUpon>
+      <DependentUpon>IForEach.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\IForEach.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IForEach.Mixed.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Offsets.cs">
       <DesignTime>True</DesignTime>
@@ -388,10 +668,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Helpers.ttinclude</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.Inline.cs">
+    <Compile Update="Templates\Query.GetChunkIterator.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.Inline.tt</DependentUpon>
+      <DependentUpon>Query.GetChunkIterator.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Query.GetChunkIterator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Query.GetChunkIterator.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Query.GetChunkIterator.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Query.GetChunkIterator.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\Query.GetIds.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Query.GetIds.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\QueryBuilder.All.cs">
       <DesignTime>True</DesignTime>

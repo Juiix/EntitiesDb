@@ -23,7 +23,9 @@ public ref struct ChunkEnumerator
 			_chunk = ref archetype.GetChunk(0);
 		}
 	}
+
 	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool MoveNext()
 	{
 		unchecked
@@ -65,6 +67,7 @@ public ref struct ChunkEnumerator
 	public readonly ref readonly Chunk Current
 	{
 		[SkipLocalsInit]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => ref Unsafe.Add(ref _chunk, _index);
 	}
 }

@@ -7,7 +7,7 @@ namespace EntitiesDb;
 public partial class Archetype
 {
 <#
-	for (int index = 2; index < GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var gets = FormatSep(index, "new Offset<T{0}>(offsets[ids.T{0}.Value])", "," + Environment.NewLine);

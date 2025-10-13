@@ -74,37 +74,6 @@ public unsafe class ChunkTests : IDisposable
 	}
 
 	[Fact]
-	public void Constructor_Spans_And_EntityCount_Basics()
-	{
-		// Arrange
-		var (types, unmanagedCount) = BuildComponentTypes();
-
-		// Chunk capacity from ArchetypeUtils
-		int chunkSize = 4096;
-		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, chunkSize);
-
-		// Offsets via ArchetypeUtils
-		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
-
-		// Allocate unmanaged region of appropriate size
-		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
-		_srcBlock = Marshal.AllocHGlobal(unmanagedBytes);
-
-		// Managed arrays (one: ManagedName[])
-		var managed = CreateManagedArrays(types, capacity, unmanagedCount);
-
-		var chunk = new Chunk(types, offsets, _srcBlock, managed, unmanagedCount)
-		{
-			EntityCount = capacity
-		};
-
-		// Assert
-		Assert.Equal(capacity, chunk.EntityCount);
-		Assert.Equal(unmanagedCount, chunk.UnmanagedComponentTypes.Length);
-		Assert.Equal(types.Length - unmanagedCount, chunk.ManagedComponentTypes.Length);
-	}
-
-	[Fact]
 	public void AddEntity_GetEntity_AcceptEntity_CopyAll_Data_Roundtrip()
 	{
 		// Arrange archetype and capacity
@@ -122,13 +91,16 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 		var dstManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 
-		var src = new Chunk(types, offsets, _srcBlock, srcManaged, unmanagedCount);
-		var dst = new Chunk(types, offsets, _dstBlock, dstManaged, unmanagedCount);
+		var src = new Chunk(_srcBlock, srcManaged);
+		var dst = new Chunk(_dstBlock, dstManaged);
 
 		// Alias for component types we care about
 		ref readonly var ctInt = ref _registry.GetComponentType<int>();
 		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
 		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
+		var offInt = new Offset<int>(offsets[ctInt.Id]);
+		var offFloat = new Offset<float>(offsets[ctFloat.Id]);
+		var offName = new Offset<ManagedName>(offsets[ctName.Id]);
 
 		// Put data in src at srcIndex
 		int srcIndex = 2, dstIndex = 5;
@@ -139,26 +111,26 @@ public unsafe class ChunkTests : IDisposable
 
 		// Unmanaged components
 		// int
-		src.Get<int>(srcIndex, ctInt.Id) = 42;
+		src.Get<int>(srcIndex, offInt) = 42;
 		// float
-		src.Get<float>(srcIndex, ctFloat.Id) = 3.5f;
+		src.Get<float>(srcIndex, offFloat) = 3.5f;
 
 		// Managed component: ManagedName
-		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Alice");
+		src.Get<ManagedName>(srcIndex, offName) = new ManagedName("Alice");
 
 		// Act: transfer entity + all its components via AcceptEntity
-		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex);
+		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex, offsets, types.AsSpan(0, unmanagedCount));
 
 		// Assert entity id
 		Assert.Equal(123, accepted);
 		Assert.Equal(123, dst.GetEntity(dstIndex).Id);
 
 		// Assert unmanaged copied
-		Assert.Equal(42, dst.Get<int>(dstIndex, ctInt.Id));
-		Assert.Equal(3.5f, dst.Get<float>(dstIndex, ctFloat.Id));
+		Assert.Equal(42, dst.Get<int>(dstIndex, offInt));
+		Assert.Equal(3.5f, dst.Get<float>(dstIndex, offFloat));
 
 		// Assert managed copied
-		Assert.Equal("Alice", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
+		Assert.Equal("Alice", dst.Get<ManagedName>(dstIndex, offName).Name);
 	}
 
 
@@ -177,27 +149,30 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 		var dstManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 
-		var src = new Chunk(types, offsets, _srcBlock, srcManaged, unmanagedCount);
-		var dst = new Chunk(types, offsets, _dstBlock, dstManaged, unmanagedCount);
+		var src = new Chunk(_srcBlock, srcManaged);
+		var dst = new Chunk(_dstBlock, dstManaged);
 
 		ref readonly var ctInt = ref _registry.GetComponentType<int>();
 		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
 		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
+		var offInt = new Offset<int>(offsets[ctInt.Id]);
+		var offFloat = new Offset<float>(offsets[ctFloat.Id]);
+		var offName = new Offset<ManagedName>(offsets[ctName.Id]);
 
 		int srcIndex = 1, dstIndex = 7;
 
 		// Seed source values
-		src.Get<int>(srcIndex, ctInt.Id) = 1001;
-		src.Get<float>(srcIndex, ctFloat.Id) = -2.25f;
-		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Bob");
+		src.Get<int>(srcIndex, offInt) = 1001;
+		src.Get<float>(srcIndex, offFloat) = -2.25f;
+		src.Get<ManagedName>(srcIndex, offName) = new ManagedName("Bob");
 
 		// Act
-		src.CloneComponents(srcIndex, ref dst, dstIndex);
+		src.CloneComponents(srcIndex, ref dst, dstIndex, offsets, types.AsSpan(0, unmanagedCount));
 
 		// Assert
-		Assert.Equal(1001, dst.Get<int>(dstIndex, ctInt.Id));
-		Assert.Equal(-2.25f, dst.Get<float>(dstIndex, ctFloat.Id));
-		Assert.Equal("Bob", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
+		Assert.Equal(1001, dst.Get<int>(dstIndex, offInt));
+		Assert.Equal(-2.25f, dst.Get<float>(dstIndex, offFloat));
+		Assert.Equal("Bob", dst.Get<ManagedName>(dstIndex, offName).Name);
 	}
 
 	[Fact]
@@ -212,11 +187,18 @@ public unsafe class ChunkTests : IDisposable
 		ref readonly var ctInt = ref _registry.GetComponentType<int>();
 		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
 		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
+		var srcOffInt = new Offset<int>(srcOffsets[ctInt.Id]);
+		var srcOffFloat = new Offset<float>(srcOffsets[ctFloat.Id]);
+		var srcOffName = new Offset<ManagedName>(srcOffsets[ctName.Id]);
 
 		var dstTypes = new[] { ctInt, ctName }; // unmanaged first (int), then managed
 		int dstUnmanagedCount = dstTypes.Count(t => t.IsUnmanaged);
 		int dstCap = ArchetypeUtils.CalculateChunkCapacity(dstTypes, 4096);
 		var dstOffsets = ArchetypeUtils.BuildIdOffsetLookup(dstTypes, 1, dstCap);
+
+		var dstOffInt = new Offset<int>(dstOffsets[ctInt.Id]);
+		var dstOffFloat = new Offset<float>(dstOffsets[ctFloat.Id]);
+		var dstOffName = new Offset<ManagedName>(dstOffsets[ctName.Id]);
 
 		// Allocate unmanaged blocks
 		int srcUnmanagedBytes = ComputeUnmanagedBytesTotal(srcTypes, srcCap);
@@ -228,27 +210,29 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(srcTypes, srcCap, srcUnmanagedCount);
 		var dstManaged = CreateManagedArrays(dstTypes, dstCap, dstUnmanagedCount);
 
-		var src = new Chunk(srcTypes, srcOffsets, _srcBlock, srcManaged, srcUnmanagedCount);
-		var dst = new Chunk(dstTypes, dstOffsets, _dstBlock, dstManaged, dstUnmanagedCount);
+		var src = new Chunk(_srcBlock, srcManaged);
+		var dst = new Chunk(_dstBlock, dstManaged);
 
 		int srcIndex = 0, dstIndex = 3;
 
 		// Seed source values
-		src.Get<int>(srcIndex, ctInt.Id) = 7;
-		src.Get<float>(srcIndex, ctFloat.Id) = 9.25f;
-		src.Get<ManagedName>(srcIndex, ctName.Id) = new ManagedName("Carol");
+		src.Get<int>(srcIndex, srcOffInt) = 7;
+		src.Get<float>(srcIndex, srcOffFloat) = 9.25f;
+		src.Get<ManagedName>(srcIndex, srcOffName) = new ManagedName("Carol");
 
 		// Destination starts with sentinel values
-		dst.Get<int>(dstIndex, ctInt.Id) = -1;
+		dst.Get<int>(dstIndex, dstOffInt) = -1;
 		// No float in destination
-		dst.Get<ManagedName>(dstIndex, ctName.Id) = new ManagedName("unset");
+		dst.Get<ManagedName>(dstIndex, dstOffName) = new ManagedName("unset");
 
 		// Copy only types present in destination: int + name
 		var dstSig = BuildSignatureFor(ctInt, ctName);
-		src.CopyComponents(srcIndex, in dstSig, ref dst, dstIndex);
+		src.CopyComponents(srcIndex, srcOffsets,
+			in dstSig, ref dst, dstIndex, dstOffsets,
+			srcTypes.AsSpan(0, srcUnmanagedCount), srcTypes.AsSpan(srcUnmanagedCount));
 
 		// Assert: int copied, name copied, float untouched (no float slot in dst)
-		Assert.Equal(7, dst.Get<int>(dstIndex, ctInt.Id));
-		Assert.Equal("Carol", dst.Get<ManagedName>(dstIndex, ctName.Id).Name);
+		Assert.Equal(7, dst.Get<int>(dstIndex, dstOffInt));
+		Assert.Equal("Carol", dst.Get<ManagedName>(dstIndex, dstOffName).Name);
 	}
 }

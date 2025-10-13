@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var handles = FormatLine(index, "var t{0}Handle = chunk.GetBufferHandle(_offsets.T{0});");
+		var args = FormatComma(index, "t{0}Handle[index]");
+#>
+internal struct ForEachJobBuffer<T, <#= generics #>>(in T forEach, in Ids<<#= generics #>> ids) : IChunkJob
+	where T : IForEachBuffer<<#= generics #>>
+	<#= Indent(constraints, 4) #>
+{
+	private readonly T _forEach = forEach;
+	private readonly Ids<<#= generics #>> _ids = ids;
+	private Offsets<<#= generics #>> _offsets = default;
+
+	public void Enter(Archetype archetype)
+	{
+		_offsets = archetype.GetOffsets(in _ids);
+	}
+
+	public void ForEach(in Chunk chunk)
+	{
+		<#= Indent(handles, 8) #>
+		foreach (var index in chunk)
+		{
+			_forEach.ForEach(<#= args #>);
+		}
+	}
+}
+<#
+	}
+#>

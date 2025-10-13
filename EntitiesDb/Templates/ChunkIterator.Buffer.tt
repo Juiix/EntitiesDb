@@ -1,0 +1,32 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+#>
+[SkipLocalsInit]
+public ref struct ChunkBufferIterator<<#= generics #>>(Span<Archetype> archetypes, Ids<<#= generics #>> ids)
+	<#= Indent(constraints, 4) #>
+{
+	private readonly Span<Archetype> _archetypes = archetypes;
+	private readonly Ids<<#= generics #>> _ids = ids;
+
+	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public ChunkBufferEnumerator<<#= generics #>> GetEnumerator()
+	{
+		return new ChunkBufferEnumerator<<#= generics #>>(_archetypes, _ids);
+	}
+}
+<#
+	}
+#>

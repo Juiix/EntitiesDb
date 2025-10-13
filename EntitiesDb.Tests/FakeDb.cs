@@ -38,10 +38,10 @@ internal static class FakeDb
 	[ZeroSize] public record struct ProjectileTag;
 
 	// NOTE: If your EntityDatabase ctor is (ComponentRegistry, chunkBytes, maxEntities), use the commented line.
-	public static EntityDatabase CreateDb()
+	public static EntityDatabase CreateDb(bool parallel = false)
 	{
 		// var db = new EntityDatabase(new ComponentRegistry(), 4096, 1000);
-		var db = new EntityDatabase(4096, 1000);
+		var db = new EntityDatabase(new(4096, 1_000_000, parallel ? Environment.ProcessorCount : -1));
 
 		// --- Archetype builders ---------------------------------------------
 
@@ -204,6 +204,15 @@ internal static class FakeDb
 		AddMover(43, 1);
 		AddEmpty();
 		AddEmpty();
+
+		if (parallel)
+		{
+			for (int i = 0; i < 100_000; i++)
+			{
+				AddPlayer(1, 1, 0.2f, 0.0f, 10, 10, 8, 10, 5, 8, "Alice",
+					new[] { new InventoryItem(1, 2), new InventoryItem(2, 1) }); // len 2 <= cap 4 (inline)
+			}
+		}
 
 		return db;
 	}
