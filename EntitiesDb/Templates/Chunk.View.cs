@@ -3,7 +3,12 @@ namespace EntitiesDb;
 
 public readonly ref struct Chunk<T0>(ref readonly Chunk chunk, Offsets<T0> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -29,7 +34,12 @@ public readonly ref struct Chunk<T0>(ref readonly Chunk chunk, Offsets<T0> offse
 }
 public readonly ref struct Chunk<T0, T1>(ref readonly Chunk chunk, Offsets<T0, T1> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -61,7 +71,12 @@ public readonly ref struct Chunk<T0, T1>(ref readonly Chunk chunk, Offsets<T0, T
 }
 public readonly ref struct Chunk<T0, T1, T2>(ref readonly Chunk chunk, Offsets<T0, T1, T2> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -99,7 +114,12 @@ public readonly ref struct Chunk<T0, T1, T2>(ref readonly Chunk chunk, Offsets<T
 }
 public readonly ref struct Chunk<T0, T1, T2, T3>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -143,7 +163,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3>(ref readonly Chunk chunk, Offse
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -193,7 +218,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4>(ref readonly Chunk chunk, O
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -249,7 +279,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5>(ref readonly Chunk chun
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -311,7 +346,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6>(ref readonly Chunk 
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -379,7 +419,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7>(ref readonly Ch
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -453,7 +498,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8>(ref readonl
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -533,7 +583,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(ref rea
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -619,7 +674,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(re
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -711,7 +771,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T1
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -809,7 +874,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T1
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -913,7 +983,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T1
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
@@ -1023,7 +1098,12 @@ public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T1
 }
 public readonly ref struct Chunk<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(ref readonly Chunk chunk, Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;

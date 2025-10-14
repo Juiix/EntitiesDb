@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using EntitiesDb.Benchmark.Contexts;
 using EntitiesDb.Benchmark.Contexts.EntitiesDb_Components;
-using System.Numerics;
 using System.Runtime.Intrinsics;
 
 namespace EntitiesDb.Benchmark;
@@ -34,7 +33,7 @@ public partial class SystemWithTwoComponents
 	[Benchmark]
 	public void EntitiesDb_Simd()
 	{
-		foreach (var (handleA, handleB, length) in _entitiesDb.Query.GetChunkIterator<Component1, Component2>())
+		foreach (var (length, handleA, handleB) in _entitiesDb.Query.GetChunkIterator<Component1, Component2>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
@@ -56,26 +55,10 @@ public partial class SystemWithTwoComponents
 	[Benchmark]
 	public void EntitiesDb_Parallel_Simd()
 	{
-		var add = new AddParallel(_entitiesDb.Ids);
-		_entitiesDb.Query.InlineChunkParallel(in add);
-	}
-
-	private struct AddParallel(Ids<Component1, Component2> ids) : IForEachChunk
-	{
-		private readonly Ids<Component1, Component2> _ids = ids;
-		private Offsets<Component1, Component2> _offsets;
-
-		public void Enter(Archetype archetype)
+		var sum = Vector256<int>.One;
+		_entitiesDb.Query.ForEachChunkParallel((int length, Handle<Component1> handleA, Handle<Component2> handleB, ref Vector256<int> sum) =>
 		{
-			_offsets = archetype.GetOffsets(in _ids);
-		}
-
-		public void ForEach(in Chunk chunk)
-		{
-			var length = chunk.EntityCount;
 			var alignedLength = length - (length & 7);
-			var handleA = chunk.GetHandle(_offsets.T0);
-			var handleB = chunk.GetHandle(_offsets.T1);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
 			var simdHandleB = handleB.Reinterpret<Component2, Vector256<int>>();
 			var simdLength = alignedLength / 8;
@@ -88,34 +71,16 @@ public partial class SystemWithTwoComponents
 			{
 				handleA[i].Value += handleB[i].Value;
 			}
-		}
+		}, ref sum);
 	}
 
-	/*
 	[BenchmarkCategory(Categories.EntitiesDb)]
 	[Benchmark]
-	public void EntitiesDb_SourceGen()
+	public void EntitiesDb_ForEach()
 	{
 		_entitiesDb.Query.ForEach((Entity entity, ref Component1 a, in Component2 b) =>
 		{
 			a.Value += b.Value;
 		});
-	}
-
-	[BenchmarkCategory(Categories.EntitiesDb)]
-	[Benchmark]
-	public void EntitiesDb_Inline()
-	{
-		var add = new Add();
-		_entitiesDb.Query.Inline<Add, Component1, Component2>(ref add);
-	}
-	*/
-
-	private struct Add : IForEach<Component1, Component2>
-	{
-		public void ForEach(ref Component1 t0Component, ref Component2 t1Component)
-		{
-			t0Component.Value += t1Component.Value;
-		}
 	}
 }

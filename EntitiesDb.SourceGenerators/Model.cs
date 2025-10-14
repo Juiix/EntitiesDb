@@ -10,12 +10,15 @@ internal sealed class ForEachRenderModel
 	public string HintName;
 	public string Namespace;
 	public string ExtensionClassName;
+	public string JobName;
+	public string AggregateName;
 	public string ReceiverType;
 	public string DelegateName;
 	public string DelegateParameters;
 	public string IdTypesJoined;   // e.g., "<Health, Position, Damage, Item>"
-	public string StateParam;
 	public string StateType;
+	public string StateJobType;
+	public bool IsAggregate;
 	public List<string> HandleLines = new List<string>();
 	public List<string> CallArguments = new List<string>();
 
@@ -47,7 +50,7 @@ internal static partial class ModelBuilder
 		// --- Signature from capture ---
 		var types = cap.Signature.ParamTypes;
 		var refs = cap.Signature.ParamRefs;
-		if (types.IsDefaultOrEmpty || refs.IsDefaultOrEmpty || types.Length != refs.Length)
+		if (types.Length == 0 || refs.Length == 0 || types.Length != refs.Length)
 			return Invalid();
 
 		// --- Build ParamParts from (type, ref) ---
@@ -80,17 +83,17 @@ internal static partial class ModelBuilder
 			parts.Add(pp);
 		}
 
-		string stateParam = null;
 		string stateType = null;
+		string stateJobType = null;
 		if (cap.HasState && parts.Count > 0)
 		{
+			stateType = Utilities.ToDisplay(cap.StateType);
+			stateJobType = Utilities.ToDisplay(cap.StateJobType);
+			var part = new ParamPart(ParamKind.State, "state", cap.StateJobType, cap.StateJobType);
+
 			var last = parts[parts.Count - 1];
 			var lastRef = refs[parts.Count - 1];
-			stateType = Utilities.ToDisplay(last.Type);
-			stateParam = "ref " + stateType + " state";
-			var part = new ParamPart(ParamKind.State, "state", last.Type, last.Type);
-
-			if (last.Type.Equals(cap.StateType, SymbolEqualityComparer.Default) && lastRef == RefKind.Ref)
+			if (last.Type.Equals(cap.StateJobType, SymbolEqualityComparer.Default) && lastRef == RefKind.Ref)
 			{
 				parts[parts.Count - 1] = part;
 			}
@@ -179,8 +182,7 @@ internal static partial class ModelBuilder
 
 		if (cap.HasState)
 		{
-			if (parallel) callArgs.Add("ref _state");
-			else callArgs.Add("ref state");
+			callArgs.Add("ref state");
 		}
 
 		// --- IDs / names ---
@@ -200,12 +202,15 @@ internal static partial class ModelBuilder
 
 			// Emit into the SAME extension container to beat generic overloads
 			ExtensionClassName = $"{cap.MethodType}Extensions_Gen",
+			DelegateName = $"{cap.MethodType}Delegate_" + idHex,
+			JobName = $"{cap.MethodType}Job_" + idHex,
+			AggregateName = $"{cap.MethodType}JobAggregate_" + idHex,
 
 			ReceiverType = receiverTypeName,
-			DelegateName = $"{cap.MethodType}Delegate_" + idHex,
 			DelegateParameters = delParams,
-			StateParam = stateParam,
+			IsAggregate = cap.IsAggregate,
 			StateType = stateType,
+			StateJobType = stateJobType,
 			IdTypesJoined = idTypes.Count == 0 ? "" : "<" + string.Join(", ", idTypes.ToArray()) + ">",
 
 			HandleLines = handleLines,

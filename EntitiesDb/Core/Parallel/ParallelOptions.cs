@@ -1,6 +1,6 @@
 ﻿namespace EntitiesDb;
 
-public struct ParallelOptions
+public readonly struct ParallelOptions(int maxThreads)
 {
-	public int MaxThreads { get; set; }
+	public int MaxThreads { get; } = maxThreads;
 }

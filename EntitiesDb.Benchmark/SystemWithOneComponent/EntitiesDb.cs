@@ -34,7 +34,7 @@ public partial class SystemWithOneComponent
 	public void EntitiesDb_Simd()
 	{
 		Vector256<int> sum = Vector256.Create(1);
-		foreach (var (handle, length) in _entitiesDb.Query.GetChunkIterator<Component1>())
+		foreach (var (length, handle) in _entitiesDb.Query.GetChunkIterator<Component1>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandle = handle.Reinterpret<Component1, Vector256<int>>();
@@ -53,27 +53,11 @@ public partial class SystemWithOneComponent
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
 	[Benchmark]
-	public void EntitiesDb_SourceGen()
+	public void EntitiesDb_ForEach()
 	{
 		_entitiesDb.Query.ForEach((Entity entity, ref Component1 a) =>
 		{
 			a.Value++;
 		});
-	}
-
-	[BenchmarkCategory(Categories.EntitiesDb)]
-	[Benchmark]
-	public void EntitiesDb_Inline()
-	{
-		var add = new Add();
-		_entitiesDb.Query.Inline<Add, Component1>(ref add);
-	}
-
-	private struct Add : IForEach<Component1>
-	{
-		public void ForEach(ref Component1 t0Component)
-		{
-			t0Component.Value++;
-		}
 	}
 }

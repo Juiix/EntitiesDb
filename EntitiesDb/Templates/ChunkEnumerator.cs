@@ -9,7 +9,6 @@ public ref struct ChunkEnumerator<T0>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0> _offsets;
 
 	[SkipLocalsInit]
@@ -21,7 +20,6 @@ public ref struct ChunkEnumerator<T0>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -40,7 +38,6 @@ public ref struct ChunkEnumerator<T0>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -56,7 +53,6 @@ public ref struct ChunkEnumerator<T0>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -65,7 +61,7 @@ public ref struct ChunkEnumerator<T0>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1>
@@ -73,7 +69,6 @@ public ref struct ChunkEnumerator<T0, T1>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1> _offsets;
 
 	[SkipLocalsInit]
@@ -85,7 +80,6 @@ public ref struct ChunkEnumerator<T0, T1>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -104,7 +98,6 @@ public ref struct ChunkEnumerator<T0, T1>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -120,7 +113,6 @@ public ref struct ChunkEnumerator<T0, T1>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -129,7 +121,7 @@ public ref struct ChunkEnumerator<T0, T1>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2>
@@ -137,7 +129,6 @@ public ref struct ChunkEnumerator<T0, T1, T2>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2> _offsets;
 
 	[SkipLocalsInit]
@@ -149,7 +140,6 @@ public ref struct ChunkEnumerator<T0, T1, T2>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -168,7 +158,6 @@ public ref struct ChunkEnumerator<T0, T1, T2>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -184,7 +173,6 @@ public ref struct ChunkEnumerator<T0, T1, T2>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -193,7 +181,7 @@ public ref struct ChunkEnumerator<T0, T1, T2>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3>
@@ -201,7 +189,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3> _offsets;
 
 	[SkipLocalsInit]
@@ -213,7 +200,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -232,7 +218,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -248,7 +233,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -257,7 +241,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
@@ -265,7 +249,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4> _offsets;
 
 	[SkipLocalsInit]
@@ -277,7 +260,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -296,7 +278,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -312,7 +293,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -321,7 +301,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
@@ -329,7 +309,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5> _offsets;
 
 	[SkipLocalsInit]
@@ -341,7 +320,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -360,7 +338,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -376,7 +353,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -385,7 +361,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
@@ -393,7 +369,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6> _offsets;
 
 	[SkipLocalsInit]
@@ -405,7 +380,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -424,7 +398,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -440,7 +413,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -449,7 +421,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
@@ -457,7 +429,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7> _offsets;
 
 	[SkipLocalsInit]
@@ -469,7 +440,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -488,7 +458,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -504,7 +473,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -513,7 +481,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
@@ -521,7 +489,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> _offsets;
 
 	[SkipLocalsInit]
@@ -533,7 +500,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -552,7 +518,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -568,7 +533,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -577,7 +541,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
@@ -585,7 +549,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> _offsets;
 
 	[SkipLocalsInit]
@@ -597,7 +560,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -616,7 +578,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -632,7 +593,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -641,7 +601,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
@@ -649,7 +609,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> _offsets;
 
 	[SkipLocalsInit]
@@ -661,7 +620,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -680,7 +638,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -696,7 +653,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -705,7 +661,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
@@ -713,7 +669,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> _offsets;
 
 	[SkipLocalsInit]
@@ -725,7 +680,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -744,7 +698,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -760,7 +713,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -769,7 +721,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
@@ -777,7 +729,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> _offsets;
 
 	[SkipLocalsInit]
@@ -789,7 +740,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -808,7 +758,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -824,7 +773,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -833,7 +781,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
@@ -841,7 +789,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> _offsets;
 
 	[SkipLocalsInit]
@@ -853,7 +800,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -872,7 +818,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -888,7 +833,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -897,7 +841,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
@@ -905,7 +849,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> _offsets;
 
 	[SkipLocalsInit]
@@ -917,7 +860,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -936,7 +878,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -952,7 +893,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -961,7 +901,7 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
@@ -969,7 +909,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	private ArchetypeEnumerator _archetypes;
 	private Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> _offsets;
 
 	[SkipLocalsInit]
@@ -981,7 +920,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -1000,7 +938,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -1016,7 +953,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -1025,6 +961,6 @@ public ref struct ChunkEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }

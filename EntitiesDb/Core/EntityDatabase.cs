@@ -1,5 +1,4 @@
-﻿using Schedulers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,8 +23,8 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public EntityDatabase(EntityDatabaseOptions options)
 	{
-		ArgumentOutOfRangeException.ThrowIfNegative(options.ChunkByteSize);
-		ArgumentOutOfRangeException.ThrowIfNegative(options.MaxEntities);
+		if (options.ChunkByteSize <= 0) throw new ArgumentOutOfRangeException(nameof(options.ChunkByteSize), "Value cannot by less than or equal to 0");
+		if (options.MaxEntities <= 0) throw new ArgumentOutOfRangeException(nameof(options.MaxEntities), "Value cannot by less than or equal to 0");
 
 		_entityMap = new(options.MaxEntities);
         ComponentRegistry = new();

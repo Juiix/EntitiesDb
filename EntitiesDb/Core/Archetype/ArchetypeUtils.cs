@@ -202,7 +202,7 @@ internal unsafe static class ArchetypeUtils
 	{
 		// component types are ordered by id within (unamanged | managed) regions
 		// we only need to check the last of each
-		int maxId = Math.Max(types[Math.Max(unmanagedCount - 1, 0)].Id, types[^1].Id);
+		int maxId = Math.Max(types[Math.Max(unmanagedCount - 1, 0)].Id, types[types.Length - 1].Id);
 		return maxId;
 	}
 }

@@ -83,8 +83,8 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		}
 
 		int needCap = GrowPow2(baseCap, data.Length);
-		var bytes = checked((nuint)needCap * (nuint)sizeof(T));
-		void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
+		var bytes = checked(needCap * sizeof(T));
+		void* dst = (void*)Marshal.AllocHGlobal(bytes);
 		data.CopyTo(new Span<T>(dst, data.Length));
 		_header->Heap = (nint)dst;
 		_header->Capacity = needCap;
@@ -184,11 +184,11 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		int oldSize = GetSize();
 		int newCap = GrowPow2(baseCap, targetSize);
 
-		var bytesToCopy = checked((nuint)oldSize * (nuint)sizeof(T));
-		var newBytes = checked((nuint)newCap * (nuint)sizeof(T));
+		var bytesToCopy = checked(oldSize * sizeof(T));
+		var newBytes = checked(newCap * sizeof(T));
 
 		void* src = DataPtr;
-		void* dst = (void*)Marshal.AllocHGlobal((IntPtr)newBytes);
+		void* dst = (void*)Marshal.AllocHGlobal(newBytes);
 
 		Buffer.MemoryCopy(src, dst, newBytes, bytesToCopy);
 
@@ -245,10 +245,10 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		else if (targetCap < cap)
 		{
 			// Reallocate a smaller heap
-			var bytes = checked((nuint)targetCap * (nuint)sizeof(T));
+			var bytes = checked(targetCap * sizeof(T));
 			void* src = (void*)_header->Heap;
-			void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
-			Buffer.MemoryCopy(src, dst, bytes, checked((nuint)size * (nuint)sizeof(T)));
+			void* dst = (void*)Marshal.AllocHGlobal(bytes);
+			Buffer.MemoryCopy(src, dst, bytes, checked(size * sizeof(T)));
 			Marshal.FreeHGlobal(_header->Heap);
 			_header->Heap = (nint)dst;
 			_header->Capacity = targetCap;
@@ -340,10 +340,10 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		}
 		else if (targetCap < cap)
 		{
-			var bytes = checked((nuint)targetCap * (nuint)sizeof(T));
+			var bytes = checked(targetCap * sizeof(T));
 			void* src = (void*)_header->Heap;
-			void* dst = (void*)Marshal.AllocHGlobal((IntPtr)bytes);
-			Buffer.MemoryCopy(src, dst, bytes, checked((nuint)size * (nuint)sizeof(T)));
+			void* dst = (void*)Marshal.AllocHGlobal(bytes);
+			Buffer.MemoryCopy(src, dst, bytes, checked(size * sizeof(T)));
 			Marshal.FreeHGlobal(_header->Heap);
 			_header->Heap = (nint)dst;
 			_header->Capacity = targetCap;

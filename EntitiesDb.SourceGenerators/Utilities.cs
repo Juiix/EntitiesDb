@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -21,18 +20,6 @@ internal static class Utilities
 	internal static string Sanitize(string name)
 	{
 		return SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None ? "@" + name : name;
-	}
-
-	internal static string JoinSignature(ImmutableArray<IParameterSymbol> parameters)
-	{
-		var sb = new StringBuilder();
-		for (int i = 0; i < parameters.Length; i++)
-		{
-			if (i > 0) sb.Append(",");
-			var p = parameters[i];
-			sb.Append(p.RefKind.ToString()).Append(":").Append(ToDisplay(p.Type));
-		}
-		return sb.ToString();
 	}
 
 	internal static string JoinDelegateParameters(List<ParamPart> parts)

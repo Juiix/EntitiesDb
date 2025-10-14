@@ -2,7 +2,7 @@
 
 namespace EntitiesDb.Queries;
 
-public sealed class SrouceGenQueryTests
+public sealed class SourceGenQueryTests
 {
 	[Fact]
 	public void Query_WithPositionHealth_NoEnemy()
@@ -268,63 +268,5 @@ public sealed class SrouceGenQueryTests
 		}, ref seenAny);
 
 		Assert.True(seenAny);
-	}
-
-	[Fact]
-	public void Query_Parallel_Test()
-	{
-		using var db = CreateDb(true);
-		var query = db.QueryBuilder
-			.WithAll<Health, Position>()
-			.Build();
-
-		int count = 0;
-		query.ForEachParallel((Entity entity, in Health health, in Position position, ref int count) =>
-		{
-
-		}, ref count);
-
-		query.ForEachChunkParallel((int length, ReadOnlyHandle<Entity> entities, Handle<Health> healths, Handle<Position> positions, ref int count) =>
-		{
-
-		}, ref count);
-
-		query.ForEachChunk((int length, ReadOnlyHandle<Entity> entities, Handle<Health> healths, Handle<Position> positions, ref int count) =>
-		{
-
-		}, ref count);
-	}
-
-	private struct ParallelTest(Ids<Health, Position> ids) : IChunkJob
-	{
-		private readonly Ids<Health, Position> _ids = ids;
-		private Offsets<Health, Position> _offsets;
-
-		public void Enter(Archetype archetype)
-		{
-			_offsets = archetype.GetOffsets(in _ids);
-		}
-
-		public void ForEach(in Chunk chunk)
-		{
-			/*
-			var length = chunk.EntityCount;
-			var alignedLength = length - (length & 7);
-			var handleA = chunk.GetHandle(_offsets.T0);
-			var handleB = chunk.GetHandle(_offsets.T1);
-			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
-			var simdHandleB = handleB.Reinterpret<Component2, Vector256<int>>();
-			var simdLength = alignedLength / 8;
-			for (int i = 0; i < simdLength; i++)
-			{
-				simdHandleA[i] += simdHandleB[i];
-			}
-
-			for (int i = alignedLength; i < length; i++)
-			{
-				handleA[i].Value += handleB[i].Value;
-			}
-			*/
-		}
 	}
 }

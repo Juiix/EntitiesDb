@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EntitiesDb\EntitiesDb.csproj" />
     <ProjectReference Include="..\EntitiesDb.SourceGenerators\EntitiesDb.SourceGenerators.csproj" />
     <ProjectReference Include="..\EntitiesDb.SourceGenerators\EntitiesDb.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\EntitiesDb\EntitiesDb.csproj" />
   </ItemGroup>
 
   <ItemGroup>

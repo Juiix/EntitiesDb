@@ -29,7 +29,12 @@ namespace EntitiesDb;
 public readonly ref struct ChunkMixed<#= indexC #><<#= genericsC #>, <#= genericsB #>>(ref readonly Chunk chunk, Offsets<<#= genericsC #>, <#= genericsB #>> offsets)
 	<#= Indent(constraints, 4) #>
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<<#= genericsC #>, <#= genericsB #>> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;

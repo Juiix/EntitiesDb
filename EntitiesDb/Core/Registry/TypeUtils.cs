@@ -28,7 +28,7 @@ internal static class TypeUtils
 		var type = typeof(T);
 		var zeroSize = type.GetCustomAttribute<ZeroSizeAttribute>();
 		return !type.IsValueType
-			? nint.Size
+			? IntPtr.Size
 			: zeroSize != null 
 			? 0
 			: Unsafe.SizeOf<T>();

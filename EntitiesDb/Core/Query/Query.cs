@@ -1,7 +1,5 @@
-﻿using Schedulers;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.Buffers;
 
 namespace EntitiesDb;
 
@@ -11,7 +9,8 @@ public sealed partial class Query
 	private readonly ComponentRegistry _componentRegistry;
 	private readonly ParallelJobRunner? _parallelRunner;
 	private readonly QueryFilter _filter;
-	private readonly List<Archetype> _matchingArchetypes = [];
+	private Archetype[] _matchingArchetypes = ArrayPool<Archetype>.Shared.Rent(16);
+	private int _matchingCount = 0;
 	private int _matchVersion;
 
 	internal Query(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, ParallelJobRunner? parallelRunner, QueryFilter filter)
@@ -22,7 +21,7 @@ public sealed partial class Query
 		_parallelRunner = parallelRunner;
 	}
 
-	private Span<Archetype> MatchingArchetypesSpan => CollectionsMarshal.AsSpan(_matchingArchetypes);
+	private Span<Archetype> MatchingArchetypesSpan => _matchingArchetypes.AsSpan(0, _matchingCount);
 
 	/// <summary>
 	/// If a given <see cref="Signature"/> matches this query
@@ -75,12 +74,20 @@ public sealed partial class Query
 		if (_matchVersion == _archetypes.Version)
 			return;
 
-		_matchingArchetypes.Clear();
+		Array.Clear(_matchingArchetypes, 0, _matchingCount);
 		foreach (var archetype in _archetypes.AsSpan())
 		{
 			if (Matches(in archetype.Signature))
 			{
-				_matchingArchetypes.Add(archetype);
+				if (_matchingCount >= _matchingArchetypes.Length)
+				{
+					var newArr = ArrayPool<Archetype>.Shared.Rent(_matchingArchetypes.Length * 2);
+					Array.Copy(_matchingArchetypes, newArr, _matchingCount);
+					Array.Clear(_matchingArchetypes, 0, _matchingCount);
+					ArrayPool<Archetype>.Shared.Return(_matchingArchetypes);
+					_matchingArchetypes = newArr;
+				}
+				_matchingArchetypes[_matchingCount++] = archetype;
 			}
 		}
 		_matchVersion = _archetypes.Version;

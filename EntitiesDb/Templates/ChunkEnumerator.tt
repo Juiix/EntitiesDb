@@ -17,7 +17,6 @@ public ref struct ChunkEnumerator<<#= generics #>>
 	private ArchetypeEnumerator _archetypes;
 	private Ids<<#= generics #>> _ids;
 	private int _index;
-	private ref Chunk _chunk;
 	private Offsets<<#= generics #>> _offsets;
 
 	[SkipLocalsInit]
@@ -29,7 +28,6 @@ public ref struct ChunkEnumerator<<#= generics #>>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -48,7 +46,6 @@ public ref struct ChunkEnumerator<<#= generics #>>
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 			return true;
 		}
@@ -64,7 +61,6 @@ public ref struct ChunkEnumerator<<#= generics #>>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
@@ -73,7 +69,7 @@ public ref struct ChunkEnumerator<<#= generics #>>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref Unsafe.Add(ref _chunk, _index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
 	}
 }
 <#

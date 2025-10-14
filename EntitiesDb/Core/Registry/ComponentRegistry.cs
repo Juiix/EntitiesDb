@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace EntitiesDb;
@@ -29,7 +27,7 @@ public sealed partial class ComponentRegistry
 	private readonly Dictionary<Type, int> _typeMap = [];
 	private readonly object _lock = new();
 
-	private ImmutableDictionary<Type, int> _snapshot = ImmutableDictionary.Create<Type, int>();
+	private Dictionary<Type, int> _snapshot = [];
 	private int _nextId = 0;
 
 	public int Count => Volatile.Read(ref _nextId);
@@ -63,7 +61,7 @@ public sealed partial class ComponentRegistry
 			ref var created = ref AddComponentType<T>();
 
 			// Publish a single, consistent snapshot
-			var newSnapshot = ImmutableDictionary.CreateRange(_typeMap);
+			var newSnapshot = new Dictionary<Type, int>(_typeMap);
 			Volatile.Write(ref _snapshot, newSnapshot);
 
 			return ref created;
@@ -96,7 +94,7 @@ public sealed partial class ComponentRegistry
 			id >= Count)
 		{
 			found = false;
-			return ref Unsafe.NullRef<ComponentType>();
+			return ref Dangerous.NullRef<ComponentType>();
 		}
 
 		found = true;
@@ -123,7 +121,11 @@ public sealed partial class ComponentRegistry
 	/// <param name="id">Id of the target component</param>
 	/// <param name="type">The retrived type</param>
 	/// <returns>If the type was retrieved</returns>
+#if NETSTANDARD2_1
+	public bool TryGetType(int id, out Type type)
+#else
 	public bool TryGetType(int id, [MaybeNullWhen(false)] out Type type)
+#endif
 	{
 		if (id < 0 ||
 			id >= Count)

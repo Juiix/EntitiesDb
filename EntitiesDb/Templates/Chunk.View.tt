@@ -18,7 +18,12 @@ namespace EntitiesDb;
 #>
 public readonly ref struct Chunk<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
 {
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
 	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
 	private readonly Offsets<<#= generics #>> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;

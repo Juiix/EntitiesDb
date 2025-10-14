@@ -75,6 +75,35 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed1Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed1Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed1Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed1Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed2Iterator<T0, T1, T2> GetChunkMixed2Iterator<T0, T1, T2>()
 		where T2 : unmanaged
 	{
@@ -132,6 +161,33 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed2Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed2Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed2Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed2Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed3Iterator<T0, T1, T2, T3> GetChunkMixed3Iterator<T0, T1, T2, T3>()
 		where T3 : unmanaged
 	{
@@ -177,6 +233,31 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed3Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed3Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed3Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed3Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed4Iterator<T0, T1, T2, T3, T4> GetChunkMixed4Iterator<T0, T1, T2, T3, T4>()
 		where T4 : unmanaged
 	{
@@ -211,6 +292,29 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed4Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed4Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed4Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed4Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed5Iterator<T0, T1, T2, T3, T4, T5> GetChunkMixed5Iterator<T0, T1, T2, T3, T4, T5>()
 		where T5 : unmanaged
 	{
@@ -235,6 +339,27 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed5Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed5Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed5Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed5Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6> GetChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6>()
 		where T6 : unmanaged
 	{
@@ -250,10 +375,68 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}
+	public ChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed6Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
 	public ChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7> GetChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7>()
 		where T7 : unmanaged
 	{
 		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed7Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed8Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetChunkMixed8Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+		where T8 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed8Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed8Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		Match();
+		return new(MatchingArchetypesSpan, ids);
+	}
+	public ChunkMixed9Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetChunkMixed9Iterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+		where T9 : unmanaged
+	{
+		var ids = _componentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
 		Match();
 		return new(MatchingArchetypesSpan, ids);
 	}

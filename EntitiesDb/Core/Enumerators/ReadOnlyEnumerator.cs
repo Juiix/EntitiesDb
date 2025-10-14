@@ -11,12 +11,20 @@ namespace EntitiesDb;
 public ref struct ReadOnlyEnumerator<T>
 {
 	private readonly int _length;
+#if NETSTANDARD2_1
+	private Ref<T> _ref;
+#else
 	private ref T _ref;
+#endif
 	private int _index;
 
 	public ReadOnlyEnumerator(Span<T> span)
 	{
+#if NETSTANDARD2_1
+		_ref = new Ref<T>(ref MemoryMarshal.GetReference(span));
+#else
 		_ref = ref MemoryMarshal.GetReference(span);
+#endif
 		_index = _length = span.Length;
 	}
 
@@ -42,6 +50,10 @@ public ref struct ReadOnlyEnumerator<T>
 	/// </summary>
 	public readonly ref T Current
 	{
+#if NETSTANDARD2_1
+		get => ref Unsafe.Add(ref _ref.Value, _index);
+#else
 		get => ref Unsafe.Add(ref _ref, _index);
+#endif
 	}
 }

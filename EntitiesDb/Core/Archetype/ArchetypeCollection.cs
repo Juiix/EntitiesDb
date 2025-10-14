@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -11,7 +12,8 @@ public sealed class ArchetypeCollection
 {
 	private readonly ComponentRegistry _componentRegistry;
 	private readonly int _chunkByteSize;
-	private readonly List<Archetype> _archetypes = [];
+	private Archetype[] _archetypes = ArrayPool<Archetype>.Shared.Rent(64);
+	private int _archetypeCount = 0;
 	private readonly Dictionary<Signature, Archetype> _archetypeMap = [];
 
 	internal ArchetypeCollection(ComponentRegistry componentRegistry, int chunkByteSize)
@@ -28,7 +30,7 @@ public sealed class ArchetypeCollection
 	/// </remarks>
 	internal int Version { get; private set; }
 
-	public Span<Archetype> AsSpan() => CollectionsMarshal.AsSpan(_archetypes);
+	public Span<Archetype> AsSpan() => _archetypes.AsSpan(0, _archetypeCount);
 
 	/// <summary>
 	/// Gets an existing or Creates a new <see cref="Archetype"/> for the given <see cref="Signature"/>
@@ -45,7 +47,15 @@ public sealed class ArchetypeCollection
 		var arrayFactories = ArchetypeUtils.CompileArrayFactories(managedSpan, _componentRegistry);
 
 		archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, _chunkByteSize);
-		_archetypes.Add(archetype);
+		if (_archetypeCount >= _archetypes.Length)
+		{
+			var newArr = ArrayPool<Archetype>.Shared.Rent(_archetypes.Length * 2);
+			Array.Copy(_archetypes, newArr, _archetypeCount);
+			Array.Clear(_archetypes, 0, _archetypeCount);
+			ArrayPool<Archetype>.Shared.Return(_archetypes);
+			_archetypes = newArr;
+		}
+		_archetypes[_archetypeCount++] = archetype;
 		_archetypeMap.Add(signature, archetype);
 		Version++;
 		return archetype;
@@ -56,13 +66,17 @@ public sealed class ArchetypeCollection
 	/// </summary>
 	internal void TrimExcess()
 	{
-		for (int i = _archetypes.Count; i >= 0; i--)
+		for (int i = _archetypeCount - 1; i >= 0; i--)
 		{
 			var archetype = _archetypes[i];
 			if (archetype.EntityCount == 0)
 			{
 				archetype.Dispose();
-				_archetypes.RemoveAt(i);
+				if (i < --_archetypeCount)
+				{
+					_archetypes[i] = _archetypes[_archetypeCount];
+				}
+				_archetypes[_archetypeCount] = null!;
 				_archetypeMap.Remove(archetype.Signature);
 				continue;
 			}
@@ -76,10 +90,11 @@ public sealed class ArchetypeCollection
 	/// </summary>
 	internal void Dispose()
 	{
-		foreach (var archetype in _archetypes)
+		foreach (var archetype in _archetypes.AsSpan(0, _archetypeCount))
 		{
 			archetype.Dispose();
 		}
-		_archetypes.Clear();
+		Array.Clear(_archetypes, 0, _archetypeCount);
+		_archetypeCount = 0;
 	}
 }

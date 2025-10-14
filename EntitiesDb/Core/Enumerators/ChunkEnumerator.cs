@@ -4,11 +4,10 @@ using System.Runtime.CompilerServices;
 namespace EntitiesDb;
 
 [SkipLocalsInit]
-public ref struct ChunkEnumerator
+public unsafe ref struct ChunkEnumerator
 {
 	private ArchetypeEnumerator _archetypes;
 	private int _index;
-	private ref Chunk _chunk;
 
 	[SkipLocalsInit]
 	public ChunkEnumerator(Span<Archetype> archetypes)
@@ -20,7 +19,6 @@ public ref struct ChunkEnumerator
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 		}
 	}
 
@@ -44,7 +42,6 @@ public ref struct ChunkEnumerator
 
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse - 1;
-			_chunk = ref archetype.GetChunk(0);
 			return true;
 		}
 	}
@@ -60,7 +57,6 @@ public ref struct ChunkEnumerator
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_chunk = ref archetype.GetChunk(0);
 		}
 	}
 
@@ -68,6 +64,6 @@ public ref struct ChunkEnumerator
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => ref Unsafe.Add(ref _chunk, _index);
+		get => ref _archetypes.Current.GetChunk(_index);
 	}
 }

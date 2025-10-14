@@ -3,8 +3,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
-using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Text;
 
 namespace EntitiesDb.SourceGenerators;
@@ -39,7 +37,7 @@ internal static class Discovery
 		if (inv.ArgumentList == null) return InvocationCapture.Invalid;
 
 		var args = inv.ArgumentList.Arguments;
-		if (args.Count != 1 && args.Count != 2) return InvocationCapture.Invalid;
+		if (args.Count < 1 || args.Count > 3) return InvocationCapture.Invalid;
 
 		ExpressionSyntax recvExpr = null;
 		ExpressionSyntax actExpr = args[0].Expression;
@@ -95,24 +93,48 @@ internal static class Discovery
 		if (lamSym == null) return InvocationCapture.Invalid;
 
 		var sig = LambdaSignature.From(lamSym);
+		var id = SignatureId(sig);
+		var lambdaText = actExpr.ToFullString();
+
 		// Optional state arg
-		if (args.Count == 2)
+		if (args.Count > 1)
 		{
-			var stateExpr = args[1].Expression;
+			var stateArg = args[1];
+			var stateExpr = stateArg.Expression;
 			var stateType = sm.GetTypeInfo(stateExpr).Type;
 			if (stateType == null) return InvocationCapture.Invalid;
 
-			// Append state as by-value parameter at the end of the signature
-			//var sigPlus = LambdaSignature.AppendParam(sig, stateType, RefKind.None);
+			var isParallel = forEachType is MethodType.ForEachParallel or MethodType.ForEachChunkParallel;
+			if (isParallel && stateType is INamedTypeSymbol namedState &&
+				string.Equals(namedState.Name, "ParallelOptions", StringComparison.Ordinal) && string.Equals(namedState.ContainingNamespace?.Name, "EntitiesDb", StringComparison.Ordinal))
+			{
+				// arg is not state, but parallel options
+				return InvocationCapture.FromLambda(forEachType, inv, recvType, sig, id, lambdaText);
+			}
 
-			var idPlus = SignatureId(sig);
-			var lambdaText = actExpr.ToFullString();
-			return InvocationCapture.FromLambdaWithState(forEachType, inv, recvType, sig, idPlus, lambdaText, stateType, stateExpr.ToFullString());
+			// check if state is Job aggregate
+			var isAggregate = false;
+			var stateJobType = stateType;
+			if (isParallel && stateType is INamedTypeSymbol namedStateType)
+			{
+				var interfaces = namedStateType.AllInterfaces;
+				foreach (var @interface in interfaces)
+				{
+					if (@interface.IsGenericType && string.Equals(@interface.Name, "IParallelAggregate") &&
+						string.Equals(@interface.ContainingNamespace?.Name, "EntitiesDb"))
+					{
+						isAggregate = true;
+						stateJobType = @interface.TypeArguments[0];
+						break;
+					}
+				}
+			}
+
+			id = SignatureId(sig, stateType);
+			return InvocationCapture.FromLambdaWithState(forEachType, inv, recvType, sig, id, lambdaText, isAggregate, stateType, stateJobType, stateExpr.ToFullString());
 		}
 		else
 		{
-			var id = SignatureId(sig);
-			var lambdaText = actExpr.ToFullString();
 			return InvocationCapture.FromLambda(forEachType, inv, recvType, sig, id, lambdaText);
 		}
 	}
@@ -192,7 +214,7 @@ internal static class Discovery
 
 	// --- signature + id ---
 
-	internal static string SignatureId(LambdaSignature s)
+	internal static string SignatureId(LambdaSignature s, ITypeSymbol? stateType = null)
 	{
 		var fmt = SymbolDisplayFormat.FullyQualifiedFormat;
 		var sb = new StringBuilder();
@@ -201,6 +223,11 @@ internal static class Discovery
 		{
 			sb.Append('|').Append((int)s.ParamRefs[i]).Append('|')
 			  .Append(s.ParamTypes[i].ToDisplayString(fmt));
+		}
+
+		if (stateType != null)
+		{
+			sb.Append('|').Append(stateType.ToDisplayString(fmt));
 		}
 
 		// FNV-1a 32-bit
@@ -218,13 +245,13 @@ internal static class Discovery
 internal struct LambdaSignature : IEquatable<LambdaSignature>
 {
 	public ITypeSymbol Return;
-	public ImmutableArray<ITypeSymbol> ParamTypes;
-	public ImmutableArray<RefKind> ParamRefs;
+	public ITypeSymbol[] ParamTypes;
+	public RefKind[] ParamRefs;
 
 	public static LambdaSignature From(IMethodSymbol m)
 	{
-		var types = m.Parameters.Select(p => p.Type).ToImmutableArray();
-		var refs = m.Parameters.Select(p => p.RefKind).ToImmutableArray();
+		var types = m.Parameters.Select(p => p.Type).ToArray();
+		var refs = m.Parameters.Select(p => p.RefKind).ToArray();
 		return new LambdaSignature { Return = m.ReturnType, ParamTypes = types, ParamRefs = refs };
 	}
 
@@ -277,13 +304,6 @@ internal struct LambdaSignature : IEquatable<LambdaSignature>
 			return h;
 		}
 	}
-
-	public static LambdaSignature AppendParam(LambdaSignature s, ITypeSymbol type, RefKind rk)
-	{
-		var types = s.ParamTypes.Add(type);
-		var refs = s.ParamRefs.Add(rk);
-		return new LambdaSignature { Return = s.Return, ParamTypes = types, ParamRefs = refs };
-	}
 }
 
 internal enum MethodType
@@ -308,7 +328,9 @@ internal struct InvocationCapture
 	public MethodType MethodType;
 
 	public bool HasState;
+	public bool IsAggregate;
 	public ITypeSymbol StateType;
+	public ITypeSymbol StateJobType;
 	public string StateSourceText;
 
 	public bool IsValid { get { return InvocationSyntax != null; } }
@@ -340,7 +362,9 @@ internal struct InvocationCapture
 		LambdaSignature sigPlusState,
 		string id,
 		string lambdaSrc,
+		bool isAggregate,
 		ITypeSymbol stateType,
+		ITypeSymbol stateJobType,
 		string stateExprText)
 	{
 		return new InvocationCapture
@@ -353,7 +377,9 @@ internal struct InvocationCapture
 			UniqueName = $"{methodType}_{id}",
 			LambdaSourceText = lambdaSrc,
 			HasState = true,
+			IsAggregate = isAggregate,
 			StateType = stateType,
+			StateJobType = stateJobType,
 			StateSourceText = stateExprText
 		};
 	}

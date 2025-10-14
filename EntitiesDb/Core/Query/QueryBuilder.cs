@@ -1,6 +1,4 @@
-﻿using Schedulers;
-
-namespace EntitiesDb;
+﻿namespace EntitiesDb;
 
 public sealed partial class QueryBuilder
 {

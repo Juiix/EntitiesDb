@@ -6,6 +6,7 @@ internal static partial class Renderer
 	{
 		var w = new IndentedStringBuilder();
 		var hasComponents = !string.IsNullOrEmpty(m.IdTypesJoined);
+		var hasState = !string.IsNullOrEmpty(m.StateType);
 
 		if (!string.IsNullOrEmpty(m.Namespace))
 		{
@@ -34,10 +35,11 @@ internal static partial class Renderer
 		 .Append(m.DelegateName).Append(" @delegate");
 
 		// State param
-		if (!string.IsNullOrEmpty(m.StateParam))
+		if (hasState)
 		{
-			w.Append(", ");
-			w.Append(m.StateParam);
+			w.Append(", ref ");
+			w.Append(m.StateType);
+			w.Append(" state");
 		}
 
 		w.AppendLine(")");

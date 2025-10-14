@@ -1,6 +1,4 @@
-﻿using Schedulers;
-
-namespace EntitiesDb.Benchmark.Contexts
+﻿namespace EntitiesDb.Benchmark.Contexts
 {
 	namespace EntitiesDb_Components
 	{

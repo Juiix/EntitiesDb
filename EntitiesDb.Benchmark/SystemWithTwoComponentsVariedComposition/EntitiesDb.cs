@@ -39,7 +39,7 @@ public partial class SystemWithTwoComponentsVariedComposition
 	[Benchmark]
 	public void EntitiesDb_Simd()
 	{
-		foreach (var (handleA, handleB, length) in _entitiesDb.Query.GetChunkIterator<Component1, Component2>())
+		foreach (var (length, handleA, handleB) in _entitiesDb.Query.GetChunkIterator<Component1, Component2>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
@@ -65,21 +65,5 @@ public partial class SystemWithTwoComponentsVariedComposition
 		{
 			a.Value += b.Value;
 		});
-	}
-
-	[BenchmarkCategory(Categories.EntitiesDb)]
-	[Benchmark]
-	public void EntitiesDb_Inline()
-	{
-		var add = new Add();
-		_entitiesDb.Query.Inline<Add, Component1, Component2>(ref add);
-	}
-
-	private struct Add : IForEach<Component1, Component2>
-	{
-		public void ForEach(ref Component1 t0Component, ref Component2 t1Component)
-		{
-			t0Component.Value += t1Component.Value;
-		}
 	}
 }

@@ -92,12 +92,37 @@ public readonly partial struct Signature : IEquatable<Signature>
 		};
 	}
 
+
+#if NETSTANDARD2_1
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public readonly int PopCount()
+		=> SoftwareFallback(W0)
+		 + SoftwareFallback(W1)
+		 + SoftwareFallback(W2)
+		 + SoftwareFallback(W3);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	static int SoftwareFallback(ulong value)
+    {
+        const ulong c1 = 0x_55555555_55555555ul;
+        const ulong c2 = 0x_33333333_33333333ul;
+        const ulong c3 = 0x_0F0F0F0F_0F0F0F0Ful;
+        const ulong c4 = 0x_01010101_01010101ul;
+
+        value -= (value >> 1) & c1;
+        value = (value & c2) + ((value >> 2) & c2);
+        value = (((value + (value >> 4)) & c3) * c4) >> 56;
+
+        return (int)value;
+    }
+#else
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly int PopCount()
 		=> BitOperations.PopCount(W0)
 		 + BitOperations.PopCount(W1)
 		 + BitOperations.PopCount(W2)
 		 + BitOperations.PopCount(W3);
+#endif
 
 	// Relations (subset/superset/intersection)
 
@@ -255,7 +280,11 @@ public readonly partial struct Signature : IEquatable<Signature>
 		{
 			if (w != 0)
 			{
+#if NETSTANDARD2_1
+				int tz = TrailingZeroCount(w);
+#else
 				int tz = BitOperations.TrailingZeroCount(w);
+#endif
 				index = (widx << 6) + tz;
 				return true;
 			}
@@ -274,4 +303,26 @@ public readonly partial struct Signature : IEquatable<Signature>
 		 + $"{Convert.ToString((long)W2, 2).PadLeft(64, '0')}_"
 		 + $"{Convert.ToString((long)W1, 2).PadLeft(64, '0')}_"
 		 + $"{Convert.ToString((long)W0, 2).PadLeft(64, '0')}]";
+
+
+#if NETSTANDARD2_1
+	private static readonly int[] DeBruijnLookup = new int[64]
+    {
+        0, 1, 2, 53, 3, 7, 54, 27,
+        4, 38, 41, 8, 34, 55, 48, 28,
+        62, 5, 39, 46, 44, 42, 22, 9,
+        24, 35, 59, 56, 49, 18, 29, 11,
+        63, 52, 6, 26, 37, 40, 33, 47,
+        61, 45, 43, 21, 23, 58, 17, 10,
+        51, 25, 36, 32, 60, 20, 57, 16,
+        50, 31, 19, 15, 30, 14, 13, 12
+    };
+
+    public static int TrailingZeroCount(ulong value)
+    {
+        if (value == 0)
+            return 64;
+        return DeBruijnLookup[((ulong)((value & (ulong)-(long)value) * 0x022FDD63CC95386DUL)) >> 58];
+    }
+#endif
 }
