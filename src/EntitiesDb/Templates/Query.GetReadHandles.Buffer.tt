@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Query
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+#>
+	public ArchetypeChunkReadBufferIterator<<#= generics #>> GetReadHandlesB<<#= generics #>>()
+		<#= Indent(constraints, 8) #>
+	{
+		var ids = _componentRegistry.GetIds<<#= generics #>>();
+		Match();
+		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
+	}
+<#
+	}
+#>
+}

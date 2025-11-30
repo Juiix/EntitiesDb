@@ -1,0 +1,39 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+<#
+	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
+	{
+		var genericsC = FormatComma(indexC, "T{0}");
+		
+		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
+		{
+			var genericsB = Generics(indexB, indexC);
+			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
+#>
+[SkipLocalsInit]
+public readonly ref struct ArchetypeChunkReadMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= genericsC #>, <#= genericsB #>> ids)
+	<#= Indent(constraints, 4) #>
+{
+	private readonly Span<Archetype> _archetypes = archetypes;
+	private readonly ChangeFilter? _changeFilter = changeFilter;
+	private readonly int? _compareVersion = compareVersion;
+	private readonly Ids<<#= genericsC #>, <#= genericsB #>> _ids = ids;
+
+	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public readonly ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #>, <#= genericsB #>> GetEnumerator()
+	{
+		return new(_archetypes, _changeFilter, _compareVersion, _ids);
+	}
+}
+<#
+		}
+	}
+#>

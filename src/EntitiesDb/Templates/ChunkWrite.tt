@@ -1,0 +1,50 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
+		var readHandles = FormatLine(index, "public ReadOnlyHandle<T{0}?> GetHandleReadOnlyT{0}() => _chunk.ReadHandle(_offsets.T{0});");
+		var writeHandles = FormatLine(index, "[ChunkChange]" + Environment.NewLine + "public Handle<T{0}?> WriteHandleT{0}() => _chunk.WriteHandle(_offsets.T{0});");
+		var outs = FormatComma(index, "out Handle<T{0}?> t{0}Handle");
+		var outSets = FormatLine(index, "t{0}Handle = _chunk.WriteHandle(_offsets.T{0});");
+#>
+public readonly ref struct ChunkWrite<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
+{
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
+	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
+	private readonly Offsets<<#= generics #>> _offsets = offsets;
+
+	public int EntityCount => _chunk.EntityCount;
+	
+	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	<#= Indent(readHandles, 4) #>
+	<#= Indent(writeHandles, 4) #>
+	
+	[ChunkChange]
+	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, <#= outs #>)
+	{
+		length = _chunk.EntityCount;
+		entities = _chunk.EntityHandle();
+		<#= Indent(outSets, 8) #>
+	}
+
+	[ChunkChange]
+	public void Deconstruct(out int length, <#= outs #>)
+	{
+		length = _chunk.EntityCount;
+		<#= Indent(outSets, 8) #>
+	}
+}
+<#
+	}
+#>

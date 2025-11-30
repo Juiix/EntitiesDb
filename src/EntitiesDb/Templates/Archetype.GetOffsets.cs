@@ -1,0 +1,246 @@
+﻿
+namespace EntitiesDb;
+
+public partial class Archetype
+{
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1> GetOffsets<T0, T1>(in Ids<T0, T1> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2> GetOffsets<T0, T1, T2>(in Ids<T0, T1, T2> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3> GetOffsets<T0, T1, T2, T3>(in Ids<T0, T1, T2, T3> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4> GetOffsets<T0, T1, T2, T3, T4>(in Ids<T0, T1, T2, T3, T4> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5> GetOffsets<T0, T1, T2, T3, T4, T5>(in Ids<T0, T1, T2, T3, T4, T5> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6> GetOffsets<T0, T1, T2, T3, T4, T5, T6>(in Ids<T0, T1, T2, T3, T4, T5, T6> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10),
+            new Offset<T11>(offsets[ids.T11.Value], ids.T11)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10),
+            new Offset<T11>(offsets[ids.T11.Value], ids.T11),
+            new Offset<T12>(offsets[ids.T12.Value], ids.T12)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10),
+            new Offset<T11>(offsets[ids.T11.Value], ids.T11),
+            new Offset<T12>(offsets[ids.T12.Value], ids.T12),
+            new Offset<T13>(offsets[ids.T13.Value], ids.T13)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10),
+            new Offset<T11>(offsets[ids.T11.Value], ids.T11),
+            new Offset<T12>(offsets[ids.T12.Value], ids.T12),
+            new Offset<T13>(offsets[ids.T13.Value], ids.T13),
+            new Offset<T14>(offsets[ids.T14.Value], ids.T14)
+		);
+	}
+	/// <inheritdoc cref="GetOffsets{T0}(in Ids{T0})"/>
+	public Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> GetOffsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(in Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ids)
+	{
+		var offsets = _idToOffsets;
+		return new Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(
+			new Offset<T0>(offsets[ids.T0.Value], ids.T0),
+            new Offset<T1>(offsets[ids.T1.Value], ids.T1),
+            new Offset<T2>(offsets[ids.T2.Value], ids.T2),
+            new Offset<T3>(offsets[ids.T3.Value], ids.T3),
+            new Offset<T4>(offsets[ids.T4.Value], ids.T4),
+            new Offset<T5>(offsets[ids.T5.Value], ids.T5),
+            new Offset<T6>(offsets[ids.T6.Value], ids.T6),
+            new Offset<T7>(offsets[ids.T7.Value], ids.T7),
+            new Offset<T8>(offsets[ids.T8.Value], ids.T8),
+            new Offset<T9>(offsets[ids.T9.Value], ids.T9),
+            new Offset<T10>(offsets[ids.T10.Value], ids.T10),
+            new Offset<T11>(offsets[ids.T11.Value], ids.T11),
+            new Offset<T12>(offsets[ids.T12.Value], ids.T12),
+            new Offset<T13>(offsets[ids.T13.Value], ids.T13),
+            new Offset<T14>(offsets[ids.T14.Value], ids.T14),
+            new Offset<T15>(offsets[ids.T15.Value], ids.T15)
+		);
+	}
+}

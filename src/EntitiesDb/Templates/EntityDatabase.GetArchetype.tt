@@ -1,0 +1,22 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+#>
+	/// <inheritdoc cref="ArchetypeCollection.GetArchetype(in Signature)"/>
+	public Archetype? GetArchetype<<#= generics #>>()
+	{
+		return Archetypes.GetArchetype<<#= generics #>>();
+	}
+<#
+	}
+#>
+}
