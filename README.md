@@ -43,7 +43,8 @@ query.ForEach((ref Position position, in Velocity velocity) =>
 - [Components](#Components) - Add, remove, read, and write single components
 - [QueryBuilder](#QueryBuilder) - Filter chunks of entities to enumerate
 - [ForEach](#ForEach) - Source-generated ForEach queries
-- [Enumeration](#Enumeration) - Custom enumeration and raw chunk access
+- [Manual Enumeration](#Manual-Enumeration) - Custom enumeration and raw chunk access
+- [Change Filter](#Change-Filter) - Custom enumeration and raw chunk access
 
 # Database
 
@@ -107,7 +108,7 @@ var query = db.QueryBuilder
 ```
 
 # ForEach
-Enumerate entities in a given query, reading or writing to components
+Enumerate entities in a given query, reading or writing components
 
 ForEach queries are source-generated and the lambda structure is:
 ```
@@ -128,6 +129,30 @@ query.ForEach((ref Position position, in Velocity velocity, ref float deltaTime)
 
 // entity, components, and state
 query.ForEach((Entity entity, ref Position position, in Velocity velocity, ref float deltaTime) => { }, ref deltaTime);
+```
+
+# ForEachChunk
+Enumerate chunks of entities in a given query, reading or writing components
+
+ForEachChunk queries have a similar lambda structure, just using handles instead:
+```
+(LENGTH, ENTITIES?, [COMPONENTS, COMPONENTS2, ...], STATE?) => { }
+```
+
+Example valid lambdas:
+```csharp
+// no entities, just components
+query.ForEachChunk((Handle<Position> positions) => { });
+
+// entities with component handles
+query.ForEachChunk((ReadOnlyHandle<Entity> entities, Handle<Position> positions, ReadOnlyHandle<Velocity> velocities) => { });
+
+// component handles with state (pass state by ref after lambda)
+float deltaTime = 0.1f;
+query.ForEachChunk((Handle<Position> positions, ReadOnlyHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
+
+// entities, component handles, and state
+query.ForEachChunk((ReadOnlyHandle<Entity> entities, Handle<Position> positions, ReadOnlyHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
 ```
 
 # Enumeration
@@ -178,4 +203,50 @@ foreach (var (length, healths) in query.GetWriteHandles<Health>())
 		health.Points = Math.Min(health.Max, health.Points + heal)
 	}
 }
+```
+
+# Change Filter
+Filter query results based on chunks that have been write accessed
+
+```csharp
+var query = db.QueryBuilder
+	.WithAll<Position, SentPosition, PositionDelta>()
+	.WithChangeFilter<Position>() // change filter on position
+	.Build();
+
+query.ForEach((in Position position, ref SentPosition sentPosition, ref PositionDelta delta) =>
+{
+	delta.Dx = position.X - sentPosition.X;
+	delta.Dy = position.Y - sentPosition.Y;
+	sentPosition.X = position.X;
+	sentPosition.Y = position.Y;
+});
+```
+
+# SIMD operations
+When components are designed SIMD in mind, you may run SIMD operations on query handles
+
+```csharp
+query.ForEachChunk((int length, ReadOnlyHandle<Position> positions, Handle<SentPosition> sentPositions, Handle<PositionDelta> deltas) =>
+{
+	var simdPositions = positions.Reinterpret<Position, Vector256<int>>();
+	var simdSentPositions = sentPositions.Reinterpret<SentPosition, Vector256<int>>();
+	var simdDeltas = deltas.Reinterpret<PositionDelta, Vector256<int>>();
+	
+	// Each component is 2 integers
+	var alignedLength = length - (length & 3);
+	var simdLength = alignedLength / 4;
+	
+	for (int i = 0; i < simdLength; i++)
+	{
+		simdDeltas[i] = simdSentPositions[i] - simdPositions[i];
+	}
+	
+	for (int i = alignedLength; i < length; i++)
+	{
+		deltas[i].Dx = positions[i].X - sentPositions[i].X;
+		deltas[i].Dy = positions[i].Y - sentPositions[i].Y;
+	}
+});
+
 ```
