@@ -1,3 +1,5 @@
+![Banner](.github/banner.png)
+
 A high-performance Entity Component Framework written in C# for data-oriented programming.
 
 - **Simple** - Create, Read, Write, and Query components, no side-effects.
