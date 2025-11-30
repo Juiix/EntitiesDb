@@ -38,12 +38,12 @@ query.ForEach((ref Position position, in Velocity velocity) =>
 
 # Api Overview
 
-- **(Database)[#Database]** - Initialization and options
-- **(Entities)[#Entities]** - Create or destroy entities
-- **(Components)[#Components]** - Add, remove, read, and write single components
-- **(QueryBuilder)[#QueryBuilder]** - Filter chunks of entities to enumerate
-- **(ForEach)[#ForEach]** - Source-generated ForEach queries
-- **(Enumeration)[#Enumeration]** - Custom enumeration and raw chunk access
+- (Database)[#Database] - Initialization and options
+- (Entities)[#Entities] - Create or destroy entities
+- (Components)[#Components] - Add, remove, read, and write single components
+- (QueryBuilder)[#QueryBuilder] - Filter chunks of entities to enumerate
+- (ForEach)[#ForEach] - Source-generated ForEach queries
+- (Enumeration)[#Enumeration] - Custom enumeration and raw chunk access
 
 # Database
 
@@ -118,7 +118,7 @@ ForEach queries are source-generated and the lambda structure is:
 ```
 
 Example valid lambdas:
-```
+```csharp
 // no entity, just components
 query.ForEach((ref Position position) => { });
 
