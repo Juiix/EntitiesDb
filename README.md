@@ -27,7 +27,7 @@ var player = db.Create(
 
 // enumerate entities
 var query = db.QueryBuilder
-	.WithAll<Position>()
+	.WithAll<Position, Velocity>()
 	.Build();
 query.ForEach((ref Position position, in Velocity velocity) =>
 {
