@@ -186,7 +186,7 @@ foreach (var archetype in query)
 int totalGold = 0;
 foreach (var (length, wallets) in query.GetReadHandles<Wallet>())
 {
-	for (int i = ; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		readonly ref var wallet = ref wallets[i];
 		totalGold += wallet.Gold;
@@ -197,7 +197,7 @@ foreach (var (length, wallets) in query.GetReadHandles<Wallet>())
 int heal = 50;
 foreach (var (length, healths) in query.GetWriteHandles<Health>())
 {
-	for (int i = ; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		ref var health = ref healths[i];
 		health.Points = Math.Min(health.Max, health.Points + heal)
