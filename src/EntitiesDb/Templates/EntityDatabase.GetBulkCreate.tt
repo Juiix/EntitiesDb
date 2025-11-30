@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
+		var args = FormatComma(index, "in t{0}Component");
+#>
+	/// <inheritdoc cref="GetBulkCreate{T0}()"/>
+	public BulkCreate<<#= generics #>> GetBulkCreate<<#= generics #>>()
+	{
+		var ids = ComponentRegistry.GetIds<<#= generics #>>();
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var offsets = archetype.GetOffsets(in ids);
+		return new BulkCreate<<#= generics #>>(archetype, in offsets);
+	}
+<#
+	}
+#>
+}

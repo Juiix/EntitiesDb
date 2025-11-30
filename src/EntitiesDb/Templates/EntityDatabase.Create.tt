@@ -1,0 +1,49 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
+		var args = FormatComma(index, "in t{0}Component");
+#>
+	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public Entity Create<<#= generics #>>(<#= parameters #>)
+	{
+		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var ids = ComponentRegistry.GetIds<<#= generics #>>();
+		var signature = Signature.FromIds(in ids);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+		var offsets = archetype.GetOffsets<<#= generics #>>(in ids);
+        chunk.Set(slot.Index, in offsets, <#= args #>);
+		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
+		EntityCount++;
+		return dstEntityId;
+	}
+	/// <inheritdoc cref="Create{T0}(in ArchetypeIds{T0}, in T0?)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public Entity Create<<#= generics #>>(in BulkCreate<<#= generics #>> bulk, <#= parameters #>)
+	{
+		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
+        chunk.Set(slot.Index, in bulk.Offsets, <#= args #>);
+		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
+		EntityCount++;
+		return dstEntityId;
+	}
+<#
+	}
+#>
+}

@@ -1,0 +1,20 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "C{0}");
+		var parameters = FormatComma(index, "Offset<C{0}> t{0}");
+		var fields = FormatLine(index, "public readonly Offset<C{0}> T{0} = t{0};");
+#>
+public readonly struct Offsets<<#= generics #>>(<#= parameters #>)
+{
+	<#= Indent(fields, 4) #>
+}
+<#
+	}
+#>

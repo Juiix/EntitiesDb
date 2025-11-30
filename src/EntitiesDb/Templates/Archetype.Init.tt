@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class Archetype
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var args = FormatComma(index, "t{0}Components");
+#>
+	/// <inheritdoc cref="Init{T0}(in EntitySlot, in Ids{T0}, ReadOnlySpan{T0})"/>
+	internal void Init<<#= generics #>>(in EntitySlot slot, in Ids<<#= generics #>> ids, <#= parameters #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		var offsets = GetOffsets(in ids);
+		chunk.Init(slot.Index, in offsets, <#= args #>);
+	}
+<#
+	}
+#>
+}

@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Archetype
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var throws = FormatLine(index, "if (Signature.Test(ids.T{0}.Value)) return ThrowHelper.ComponentAlreadyAdded(entityId, typeof(T{0}));");
+#>
+	internal ComponentException GetComponentAlreadyAdded<<#= generics #>>(int entityId, in Ids<<#= generics #>> ids)
+	{
+		<#= Indent(throws, 8) #>
+		throw new CodeGenerationException();
+	}
+<#
+	}
+#>
+}

@@ -1,0 +1,41 @@
+﻿<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+    int GenericCount = 16;
+    int GenericMixedCount = 10;
+
+    string Indent(StringBuilder sb, int spaces)
+    {
+        var indent = new string(' ', spaces);
+        var str = sb.ToString();
+        return str.Replace(Environment.NewLine, Environment.NewLine + indent);
+    }
+
+    // T0, T1, ...
+    StringBuilder Generics(int amount, int offset = 0)
+    {
+        return FormatComma(amount, "T{0}", offset);
+    }
+    
+    StringBuilder FormatSep(int amount, string line, string sep, int offset = 0)
+    {
+        var sb = new StringBuilder();
+        for (var localIndex = 0; localIndex < amount; localIndex++)
+        {
+            sb.AppendFormat(line, localIndex + offset);
+            sb.Append(sep);
+        }
+        sb.Length -= sep.Length;
+        return sb;
+    }
+    
+    StringBuilder FormatComma(int amount, string line, int offset = 0)
+    {
+        return FormatSep(amount, line, ", ", offset);
+    }
+    
+    StringBuilder FormatLine(int amount, string line, int offset = 0)
+    {
+        return FormatSep(amount, line, Environment.NewLine, offset);
+    }
+#>

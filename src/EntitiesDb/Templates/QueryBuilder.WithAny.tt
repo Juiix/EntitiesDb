@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class QueryBuilder
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+#>
+	/// <inheritdoc cref="WithAny{T}()"/>
+	public QueryBuilder WithAny<<#= generics #>>()
+	{
+		_any = _componentRegistry.GetSignature<<#= generics #>>();
+		_filterMode = QueryFilterMode.All;
+		return this;
+	}
+<#
+	}
+#>
+}

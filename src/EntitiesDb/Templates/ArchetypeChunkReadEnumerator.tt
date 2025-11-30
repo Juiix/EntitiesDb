@@ -1,0 +1,98 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+#>
+public ref struct ArchetypeChunkReadEnumerator<<#= generics #>>
+{
+	private ArchetypeEnumerator _archetypes;
+	private readonly ChangeFilter? _changeFilter;
+	private readonly Ids<<#= generics #>> _ids;
+	private readonly int _compareVersion;
+	private int _index;
+	private Offsets<<#= generics #>> _offsets;
+
+	[SkipLocalsInit]
+	public ArchetypeChunkReadEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= generics #>> ids)
+	{
+		_archetypes = new ArchetypeEnumerator(archetypes);
+		_changeFilter = changeFilter;
+		_ids = ids;
+		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
+		if (_archetypes.MoveNext())
+		{
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_offsets = archetype.GetOffsets(in _ids);
+		}
+	}
+
+	[SkipLocalsInit]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool MoveNext()
+	{
+		unchecked
+		{
+			while (true)
+			{
+				if (--_index < 0)
+				{
+					if (!_archetypes.MoveNext())
+						return false; // no more archetypes
+
+					var a = _archetypes.Current;
+					_index = a.ChunksInUse - 1;
+					_offsets = a.GetOffsets(in _ids);
+				}
+
+				if (_changeFilter == null)
+					return true;
+
+				var archetype = _archetypes.Current;
+				for (; _index >= 0; _index--)
+				{
+					ref readonly var chunk = ref archetype.GetChunk(_index);
+					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
+					if ((chunkVersion - _compareVersion) > 0)
+					{
+						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	[SkipLocalsInit]
+	public void Reset()
+	{
+		_index = -1;
+		_archetypes.Reset();
+
+		if (_archetypes.MoveNext())
+		{
+			var archetype = _archetypes.Current;
+			_index = archetype.ChunksInUse;
+			_offsets = archetype.GetOffsets(in _ids);
+		}
+	}
+
+	public readonly ChunkRead<<#= generics #>> Current
+	{
+		[SkipLocalsInit]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+	}
+}
+<#
+	}
+#>

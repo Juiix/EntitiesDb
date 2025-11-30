@@ -1,0 +1,26 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+#>
+/// <inheritdoc cref="BulkCreate{T0}"/>
+public readonly struct BulkCreate<<#= generics #>>
+{
+	public readonly Archetype Archetype;
+	public readonly Offsets<<#= generics #>> Offsets;
+
+	internal BulkCreate(Archetype archetype, in Offsets<<#= generics #>> offsets)
+	{
+		Archetype = archetype;
+		Offsets = offsets;
+	}
+}
+<#
+	}
+#>

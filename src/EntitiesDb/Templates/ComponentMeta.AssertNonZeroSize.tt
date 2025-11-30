@@ -1,0 +1,26 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
+
+public static partial class ComponentMeta
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var asserts = FormatLine(index, "if (ComponentMeta<T{0}>.IsZeroSize) throw ThrowHelper.ComponentZeroSize(typeof(T{0}));");
+#>
+	/// <inheritdoc cref="AssertNotBuffered{T0}()"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static void AssertNonZeroSize<<#= generics #>>()
+	{
+		<#= Indent(asserts, 8) #>
+	}
+<#
+	}
+#>
+}

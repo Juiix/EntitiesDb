@@ -1,0 +1,30 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial struct Chunk
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var sets = FormatLine(index, "WriteBuffer(index, offsets.T{0}).Set(t{0}Components);");
+#>
+	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, ReadOnlySpan{T0})"/>
+	[ChunkChange]
+	public readonly void Set<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertBuffered<<#= generics #>>();
+		<#= Indent(sets, 8) #>
+	}
+<#
+	}
+#>
+}

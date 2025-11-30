@@ -1,0 +1,23 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class Query
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var ids = FormatSep(index, "GetId<T{0}>()", "," + Environment.NewLine);
+#>
+	/// <inheritdoc cref="GetIds{T0}()"/>
+	public Ids<<#= generics #>> GetIds<<#= generics #>>()
+	{
+		return _componentRegistry.GetIds<<#= generics #>>();
+	}
+<#
+	}
+#>
+}

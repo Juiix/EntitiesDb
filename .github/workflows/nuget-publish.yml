@@ -1,0 +1,56 @@
+name: Build & Publish NuGet Packages
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/EntitiesDb/**"
+  workflow_dispatch: {}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+      # Prevent telemetry for CI builds
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: 🛎️ Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: '8.x'
+
+      - name: 📦 Restore dependencies
+        run: |
+          dotnet restore src/EntitiesDb/EntitiesDb.csproj
+
+      - name: Test
+        run: |
+          dotnet test src/EntitiesDb.Tests/EntitiesDb.Tests.csproj
+
+      - name: 🏗️ Build (Release)
+        run: |
+          dotnet build src/EntitiesDb/EntitiesDb.csproj --configuration Release --no-restore
+
+      - name: 📦 Pack NuGet packages
+        run: |
+          dotnet pack src/EntitiesDb/EntitiesDb.csproj --configuration Release --no-build --output ./nupkgs
+
+      - name: 🚚 Upload built packages as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkgs
+          path: ./nupkgs/*.nupkg
+
+      - name: 🚀 Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push "./nupkgs/*.nupkg" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --api-key "$NUGET_API_KEY" \
+            --skip-duplicate

@@ -1,0 +1,52 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var readHandles = FormatLine(index, "public ReadBufferHandle<T{0}> ReadBufferHandleT{0}() => _chunk.ReadBufferHandle(_offsets.T{0});");
+		var writeHandles = FormatLine(index, "[ChunkChange]" + Environment.NewLine + "public WriteBufferHandle<T{0}> WriteBufferHandleT{0}() => _chunk.WriteBufferHandle(_offsets.T{0});");
+		var outs = FormatComma(index, "out  WriteBufferHandle<T{0}> t{0}Handle");
+		var outSets = FormatLine(index, "t{0}Handle = _chunk.WriteBufferHandle(_offsets.T{0});");
+#>
+public readonly ref struct ChunkWriteBuffer<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
+	<#= Indent(constraints, 4) #>
+{
+#if NETSTANDARD2_1
+	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
+	private readonly ref readonly Chunk _chunk => ref _chunkRef.Value;
+#else
+	private readonly ref readonly Chunk _chunk = ref chunk;
+#endif
+	private readonly Offsets<<#= generics #>> _offsets = offsets;
+
+	public int EntityCount => _chunk.EntityCount;
+	
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	<#= Indent(readHandles, 4) #>
+	<#= Indent(writeHandles, 4) #>
+	
+	[ChunkChange]
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, <#= outs #>)
+	{
+		length = _chunk.EntityCount;
+		entities = _chunk.EntityHandle();
+		<#= Indent(outSets, 8) #>
+	}
+	
+	[ChunkChange]
+	public void Deconstruct(out int length, <#= outs #>)
+	{
+		length = _chunk.EntityCount;
+		<#= Indent(outSets, 8) #>
+	}
+}
+<#
+	}
+#>

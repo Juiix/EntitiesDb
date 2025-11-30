@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class ArchetypeCollection
+{
+<#
+	for (int index = 1; index <= GenericCount; index++)
+	{
+		var generics = Generics(index);
+		var sets = FormatLine(index, "if (ComponentMeta<T{0}>.IsBuffered) chunk.ClearBuffer<T{0}>(slot.Index, offsets.T{0});");
+#>
+	/// <inheritdoc cref="GetArchetype(in Signature)"/>
+	public Archetype? GetArchetype<<#= generics #>>()
+	{
+		var ids = _componentRegistry.GetIds<<#= generics #>>();
+		var signature = Signature.FromIds(in ids);
+		return GetArchetype(in signature);
+	}
+<#
+	}
+#>
+}
