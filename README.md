@@ -59,33 +59,30 @@ var db = new EntityDatabase(options);
 # Entities
 
 ```csharp
-var entity = db.Create(	// create and pass up to 16 components
-	new Position(10, 10),
-	new Health(100, 100)
-);
+// create and pass up to 16 components
+var entity = db.Create(new Position(10, 10), new Health(100, 100));
 
-db.Exists(entity); 		// true
+db.Exists(entity); 			// true
 
-db.Destroy(entity.Id);	// destroy entity
+db.Destroy(entity.Id);		// destroy entity
 
-db.Exists(entity); 		// false
+db.Exists(entity); 			// false
 ```
 
 # Components
 Add/remove, read/write, and check components for specific entities
 
 ```csharp
-db.Add(entity.Id,			// pass up to 16 components to add to an entity
-	new Velocity(10, 10)
-);
+// pass up to 16 components to add to an entity
+db.Add(entity.Id, new Velocity(10, 10));
 
-db.Has<Velocity>();		// true
+db.Has<Velocity>();			// true
 
-db.Set(entitiy.Id,		// components must already exist on the entity
-	new Position(200, 200)
-);
+// components must already exist on the entity
+db.Set(entitiy.Id, new Velocity(200, 200));
 
-db.Remove<Velocity>();	// remove components by type
+// remove components
+db.Remove<Velocity>();
 
 // read-only access
 readonly ref var position = ref db.Read<Position>(entity.Id);
@@ -131,4 +128,54 @@ query.ForEach((ref Position position, in Velocity velocity, ref float deltaTime)
 
 // entity, components, and state
 query.ForEach((Entity entity, ref Position position, in Velocity velocity, ref float deltaTime) => { }, ref deltaTime);
+```
+
+# Enumeration
+Manually enumerate entities from a query. (SIMD, etc..)
+
+```csharp
+// enumerate archetypes & chunks
+var posId = db.ComponentRegistry.GetId<Position>();
+var velId = db.ComponentRegistry.GetId<Velocity>();
+foreach (var archetype in query)
+{
+	var posOffset = archetype.GetOffset(posId);
+	var velOffset = archetype.GetOffset(velId);
+	foreach (ref readonly var chunk in archetype)
+	{
+		var entities = chunk.EntityHandle();
+		var positions = chunk.WriteHandle<Position>(offset);
+		var velocities = chunk.ReadHandle<Velocity>(offset);
+		foreach (var i in chunk)
+		{
+			ref var position = ref positions[i];
+			readonly ref var velocity = ref velocities[i];
+			position.X += velocity.Dx;
+			position.Y += velocity.Dy;
+		}
+	}
+}
+
+
+// enumerate read handles
+int totalGold = 0;
+foreach (var (length, wallets) in query.GetReadHandles<Wallet>())
+{
+	for (int i = ; i < length; i++)
+	{
+		readonly ref var wallet = ref wallets[i];
+		totalGold += wallet.Gold;
+	}
+
+
+// enumerate write handles
+int heal = 50;
+foreach (var (length, healths) in query.GetWriteHandles<Health>())
+{
+	for (int i = ; i < length; i++)
+	{
+		ref var health = ref healths[i];
+		health.Points = Math.Min(health.Max, health.Points + heal)
+	}
+}
 ```
