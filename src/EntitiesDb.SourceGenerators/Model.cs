@@ -72,7 +72,7 @@ internal static partial class ModelBuilder
 				pname = "length";
 			else if (!chunks && i == entityIndex && t.Name == "Entity" && string.Equals(tNs, "EntitiesDb", StringComparison.Ordinal))
 				pname = "entity";
-			else if (chunks && i == entityIndex && t.Name == "ReadOnlyHandle" && string.Equals(tNs, "EntitiesDb", StringComparison.Ordinal) &&
+			else if (chunks && i == entityIndex && t.Name == "ReadHandle" && string.Equals(tNs, "EntitiesDb", StringComparison.Ordinal) &&
 				t is INamedTypeSymbol namedT && namedT.IsGenericType && namedT.TypeArguments.Length == 1 && string.Equals("Entity", namedT.TypeArguments[0].Name, StringComparison.Ordinal) &&
 				string.Equals("EntitiesDb", namedT.TypeArguments[0].ContainingNamespace?.ToDisplayString()))
 				pname = "entities";
@@ -143,16 +143,16 @@ internal static partial class ModelBuilder
 			switch (c.Kind)
 			{
 				case ParamKind.ComponentRef:
-				case ParamKind.ComponentHandle:
+				case ParamKind.ComponentWriteHandle:
 					h = "var " + baseVar + " = chunk.WriteHandle(" + offsetsName + "." + ofs + ");"; break;
 				case ParamKind.ComponentIn:
-				case ParamKind.ComponentReadOnlyHandle:
+				case ParamKind.ComponentReadHandle:
 					h = "var " + baseVar + " = chunk.ReadHandle(" + offsetsName + "." + ofs + ");"; break;
-				case ParamKind.Buffer:
-				case ParamKind.BufferHandle:
+				case ParamKind.WriteBuffer:
+				case ParamKind.WriteBufferHandle:
 					h = "var " + baseVar + " = chunk.WriteBufferHandle(" + offsetsName + "." + ofs + ");"; break;
-				case ParamKind.ReadOnlyBuffer:
-				case ParamKind.ReadOnlyBufferHandle:
+				case ParamKind.ReadBuffer:
+				case ParamKind.ReadBufferHandle:
 					h = "var " + baseVar + " = chunk.ReadBufferHandle(" + offsetsName + "." + ofs + ");"; break;
 				default:
 					h = ""; break;
@@ -169,13 +169,13 @@ internal static partial class ModelBuilder
 				{
 					ParamKind.ComponentRef => "ref " + baseVar + "[index]",
 					ParamKind.ComponentIn => "in " + baseVar + "[index]",
-					ParamKind.Buffer or ParamKind.ReadOnlyBuffer => baseVar + "[index]",
+					ParamKind.WriteBuffer or ParamKind.ReadBuffer => baseVar + "[index]",
 					_ => "",
 				};
 				callArgs.Add(arg);
 			}
 
-			if (c.Kind is ParamKind.Buffer or ParamKind.ReadOnlyBuffer or ParamKind.BufferHandle or ParamKind.ReadOnlyBufferHandle)
+			if (c.Kind is ParamKind.WriteBuffer or ParamKind.ReadBuffer or ParamKind.WriteBufferHandle or ParamKind.ReadBufferHandle)
 				bufferedTypes.Add(Utilities.ToDisplay(c.ComponentType));
 			else
 				notBufferedTypes.Add(Utilities.ToDisplay(c.ComponentType));

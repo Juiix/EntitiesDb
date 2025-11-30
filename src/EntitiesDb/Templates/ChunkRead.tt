@@ -9,8 +9,8 @@ namespace EntitiesDb;
 	{
 		var generics = FormatComma(index, "T{0}");
 		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
-		var handles = FormatLine(index, "public ReadOnlyHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle(_offsets.T{0});");
-		var outs = FormatComma(index, "out ReadOnlyHandle<T{0}?> t{0}Handle");
+		var handles = FormatLine(index, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle(_offsets.T{0});");
+		var outs = FormatComma(index, "out ReadHandle<T{0}?> t{0}Handle");
 		var outSets = FormatLine(index, "t{0}Handle = _chunk.ReadHandle(_offsets.T{0});");
 #>
 public readonly ref struct ChunkRead<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
@@ -25,10 +25,10 @@ public readonly ref struct ChunkRead<<#= generics #>>(ref readonly Chunk chunk, 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
 	<#= Indent(handles, 4) #>
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, <#= outs #>)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, <#= outs #>)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();

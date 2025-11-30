@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
-public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
+public unsafe readonly ref struct ReadBuffer<T> where T : unmanaged
 {
 	private readonly BufferHeader* _header;
 
@@ -21,16 +21,16 @@ public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
 	// --- Ctors ----------------------------------------------------------------
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ReadOnlyBuffer(ref BufferHeader headerRef)
+	internal ReadBuffer(ref BufferHeader headerRef)
 	{
 		_header = (BufferHeader*)Unsafe.AsPointer(ref headerRef);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ReadOnlyBuffer(BufferHeader* header) => _header = header;
+	internal ReadBuffer(BufferHeader* header) => _header = header;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ReadOnlyBuffer(void* header) => _header = (BufferHeader*)header;
+	internal ReadBuffer(void* header) => _header = (BufferHeader*)header;
 
 	// --- Views ----------------------------------------------------------------
 
@@ -135,7 +135,7 @@ public unsafe readonly ref struct ReadOnlyBuffer<T> where T : unmanaged
 		private int _index;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal Enumerator(ReadOnlyBuffer<T> buffer)
+		internal Enumerator(ReadBuffer<T> buffer)
 		{
 			_ptr = (T*)buffer.DataPtr;
 			_length = buffer.Length;

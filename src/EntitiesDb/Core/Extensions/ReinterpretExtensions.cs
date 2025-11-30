@@ -5,7 +5,7 @@ namespace EntitiesDb;
 public unsafe static class ReinterpretExtensions
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static Handle<TTo> Reinterpret<TFrom, TTo>(this Handle<TFrom> handle)
+	public static WriteHandle<TTo> Reinterpret<TFrom, TTo>(this WriteHandle<TFrom> handle)
 		where TFrom : unmanaged
 		where TTo : unmanaged
 #if NETSTANDARD2_1
@@ -15,7 +15,7 @@ public unsafe static class ReinterpretExtensions
 #endif
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ReadOnlyHandle<TTo> Reinterpret<TFrom, TTo>(this ReadOnlyHandle<TFrom> handle)
+	public static ReadHandle<TTo> Reinterpret<TFrom, TTo>(this ReadHandle<TFrom> handle)
 		where TFrom : unmanaged
 		where TTo : unmanaged
 #if NETSTANDARD2_1

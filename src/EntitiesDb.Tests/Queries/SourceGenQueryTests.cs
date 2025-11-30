@@ -187,7 +187,7 @@ public sealed class SourceGenQueryTests
 			.Build();
 
 		var lengths = new Dictionary<int, int>();
-		query.ForEach((Entity e, DynamicBuffer<InventoryItem> inv, ref Dictionary<int, int> lengths) =>
+		query.ForEach((Entity e, WriteBuffer<InventoryItem> inv, ref Dictionary<int, int> lengths) =>
 		{
 			lengths[e.Id] = inv.Length;
 
@@ -227,7 +227,7 @@ public sealed class SourceGenQueryTests
 			.Build();
 
 		var counts = new Dictionary<int, int>();
-		query.ForEach((Entity e, DynamicBuffer<Damage> dmg, ref Dictionary<int, int> counts) =>
+		query.ForEach((Entity e, WriteBuffer<Damage> dmg, ref Dictionary<int, int> counts) =>
 		{
 			counts[e.Id] = dmg.Length;
 
@@ -259,7 +259,7 @@ public sealed class SourceGenQueryTests
 			.Build();
 
 		var seenAny = false;
-		query.ForEach((Entity e, DynamicBuffer<Damage> dmg, ref bool seenAny) =>
+		query.ForEach((Entity e, WriteBuffer<Damage> dmg, ref bool seenAny) =>
 		{
 			seenAny = true;
 			// We don't rely on the exact count, only that bosses carry a "large" buffer.

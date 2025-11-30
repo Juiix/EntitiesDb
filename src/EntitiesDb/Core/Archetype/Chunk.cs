@@ -75,13 +75,13 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
-	public readonly unsafe ReadOnlyBuffer<T0> ReadBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	public readonly unsafe ReadBuffer<T0> ReadBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
 		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 
-		return new ReadOnlyBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+		return new ReadBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
 	}
 
 	/// <summary>
@@ -110,32 +110,32 @@ public partial struct Chunk
 	/// <param name="index">The index to get</param>
 	/// <returns>A buffer of components at <paramref name="index"/></returns>
 	[ChunkChange]
-	public readonly unsafe DynamicBuffer<T0> WriteBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	public readonly unsafe WriteBuffer<T0> WriteBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
 		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 
 		MarkChanged(offset.Id.Value);
-		return new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+		return new WriteBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
 	}
 
 	/// <summary>
 	/// Returns a handle to a component at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
-	/// <returns>A <see cref="Handle{T}"/> to the first index</returns>
-	public readonly ReadOnlyHandle<Entity> EntityHandle()
+	/// <returns>A <see cref="EntitiesDb.WriteHandle{T}"/> to the first index</returns>
+	public readonly ReadHandle<Entity> EntityHandle()
 	{
-		return new ReadOnlyHandle<Entity>(ref WriteEntity(0));
+		return new ReadHandle<Entity>(ref WriteEntity(0));
 	}
 
 	/// <summary>
 	/// Returns a readonly handle to a component at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
-	/// <returns>A <see cref="ReadOnlyHandle{T}"/> to the first index</returns>
-	public unsafe readonly ReadOnlyHandle<T0?> ReadHandle<T0>(Offset<T0> offset)
+	/// <returns>A <see cref="EntitiesDb.ReadHandle{T}"/> to the first index</returns>
+	public unsafe readonly ReadHandle<T0?> ReadHandle<T0>(Offset<T0> offset)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
@@ -144,31 +144,31 @@ public partial struct Chunk
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
 			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
 			: ref ((T0?[])ManagedComponents[offset.Value])[0];
-		return new ReadOnlyHandle<T0?>(ref first);
+		return new ReadHandle<T0?>(ref first);
 	}
 
 	/// <summary>
 	/// Returns a readonly handle to a buffer of components at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
-	/// <returns>A <see cref="ReadOnlyBufferHandle{T}"/> to the first index</returns>
-	public readonly unsafe ReadOnlyBufferHandle<T0> ReadBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
+	/// <returns>A <see cref="EntitiesDb.ReadBufferHandle{T}"/> to the first index</returns>
+	public readonly unsafe ReadBufferHandle<T0> ReadBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
 		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 
-		var buffer = new ReadOnlyBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
-		return new ReadOnlyBufferHandle<T0>(buffer);
+		var buffer = new ReadBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		return new ReadBufferHandle<T0>(buffer);
 	}
 
 	/// <summary>
 	/// Returns a handle to a component at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
-	/// <returns>A <see cref="Handle{T}"/> to the first index</returns>
+	/// <returns>A <see cref="EntitiesDb.WriteHandle{T}"/> to the first index</returns>
 	[ChunkChange]
-	public unsafe readonly Handle<T0?> WriteHandle<T0>(Offset<T0> offset)
+	public unsafe readonly WriteHandle<T0?> WriteHandle<T0>(Offset<T0> offset)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
@@ -178,24 +178,24 @@ public partial struct Chunk
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
 			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
 			: ref ((T0?[])ManagedComponents[offset.Value])[0];
-		return new Handle<T0?>(ref first);
+		return new WriteHandle<T0?>(ref first);
 	}
 
 	/// <summary>
 	/// Returns a handle to a buffer of components at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
-	/// <returns>A <see cref="DynamicBufferHandle{T}"/> to the first index</returns>
+	/// <returns>A <see cref="EntitiesDb.WriteBufferHandle{T}"/> to the first index</returns>
 	[ChunkChange]
-	public unsafe readonly DynamicBufferHandle<T0> WriteBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
+	public unsafe readonly WriteBufferHandle<T0> WriteBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		ComponentMeta.AssertNonZeroSize<T0>();
 		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 
 		MarkChanged(offset.Id.Value);
-		var buffer = new DynamicBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
-		return new DynamicBufferHandle<T0>(buffer);
+		var buffer = new WriteBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		return new WriteBufferHandle<T0>(buffer);
 	}
 
 	/// <summary>

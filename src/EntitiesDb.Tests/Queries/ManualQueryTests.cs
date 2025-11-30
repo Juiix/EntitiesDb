@@ -276,8 +276,8 @@ public sealed class ManualQueryTests
 			.WithAll<PlayerTag>()
 			.Build();
 
-		var entityHandle = default(ReadOnlyHandle<Entity>);
-		var invHandle = default(DynamicBufferHandle<InventoryItem>);
+		var entityHandle = default(ReadHandle<Entity>);
+		var invHandle = default(WriteBufferHandle<InventoryItem>);
 
 		var invId = db.ComponentRegistry.GetId<InventoryItem>();
 
@@ -373,8 +373,8 @@ public sealed class ManualQueryTests
 			.WithAll<BossTag>()
 			.Build();
 
-		var entityHandle = default(ReadOnlyHandle<Entity>);
-		var dmgHandle = default(ReadOnlyBufferHandle<Damage>);
+		var entityHandle = default(ReadHandle<Entity>);
+		var dmgHandle = default(ReadBufferHandle<Damage>);
 		var dmgId = db.ComponentRegistry.GetId<Damage>();
 
 		var seenAny = false;

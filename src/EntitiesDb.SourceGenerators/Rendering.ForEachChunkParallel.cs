@@ -123,7 +123,7 @@ internal static partial class Renderer
 				w.AppendLine("private readonly Ids" + m.IdTypesJoined + " _ids;");
 				w.AppendLine("private Offsets" + m.IdTypesJoined + " _offsets;");
 			}
-			w.AppendLine("private RDangerousRefef<" + m.StateType + "> state;");
+			w.AppendLine("private DangerousRef<" + m.StateType + "> state;");
 
 			// constructor
 			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate");

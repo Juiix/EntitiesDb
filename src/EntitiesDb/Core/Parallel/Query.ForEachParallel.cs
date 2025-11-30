@@ -3,7 +3,7 @@
 public partial class Query
 {
 	/// <summary>
-	/// Executes a self-composed Parallel ForEach query. Accepts in, ref, <see cref="DynamicBuffer{T}"/>, and <see cref="ReadOnlyBuffer{T}"/> components.
+	/// Executes a self-composed Parallel ForEach query. Accepts in, ref, <see cref="WriteBuffer{T}"/>, and <see cref="ReadBuffer{T}"/> components.
 	/// 
 	/// <para>
 	/// 1. <see cref="Entity"/> can be accessed via the first lambda parameter.
@@ -17,11 +17,11 @@ public partial class Query
 	/// Examples:
 	/// <br/>
 	/// <c>
-	/// ForEach((Entity entity, ref ComponentA a, in ComponentB b, DynamicBuffer&lt;ComponentC&gt; cBuffer) =&gt; { });
+	/// ForEach((Entity entity, ref ComponentA a, in ComponentB b, WriteBuffer&lt;ComponentC&gt; cBuffer) =&gt; { });
 	/// </c>
 	/// <br/>
 	/// <c>
-	/// ForEach((ref ComponentA a, ReadOnlyBuffer&lt;ComponentC&gt; cBuffer, ref int count) =&gt; { }, ref count);
+	/// ForEach((ref ComponentA a, ReadBuffer&lt;ComponentC&gt; cBuffer, ref int count) =&gt; { }, ref count);
 	/// </c>
 	/// </para>
 	/// </summary>
@@ -57,10 +57,10 @@ public partial class Query
 		throw new CodeGenerationException();
 
 	/// <summary>
-	/// Executes a self-composed Parallel ForEach chunk query. Accepts <see cref="Handle{T}"/>, <see cref="ReadOnlyHandle{T}"/>, <see cref="DynamicBufferHandle{T}"/>, and <see cref="ReadOnlyBufferHandle{T}"/> components.
+	/// Executes a self-composed Parallel ForEach chunk query. Accepts <see cref="WriteHandle{T}"/>, <see cref="ReadHandle{T}"/>, <see cref="WriteBufferHandle{T}"/>, and <see cref="ReadBufferHandle{T}"/> components.
 	/// 
 	/// <para>
-	/// 1. <see cref="ReadOnlyHandle{T}"/> for <see cref="Entity"/> can be accessed via the first lambda parameter.
+	/// 1. <see cref="ReadHandle{T}"/> for <see cref="Entity"/> can be accessed via the first lambda parameter.
 	/// </para>
 	/// 
 	/// <para>
@@ -71,11 +71,11 @@ public partial class Query
 	/// Examples:
 	/// <br/>
 	/// <c>
-	/// ForEach((int length, ReadOnlyHandle&lt;Entity&gt; entities, Handle&lt;ComponentA&gt; aHandle, ReadOnlyHandle&lt;ComponentB&gt; bHandle, DynamicBufferHandle&lt;ComponentC&gt; cBufferHandle) =&gt; { });
+	/// ForEach((int length, ReadHandle&lt;Entity&gt; entities, WriteHandle&lt;ComponentA&gt; aHandle, ReadHandle&lt;ComponentB&gt; bHandle, WriteBufferHandle&lt;ComponentC&gt; cBufferHandle) =&gt; { });
 	/// </c>
 	/// <br/>
 	/// <c>
-	/// ForEach((int length, Handle&lt;ComponentA&gt; aHandle, ReadOnlyBufferHandle&lt;ComponentC&gt; cBufferHandle, ref int count) =&gt; { }, ref count);
+	/// ForEach((int length, WriteHandle&lt;ComponentA&gt; aHandle, ReadBufferHandle&lt;ComponentC&gt; cBufferHandle, ref int count) =&gt; { }, ref count);
 	/// </c>
 	/// </para>
 	/// </summary>

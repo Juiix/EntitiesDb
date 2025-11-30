@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb.Core;
 
-public sealed unsafe class ReadOnlyBufferTests
+public sealed unsafe class ReadBufferTests
 {
 	// --------------------- BufferHandle for tests -------------------------
 	private sealed class BufferHandle<T> : IDisposable where T : unmanaged
@@ -19,7 +19,7 @@ public sealed unsafe class ReadOnlyBufferTests
 			Header = (BufferHeader*)Owner.ToPointer();
 		}
 
-		public unsafe DynamicBuffer<T> Buffer => new((void*)Header);
+		public unsafe WriteBuffer<T> Buffer => new((void*)Header);
 
 		public unsafe void Dispose()
 		{

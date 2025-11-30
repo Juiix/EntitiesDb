@@ -14,11 +14,11 @@ public readonly ref struct ChunkReadMixed1<T0, T1>(ref readonly Chunk chunk, Off
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -26,7 +26,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1>(ref readonly Chunk chunk, Off
 		t1Handle = _chunk.ReadBufferHandle(_offsets.T1);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -47,12 +47,12 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2>(ref readonly Chunk chunk,
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -61,7 +61,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2>(ref readonly Chunk chunk,
         t2Handle = _chunk.ReadBufferHandle(_offsets.T2);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -84,13 +84,13 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3>(ref readonly Chunk ch
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -100,7 +100,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3>(ref readonly Chunk ch
         t3Handle = _chunk.ReadBufferHandle(_offsets.T3);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -125,14 +125,14 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4>(ref readonly Chun
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -143,7 +143,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4>(ref readonly Chun
         t4Handle = _chunk.ReadBufferHandle(_offsets.T4);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -170,15 +170,15 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5>(ref readonly 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -190,7 +190,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5>(ref readonly 
         t5Handle = _chunk.ReadBufferHandle(_offsets.T5);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -219,16 +219,16 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -241,7 +241,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6>(ref reado
         t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -272,17 +272,17 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -296,7 +296,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -329,18 +329,18 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -355,7 +355,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -390,19 +390,19 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-	public ReadOnlyBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
-    public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+	public ReadBufferHandle<T1> ReadBufferHandleT1() => _chunk.ReadBufferHandle(_offsets.T1);
+    public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -418,7 +418,7 @@ public readonly ref struct ChunkReadMixed1<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyBufferHandle<T1> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out  ReadBufferHandle<T1> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -446,12 +446,12 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2>(ref readonly Chunk chunk,
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -460,7 +460,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2>(ref readonly Chunk chunk,
 		t2Handle = _chunk.ReadBufferHandle(_offsets.T2);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -482,13 +482,13 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3>(ref readonly Chunk ch
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -498,7 +498,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3>(ref readonly Chunk ch
         t3Handle = _chunk.ReadBufferHandle(_offsets.T3);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -522,14 +522,14 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4>(ref readonly Chun
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -540,7 +540,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4>(ref readonly Chun
         t4Handle = _chunk.ReadBufferHandle(_offsets.T4);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -566,15 +566,15 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5>(ref readonly 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -586,7 +586,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5>(ref readonly 
         t5Handle = _chunk.ReadBufferHandle(_offsets.T5);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -614,16 +614,16 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -636,7 +636,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6>(ref reado
         t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -666,17 +666,17 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -690,7 +690,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -722,18 +722,18 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -748,7 +748,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -782,19 +782,19 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-	public ReadOnlyBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
-    public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+	public ReadBufferHandle<T2> ReadBufferHandleT2() => _chunk.ReadBufferHandle(_offsets.T2);
+    public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -810,7 +810,7 @@ public readonly ref struct ChunkReadMixed2<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyBufferHandle<T2> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out  ReadBufferHandle<T2> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -838,13 +838,13 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3>(ref readonly Chunk ch
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -854,7 +854,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3>(ref readonly Chunk ch
 		t3Handle = _chunk.ReadBufferHandle(_offsets.T3);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -877,14 +877,14 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4>(ref readonly Chun
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -895,7 +895,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4>(ref readonly Chun
         t4Handle = _chunk.ReadBufferHandle(_offsets.T4);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -920,15 +920,15 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5>(ref readonly 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -940,7 +940,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5>(ref readonly 
         t5Handle = _chunk.ReadBufferHandle(_offsets.T5);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -967,16 +967,16 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -989,7 +989,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6>(ref reado
         t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1018,17 +1018,17 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1042,7 +1042,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1073,18 +1073,18 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1099,7 +1099,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1132,19 +1132,19 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-	public ReadOnlyBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
-    public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+	public ReadBufferHandle<T3> ReadBufferHandleT3() => _chunk.ReadBufferHandle(_offsets.T3);
+    public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1160,7 +1160,7 @@ public readonly ref struct ChunkReadMixed3<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyBufferHandle<T3> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out  ReadBufferHandle<T3> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1188,14 +1188,14 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4>(ref readonly Chun
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1206,7 +1206,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4>(ref readonly Chun
 		t4Handle = _chunk.ReadBufferHandle(_offsets.T4);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1230,15 +1230,15 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5>(ref readonly 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1250,7 +1250,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5>(ref readonly 
         t5Handle = _chunk.ReadBufferHandle(_offsets.T5);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1276,16 +1276,16 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1298,7 +1298,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6>(ref reado
         t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1326,17 +1326,17 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1350,7 +1350,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1380,18 +1380,18 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1406,7 +1406,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1438,19 +1438,19 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-	public ReadOnlyBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
-    public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+	public ReadBufferHandle<T4> ReadBufferHandleT4() => _chunk.ReadBufferHandle(_offsets.T4);
+    public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1466,7 +1466,7 @@ public readonly ref struct ChunkReadMixed4<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyBufferHandle<T4> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out  ReadBufferHandle<T4> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1494,15 +1494,15 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5>(ref readonly 
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-	public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+	public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1514,7 +1514,7 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5>(ref readonly 
 		t5Handle = _chunk.ReadBufferHandle(_offsets.T5);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1539,16 +1539,16 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-	public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+	public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1561,7 +1561,7 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6>(ref reado
         t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1588,17 +1588,17 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-	public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+	public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1612,7 +1612,7 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1641,18 +1641,18 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-	public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+	public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1667,7 +1667,7 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1698,19 +1698,19 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-	public ReadOnlyBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
-    public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+	public ReadBufferHandle<T5> ReadBufferHandleT5() => _chunk.ReadBufferHandle(_offsets.T5);
+    public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1726,7 +1726,7 @@ public readonly ref struct ChunkReadMixed5<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyBufferHandle<T5> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out  ReadBufferHandle<T5> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1754,16 +1754,16 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6>(ref reado
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-	public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+	public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1776,7 +1776,7 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6>(ref reado
 		t6Handle = _chunk.ReadBufferHandle(_offsets.T6);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1802,17 +1802,17 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-	public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+	public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1826,7 +1826,7 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
         t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1854,18 +1854,18 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-	public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+	public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1880,7 +1880,7 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1910,19 +1910,19 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-	public ReadOnlyBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
-    public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+	public ReadBufferHandle<T6> ReadBufferHandleT6() => _chunk.ReadBufferHandle(_offsets.T6);
+    public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1938,7 +1938,7 @@ public readonly ref struct ChunkReadMixed6<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyBufferHandle<T6> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out  ReadBufferHandle<T6> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -1966,17 +1966,17 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-	public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+	public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -1990,7 +1990,7 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7>(ref r
 		t7Handle = _chunk.ReadBufferHandle(_offsets.T7);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -2017,18 +2017,18 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-	public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+	public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -2043,7 +2043,7 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
         t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -2072,19 +2072,19 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-	public ReadOnlyBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
-    public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+	public ReadBufferHandle<T7> ReadBufferHandleT7() => _chunk.ReadBufferHandle(_offsets.T7);
+    public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -2100,7 +2100,7 @@ public readonly ref struct ChunkReadMixed7<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyBufferHandle<T7> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out  ReadBufferHandle<T7> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -2128,18 +2128,18 @@ public readonly ref struct ChunkReadMixed8<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-    public ReadOnlyHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
-	public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+    public ReadHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
+	public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -2154,7 +2154,7 @@ public readonly ref struct ChunkReadMixed8<T0, T1, T2, T3, T4, T5, T6, T7, T8>(r
 		t8Handle = _chunk.ReadBufferHandle(_offsets.T8);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out  ReadBufferHandle<T8> t8Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -2182,19 +2182,19 @@ public readonly ref struct ChunkReadMixed8<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-    public ReadOnlyHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
-	public ReadOnlyBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
-    public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+    public ReadHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
+	public ReadBufferHandle<T8> ReadBufferHandleT8() => _chunk.ReadBufferHandle(_offsets.T8);
+    public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -2210,7 +2210,7 @@ public readonly ref struct ChunkReadMixed8<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
         t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyBufferHandle<T8> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out  ReadBufferHandle<T8> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);
@@ -2238,19 +2238,19 @@ public readonly ref struct ChunkReadMixed9<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
-	public ReadOnlyHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
-    public ReadOnlyHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
-    public ReadOnlyHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
-    public ReadOnlyHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
-    public ReadOnlyHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
-    public ReadOnlyHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
-    public ReadOnlyHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
-    public ReadOnlyHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
-    public ReadOnlyHandle<T8?> ReadHandleT8() => _chunk.ReadHandle(_offsets.T8);
-	public ReadOnlyBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<T0?> ReadHandleT0() => _chunk.ReadHandle(_offsets.T0);
+    public ReadHandle<T1?> ReadHandleT1() => _chunk.ReadHandle(_offsets.T1);
+    public ReadHandle<T2?> ReadHandleT2() => _chunk.ReadHandle(_offsets.T2);
+    public ReadHandle<T3?> ReadHandleT3() => _chunk.ReadHandle(_offsets.T3);
+    public ReadHandle<T4?> ReadHandleT4() => _chunk.ReadHandle(_offsets.T4);
+    public ReadHandle<T5?> ReadHandleT5() => _chunk.ReadHandle(_offsets.T5);
+    public ReadHandle<T6?> ReadHandleT6() => _chunk.ReadHandle(_offsets.T6);
+    public ReadHandle<T7?> ReadHandleT7() => _chunk.ReadHandle(_offsets.T7);
+    public ReadHandle<T8?> ReadHandleT8() => _chunk.ReadHandle(_offsets.T8);
+	public ReadBufferHandle<T9> ReadBufferHandleT9() => _chunk.ReadBufferHandle(_offsets.T9);
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyHandle<T8?> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out ReadHandle<T8?> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();
@@ -2266,7 +2266,7 @@ public readonly ref struct ChunkReadMixed9<T0, T1, T2, T3, T4, T5, T6, T7, T8, T
 		t9Handle = _chunk.ReadBufferHandle(_offsets.T9);
 	}
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<T0?> t0Handle, out ReadOnlyHandle<T1?> t1Handle, out ReadOnlyHandle<T2?> t2Handle, out ReadOnlyHandle<T3?> t3Handle, out ReadOnlyHandle<T4?> t4Handle, out ReadOnlyHandle<T5?> t5Handle, out ReadOnlyHandle<T6?> t6Handle, out ReadOnlyHandle<T7?> t7Handle, out ReadOnlyHandle<T8?> t8Handle, out ReadOnlyBufferHandle<T9> t9Handle)
+	public void Deconstruct(out int length, out ReadHandle<T0?> t0Handle, out ReadHandle<T1?> t1Handle, out ReadHandle<T2?> t2Handle, out ReadHandle<T3?> t3Handle, out ReadHandle<T4?> t4Handle, out ReadHandle<T5?> t5Handle, out ReadHandle<T6?> t6Handle, out ReadHandle<T7?> t7Handle, out ReadHandle<T8?> t8Handle, out  ReadBufferHandle<T9> t9Handle)
 	{
 		length = _chunk.EntityCount;
 		t0Handle = _chunk.ReadHandle(_offsets.T0);

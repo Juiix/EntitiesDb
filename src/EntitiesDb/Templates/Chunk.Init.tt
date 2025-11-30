@@ -14,7 +14,7 @@ public partial struct Chunk
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var sets = FormatLine(index, "GetBufferMutable<T{0}>(index, offsets.T{0}).Init(t{0}Components);");
+		var sets = FormatLine(index, "WriteBuffer(index, offsets.T{0}).Init(t{0}Components);");
 #>
 	/// <inheritdoc cref="Init{T0}(int, in Offsets{T0}, ReadOnlySpan{T0})"/>
 	internal readonly void Init<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)

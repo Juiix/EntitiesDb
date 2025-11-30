@@ -10,8 +10,8 @@ namespace EntitiesDb;
 		var generics = FormatComma(index, "T{0}");
 		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var handles = FormatLine(index, "public ReadOnlyBufferHandle<T{0}> ReadBufferHandleT{0}() => _chunk.ReadBufferHandle(_offsets.T{0});");
-		var outs = FormatComma(index, "out ReadOnlyBufferHandle<T{0}> t{0}Handle");
+		var handles = FormatLine(index, "public ReadBufferHandle<T{0}> ReadBufferHandleT{0}() => _chunk.ReadBufferHandle(_offsets.T{0});");
+		var outs = FormatComma(index, "out  ReadBufferHandle<T{0}> t{0}Handle");
 		var outSets = FormatLine(index, "t{0}Handle = _chunk.ReadBufferHandle(_offsets.T{0});");
 #>
 public readonly ref struct ChunkReadBuffer<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
@@ -27,10 +27,10 @@ public readonly ref struct ChunkReadBuffer<<#= generics #>>(ref readonly Chunk c
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
 	<#= Indent(handles, 4) #>
 
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, <#= outs #>)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, <#= outs #>)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();

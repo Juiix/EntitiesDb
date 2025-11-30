@@ -142,17 +142,17 @@ ForEachChunk queries have a similar lambda structure, just using handles instead
 Example valid lambdas:
 ```csharp
 // no entities, just components
-query.ForEachChunk((Handle<Position> positions) => { });
+query.ForEachChunk((int length, WriteHandle<Position> positions) => { });
 
 // entities with component handles
-query.ForEachChunk((ReadOnlyHandle<Entity> entities, Handle<Position> positions, ReadOnlyHandle<Velocity> velocities) => { });
+query.ForEachChunk((int length, ReadHandle<Entity> entities, WriteHandle<Position> positions, ReadHandle<Velocity> velocities) => { });
 
 // component handles with state (pass state by ref after lambda)
 float deltaTime = 0.1f;
-query.ForEachChunk((Handle<Position> positions, ReadOnlyHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
+query.ForEachChunk((int length, WriteHandle<Position> positions, ReadHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
 
 // entities, component handles, and state
-query.ForEachChunk((ReadOnlyHandle<Entity> entities, Handle<Position> positions, ReadOnlyHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
+query.ForEachChunk((int length, ReadHandle<Entity> entities, WriteHandle<Position> positions, ReadHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
 ```
 
 # Enumeration
@@ -224,10 +224,10 @@ query.ForEach((in Position position, ref SentPosition sentPosition, ref Position
 ```
 
 # SIMD operations
-When components are designed SIMD in mind, you may run SIMD operations on query handles
+When components are designed with SIMD in mind, you may run operations on query handles
 
 ```csharp
-query.ForEachChunk((int length, ReadOnlyHandle<Position> positions, Handle<SentPosition> sentPositions, Handle<PositionDelta> deltas) =>
+query.ForEachChunk((int length, ReadHandle<Position> positions, WriteHandle<SentPosition> sentPositions, WriteHandle<PositionDelta> deltas) =>
 {
 	var simdPositions = positions.Reinterpret<Position, Vector256<int>>();
 	var simdSentPositions = sentPositions.Reinterpret<SentPosition, Vector256<int>>();

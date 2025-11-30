@@ -8,18 +8,18 @@ namespace EntitiesDb;
 	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
 	{
 		var genericsC = FormatComma(indexC, "T{0}");
-		var readHandlesC = FormatLine(indexC, "public ReadOnlyHandle<T{0}?> GetHandleReadOnlyT{0}() => _chunk.ReadHandle(_offsets.T{0});");
-		var writeHandlesC = FormatLine(indexC, "[ChunkChange]" + Environment.NewLine + "public Handle<T{0}?> WriteHandleT{0}() => _chunk.WriteHandle(_offsets.T{0});");
-		var outsC = FormatComma(indexC, "out Handle<T{0}?> t{0}Handle");
+		var readHandlesC = FormatLine(indexC, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle(_offsets.T{0});");
+		var writeHandlesC = FormatLine(indexC, "[ChunkChange]" + Environment.NewLine + "public WriteHandle<T{0}?> WriteHandleT{0}() => _chunk.WriteHandle(_offsets.T{0});");
+		var outsC = FormatComma(indexC, "out WriteHandle<T{0}?> t{0}Handle");
 		var outSetsC = FormatLine(indexC, "t{0}Handle = _chunk.WriteHandle(_offsets.T{0});");
 		
 		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
-			var readHandlesB = FormatLine(indexB, "public ReadOnlyBufferHandle<T{0}> ReadBufferHandleT{0}() => _chunk.ReadBufferHandle(_offsets.T{0});", indexC);
-			var writeHandlesB = FormatLine(indexB, "[ChunkChange]" + Environment.NewLine + "public DynamicBufferHandle<T{0}> WriteBufferHandleT{0}() => _chunk.WriteBufferHandle(_offsets.T{0});", indexC);
-			var outsB = FormatComma(indexB, "out DynamicBufferHandle<T{0}> t{0}Handle", indexC);
+			var readHandlesB = FormatLine(indexB, "public ReadBufferHandle<T{0}> ReadBufferHandleT{0}() => _chunk.ReadBufferHandle(_offsets.T{0});", indexC);
+			var writeHandlesB = FormatLine(indexB, "[ChunkChange]" + Environment.NewLine + "public WriteBufferHandle<T{0}> WriteBufferHandleT{0}() => _chunk.WriteBufferHandle(_offsets.T{0});", indexC);
+			var outsB = FormatComma(indexB, "out  WriteBufferHandle<T{0}> t{0}Handle", indexC);
 			var outSetsB = FormatLine(indexB, "t{0}Handle = _chunk.WriteBufferHandle(_offsets.T{0});", indexC);
 #>
 public readonly ref struct ChunkWriteMixed<#= indexC #><<#= genericsC #>, <#= genericsB #>>(ref readonly Chunk chunk, Offsets<<#= genericsC #>, <#= genericsB #>> offsets)
@@ -35,14 +35,14 @@ public readonly ref struct ChunkWriteMixed<#= indexC #><<#= genericsC #>, <#= ge
 
 	public int EntityCount => _chunk.EntityCount;
 	
-	public ReadOnlyHandle<Entity> EntityHandle() => _chunk.EntityHandle();
+	public ReadHandle<Entity> EntityHandle() => _chunk.EntityHandle();
 	<#= Indent(readHandlesC, 4) #>
 	<#= Indent(readHandlesB, 4) #>
 	<#= Indent(writeHandlesC, 4) #>
 	<#= Indent(writeHandlesB, 4) #>
 	
 	[ChunkChange]
-	public void Deconstruct(out int length, out ReadOnlyHandle<Entity> entities, <#= outsC #>, <#= outsB #>)
+	public void Deconstruct(out int length, out ReadHandle<Entity> entities, <#= outsC #>, <#= outsB #>)
 	{
 		length = _chunk.EntityCount;
 		entities = _chunk.EntityHandle();

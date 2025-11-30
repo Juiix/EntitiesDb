@@ -279,7 +279,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <returns>Component buffer for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ReadOnlyBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
+	public ReadBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
@@ -327,7 +327,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[ChunkChange]
-	public DynamicBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
+	public WriteBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
@@ -423,7 +423,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// </summary>
 	/// <remarks>
 	/// This method will overwrite any existing buffer values.
-	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="DynamicBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
 	/// </remarks>
 	/// <typeparam name="T">The buffer type</typeparam>
 	/// <param name="entityId">The entity id</param>

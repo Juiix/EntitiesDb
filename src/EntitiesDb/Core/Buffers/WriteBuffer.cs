@@ -22,7 +22,7 @@ internal static class DynamicBuffer
 	}
 }
 
-public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
+public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 {
 	private readonly BufferHeader* _header;
 
@@ -48,16 +48,16 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 	// --- Ctors ---------------------------------------------------------------
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal DynamicBuffer(ref BufferHeader headerRef)
+	internal WriteBuffer(ref BufferHeader headerRef)
 	{
 		_header = (BufferHeader*)Unsafe.AsPointer(ref headerRef);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal DynamicBuffer(BufferHeader* header) => _header = header;
+	internal WriteBuffer(BufferHeader* header) => _header = header;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal DynamicBuffer(void* header) => _header = (BufferHeader*)header;
+	internal WriteBuffer(void* header) => _header = (BufferHeader*)header;
 
 	/// <summary>
 	/// Initializes from data, promoting to heap if needed.
@@ -407,8 +407,8 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public ReadOnlyBuffer<T> AsReadOnly()
-		=> new ReadOnlyBuffer<T>(_header);
+	public ReadBuffer<T> AsReadOnly()
+		=> new ReadBuffer<T>(_header);
 
 	// --- Mutators ------------------------------------------------------------
 
@@ -438,7 +438,7 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 
 	public void AddRange(T[] items) => AddRange(items.AsSpan());
 
-	public void AddRange(ReadOnlyBuffer<T> other) => AddRange(other.Span);
+	public void AddRange(ReadBuffer<T> other) => AddRange(other.Span);
 
 	public void Clear()
 	{
@@ -538,7 +538,7 @@ public unsafe readonly ref struct DynamicBuffer<T> where T : unmanaged
 		private int _index;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal Enumerator(DynamicBuffer<T> buffer)
+		internal Enumerator(WriteBuffer<T> buffer)
 		{
 			_ptr = (T*)buffer.DataPtr;
 			_length = buffer.Length;

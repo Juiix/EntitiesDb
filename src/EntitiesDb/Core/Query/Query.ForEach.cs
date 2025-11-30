@@ -6,7 +6,7 @@ public delegate void ForEachChunkDelegate(int length);
 public partial class Query
 {
 	/// <summary>
-	/// Executes a self-composed ForEach query. Accepts in, ref, <see cref="DynamicBuffer{T}"/>, and <see cref="ReadOnlyBuffer{T}"/> components.
+	/// Executes a self-composed ForEach query. Accepts in, ref, <see cref="WriteBuffer{T}"/>, and <see cref="ReadBuffer{T}"/> components.
 	/// 
 	/// <para>
 	/// 1. <see cref="Entity"/> can be accessed via the first lambda parameter.
@@ -60,10 +60,10 @@ public partial class Query
 		throw new CodeGenerationException();
 
 	/// <summary>
-	/// Executes a self-composed ForEach chunk query. Accepts <see cref="Handle{T}"/>, <see cref="ReadOnlyHandle{T}"/>, <see cref="DynamicBufferHandle{T}"/>, and <see cref="ReadOnlyBufferHandle{T}"/> components.
+	/// Executes a self-composed ForEach chunk query. Accepts <see cref="WriteHandle{T}"/>, <see cref="ReadHandle{T}"/>, <see cref="WriteBufferHandle{T}"/>, and <see cref="ReadBufferHandle{T}"/> components.
 	/// 
 	/// <para>
-	/// 1. <see cref="ReadOnlyHandle{T}"/> for <see cref="Entity"/> can be accessed via the first lambda parameter.
+	/// 1. <see cref="ReadHandle{T}"/> for <see cref="Entity"/> can be accessed via the first lambda parameter.
 	/// </para>
 	/// 
 	/// <para>

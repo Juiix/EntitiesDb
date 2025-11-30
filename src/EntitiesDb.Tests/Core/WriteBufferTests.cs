@@ -6,7 +6,7 @@ namespace EntitiesDb.Core;
 //  int Size; int InternalCapacity; nint Heap; const int DataOffset;
 // Memory layout: [Header ...] then inline storage starting at DataOffset.
 
-public unsafe class DynamicBufferTests
+public unsafe class WriteBufferTests
 {
 	[Buffered(4)] private record struct BufferedInt(int Value);
 
@@ -33,11 +33,11 @@ public unsafe class DynamicBufferTests
 			Owner = Marshal.AllocHGlobal((IntPtr)total);
 
 			Header = (BufferHeader*)Owner.ToPointer();
-			var buffer = new DynamicBuffer<T>(Header);
+			var buffer = new WriteBuffer<T>(Header);
 			buffer.Init(data);
 		}
 
-		public DynamicBuffer<T> Buffer => new DynamicBuffer<T>(Header);
+		public WriteBuffer<T> Buffer => new WriteBuffer<T>(Header);
 
 		public void Dispose()
 		{
@@ -51,7 +51,7 @@ public unsafe class DynamicBufferTests
 		}
 	}
 
-	private static void FillSequential(DynamicBuffer<BufferedInt> buf, int count)
+	private static void FillSequential(WriteBuffer<BufferedInt> buf, int count)
 	{
 		for (int i = 0; i < count; i++) buf.Add(new BufferedInt(i));
 	}

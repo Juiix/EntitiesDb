@@ -38,12 +38,12 @@ internal static class Utilities
 				case ParamKind.EntityHandle: arr[i] = t + " " + n; break;
 				case ParamKind.ComponentRef: arr[i] = "ref " + t + " " + n; break;
 				case ParamKind.ComponentIn: arr[i] = "in " + t + " " + n; break;
-				case ParamKind.ComponentHandle: arr[i] = t + " " + n; break;
-				case ParamKind.ComponentReadOnlyHandle: arr[i] = t + " " + n; break;
-				case ParamKind.Buffer: arr[i] = t + " " + n; break;
-				case ParamKind.BufferHandle: arr[i] = t + " " + n; break;
-				case ParamKind.ReadOnlyBuffer: arr[i] = t + " " + n; break;
-				case ParamKind.ReadOnlyBufferHandle: arr[i] = t + " " + n; break;
+				case ParamKind.ComponentWriteHandle: arr[i] = t + " " + n; break;
+				case ParamKind.ComponentReadHandle: arr[i] = t + " " + n; break;
+				case ParamKind.WriteBuffer: arr[i] = t + " " + n; break;
+				case ParamKind.WriteBufferHandle: arr[i] = t + " " + n; break;
+				case ParamKind.ReadBuffer: arr[i] = t + " " + n; break;
+				case ParamKind.ReadBufferHandle: arr[i] = t + " " + n; break;
 				case ParamKind.State: arr[i] = "ref " + t + " " + n; break;
 			}
 		}

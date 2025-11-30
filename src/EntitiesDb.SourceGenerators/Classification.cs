@@ -9,13 +9,13 @@ internal enum ParamKind
 	Entity,
 	EntityHandle,
 	ComponentRef,
-	ComponentHandle,
+	ComponentWriteHandle,
 	ComponentIn,
-	ComponentReadOnlyHandle,
-	Buffer,
-	BufferHandle,
-	ReadOnlyBuffer,
-	ReadOnlyBufferHandle,
+	ComponentReadHandle,
+	WriteBuffer,
+	WriteBufferHandle,
+	ReadBuffer,
+	ReadBufferHandle,
 	State,
 	Length
 }
@@ -49,26 +49,26 @@ internal static class Classifier
 
 		// Buffer<T>-like?  Prefer project helpers if you have them.
 		INamedTypeSymbol named = type as INamedTypeSymbol;
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "DynamicBuffer", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "WriteBuffer", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
-			return new ParamPart(ParamKind.Buffer, paramName, type, elem);
+			return new ParamPart(ParamKind.WriteBuffer, paramName, type, elem);
 		}
 
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadOnlyBuffer", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadBuffer", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
-			return new ParamPart(ParamKind.ReadOnlyBuffer, paramName, type, elem);
+			return new ParamPart(ParamKind.ReadBuffer, paramName, type, elem);
 		}
 
 
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "Handle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "WriteHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
-			return new ParamPart(ParamKind.ComponentHandle, paramName, type, elem);
+			return new ParamPart(ParamKind.ComponentWriteHandle, paramName, type, elem);
 		}
 
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadOnlyHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
 			var ens = elem.ContainingNamespace != null ? elem.ContainingNamespace.ToDisplayString() : "";
@@ -76,19 +76,19 @@ internal static class Classifier
 			if (elemNamed != null && string.Equals(elemNamed.Name, "Entity", StringComparison.Ordinal) && string.Equals(ens, "EntitiesDb", StringComparison.Ordinal))
 				return new ParamPart(ParamKind.EntityHandle, paramName, type, elem);
 			else
-				return new ParamPart(ParamKind.ComponentReadOnlyHandle, paramName, type, elem);
+				return new ParamPart(ParamKind.ComponentReadHandle, paramName, type, elem);
 		}
 
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "DynamicBufferHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "WriteBufferHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
-			return new ParamPart(ParamKind.BufferHandle, paramName, type, elem);
+			return new ParamPart(ParamKind.WriteBufferHandle, paramName, type, elem);
 		}
 
-		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadOnlyBufferHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadBufferHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
-			return new ParamPart(ParamKind.ReadOnlyBufferHandle, paramName, type, elem);
+			return new ParamPart(ParamKind.ReadBufferHandle, paramName, type, elem);
 		}
 
 		// If you have marker interfaces/attributes, check them here, e.g.:

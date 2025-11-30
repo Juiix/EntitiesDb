@@ -206,7 +206,7 @@ public unsafe sealed partial class Archetype
 	/// <param name="slot"></param>
 	/// <param name="id"></param>
 	/// <returns></returns>
-	internal ReadOnlyBuffer<T> ReadBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
+	internal ReadBuffer<T> ReadBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
     {
         ref var chunk = ref _chunks[slot.ChunkIndex];
 		var offset = GetOffset(id);
@@ -234,7 +234,7 @@ public unsafe sealed partial class Archetype
 	/// <param name="slot"></param>
 	/// <param name="id"></param>
 	/// <returns></returns>
-	internal DynamicBuffer<T> WriteBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
+	internal WriteBuffer<T> WriteBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
 	{
 		ref var chunk = ref _chunks[slot.ChunkIndex];
 		var offset = GetOffset(id);
