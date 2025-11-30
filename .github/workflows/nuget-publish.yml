@@ -26,10 +26,12 @@ jobs:
 
       - name: 📦 Restore dependencies
         run: |
+          dotnet restore src/EntitiesDb.SourceGenerators/EntitiesDb.SourceGenerators.csproj
           dotnet restore src/EntitiesDb/EntitiesDb.csproj
 
       - name: 🏗️ Build (Release)
         run: |
+          dotnet build src/EntitiesDb.SourceGenerators/EntitiesDb.SourceGenerators.csproj --configuration Release --no-restore
           dotnet build src/EntitiesDb/EntitiesDb.csproj --configuration Release --no-restore
 
       - name: 📦 Pack NuGet packages
