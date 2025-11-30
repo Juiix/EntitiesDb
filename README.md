@@ -47,6 +47,7 @@ query.ForEach((ref Position position, in Velocity velocity) =>
 - [ForEach](#ForEach) - Source-generated ForEach queries
 - [Manual Enumeration](#Manual-Enumeration) - Custom enumeration and raw chunk access
 - [Change Filter](#Change-Filter) - Custom enumeration and raw chunk access
+- [SIMD](#SIMD) - Blazing fast operations
 
 # Database
 
@@ -157,7 +158,7 @@ query.ForEachChunk((int length, WriteHandle<Position> positions, ReadHandle<Velo
 query.ForEachChunk((int length, ReadHandle<Entity> entities, WriteHandle<Position> positions, ReadHandle<Velocity> velocities, ref float deltaTime) => { }, ref deltaTime);
 ```
 
-# Enumeration
+# Manual Enumeration
 Manually enumerate entities from a query. (SIMD, etc..)
 
 ```csharp
@@ -225,7 +226,7 @@ query.ForEach((in Position position, ref SentPosition sentPosition, ref Position
 });
 ```
 
-# SIMD operations
+# SIMD
 When components are designed with SIMD in mind, you may run operations on query handles
 
 ```csharp
