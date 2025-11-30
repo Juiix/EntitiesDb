@@ -239,7 +239,7 @@ query.ForEachChunk((int length, ReadHandle<Position> positions, WriteHandle<Sent
 	
 	for (int i = 0; i < simdLength; i++)
 	{
-		simdDeltas[i] = simdSentPositions[i] - simdPositions[i];
+		simdDeltas[i] = simdPositions[i] - simdSentPositions[i];
 	}
 	
 	for (int i = alignedLength; i < length; i++)

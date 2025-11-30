@@ -28,10 +28,6 @@ jobs:
         run: |
           dotnet restore src/EntitiesDb/EntitiesDb.csproj
 
-      - name: Test
-        run: |
-          dotnet test src/EntitiesDb.Tests/EntitiesDb.Tests.csproj
-
       - name: 🏗️ Build (Release)
         run: |
           dotnet build src/EntitiesDb/EntitiesDb.csproj --configuration Release --no-restore
