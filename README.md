@@ -80,13 +80,13 @@ Add/remove, read/write, and check components for specific entities
 // pass up to 16 components to add to an entity
 db.Add(entity.Id, new Velocity(10, 10));
 
-db.Has<Velocity>();			// true
+db.Has<Velocity>(entity.Id);			// true
 
 // components must already exist on the entity
 db.Set(entitiy.Id, new Velocity(200, 200));
 
 // remove components
-db.Remove<Velocity>();
+db.Remove<Velocity>(entity.Id);
 
 // read-only access
 readonly ref var position = ref db.Read<Position>(entity.Id);
