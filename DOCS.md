@@ -52,7 +52,7 @@ Configure memory/storage behavior through `EntityDatabaseOptions`.
 var options = new EntityDatabaseOptions(
     chunkByteSize: 16384,     // Size of storage chunks
     maxEntities: int.MaxValue,
-    parallelThreads: 16384    // -1 disables parallel execution
+    parallelThreads: 4    // -1 disables parallel execution
 );
 
 var db = new EntityDatabase(options);
