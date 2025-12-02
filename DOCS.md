@@ -15,7 +15,6 @@
   * [Multithreading](#multithreading)
   * [Parallel Aggregate](#parallel-aggregate)
   * [SIMD](#simd)
-* [License](#license)
 
 ---
 
