@@ -13,6 +13,7 @@ EntitiesDb focuses on **raw performance**, **simple APIs**, and **zero external 
 * **📦 Self-Contained** — Multiple isolated databases/worlds
 * **🧵 Parallel-Ready** — Built-in multithreaded query execution and reduction
 * **0️⃣ GC-Friendly** — Minimal allocations, predictable memory layout
+* **📚 Documentation** — API reference and guides in [DOCS.md](./DOCS.md)
 
 ---
 
