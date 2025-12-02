@@ -337,7 +337,7 @@ public sealed class ManualQueryTests
 			.Build();
 
 		var counts = new Dictionary<int, int>();
-		foreach (var (length, entities, dmgHandle) in query.GetReadHandlesB<Damage>())
+		foreach (var (length, entities, dmgHandle) in query.ReadHandlesB<Damage>())
 		{
 			for (int i = length - 1; i >= 0; i--)
 			{

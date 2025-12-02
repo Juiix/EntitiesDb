@@ -39,7 +39,7 @@ public partial class SystemWithTwoComponentsVariedComposition
 	[Benchmark]
 	public void EntitiesDb_Simd()
 	{
-		foreach (var (length, handleA, handleB) in _entitiesDb.Query.GetWriteHandles<Component1, Component2>())
+		foreach (var (length, handleA, handleB) in _entitiesDb.Query.WriteHandles<Component1, Component2>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();

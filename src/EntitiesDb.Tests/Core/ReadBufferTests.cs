@@ -33,7 +33,7 @@ public sealed unsafe class ReadBufferTests
 		}
 	}
 
-	[Buffered(4)] private record struct BufferedInt(int Value);
+	[Buffer(4)] private record struct BufferedInt(int Value);
 
 	// ------------------------ Helpers ------------------------------------
 	private static ReadOnlySpan<BufferedInt> Seq(params int[] xs) => Arr(xs);

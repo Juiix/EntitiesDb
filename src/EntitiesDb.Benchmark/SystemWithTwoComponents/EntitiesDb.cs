@@ -31,10 +31,10 @@ public partial class SystemWithTwoComponents
 
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
-	//[Benchmark]
-	public void EntitiesDb_Simd()
+	[Benchmark]
+	public void EntitiesDb_Enumeration_Simd()
 	{
-		foreach (var (length, handleA, handleB) in _entitiesDb.Query.GetWriteHandles<Component1, Component2>())
+		foreach (var (length, handleA, handleB) in _entitiesDb.Query.WriteHandles<Component1, Component2>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
@@ -54,7 +54,7 @@ public partial class SystemWithTwoComponents
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
 	[Benchmark]
-	public void EntitiesDb_Parallel_Simd()
+	public void EntitiesDb_ForEachChunkParallel_Simd()
 	{
 		var sum = Vector256<int>.One;
 		_entitiesDb.Query.ForEachChunkParallel(static (int length, WriteHandle<Component1> handleA, WriteHandle<Component2> handleB, ref Vector256<int> sum) =>
@@ -76,7 +76,7 @@ public partial class SystemWithTwoComponents
 	}
 
 	[BenchmarkCategory(Categories.EntitiesDb)]
-	//[Benchmark]
+	[Benchmark]
 	public void EntitiesDb_ForEach()
 	{
 		_entitiesDb.Query.ForEach((Entity entity, ref Component1 a, in Component2 b) =>

@@ -27,7 +27,6 @@ public partial class SystemWithTwoComponents
 	[Context]
 	private readonly ClassesContext _classes;
 
-	/*
 	[BenchmarkCategory(Categories.Classes)]
 	[Benchmark]
 	public void Classes()
@@ -38,5 +37,4 @@ public partial class SystemWithTwoComponents
 			entity.Component1.Value += entity.Component2.Value;
 		}
 	}
-	*/
 }

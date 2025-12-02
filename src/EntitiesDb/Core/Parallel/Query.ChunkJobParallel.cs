@@ -11,7 +11,7 @@ public partial class Query
 		public readonly void Join(int threadIndex, ref TJob job) { }
 	}
 
-	public TAggregate ChunkJobParallel<T, TAggregate>(TAggregate aggregate, ParallelOptions options = default)
+	public void ChunkJobParallel<T, TAggregate>(ref TAggregate aggregate, ParallelOptions options = default)
 		where T : IChunkJob
 		where TAggregate : IParallelAggregate<T>
 	{
@@ -21,7 +21,7 @@ public partial class Query
 			var job = aggregate.Create(0);
 			ChunkJob(ref job);
 			aggregate.Join(0, ref job);
-			return aggregate;
+			return;
 		}
 
 		var changeFilter = ChangeFilter;
@@ -80,13 +80,13 @@ public partial class Query
 		}
 		jobsPool.Return(jobs);
 		rangesPool.Return(ranges);
-		return aggregate;
 	}
 
 	public void ChunkJobParallel<T>(in T chunkJob, ParallelOptions options = default)
 		where T : IChunkJob
 	{
-		ChunkJobParallel<T, DefaultAggregate<T>>(new DefaultAggregate<T>(chunkJob), options);
+		var aggregate = new DefaultAggregate<T>(chunkJob);
+		ChunkJobParallel<T, DefaultAggregate<T>>(ref aggregate, options);
 	}
 
 	private static void AssignRanges(Archetype archetype, ChangeFilter? changeFilter, int? compareVersion, ref SpanList<ChunkRange> ranges, int slices, out int rangeCount, out int chunkCount)
@@ -117,6 +117,20 @@ public partial class Query
 					ranges[rangeCount] = chunkRange;
 				rangeCount++;
 				chunkCount += chunkRange.Size;
+			}
+		}
+	}
+	private void ChunkJob<TJob>(ref TJob job)
+		where TJob : IChunkJob
+	{
+		var changeFilter = ChangeFilter;
+		var compareVersion = changeFilter?.Version ?? 0;
+		foreach (var archetype in EnumerateArchetypes())
+		{
+			job.Enter(archetype);
+			foreach (ref readonly var chunk in archetype.GetChunks(changeFilter, compareVersion))
+			{
+				job.ForEach(in chunk);
 			}
 		}
 	}

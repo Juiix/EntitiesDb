@@ -23,21 +23,21 @@ internal static class FakeDb
 	public record struct NameTag(string Text);
 
 	// Buffered components (arrays-per-entity; internal capacities chosen to let some stay inline and some promote to heap)
-	[Buffered(4)] public record struct InventoryItem(int ItemId, int Count);
-	[Buffered(8)] public record struct Damage(int Amount);
+	[Buffer(4)] public record struct InventoryItem(int ItemId, int Count);
+	[Buffer(8)] public record struct Damage(int Amount);
 
 	// Tags (zero-size)
-	[ZeroSize] public record struct PlayerTag;
-	[ZeroSize] public record struct NpcTag;
-	[ZeroSize] public record struct EnemyTag;
-	[ZeroSize] public record struct BossTag;
-	[ZeroSize] public record struct FriendlyTag;
-	[ZeroSize] public record struct DeadTag;
-	[ZeroSize] public record struct FlyingTag;
-	[ZeroSize] public record struct MerchantTag;
-	[ZeroSize] public record struct QuestGiverTag;
-	[ZeroSize] public record struct GroundedTag;
-	[ZeroSize] public record struct ProjectileTag;
+	[Tag] public record struct PlayerTag;
+	[Tag] public record struct NpcTag;
+	[Tag] public record struct EnemyTag;
+	[Tag] public record struct BossTag;
+	[Tag] public record struct FriendlyTag;
+	[Tag] public record struct DeadTag;
+	[Tag] public record struct FlyingTag;
+	[Tag] public record struct MerchantTag;
+	[Tag] public record struct QuestGiverTag;
+	[Tag] public record struct GroundedTag;
+	[Tag] public record struct ProjectileTag;
 
 	// NOTE: If your EntityDatabase ctor is (ComponentRegistry, chunkBytes, maxEntities), use the commented line.
 	public static EntityDatabase CreateDb(int chunkSize = 4096, int maxEntities = int.MaxValue, bool parallel = false)
@@ -235,7 +235,7 @@ internal static class FakeDb
 	public static int CountChunks(this Query query)
 	{
 		int count = 0;
-		foreach (var _ in query.GetReadHandles<Position>())
+		foreach (var _ in query.ReadHandles<Position>())
 		{
 			count++;
 		}
@@ -245,7 +245,7 @@ internal static class FakeDb
 	public static int CountEntities(this Query query)
 	{
 		int count = 0;
-		foreach (var chunk in query.GetReadHandles<Position>())
+		foreach (var chunk in query.ReadHandles<Position>())
 		{
 			count += chunk.EntityCount;
 		}

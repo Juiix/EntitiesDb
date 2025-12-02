@@ -24,14 +24,14 @@ public struct NameTag
 
 // Buffered component: buffer-of-Damage elements lives in chunk via ComponentBufferHeader.
 // The attribute drives the registry to treat T as “buffered”.
-[Buffered(8)]
+[Buffer(8)]
 public struct Damage { public int Amount; public Damage(int a) => Amount = a; }
 
 // Zero-size component/tag: occupies no storage; only presence matters.
-[ZeroSize]
+[Tag]
 public struct PlayerTag { }
 
-[Buffered(2)]                                           // tiny capacity to force promotion in tests
+[Buffer(2)]                                           // tiny capacity to force promotion in tests
 public struct LargeBuf { public int V; public LargeBuf(int v) => V = v; }
 
 public sealed class EntityDatabaseTests

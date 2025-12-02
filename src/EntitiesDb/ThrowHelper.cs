@@ -27,11 +27,11 @@ internal static class ThrowHelper
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentBufferNotRequired(Type componentType) =>
-		new(componentType, $"Component '{componentType.FullName}' is not marked with Buffered attribute and cannot be wrapped by ComponentBuffer<T> in ForEach delegates.");
+		new(componentType, $"Component '{componentType.FullName}' is not marked with {nameof(BufferAttribute)} and cannot be wrapped by ComponentBuffer<T> in ForEach delegates.");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentBufferRequired(Type componentType) =>
-		new(componentType, $"Component '{componentType.FullName}' is marked with Buffered attribute must be wrapped by ComponentBuffer<T> in ForEach delegates.");
+		new(componentType, $"Component '{componentType.FullName}' is marked with {nameof(BufferAttribute)} must be wrapped by ComponentBuffer<T> in ForEach delegates.");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentNotFound(int entityId, Type componentType) =>
@@ -43,7 +43,7 @@ internal static class ThrowHelper
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentBufferZeroSize(Type componentType) =>
-		new(componentType, $"Zero-size components cannot be used in buffers, invalid component type: {componentType}");
+		new(componentType, $"Tag components cannot be used in buffers, invalid component type: {componentType}");
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentSizeExceeded(Type componentType, int maxSize) =>
@@ -51,7 +51,7 @@ internal static class ThrowHelper
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ComponentException ComponentZeroSize(Type componentType) =>
-		new(componentType, $"Cannot get a reference to a zero-size component: {componentType}");
+		new(componentType, $"Cannot get a reference to a tag component: {componentType}");
 
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

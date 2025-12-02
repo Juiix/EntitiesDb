@@ -38,12 +38,12 @@ public readonly struct ComponentType(byte id, short internalCapacity, short byte
 	/// <summary>
 	/// If this component is buffered
 	/// </summary>
-	public readonly bool Buffered => InternalCapacity > 0;
+	public readonly bool IsBuffer => InternalCapacity > 0;
 
 	/// <summary>
 	/// If the component contains no data
 	/// </summary>
-	public readonly bool IsZeroSize => ByteSize == 0;
+	public readonly bool IsTag => ByteSize == 0;
 
 	private static int GetStride(short byteSize, bool isUnmanaged, int internalCapacity)
 	{

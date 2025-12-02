@@ -8,7 +8,7 @@ namespace EntitiesDb.Core;
 
 public unsafe class WriteBufferTests
 {
-	[Buffered(4)] private record struct BufferedInt(int Value);
+	[Buffer(4)] private record struct BufferedInt(int Value);
 
 	private static BufferedInt[] Arr(params int[] xs) => xs.Select(x => new BufferedInt(x)).ToArray();
 
@@ -259,7 +259,7 @@ public unsafe class WriteBufferTests
 
 	// ---------- Heap/inline overlay regression ----------
 
-	[Buffered(4)]
+	[Buffer(4)]
 	private struct EightBytes
 	{
 		public long X; // 8 bytes; makes it easy to get non-zero over the Heap-sized region
@@ -290,7 +290,7 @@ public unsafe class WriteBufferTests
 
 	// ---------- Large struct & realloc stress ----------
 
-	[Buffered(2)]
+	[Buffer(2)]
 	private struct Big
 	{
 		public long A, B, C, D;

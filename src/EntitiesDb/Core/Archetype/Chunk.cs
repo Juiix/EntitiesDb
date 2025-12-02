@@ -338,7 +338,7 @@ public partial struct Chunk
 		var dstPtr = dstChunk.UnmanagedComponents;
 		foreach (ref readonly var componentType in unmanagedComponentTypes)
 		{
-			if (componentType.IsZeroSize)
+			if (componentType.IsTag)
 			{
 				continue;
 			}
@@ -384,7 +384,7 @@ public partial struct Chunk
 		foreach (ref readonly var componentType in unmanagedComponentTypes)
 		{
 			if (!dstSignature.Test(componentType.Id) ||
-				componentType.IsZeroSize)
+				componentType.IsTag)
 			{
 				continue; // component doesn't exist in the destination chunk
 			}

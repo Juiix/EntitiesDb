@@ -18,7 +18,7 @@ public partial class Query
 			var genericsB = FormatComma(indexB, "T{0}", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 #>
-	public ArchetypeChunkReadMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>> GetReadHandlesM<#= indexC #><<#= genericsC #>, <#= genericsB #>>()
+	public ArchetypeChunkWriteMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>> WriteHandlesM<#= indexC #><<#= genericsC #>, <#= genericsB #>>()
 		<#= Indent(constraints, 8) #>
 	{
 		var ids = _componentRegistry.GetIds<<#= genericsC #>, <#= genericsB #>>();

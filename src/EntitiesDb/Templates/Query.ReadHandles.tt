@@ -11,7 +11,7 @@ public partial class Query
 	{
         var generics = Generics(index);
 #>
-	public ArchetypeChunkReadIterator<<#= generics #>> GetReadHandles<<#= generics #>>()
+	public ArchetypeChunkReadIterator<<#= generics #>> ReadHandles<<#= generics #>>()
 	{
 		var ids = _componentRegistry.GetIds<<#= generics #>>();
 		Match();

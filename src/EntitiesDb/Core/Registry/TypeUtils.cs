@@ -13,7 +13,7 @@ internal static class TypeUtils
 	/// <returns>The internal capacity, if buffered, else -1</returns>
 	public static short GetBufferedInternalCapacity(Type type)
 	{
-		var bufferable = type.GetCustomAttribute<BufferedAttribute>();
+		var bufferable = type.GetCustomAttribute<BufferAttribute>();
 		if (bufferable == null) return -1;
 		return bufferable.InternalCapacity;
 	}
@@ -26,11 +26,11 @@ internal static class TypeUtils
 	public static int GetByteSize<T>()
 	{
 		var type = typeof(T);
-		var zeroSize = type.GetCustomAttribute<ZeroSizeAttribute>();
-		return !type.IsValueType
-			? IntPtr.Size
-			: zeroSize != null 
+		var tag = type.GetCustomAttribute<TagAttribute>();
+		return tag != null
 			? 0
+			: !type.IsValueType
+			? IntPtr.Size
 			: Unsafe.SizeOf<T>();
 	}
 

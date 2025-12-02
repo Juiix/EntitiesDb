@@ -11,7 +11,7 @@ public partial class Query
 	{
         var generics = Generics(index);
 #>
-	public ArchetypeChunkWriteIterator<<#= generics #>> GetWriteHandles<<#= generics #>>()
+	public ArchetypeChunkWriteIterator<<#= generics #>> WriteHandles<<#= generics #>>()
 	{
 		var ids = _componentRegistry.GetIds<<#= generics #>>();
 		Match();

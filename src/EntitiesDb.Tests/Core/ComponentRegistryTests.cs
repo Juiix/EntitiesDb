@@ -147,9 +147,9 @@ public sealed class ComponentRegistryTests
 		Assert.Equal(c.Stride >= 0, c.IsUnmanaged);
 
 		// Buffered iff InternalCapacity > 0 (unmanaged-only; managed are set to -1)
-		Assert.Equal(a.InternalCapacity > 0, a.Buffered);
-		Assert.Equal(b.InternalCapacity > 0, b.Buffered);
-		Assert.Equal(c.InternalCapacity > 0, c.Buffered);
+		Assert.Equal(a.InternalCapacity > 0, a.IsBuffer);
+		Assert.Equal(b.InternalCapacity > 0, b.IsBuffer);
+		Assert.Equal(c.InternalCapacity > 0, c.IsBuffer);
 	}
 
 	[Fact]

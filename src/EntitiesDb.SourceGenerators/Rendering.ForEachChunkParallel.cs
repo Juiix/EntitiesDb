@@ -25,8 +25,74 @@ internal static partial class Renderer
 		 .Append(m.DelegateParameters).AppendLine(");");
 		w.AppendLine();
 
+		// Extension class
+		w.AppendLine("internal static partial class " + m.ExtensionClassName);
+		w.AppendLine("{");
+		w.Indent();
+
+		// Aggregate
+		if (m.IsAggregate)
+		{
+			w.AppendLine("private struct " + m.AggregateName + " : IParallelAggregate<" + m.JobName + ">");
+			w.AppendLine("{");
+			w.Indent();
+
+			// fields
+			w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
+			if (hasComponents)
+			{
+				w.AppendLine("private readonly Ids" + m.IdTypesJoined + " _ids;");
+				w.AppendLine("private Offsets" + m.IdTypesJoined + " _offsets;");
+			}
+			w.AppendLine("private DangerousRef<" + m.StateType + "> state;");
+
+			// constructor
+			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate");
+			if (hasComponents) w.Append(", in Ids" + m.IdTypesJoined + " ids");
+			w.Append(", ref " + m.StateType + " state");
+			w.AppendLine(")");
+			w.AppendLine("{");
+			w.Indent();
+
+			w.AppendLine("_delegate = @delegate;");
+			if (hasComponents)
+			{
+				w.AppendLine("_ids = ids;");
+				w.AppendLine("_offsets = default;");
+			}
+			w.AppendLine("this.state = new DangerousRef<" + m.StateType + ">(ref state);");
+
+			w.Unindent();
+			w.AppendLine("}"); // constructor
+
+			// create
+			w.AppendLine("public " + m.JobName + " Create(int threadIndex)");
+			w.AppendLine("{");
+			w.Indent();
+
+			w.Append("return new " + m.JobName + "(_delegate");
+			if (hasComponents) w.Append(", _ids");
+			w.AppendLine(", state.Value.Create(threadIndex));");
+
+			w.Unindent();
+			w.AppendLine("}"); // create
+
+			// join
+			w.AppendLine("public void Join(int threadIndex, ref " + m.JobName + " job)");
+			w.AppendLine("{");
+			w.Indent();
+
+			w.AppendLine("state.Value.Join(threadIndex, ref job.state);");
+
+			w.Unindent();
+			w.AppendLine("}"); // join
+
+			w.Unindent();
+			w.AppendLine("}"); // Aggregate
+		}
+
 		// Job
-		w.AppendLine("internal struct " + m.JobName + " : IChunkJob");
+		w.AppendLine("private struct " + m.JobName + " : IChunkJob");
 		w.AppendLine("{");
 		w.Indent();
 
@@ -105,71 +171,6 @@ internal static partial class Renderer
 		w.Unindent();
 		w.AppendLine("}"); // Job
 
-		w.AppendLine("internal static partial class " + m.ExtensionClassName);
-		w.AppendLine("{");
-		w.Indent();
-
-		// Aggregate
-		if (m.IsAggregate)
-		{
-			w.AppendLine("private struct " + m.AggregateName + " : IParallelAggregate<" + m.JobName + ">");
-			w.AppendLine("{");
-			w.Indent();
-
-			// fields
-			w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
-			if (hasComponents)
-			{
-				w.AppendLine("private readonly Ids" + m.IdTypesJoined + " _ids;");
-				w.AppendLine("private Offsets" + m.IdTypesJoined + " _offsets;");
-			}
-			w.AppendLine("private DangerousRef<" + m.StateType + "> state;");
-
-			// constructor
-			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate");
-			if (hasComponents) w.Append(", in Ids" + m.IdTypesJoined + " ids");
-			w.Append(", ref " + m.StateType + " state");
-			w.AppendLine(")");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.AppendLine("_delegate = @delegate;");
-			if (hasComponents)
-			{
-				w.AppendLine("_ids = ids;");
-				w.AppendLine("_offsets = default;");
-			}
-			w.AppendLine("this.state = new DangerousRef<" + m.StateType + ">(ref state);");
-
-			w.Unindent();
-			w.AppendLine("}"); // constructor
-
-			// create
-			w.AppendLine("public " + m.JobName + " Create(int threadIndex)");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.Append("return new " + m.JobName + "(_delegate");
-			if (hasComponents) w.Append(", _ids");
-			w.AppendLine(", state.Value.Create(threadIndex));");
-
-			w.Unindent();
-			w.AppendLine("}"); // create
-
-			// join
-			w.AppendLine("public void Join(int threadIndex, ref " + m.JobName + " job)");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.AppendLine("state.Value.Join(threadIndex, ref job.state);");
-
-			w.Unindent();
-			w.AppendLine("}"); // join
-
-			w.Unindent();
-			w.AppendLine("}"); // Aggregate
-		}
-
 		// Method header
 		w.Append("public static void ForEachChunkParallel")
 		 .Append("(this ").Append(m.ReceiverType).Append(" self, ")
@@ -217,8 +218,7 @@ internal static partial class Renderer
 			if (hasComponents) w.Append(", in ids");
 			if (hasState) w.Append(", ref state");
 			w.AppendLine(");");
-			w.AppendLine("job = self.ChunkJobParallel<" + m.JobName + ", " + m.AggregateName + ">(job, options);");
-			w.AppendLine("state = ref job.state.Value;");
+			w.AppendLine("self.ChunkJobParallel<" + m.JobName + ", " + m.AggregateName + ">(ref job, options);");
 		}
 		else
 		{

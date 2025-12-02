@@ -227,7 +227,7 @@ public sealed class SourceGenQueryTests
 			.Build();
 
 		var counts = new Dictionary<int, int>();
-		query.ForEach((Entity e, WriteBuffer<Damage> dmg, ref Dictionary<int, int> counts) =>
+		query.ForEachParallel((Entity e, WriteBuffer<Damage> dmg, ref Dictionary<int, int> counts) =>
 		{
 			counts[e.Id] = dmg.Length;
 

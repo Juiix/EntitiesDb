@@ -213,29 +213,29 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Generics.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetWriteHandles.Buffer.tt">
+    <None Update="Templates\Query.WriteHandles.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetWriteHandles.Buffer.cs</LastGenOutput>
+      <LastGenOutput>Query.WriteHandles.Buffer.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetWriteHandles.Mixed.tt">
+    <None Update="Templates\Query.WriteHandles.Mixed.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetWriteHandles.Mixed.cs</LastGenOutput>
+      <LastGenOutput>Query.WriteHandles.Mixed.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetWriteHandles.tt">
+    <None Update="Templates\Query.WriteHandles.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetWriteHandles.cs</LastGenOutput>
+      <LastGenOutput>Query.WriteHandles.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetReadHandles.Buffer.tt">
+    <None Update="Templates\Query.ReadHandles.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetReadHandles.Buffer.cs</LastGenOutput>
+      <LastGenOutput>Query.ReadHandles.Buffer.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetReadHandles.Mixed.tt">
+    <None Update="Templates\Query.ReadHandles.Mixed.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetReadHandles.Mixed.cs</LastGenOutput>
+      <LastGenOutput>Query.ReadHandles.Mixed.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetReadHandles.tt">
+    <None Update="Templates\Query.ReadHandles.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetReadHandles.cs</LastGenOutput>
+      <LastGenOutput>Query.ReadHandles.cs</LastGenOutput>
     </None>
     <None Update="Templates\Query.GetIds.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -561,35 +561,35 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Helpers.ttinclude</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetWriteHandles.Buffer.cs">
+    <Compile Update="Templates\Query.WriteHandles.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetWriteHandles.Buffer.tt</DependentUpon>
+      <DependentUpon>Query.WriteHandles.Buffer.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetWriteHandles.cs">
+    <Compile Update="Templates\Query.WriteHandles.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetWriteHandles.tt</DependentUpon>
+      <DependentUpon>Query.WriteHandles.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetWriteHandles.Mixed.cs">
+    <Compile Update="Templates\Query.WriteHandles.Mixed.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetWriteHandles.Mixed.tt</DependentUpon>
+      <DependentUpon>Query.WriteHandles.Mixed.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetReadHandles.Buffer.cs">
+    <Compile Update="Templates\Query.ReadHandles.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetReadHandles.Buffer.tt</DependentUpon>
+      <DependentUpon>Query.ReadHandles.Buffer.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetReadHandles.cs">
+    <Compile Update="Templates\Query.ReadHandles.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetReadHandles.tt</DependentUpon>
+      <DependentUpon>Query.ReadHandles.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetReadHandles.Mixed.cs">
+    <Compile Update="Templates\Query.ReadHandles.Mixed.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetReadHandles.Mixed.tt</DependentUpon>
+      <DependentUpon>Query.ReadHandles.Mixed.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\Query.GetIds.cs">
       <DesignTime>True</DesignTime>

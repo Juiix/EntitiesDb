@@ -34,7 +34,7 @@ public partial class SystemWithOneComponent
 	public void EntitiesDb_Simd()
 	{
 		Vector256<int> sum = Vector256.Create(1);
-		foreach (var (length, handle) in _entitiesDb.Query.GetWriteHandles<Component1>())
+		foreach (var (length, handle) in _entitiesDb.Query.WriteHandles<Component1>())
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandle = handle.Reinterpret<Component1, Vector256<int>>();

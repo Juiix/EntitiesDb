@@ -122,7 +122,7 @@ public sealed partial class ComponentRegistry
 	/// <param name="type">The retrived type</param>
 	/// <returns>If the type was retrieved</returns>
 #if NETSTANDARD2_1
-	public bool TryGetType(int id, out Type type)
+	public bool TryGetType(int id, out Type? type)
 #else
 	public bool TryGetType(int id, [MaybeNullWhen(false)] out Type type)
 #endif

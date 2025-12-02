@@ -3,14 +3,14 @@ namespace EntitiesDb;
 
 public partial class Query
 {
-	public ArchetypeChunkWriteBufferIterator<T0> GetWriteHandlesB<T0>()
+	public ArchetypeChunkWriteBufferIterator<T0> WriteHandlesB<T0>()
 		where T0 : unmanaged
 	{
 		var ids = _componentRegistry.GetIds<T0>();
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1> GetWriteHandlesB<T0, T1>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1> WriteHandlesB<T0, T1>()
 		where T0 : unmanaged
         where T1 : unmanaged
 	{
@@ -18,7 +18,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2> GetWriteHandlesB<T0, T1, T2>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2> WriteHandlesB<T0, T1, T2>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -27,7 +27,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3> GetWriteHandlesB<T0, T1, T2, T3>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3> WriteHandlesB<T0, T1, T2, T3>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -37,7 +37,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4> GetWriteHandlesB<T0, T1, T2, T3, T4>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4> WriteHandlesB<T0, T1, T2, T3, T4>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -48,7 +48,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5> GetWriteHandlesB<T0, T1, T2, T3, T4, T5>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5> WriteHandlesB<T0, T1, T2, T3, T4, T5>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -60,7 +60,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -73,7 +73,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -87,7 +87,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -102,7 +102,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -118,7 +118,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -135,7 +135,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -153,7 +153,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -172,7 +172,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -192,7 +192,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -213,7 +213,7 @@ public partial class Query
 		Match();
 		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
 	}
-	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> GetWriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>()
+	public ArchetypeChunkWriteBufferIterator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> WriteHandlesB<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>()
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged

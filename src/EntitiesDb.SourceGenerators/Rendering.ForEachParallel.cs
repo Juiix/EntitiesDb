@@ -25,6 +25,7 @@ internal static partial class Renderer
 		 .Append(m.DelegateParameters).AppendLine(");");
 		w.AppendLine();
 
+		// Extension Class
 		w.AppendLine("internal static partial class " + m.ExtensionClassName);
 		w.AppendLine("{");
 		w.Indent();
@@ -91,7 +92,7 @@ internal static partial class Renderer
 		}
 
 		// Job
-		w.AppendLine("public struct " + m.JobName + " : IChunkJob");
+		w.AppendLine("private struct " + m.JobName + " : IChunkJob");
 		w.AppendLine("{");
 		w.Indent();
 
@@ -221,8 +222,7 @@ internal static partial class Renderer
 			if (hasComponents) w.Append(", in ids");
 			if (hasState) w.Append(", ref state");
 			w.AppendLine(");");
-			w.AppendLine("job = self.ChunkJobParallel<" + m.JobName + ", " + m.AggregateName + ">(job, options);");
-			w.AppendLine("state = ref job.state.Value;");
+			w.AppendLine("self.ChunkJobParallel<" + m.JobName + ", " + m.AggregateName + ">(ref job, options);");
 		}
 		else
 		{

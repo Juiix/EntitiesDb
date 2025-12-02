@@ -12,7 +12,7 @@ public partial class Query
         var generics = Generics(index);
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
 #>
-	public ArchetypeChunkReadBufferIterator<<#= generics #>> GetReadHandlesB<<#= generics #>>()
+	public ArchetypeChunkWriteBufferIterator<<#= generics #>> WriteHandlesB<<#= generics #>>()
 		<#= Indent(constraints, 8) #>
 	{
 		var ids = _componentRegistry.GetIds<<#= generics #>>();
