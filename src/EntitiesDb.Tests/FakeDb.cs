@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EntitiesDb;
+﻿namespace EntitiesDb;
 
 internal static class FakeDb
 {
@@ -39,10 +33,8 @@ internal static class FakeDb
 	[Tag] public record struct GroundedTag;
 	[Tag] public record struct ProjectileTag;
 
-	// NOTE: If your EntityDatabase ctor is (ComponentRegistry, chunkBytes, maxEntities), use the commented line.
 	public static EntityDatabase CreateDb(int chunkSize = 4096, int maxEntities = int.MaxValue, bool parallel = false)
 	{
-		// var db = new EntityDatabase(new ComponentRegistry(), 4096, 1000);
 		var db = new EntityDatabase(new(chunkSize, maxEntities, parallel ? 2 : -1));
 
 		// --- Seed data across many archetypes -------------------------------

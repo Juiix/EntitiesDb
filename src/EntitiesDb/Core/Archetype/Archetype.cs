@@ -43,10 +43,15 @@ public unsafe sealed partial class Archetype
     /// </summary>
     private readonly short[] _idToOffsets;
 
-    /// <summary>
-    /// Array used to store chunks
-    /// </summary>
-    private Chunk[] _chunks;
+	/// <summary>
+	/// Indices of bufferable types
+	/// </summary>
+	private readonly int[] _bufferIds;
+
+	/// <summary>
+	/// Array used to store chunks
+	/// </summary>
+	private Chunk[] _chunks;
 
 	/// <summary>
 	/// If this has been disposed
@@ -65,6 +70,7 @@ public unsafe sealed partial class Archetype
 
 		_chunks = ArrayPool<Chunk>.Shared.Rent(1);
         _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, unmanagedComponentCount, EntitiesPerChunk);
+		_bufferIds = ArchetypeUtils.BuildBufferIds(componentTypes, unmanagedComponentCount);
 
 		AddChunk();
 	}
@@ -184,6 +190,16 @@ public unsafe sealed partial class Archetype
 		var offsets = GetOffsets(in ids);
 		if (ComponentMeta<T0>.IsBuffered) chunk.ClearBuffer(slot.Index, offsets.T0);
     }
+
+	/// <summary>
+	/// Gets the offset of a component type with a given id
+	/// </summary>
+	/// <param name="id">The component type id</param>
+	/// <returns>Offset of the component type with the given id</returns>
+	internal int GetOffset(int id)
+	{
+		return _idToOffsets[id];
+	}
 
 	/// <summary>
 	/// Gets a readonly component at a given slot
@@ -320,6 +336,7 @@ public unsafe sealed partial class Archetype
 		{
 			ChunksAllocated++;
 			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
+			Unsafe.InitBlock((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
 			chunk = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters);
@@ -378,6 +395,26 @@ public unsafe sealed partial class Archetype
 	{
 		ref var chunk = ref _chunks[entitySlot.ChunkIndex];
 		return ref chunk.WriteEntity(entitySlot.Index);
+	}
+
+	/// <summary>
+	/// Clears buffers for a given entity slot
+	/// </summary>
+	/// <param name="slot"></param>
+	/// <param name="mask"></param>
+	internal void ClearBuffers(in EntitySlot slot, in Signature mask)
+	{
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		for (int i = 0; i < _bufferIds.Length; i++)
+		{
+			var typeIndex = _bufferIds[i];
+			ref var componentType = ref ComponentTypes[typeIndex];
+			if (!mask.Test(componentType.Id)) continue;
+
+			var offset = _idToOffsets[componentType.Id];
+			var stride = componentType.Stride;
+			DynamicBuffer.Clear((byte*)chunk.UnmanagedComponents + offset + stride * slot.Index);
+		}
 	}
 
 	/// <summary>

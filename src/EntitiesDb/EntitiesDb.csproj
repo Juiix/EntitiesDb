@@ -9,7 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2022, Unnamed Studios, LLC</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
@@ -160,6 +160,46 @@
     <None Update="Templates\ArchetypeChunkWriteIterator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArchetypeChunkWriteIterator.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Add.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Add.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Add.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Add.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Add.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Add.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Create.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Create.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Create.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Create.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Create.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Create.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Remove.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Remove.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Set.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Set.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Set.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Set.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\CommandBuffer.Set.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommandBuffer.Set.cs</LastGenOutput>
     </None>
     <None Update="Templates\ComponentMeta.AssertNonZeroSize.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -490,6 +530,56 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ArchetypeChunkWriteIterator.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Add.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Add.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Add.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Add.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Add.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Add.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Create.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Create.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Create.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Create.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Create.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Create.Mixed.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Remove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Remove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Set.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Set.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Set.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Set.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CommandBuffer.Set.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CommandBuffer.Set.Mixed.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\ComponentMeta.AssertNonZeroSize.cs">
       <DesignTime>True</DesignTime>

@@ -58,10 +58,10 @@ internal sealed class EntityMap(int maxEntities)
 		entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
 	}
 
-	public void Remove(int entityId, out int version)
+	public void Remove(int entityId)
 	{
 		ref var reference = ref GetReference(entityId);
-		version = _versions[entityId] = reference.Version;
+		_versions[entityId] = reference.Version;
 		reference = default;
 	}
 

@@ -1,0 +1,35 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class CommandBuffer
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var lines = FormatLine(index, "SetData(entityIndex, t{0}Components);");
+		var constriants = FormatLine(index, "where T{0} : unmanaged");
+#>
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
+		<#= Indent(constriants, 8) #>
+	{
+		ComponentMeta.AssertBuffered<<#= generics #>>();
+		lock (_lock)
+		{
+			var entityIndex = Register(entity);
+			var signature = _registry.GetSignature<<#= generics #>>();
+			RegisterSet(entityIndex, in signature);
+			<#= Indent(lines, 12) #>
+		}
+	}
+<#
+	}
+#>
+}

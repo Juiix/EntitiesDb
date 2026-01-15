@@ -8,4 +8,3 @@ internal readonly struct EntityReference(Archetype archetype, EntitySlot slot, i
     public readonly EntitySlot Slot = slot;
     public readonly int Version = version;
 }
-

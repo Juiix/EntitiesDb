@@ -5,7 +5,7 @@ namespace EntitiesDb;
 
 public partial class EntityDatabase
 {
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default)
@@ -45,7 +45,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
@@ -87,7 +87,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
@@ -131,7 +131,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
@@ -177,7 +177,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
@@ -225,7 +225,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -275,7 +275,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -327,7 +327,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -381,7 +381,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -437,7 +437,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default)
@@ -477,7 +477,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
@@ -519,7 +519,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
@@ -563,7 +563,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
@@ -609,7 +609,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -657,7 +657,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -707,7 +707,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -759,7 +759,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -813,7 +813,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default)
@@ -853,7 +853,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
@@ -895,7 +895,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
@@ -939,7 +939,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -985,7 +985,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -1033,7 +1033,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -1083,7 +1083,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -1135,7 +1135,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default)
@@ -1175,7 +1175,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
@@ -1217,7 +1217,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -1261,7 +1261,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -1307,7 +1307,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -1355,7 +1355,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -1405,7 +1405,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default)
@@ -1445,7 +1445,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -1487,7 +1487,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -1531,7 +1531,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -1577,7 +1577,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -1625,7 +1625,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default)
@@ -1665,7 +1665,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -1707,7 +1707,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -1751,7 +1751,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -1797,7 +1797,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default)
@@ -1837,7 +1837,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -1879,7 +1879,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -1923,7 +1923,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default)
@@ -1963,7 +1963,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -2005,7 +2005,7 @@ public partial class EntityDatabase
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, ReadOnlySpan<T9> t9Components = default)

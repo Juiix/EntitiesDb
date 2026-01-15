@@ -251,6 +251,17 @@ public partial struct Chunk
 		DynamicBuffer.Clear(ref header);
 	}
 
+	/// <summary>
+	/// Clears a buffer of components and releases allocated lists
+	/// </summary>
+	/// <param name="index">Index of the buffer to clear</param>
+	/// <param name="typeId">The component type id</param>
+	internal readonly unsafe void ClearBuffer(int index, int offset, int stride)
+	{
+		ref var header = ref Unsafe.AsRef<BufferHeader>(((byte*)UnmanagedComponents + offset + index * stride));
+		DynamicBuffer.Clear(ref header);
+	}
+
     /// <summary>
     /// Adds an entityId at the given index
     /// </summary>
@@ -416,6 +427,18 @@ public partial struct Chunk
 				1
 			);
 		}
+	}
+
+	internal readonly nint WriteUnmanaged(int id, int offset)
+	{
+		MarkChanged((byte)id);
+		return UnmanagedComponents + offset;
+	}
+
+	internal readonly Array WriteManaged(int id, int offset)
+	{
+		MarkChanged((byte)id);
+		return ManagedComponents[offset];
 	}
 }
 

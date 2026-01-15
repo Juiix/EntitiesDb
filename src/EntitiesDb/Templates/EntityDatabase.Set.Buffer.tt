@@ -16,20 +16,20 @@ public partial class EntityDatabase
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
 		var args = FormatComma(index, "t{0}Components");
 #>
-	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	[ChunkChange]
-	public void Set<<#= generics #>>(int entityId, <#= parameters #>)
+	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		ComponentMeta.AssertBuffered<<#= generics #>>();
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
         var checkSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var archetype = entityReference.Archetype;
 		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entityId, in ids);
+			throw archetype.GetComponentNotFound(entity.Id, in ids);
 
 		// set component value
 		archetype.Set(in entityReference.Slot, in ids, <#= args #>);

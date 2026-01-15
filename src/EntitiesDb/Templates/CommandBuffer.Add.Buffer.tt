@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class CommandBuffer
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var args = FormatComma(index, "t{0}Components");
+		var constriants = FormatLine(index, "where T{0} : unmanaged");
+#>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Add<<#= generics #>>(Entity entity, <#= parameters #>)
+		<#= Indent(constriants, 8) #>
+	{
+		Set(entity, <#= args #>);
+	}
+<#
+	}
+#>
+}

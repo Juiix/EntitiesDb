@@ -16,27 +16,27 @@ public partial class EntityDatabase
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
 		var args = FormatComma(index, "t{0}Components");
 #>
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<<#= generics #>>(int entityId, <#= parameters #>)
+	public void Add<<#= generics #>>(Entity entity, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		ComponentMeta.AssertBuffered<<#= generics #>>();
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, <#= args #>);

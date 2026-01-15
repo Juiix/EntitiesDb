@@ -13,19 +13,19 @@ public partial class EntityDatabase
 		var parameters = FormatComma(index, "in T{0}? t{0}Component");
 		var args = FormatComma(index, "in t{0}Component");
 #>
-	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
-	public void Set<<#= generics #>>(int entityId, <#= parameters #>)
+	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 	{
 		ComponentMeta.AssertNotBuffered<<#= generics #>>();
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
         var checkSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var archetype = entityReference.Archetype;
 		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entityId, in ids);
+			throw archetype.GetComponentNotFound(entity.Id, in ids);
 
 		// set component value
 		archetype.Set(in entityReference.Slot, in ids, <#= args #>);

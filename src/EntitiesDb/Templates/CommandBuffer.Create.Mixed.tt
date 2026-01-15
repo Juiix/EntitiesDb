@@ -1,0 +1,47 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class CommandBuffer
+{
+<#
+	for (int indexC = 1; indexC <= GenericMixedCount - 1; indexC++)
+	{
+		var genericsC = Generics(indexC);
+		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
+		var linesC = FormatLine(indexC, "SetData(entityIndex, in t{0}Component);");
+		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
+		{
+			var genericsB = Generics(indexB, indexC);
+			var parametersB = FormatComma(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
+			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
+			var linesB = FormatLine(indexB, "SetData(entityIndex, t{0}Components);", indexC);
+#>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
+	public Entity Create<<#= genericsC #>, <#= genericsB #>>(<#= parametersC #>, <#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
+		ComponentMeta.AssertBuffered<<#= genericsB #>>();
+		lock (_lock)
+		{
+			var entity = new Entity(-_entities.Count - 1, -1);
+			var entityIndex = Register(entity);
+			_creates.Add(entityIndex);
+
+			var signature = _registry.GetSignature<<#= genericsB #>, <#= genericsC #>>();
+			RegisterSet(entityIndex, in signature);
+			<#= Indent(linesC, 12) #>
+			<#= Indent(linesB, 12) #>
+			return entity;
+		}
+	}
+<#
+		}
+	}
+#>
+}

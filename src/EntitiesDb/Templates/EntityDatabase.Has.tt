@@ -11,10 +11,10 @@ public partial class EntityDatabase
 	{
         var generics = Generics(index);
 #>
-	/// <inheritdoc cref="Has{T0}(int)"/>
-	public bool Has<<#= generics #>>(int entityId)
+	/// <inheritdoc cref="Has{T0}(Entity)"/>
+	public bool Has<<#= generics #>>(Entity entity)
 	{
-		ref var reference = ref GetEntity(entityId);
+		ref var reference = ref GetEntity(entity);
 		var ids = ComponentRegistry.GetIds<<#= generics #>>();
 		return reference.Archetype.Has(in ids);
 	}

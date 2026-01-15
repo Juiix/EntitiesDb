@@ -46,7 +46,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// get component
-		ref var position = ref db.Write<Position>(0);
+		ref var position = ref db.Write<Position>(new Entity(0, 0));
 
 		// 2.
 		// One chunk
@@ -73,7 +73,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// get component
-		var items = db.WriteBuffer<InventoryItem>(0);
+		var items = db.WriteBuffer<InventoryItem>(new Entity(0, 0));
 
 		// 2.
 		// One chunk
@@ -100,7 +100,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// get component
-		ref readonly var position = ref db.Read<Position>(0);
+		ref readonly var position = ref db.Read<Position>(new Entity(0, 0));
 
 		// 2.
 		// No chunk
@@ -122,7 +122,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// write to a non-buffer component
-		db.Set(0, new Position(123, 456));
+		db.Set(new Entity(0, 0), new Position(123, 456));
 
 		// 2. One chunk
 		Assert.Equal(1, query.CountChunks());
@@ -146,7 +146,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// overwrite buffer values
-		db.Set<InventoryItem>(0, new[] { new InventoryItem(42, 9), new InventoryItem(7, 1) });
+		db.Set<InventoryItem>(new Entity(0, 0), new[] { new InventoryItem(42, 9), new InventoryItem(7, 1) });
 
 		// 2. One chunk (buffer write marks chunk changed)
 		Assert.Equal(1, query.CountChunks());
@@ -171,7 +171,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// Add a tag the player doesn't have to force an archetype move that still matches the query
-		db.Add(0, new BossTag());
+		db.Add(new Entity(0, 0), new BossTag());
 
 		// 2. Two chunks (src & dst both have Position/PlayerTag and were written)
 		Assert.Equal(1, query.CountChunks());
@@ -196,7 +196,7 @@ public sealed class ChangeFilterTests
 
 		// Removing Position drops the destination archetype from the query;
 		// no chunks should report changes, since changes are driven per component not entity
-		db.Remove<Position>(0);
+		db.Remove<Position>(new Entity(0, 0));
 
 		// 2. No chunks
 		Assert.Equal(0, query.CountChunks());
@@ -217,7 +217,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// Clone writes a new entity into the same archetype (destination chunk changed)
-		db.CloneEntity(0);
+		db.Clone(new Entity(0, 0));
 
 		// 2. One chunk
 		Assert.Equal(1, query.CountChunks());
@@ -241,7 +241,7 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 
 		// read-only buffer access
-		var ro = db.ReadBuffer<InventoryItem>(0);
+		var ro = db.ReadBuffer<InventoryItem>(new Entity(0, 0));
 		_ = ro.Length;
 
 		// 2. Still none
