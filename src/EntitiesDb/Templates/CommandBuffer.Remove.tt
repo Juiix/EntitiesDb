@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class CommandBuffer
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var args = FormatComma(index, "in t{0}Component");
+#>
+	/// <inheritdoc cref="Remove{T0}(Entity)"/>
+	public void Remove<<#= generics #>>(Entity entity)
+	{
+		lock (_lock)
+		{
+			var entityIndex = Register(entity);
+			var signature = _registry.GetSignature<<#= generics #>>();
+			RegisterRemove(entityIndex, in signature);
+		}
+	}
+<#
+	}
+#>
+}

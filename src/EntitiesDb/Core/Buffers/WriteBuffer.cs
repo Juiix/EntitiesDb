@@ -10,6 +10,7 @@ internal static class DynamicBuffer
 	private const int HeapTag = unchecked((int)0x8000_0000);
 	private const int SizeMask = 0x7FFF_FFFF;
 
+	public static unsafe void Clear(void* header) => Clear(ref Unsafe.AsRef<BufferHeader>(header));
 	public static void Clear(ref BufferHeader header)
 	{
 		if ((header.Size & HeapTag) != 0)

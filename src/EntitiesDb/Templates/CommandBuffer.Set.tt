@@ -1,0 +1,31 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public partial class CommandBuffer
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
+		var lines = FormatLine(index, "SetData(entityIndex, in t{0}Component);");
+#>
+	/// <inheritdoc cref="Set{T0}(Entity, in T0?)"/>
+	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
+	{
+		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		lock (_lock)
+		{
+			var entityIndex = Register(entity);
+			var signature = _registry.GetSignature<<#= generics #>>();
+			RegisterSet(entityIndex, in signature);
+			<#= Indent(lines, 12) #>
+		}
+	}
+<#
+	}
+#>
+}

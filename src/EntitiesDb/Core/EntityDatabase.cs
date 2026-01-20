@@ -70,7 +70,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
 	/// </summary>
 	/// <remarks>
-	/// Use <see cref="Set{T0}(uint, T0)"/> if a component is already attached to the entity.
+	/// Use <see cref="Set{T0}(Entity, T0)"/> if a component is already attached to the entity.
 	/// </remarks>
 	/// <param name="entityId">Id of the entity altered</param>
 	/// <param name="component">Component value</param>
@@ -78,56 +78,56 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0>(int entityId, in T0? component = default)
+	public void Add<T0>(Entity entity, in T0? component = default)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Has(in ids))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Set(in entityReference.Slot, in ids, in component);
 	}
 
 	/// <summary>
-	/// Adds a component buffer to an entity. Entity components are copied to a new <see cref="Archetype"/>.
+	/// Adds component buffers to an entity. Entity components are copied to a new <see cref="Archetype"/>.
 	/// </summary>
 	/// <remarks>
-	/// Use <see cref="Set{T0}(uint, ReadOnlySpan{T0})"/> if a component buffer is already attached to the entity.
+	/// Use <see cref="Set{T0}(Entity, ReadOnlySpan{T0})"/> if a component buffer is already attached to the entity.
 	/// </remarks>
-	/// <param name="entityId">Id of the entity altered</param>
+	/// <param name="entity">The target entity</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0>(int entityId, ReadOnlySpan<T0> components = default) where T0 : unmanaged
+	public void Add<T0>(Entity entity, ReadOnlySpan<T0> components = default) where T0 : unmanaged
     {
         ComponentMeta.AssertBuffered<T0>();
         var ids = ComponentRegistry.GetIds<T0>();
 		var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Has(in ids))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
 		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
@@ -137,16 +137,16 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <summary>
 	/// Clones an existing entity and its components
 	/// </summary>
-	/// <param name="srcEntityId">Id of the entity to clone</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>Id of the cloned entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="MaxReachedException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public Entity CloneEntity(int srcEntityId)
+	public Entity Clone(Entity entity)
 	{
 		// get entity
-		ref var srcReference = ref GetEntity(srcEntityId);
+		ref var srcReference = ref GetEntity(entity);
 
 		// get id & copy components
 		var archetype = srcReference.Archetype;
@@ -219,20 +219,21 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <summary>
 	/// Destroys a given entity
 	/// </summary>
-	/// <param name="entityId">Id of the entity to destroy</param>
+	/// <param name="entity">The target entity</param>
 	/// <exception cref="EntityException"></exception>
 	[StructuralChange]
-	public void Destroy(int entityId)
+	public void Destroy(Entity entity)
 	{
 		// get entity
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 		var archetype = entityReference.Archetype;
+		archetype.ClearBuffers(in entityReference.Slot, archetype.Signature);
 		archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
 
 		_entityMap.Move(movedEntityId, in entityReference.Slot);
-		_entityMap.Remove(entityId, out var version);
+		_entityMap.Remove(entity.Id);
 		EntityCount--;
-		_recycledEntityIds.Enqueue(new Entity(entityId, version));
+		_recycledEntityIds.Enqueue(entity);
 	}
 
 	/// <summary>
@@ -252,19 +253,19 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Ref values may be invalid after structural changes and should not be stored.
 	/// </summary>
 	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>Reference to the component for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ref readonly T0? Read<T0>(int entityId)
+	public ref readonly T0? Read<T0>(Entity entity)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check if has component
 		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entityId, typeof(T0));
+			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
 
 		ref readonly var component = ref entityReference.Archetype.Read<T0>(in entityReference.Slot, ids.T0);
 		return ref component;
@@ -275,19 +276,19 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Buffer is invalid after structural changes and should not be stored.
 	/// </summary>
 	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>Component buffer for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
-	public ReadBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
+	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check if has component
 		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entityId, typeof(T0));
+			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
 
 		var buffer = entityReference.Archetype.ReadBuffer<T0>(in entityReference.Slot, ids.T0);
 		return buffer;
@@ -297,21 +298,24 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Returns a reference to a component for an entity.
 	/// Ref values may be invalid after structural changes and should not be stored.
 	/// </summary>
+	/// <remarks>
+	/// Marks the accessed <see cref="Chunk"/> as changed.
+	/// </remarks>
 	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>Reference to the component for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[ChunkChange]
-	public ref T0? Write<T0>(int entityId)
+	public ref T0? Write<T0>(Entity entity)
 	{
 		ComponentMeta.AssertNotBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check if has component
 		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entityId, typeof(T0));
+			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
 
 		ref var component = ref entityReference.Archetype.Write<T0>(in entityReference.Slot, ids.T0);
 		return ref component;
@@ -321,57 +325,60 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Returns a component buffer for an entity.
 	/// Buffer is invalid after structural changes and should not be stored.
 	/// </summary>
+	/// <remarks>
+	/// Marks the accessed <see cref="Chunk"/> as changed.
+	/// </remarks>
 	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>Component buffer for the given entity</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[ChunkChange]
-	public WriteBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
+	public WriteBuffer<T0> WriteBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check if has component
 		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entityId, typeof(T0));
+			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
 
 		var buffer = entityReference.Archetype.WriteBuffer<T0>(in entityReference.Slot, ids.T0);
 		return buffer;
 	}
 
 	/// <summary>
-	/// Returns if an entity has a given component type
+	/// Returns if an entity has given component types
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>If the entity has the given component type</returns>
 	/// <exception cref="EntityException"></exception>
-	public bool Has<T>(int entityId)
+	public bool Has<T>(Entity entity)
 	{
-		ref var reference = ref GetEntity(entityId);
+		ref var reference = ref GetEntity(entity);
 		return reference.Archetype.Has(ComponentRegistry.GetIds<T>());
 	}
 
 	/// <summary>
-	/// Removes a component or buffer for a given entity
+	/// Removes components from a given entity
 	/// </summary>
 	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entityId">Id of the entity</param>
+	/// <param name="entity">The target entity</param>
 	/// <returns>If the component was found and removed</returns>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[StructuralChange]
-	public void Remove<T0>(int entityId)
+	public void Remove<T0>(Entity entity)
 	{
 		var ids = ComponentRegistry.GetIds<T0>();
 		var removedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
 		if (!srcArchetype.Has(in ids))
-			throw srcArchetype.GetComponentNotFound(entityId, in ids);
+			throw srcArchetype.GetComponentNotFound(entity.Id, in ids);
 
 		// clear buffers
         srcArchetype.Clear(in entityReference.Slot, in ids);
@@ -380,7 +387,7 @@ public sealed partial class EntityDatabase : IDisposable
 		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 	}
 
 	/// <summary>
@@ -398,46 +405,67 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
-	/// Sets the component value for <typeparamref name="T"/> at a given entity id
+	/// Gets the archetype of a given entity
+	/// </summary>
+	/// <param name="entity">The target entity</param>
+	/// <returns>The entity's archetype</returns>
+	public Archetype GetArchetype(Entity entity)
+	{
+		ref var entityReference = ref GetEntity(entity);
+		return entityReference.Archetype;
+	}
+
+	/// <summary>
+	/// Gets the archetype of a given <see cref="Signature"/>
+	/// </summary>
+	/// <param name="entity">The target <see cref="Signature"/></param>
+	/// <returns></returns>
+	public Archetype GetArchetype(in Signature signature)
+	{
+		return Archetypes.GetOrCreateArchetype(in signature);
+	}
+
+	/// <summary>
+	/// Sets component values for a given entity
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="entityId">The entity id</param>
-	/// <param name="component">The value to set</param>
-	public void Set<T>(int entityId, T component)
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Component">The value to set</param>
+	public void Set<T0>(Entity entity, in T0? t0Component)
     {
-        ComponentMeta.AssertNotBuffered<T>();
-        var ids = ComponentRegistry.GetIds<T>();
-        ref var entityReference = ref GetEntity(entityId);
+        ComponentMeta.AssertNotBuffered<T0>();
+        var ids = ComponentRegistry.GetIds<T0>();
+        ref var entityReference = ref GetEntity(entity);
 
 		// check if component exists
 		var archetype = entityReference.Archetype;
 		if (!archetype.Has(in ids))
-            throw archetype.GetComponentNotFound(entityId, in ids);
+            throw archetype.GetComponentNotFound(entity.Id, in ids);
 
         // set value
-        entityReference.Archetype.Set(in entityReference.Slot, in ids, in component);
+        entityReference.Archetype.Set(in entityReference.Slot, in ids, in t0Component);
 	}
 
 	/// <summary>
-	/// Sets the buffer values for <typeparamref name="T"/> at a given entity id
+	/// Sets buffer values for a given entity
 	/// </summary>
 	/// <remarks>
 	/// This method will overwrite any existing buffer values.
 	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
 	/// </remarks>
 	/// <typeparam name="T">The buffer type</typeparam>
-	/// <param name="entityId">The entity id</param>
+	/// <param name="entity">The target entity</param>
 	/// <param name="values">The values to set</param>
-	public void Set<T>(int entityId, ReadOnlySpan<T> values) where T : unmanaged
+	public void Set<T>(Entity entity, ReadOnlySpan<T> values) where T : unmanaged
     {
         ComponentMeta.AssertBuffered<T>();
         var ids = ComponentRegistry.GetIds<T>();
-        ref var entityReference = ref GetEntity(entityId);
+        ref var entityReference = ref GetEntity(entity);
 
         // check if component exists
         var archetype = entityReference.Archetype;
         if (!archetype.Has(in ids))
-            throw archetype.GetComponentNotFound(entityId, in ids);
+            throw archetype.GetComponentNotFound(entity.Id, in ids);
 
         // set values
         entityReference.Archetype.Set(in entityReference.Slot, in ids, values);
@@ -467,6 +495,16 @@ public sealed partial class EntityDatabase : IDisposable
 		return new ChangeFilter<T0>(id.Value, version);
 	}
 
+	/// <summary>
+	/// Creates a new <see cref="CommandBuffer"/> for this <see cref="EntityDatabase"/> instance
+	/// </summary>
+	/// <param name="initialCapacity"></param>
+	/// <returns>A new <see cref="CommandBuffer"/></returns>
+	public CommandBuffer CreateCommandBuffer(int initialCapacity)
+	{
+		return new CommandBuffer(this, initialCapacity);
+	}
+
 	/// <inheritdoc cref="IDisposable.Dispose"/>
 	public void Dispose()
 	{
@@ -492,18 +530,47 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Creates an entity with the given <see cref="Signature"/>. All components are default.
+	/// </summary>
+	/// <returns>Id of the created entity</returns>
+	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	internal Entity Create(in Signature signature)
+	{
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var archetype = Archetypes.GetOrCreateArchetype(signature);
+		var dstSlot = archetype.AddEntity(dstEntityId, out _);
+		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		EntityCount++;
+		return dstEntityId;
+	}
+
+	/// <summary>
 	/// Gets an internal <see cref="EntityReference"/> to a given entity id
 	/// </summary>
-	/// <param name="entityId">The entity id</param>
+	/// <param name="entityId">The target entity</param>
 	/// <returns>A reference to the entity</returns>
 	/// <exception cref="EntityException"></exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private ref EntityReference GetEntity(int entityId)
+	internal ref EntityReference GetEntity(Entity entity)
 	{
-		ref var entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
-		if (!foundEntity)
-			throw ThrowHelper.EntityNotFound(entityId);
+		ref var entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
+		if (!foundEntity || entityReference.Version != entity.Version)
+			throw ThrowHelper.EntityNotFound(entity.Id);
 		return ref entityReference;
+	}
+
+	/// <summary>
+	/// Moves a target entity to a new archetype. New components will be defaulted.
+	/// </summary>
+	/// <param name="entity">The target entity</param>
+	/// <param name="targetArchetype">The target archetype</param>
+	[StructuralChange]
+	internal void Move(Entity entity, Archetype targetArchetype)
+	{
+		ref var entityReference = ref GetEntity(entity);
+		MoveEntity(entity.Id, ref entityReference, entityReference.Archetype, targetArchetype);
 	}
 
 	/// <summary>
@@ -541,6 +608,8 @@ public sealed partial class EntityDatabase : IDisposable
 		// copy to new archetype
 		var srcSlot = entityReference.Slot;
 		var dstSlot = dstArchetype.AddEntity(new Entity(entityId, entityReference.Version), out _);
+		var removedMask = srcArchetype.Signature.AndNot(dstArchetype.Signature);
+		srcArchetype.ClearBuffers(in entityReference.Slot, in removedMask);
 		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot);
 		srcArchetype.RemoveEntity(srcSlot, out var movedEntity);
 

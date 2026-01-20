@@ -23,21 +23,21 @@ public partial class EntityDatabase
 			var argsB = FormatComma(indexB, "t{0}Components", indexC);
 			var idArgsB = FormatComma(indexB, "ids.T{0}", indexC);
 #>
-	/// <inheritdoc cref="Set{T0}(int, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
-	public void Set<<#= genericsC #>, <#= genericsB #>>(int entityId,<#= parametersC #>, <#= parametersB #>)
+	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity,<#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
 		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
 		ComponentMeta.AssertBuffered<<#= genericsB #>>();
 		var ids = ComponentRegistry.GetIds<<#= genericsC #>,<#= genericsB #>>();
         var checkSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var archetype = entityReference.Archetype;
 		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entityId, in ids);
+			throw archetype.GetComponentNotFound(entity.Id, in ids);
 
 		// set component value
 		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);

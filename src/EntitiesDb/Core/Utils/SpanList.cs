@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
@@ -19,25 +18,25 @@ internal struct SpanList<T>
 
 	public SpanList()
 	{
-		_items = Array.Empty<T>();
+		_items = [];
 	}
 
 	public SpanList(int capacity)
 	{
 		if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
-		_items = capacity == 0 ? Array.Empty<T>() : new T[capacity];
+		_items = capacity == 0 ? [] : ArrayPool<T>.Shared.Rent(capacity);
 	}
 
 	public SpanList(ReadOnlySpan<T> source)
 	{
 		if (source.Length == 0)
 		{
-			_items = Array.Empty<T>();
+			_items = [];
 			_count = 0;
 		}
 		else
 		{
-			_items = new T[source.Length];
+			_items = ArrayPool<T>.Shared.Rent(source.Length);
 			source.CopyTo(_items);
 			_count = source.Length;
 		}
@@ -55,12 +54,16 @@ internal struct SpanList<T>
 			{
 				if (value == 0)
 				{
-					_items = Array.Empty<T>();
+					if (_items.Length != 0)
+						ArrayPool<T>.Shared.Return(_items);
+					_items = [];
 					return;
 				}
-				var newArr = new T[value];
+				var newArr = ArrayPool<T>.Shared.Rent(value);
 				if (_count != 0)
 					Array.Copy(_items, 0, newArr, 0, _count);
+				if (_items.Length != 0)
+					ArrayPool<T>.Shared.Return(_items);
 				_items = newArr;
 			}
 		}
@@ -178,9 +181,11 @@ internal struct SpanList<T>
 		if ((uint)newCap > 0X7FEFFFFF) newCap = 0X7FEFFFFF; // same max as List<T>
 		if (newCap < min) newCap = min;
 
-		var newArr = new T[newCap];
+		var newArr = ArrayPool<T>.Shared.Rent(newCap);
 		if (_count > 0)
 			Array.Copy(_items, 0, newArr, 0, _count);
+		if (_items.Length != 0)
+			ArrayPool<T>.Shared.Return(_items);
 		_items = newArr;
 	}
 

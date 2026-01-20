@@ -5,36 +5,36 @@ namespace EntitiesDb;
 
 public partial class EntityDatabase
 {
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default)
+	public void Add<T0, T1>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
 	{
 		ComponentMeta.AssertBuffered<T0, T1>();
 		var ids = ComponentRegistry.GetIds<T0, T1>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
+	public void Add<T0, T1, T2>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -42,26 +42,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
+	public void Add<T0, T1, T2, T3>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -70,26 +70,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
+	public void Add<T0, T1, T2, T3, T4>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -99,26 +99,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -129,26 +129,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -160,26 +160,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -192,26 +192,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -225,26 +225,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -259,26 +259,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -294,26 +294,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -330,26 +330,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -367,26 +367,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -405,26 +405,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -444,26 +444,26 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components);
 	}
-	/// <inheritdoc cref="Add{T0}(int, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(int entityId, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default, ReadOnlySpan<T15> t15Components = default)
+	public void Add<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default, ReadOnlySpan<T15> t15Components = default)
 		where T0 : unmanaged
         where T1 : unmanaged
         where T2 : unmanaged
@@ -484,18 +484,18 @@ public partial class EntityDatabase
 		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
 		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
         var addedSignature = Signature.FromIds(in ids);
-		ref var entityReference = ref GetEntity(entityId);
+		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
 		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entityId, in ids);
+            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
 
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
 		// move entity to new archetype
-		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
 		dstArchetype.Init(in entityReference.Slot, in ids, t0Components, t1Components, t2Components, t3Components, t4Components, t5Components, t6Components, t7Components, t8Components, t9Components, t10Components, t11Components, t12Components, t13Components, t14Components, t15Components);

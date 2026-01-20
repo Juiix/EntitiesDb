@@ -13,7 +13,7 @@ public partial class EntityDatabase
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
 		var args = FormatComma(index, "in t{0}Component");
 #>
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<<#= generics #>>(<#= parameters #>)

@@ -77,6 +77,33 @@ internal unsafe static class ArchetypeUtils
 		return idToOffsets;
 	}
 
+	public static int[] BuildBufferIds(ComponentType[] componentTypes, int unmanagedComponentCount)
+	{
+		if (unmanagedComponentCount == 0)
+			return [];
+
+		var count = 0;
+		for (int i = 0; i < unmanagedComponentCount; i++)
+		{
+			count += componentTypes[i].IsBuffer ? 1 : 0;
+		}
+
+		if (count == 0)
+			return [];
+
+		var indices = new int[count];
+		int bufferIndex = 0;
+		for (int i = 0; i < unmanagedComponentCount; i++)
+		{
+			if (componentTypes[i].IsBuffer)
+			{
+				indices[bufferIndex++] = i;
+			}
+		}
+
+		return indices;
+	}
+
 	/// <summary>
 	/// Builds a change version array copy from the global change versions
 	/// </summary>

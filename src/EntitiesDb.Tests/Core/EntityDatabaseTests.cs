@@ -62,35 +62,35 @@ public sealed class EntityDatabaseTests
 		var b = db.Create();
 
 		// Give b a component so we can detect moves
-		db.Add<Health>(b.Id, new Health { Value = 77 });
+		db.Add<Health>(b, new Health { Value = 77 });
 
-		db.Destroy(a.Id);
+		db.Destroy(a);
 
 		// a is gone, b still present, its data preserved
 		Assert.False(db.Exists(a));
 		Assert.True(db.Exists(b));
-		Assert.Equal(77, db.Write<Health>(b.Id).Value);
+		Assert.Equal(77, db.Write<Health>(b).Value);
 
 		// Contract-wise, EntityCount should reflect “currently stored”
 		Assert.Equal(1, db.EntityCount);
 	}
 
 	[Fact]
-	public void CloneEntity_CopiesAllComponents()
+	public void Clone_CopiesAllComponents()
 	{
 		var db = CreateDb();
 		var src = db.Create();
 
-		db.Add<Position>(src.Id, new Position { X = 10, Y = -5 });
-		db.Add<NameTag>(src.Id, new NameTag("src"));
+		db.Add<Position>(src, new Position { X = 10, Y = -5 });
+		db.Add<NameTag>(src, new NameTag("src"));
 
 		// Also add a small buffered component (stays inline: <= internalCapacity)
 		var dmgInit = new[] { new Damage(1), new Damage(2), new Damage(3) };
-		db.Add<Damage>(src.Id, dmgInit);
-		var buf = db.WriteBuffer<Damage>(src.Id);
+		db.Add<Damage>(src, dmgInit);
+		var buf = db.WriteBuffer<Damage>(src);
 		Assert.Equal(3, buf.Length);
 
-		var clone = db.CloneEntity(src.Id);
+		var clone = db.Clone(src);
 
 		// Counts/exists
 		Assert.Equal(2, db.EntityCount);
@@ -98,14 +98,14 @@ public sealed class EntityDatabaseTests
 		Assert.True(db.Exists(clone));
 
 		// Unmanaged + managed copied
-		var p = db.Write<Position>(clone.Id);
-		var n = db.Write<NameTag>(clone.Id);
+		var p = db.Write<Position>(clone);
+		var n = db.Write<NameTag>(clone);
 		Assert.Equal(10, p.X);
 		Assert.Equal(-5, p.Y);
 		Assert.Equal("src", n.Text);
 
 		// Buffered copied (content visible)
-		var cloneBuf = db.WriteBuffer<Damage>(clone.Id);
+		var cloneBuf = db.WriteBuffer<Damage>(clone);
 		Assert.Equal(new[] { 1, 2, 3 }, new[] { cloneBuf[0].Amount, cloneBuf[1].Amount, cloneBuf[2].Amount });
 	}
 
@@ -116,10 +116,10 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 		Assert.True(db.Exists(e));
 
-		db.Add<Position>(e.Id, new Position { X = 1, Y = 2 });
+		db.Add<Position>(e, new Position { X = 1, Y = 2 });
 		Assert.True(db.Exists(e)); // structural moves shouldn’t change version
 
-		db.Destroy(e.Id);
+		db.Destroy(e);
 		Assert.False(db.Exists(e)); // old (id,version) invalid
 	}
 
@@ -141,14 +141,14 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<Position>(e.Id, new Position { X = 3, Y = 4 });
-		ref var pos = ref db.Write<Position>(e.Id);
-		Assert.True(db.Has<Position>(e.Id));
-		ref var same = ref db.Write<Position>(e.Id);
+		db.Add<Position>(e, new Position { X = 3, Y = 4 });
+		ref var pos = ref db.Write<Position>(e);
+		Assert.True(db.Has<Position>(e));
+		ref var same = ref db.Write<Position>(e);
 		Assert.True(Unsafe.AreSame(ref pos, ref same));
 
 		same.X = 9;
-		Assert.Equal(9, db.Write<Position>(e.Id).X);
+		Assert.Equal(9, db.Write<Position>(e).X);
 	}
 
 	[Fact]
@@ -157,13 +157,13 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<NameTag>(e.Id, new NameTag("alpha"));
-		ref var tag = ref db.Write<NameTag>(e.Id);
-		Assert.True(db.Has<NameTag>(e.Id));
+		db.Add<NameTag>(e, new NameTag("alpha"));
+		ref var tag = ref db.Write<NameTag>(e);
+		Assert.True(db.Has<NameTag>(e));
 
-		ref var tag2 = ref db.Write<NameTag>(e.Id);
+		ref var tag2 = ref db.Write<NameTag>(e);
 		tag2.Text = "beta";
-		Assert.Equal("beta", db.Write<NameTag>(e.Id).Text);
+		Assert.Equal("beta", db.Write<NameTag>(e).Text);
 	}
 
 	[Fact]
@@ -172,14 +172,14 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<Position>(e.Id, new Position { X = 7, Y = 8 });
-		db.Add<Health>(e.Id, new Health { Value = 10 });
+		db.Add<Position>(e, new Position { X = 7, Y = 8 });
+		db.Add<Health>(e, new Health { Value = 10 });
 
-		db.Remove<Health>(e.Id);
+		db.Remove<Health>(e);
 
-		Assert.True(db.Has<Position>(e.Id));
-		Assert.False(db.Has<Health>(e.Id));
-		var p = db.Write<Position>(e.Id);
+		Assert.True(db.Has<Position>(e));
+		Assert.False(db.Has<Health>(e));
+		var p = db.Write<Position>(e);
 		Assert.Equal((7, 8), (p.X, p.Y));
 	}
 
@@ -188,7 +188,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		var ex = Assert.Throws<ComponentException>(() => db.Write<Position>(e.Id));
+		var ex = Assert.Throws<ComponentException>(() => db.Write<Position>(e));
 		Assert.Contains(nameof(Position), ex.Message);
 	}
 
@@ -196,7 +196,7 @@ public sealed class EntityDatabaseTests
 	public void Has_Throws_ForUnknownEntity()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.Has<Position>(999));
+		Assert.Throws<EntityException>(() => db.Has<Position>(new Entity(999, 0)));
 	}
 
 	// -------------------- Buffered components via [Buffered] --------------------
@@ -208,23 +208,23 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		var initial = new[] { new Damage(5), new Damage(6) };
-		db.Add<Damage>(e.Id, initial);
-		var buf = db.WriteBuffer<Damage>(e.Id);
+		db.Add<Damage>(e, initial);
+		var buf = db.WriteBuffer<Damage>(e);
 
 		Assert.Equal(2, buf.Length);
 		Assert.Equal(5, buf[0].Amount);
 		Assert.Equal(6, buf[1].Amount);
 
 		// GetBuffer returns a live view (until structural change)
-		var view = db.WriteBuffer<Damage>(e.Id);
+		var view = db.WriteBuffer<Damage>(e);
 		view.Add(new Damage(9));
 		Assert.Equal(3, view.Length);
 		Assert.Equal(9, view[2].Amount);
 
 		// Removing buffer should drop the component
-		db.Remove<Damage>(e.Id);
-		Assert.Throws<ComponentException>(() => db.WriteBuffer<Damage>(e.Id));
-		Assert.False(db.Has<Damage>(e.Id)); // presence-bit cleared in archetype
+		db.Remove<Damage>(e);
+		Assert.Throws<ComponentException>(() => db.WriteBuffer<Damage>(e));
+		Assert.False(db.Has<Damage>(e)); // presence-bit cleared in archetype
 	}
 
 	[Fact]
@@ -232,7 +232,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		Assert.Throws<ComponentException>(() => db.Add<Damage>(e.Id, new Damage(1)));
+		Assert.Throws<ComponentException>(() => db.Add<Damage>(e, new Damage(1)));
 	}
 
 	[Fact]
@@ -240,8 +240,8 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		db.Add<Position>(e.Id, new Position { X = 1, Y = 2 });
-		Assert.Throws<ComponentException>(() => db.WriteBuffer<Position>(e.Id));
+		db.Add<Position>(e, new Position { X = 1, Y = 2 });
+		Assert.Throws<ComponentException>(() => db.WriteBuffer<Position>(e));
 	}
 
 	[Fact]
@@ -249,7 +249,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
+		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e, ReadOnlySpan<PlayerTag>.Empty));
 	}
 
 	[Fact]
@@ -257,7 +257,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		var ex = Assert.Throws<ComponentException>(() => db.Remove<Damage>(e.Id));
+		var ex = Assert.Throws<ComponentException>(() => db.Remove<Damage>(e));
 		Assert.Contains(nameof(Damage), ex.Message);
 	}
 
@@ -270,12 +270,12 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Add zero-size tag as a normal component
-		db.Add(e.Id, new PlayerTag());
-		Assert.True(db.Has<PlayerTag>(e.Id));
+		db.Add(e, new PlayerTag());
+		Assert.True(db.Has<PlayerTag>(e));
 
 		// Removing should flip signature/archetype, no data to preserve
-		db.Remove<PlayerTag>(e.Id);
-		Assert.False(db.Has<PlayerTag>(e.Id));
+		db.Remove<PlayerTag>(e);
+		Assert.False(db.Has<PlayerTag>(e));
 	}
 
 	[Fact]
@@ -285,13 +285,13 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Buffer APIs must reject zero-size
-		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e.Id, ReadOnlySpan<PlayerTag>.Empty));
+		Assert.Throws<ComponentException>(() => db.Add<PlayerTag>(e, ReadOnlySpan<PlayerTag>.Empty));
 
 		// Accessing component data for a tag is not meaningful in many ECS.
 		// Your implementation throws ComponentException on missing component;
 		// we add the tag and then validate Has<T> rather than data access.
-		db.Add(e.Id, new PlayerTag());
-		Assert.True(db.Has<PlayerTag>(e.Id));
+		db.Add(e, new PlayerTag());
+		Assert.True(db.Has<PlayerTag>(e));
 	}
 
 	// ------------------------- Set<T> -------------------------
@@ -302,11 +302,11 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<Position>(e.Id, new Position { X = 1, Y = 2 });
+		db.Add<Position>(e, new Position { X = 1, Y = 2 });
 		// overwrite via Set<T>
-		db.Set(e.Id, new Position { X = 9, Y = -5 });
+		db.Set(e, new Position { X = 9, Y = -5 });
 
-		var p = db.Write<Position>(e.Id);
+		var p = db.Write<Position>(e);
 		Assert.Equal(9, p.X);
 		Assert.Equal(-5, p.Y);
 	}
@@ -317,10 +317,10 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<NameTag>(e.Id, new NameTag("init"));
-		db.Set(e.Id, new NameTag("after"));
+		db.Add<NameTag>(e, new NameTag("init"));
+		db.Set(e, new NameTag("after"));
 
-		var t = db.Write<NameTag>(e.Id);
+		var t = db.Write<NameTag>(e);
 		Assert.Equal("after", t.Text);
 	}
 
@@ -331,7 +331,7 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Position not attached yet
-		var ex = Assert.Throws<ComponentException>(() => db.Set(e.Id, new Position { X = 3, Y = 4 }));
+		var ex = Assert.Throws<ComponentException>(() => db.Set(e, new Position { X = 3, Y = 4 }));
 		Assert.Contains(nameof(Position), ex.Message);
 	}
 
@@ -339,7 +339,7 @@ public sealed class EntityDatabaseTests
 	public void Set_UnknownEntity_Throws()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.Set(999, new Position { X = 1, Y = 2 }));
+		Assert.Throws<EntityException>(() => db.Set(new Entity(999, 0), new Position { X = 1, Y = 2 }));
 	}
 
 	// Intentionally **not** testing Set<T> with buffered or zero-size types:
@@ -355,13 +355,13 @@ public sealed class EntityDatabaseTests
 
 		// initial small buffer
 		var initial = new[] { new Damage(1), new Damage(2), new Damage(3) };
-		db.Add<Damage>(e.Id, initial);
+		db.Add<Damage>(e, initial);
 
 		// overwrite with fewer values
 		var newVals = new[] { new Damage(7), new Damage(8) };
-		db.Set<Damage>(e.Id, newVals);
+		db.Set<Damage>(e, newVals);
 
-		var buf = db.WriteBuffer<Damage>(e.Id);
+		var buf = db.WriteBuffer<Damage>(e);
 		Assert.Equal(2, buf.Length);
 		Assert.Equal(7, buf[0].Amount);
 		Assert.Equal(8, buf[1].Amount);
@@ -374,15 +374,15 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// internal capacity for LargeBuf is 2 -> start small
-		db.Add<LargeBuf>(e.Id, new[] { new LargeBuf(1), new LargeBuf(2) });
+		db.Add<LargeBuf>(e, new[] { new LargeBuf(1), new LargeBuf(2) });
 
 		// overwrite with many items (forces promotion/resize)
 		var big = new LargeBuf[10];
 		for (int i = 0; i < big.Length; i++) big[i] = new LargeBuf(i * 10);
 
-		db.Set<LargeBuf>(e.Id, big);
+		db.Set<LargeBuf>(e, big);
 
-		var buf = db.WriteBuffer<LargeBuf>(e.Id);
+		var buf = db.WriteBuffer<LargeBuf>(e);
 		Assert.Equal(10, buf.Length);
 		Assert.Equal(0, buf[0].V);
 		Assert.Equal(90, buf[9].V);
@@ -394,10 +394,10 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
-		db.Set<Damage>(e.Id, ReadOnlySpan<Damage>.Empty);
+		db.Add<Damage>(e, new[] { new Damage(1), new Damage(2) });
+		db.Set<Damage>(e, ReadOnlySpan<Damage>.Empty);
 
-		var buf = db.WriteBuffer<Damage>(e.Id);
+		var buf = db.WriteBuffer<Damage>(e);
 		Assert.Equal(0, buf.Length);
 	}
 
@@ -408,7 +408,7 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Damage buffer *not* attached yet
-		var ex = Assert.Throws<ComponentException>(() => db.Set<Damage>(e.Id, new[] { new Damage(1) }));
+		var ex = Assert.Throws<ComponentException>(() => db.Set<Damage>(e, new[] { new Damage(1) }));
 		Assert.Contains(nameof(Damage), ex.Message);
 	}
 
@@ -419,9 +419,9 @@ public sealed class EntityDatabaseTests
 		var e = db.Create();
 
 		// Attach a normal component so the entity exists; still SetBuffer should throw since Position isn't buffered
-		db.Add<Position>(e.Id, new Position { X = 0, Y = 0 });
+		db.Add<Position>(e, new Position { X = 0, Y = 0 });
 
-		var ex = Assert.Throws<ComponentException>(() => db.Set<Position>(e.Id, ReadOnlySpan<Position>.Empty));
+		var ex = Assert.Throws<ComponentException>(() => db.Set<Position>(e, ReadOnlySpan<Position>.Empty));
 		Assert.Contains("buffer", ex.Message, StringComparison.OrdinalIgnoreCase);
 	}
 
@@ -429,7 +429,7 @@ public sealed class EntityDatabaseTests
 	public void SetBuffer_UnknownEntity_Throws()
 	{
 		var db = CreateDb();
-		Assert.Throws<EntityException>(() => db.Set<Damage>(999, new[] { new Damage(1) }));
+		Assert.Throws<EntityException>(() => db.Set<Damage>(new Entity(999, 0), new[] { new Damage(1) }));
 	}
 
 	// -------------------- Guardrails around SetBuffer vs. GetBuffer --------------------
@@ -440,11 +440,11 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 
-		db.Add<Damage>(e.Id, new[] { new Damage(1), new Damage(2) });
+		db.Add<Damage>(e, new[] { new Damage(1), new Damage(2) });
 		// replace with just one value
-		db.Set<Damage>(e.Id, new[] { new Damage(99) });
+		db.Set<Damage>(e, new[] { new Damage(99) });
 
-		var buf = db.WriteBuffer<Damage>(e.Id);
+		var buf = db.WriteBuffer<Damage>(e);
 		Assert.Equal(1, buf.Length);
 		Assert.Equal(99, buf[0].Amount);
 

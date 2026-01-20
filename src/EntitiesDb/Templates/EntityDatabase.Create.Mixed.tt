@@ -25,7 +25,7 @@ public partial class EntityDatabase
 			var offsetArgsB = FormatComma(indexB, "offsets.T{0}", indexC);
 			var offsetArgsBBulk = FormatComma(indexB, "bulk.Offsets.T{0}", indexC);
 #>
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<<#= genericsC #>, <#= genericsB #>>(<#= parametersC #>, <#= parametersB #>)
