@@ -5,6 +5,8 @@ namespace EntitiesDb.Core;
 public sealed class CommandBufferTests
 {
 	private record struct Order(int Index);
+	private record struct Component1(int Value);
+	private record struct Component2(int Value);
 	[Tag] private record struct TestTag();
 
 	[Fact]
@@ -19,6 +21,37 @@ public sealed class CommandBufferTests
 
 		for (int i = 0; i < entitiesToCreate; i++)
 			buffer.Create();
+		buffer.Commit();
+
+		Assert.Equal(startCount + entitiesToCreate, db.EntityCount);
+		Assert.Equal(emptyStartCount + entitiesToCreate, emptyArchetype.EntityCount);
+	}
+
+	[Fact]
+	public void Add_Remove_2Components()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		int entitiesToCreate = 100;
+		var entities = new Entity[entitiesToCreate];
+		int startCount = db.EntityCount;
+		var emptyArchetype = db.GetArchetype(Signature.Empty);
+		var emptyStartCount = emptyArchetype.EntityCount;
+		for (int i = 0; i < entitiesToCreate; i++)
+			entities[i] = db.Create();
+
+		for (int i = 0; i < entitiesToCreate; i++)
+		{
+			var entity = entities[i];
+			buffer.Add(entity, new Component1(), new Component2());
+		}
+		buffer.Commit();
+
+		for (int i = 0; i < entitiesToCreate; i++)
+		{
+			var entity = entities[i];
+			buffer.Remove<Component1, Component2>(entity);
+		}
 		buffer.Commit();
 
 		Assert.Equal(startCount + entitiesToCreate, db.EntityCount);

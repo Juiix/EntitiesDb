@@ -24,10 +24,9 @@ public sealed partial class ComponentRegistry
 	private readonly ComponentType[] _componentTypes = new ComponentType[MaxComponents];
 	private readonly Type[] _types = new Type[MaxComponents];
 	private readonly ArrayFactory[] _arrayFactories = new ArrayFactory[MaxComponents];
-	private readonly Dictionary<Type, int> _typeMap = [];
 	private readonly object _lock = new();
 
-	private Dictionary<Type, int> _snapshot = [];
+	private int[] _globalTypeMap = new int[1024];
 	private int _nextId = 0;
 
 	public int Count => Volatile.Read(ref _nextId);
@@ -44,27 +43,22 @@ public sealed partial class ComponentRegistry
 	/// <exception cref="MaxReachedException"></exception>
 	public ref readonly ComponentType GetComponentType<T>()
 	{
-		var type = typeof(T);
+		var globalId = ComponentMeta<T>.GlobalId;
+		if (globalId < _globalTypeMap.Length)
+		{
+			var localId = _globalTypeMap[globalId] - 1;
+			if (localId >= 0)
+				return ref _componentTypes[localId];
+		}
 
-		// Fast path: read-only snapshot (no locking)
-		var snap = Volatile.Read(ref _snapshot);
-		if (snap.TryGetValue(type, out var existingId))
-			return ref _componentTypes[existingId];
-
-		// Slow path: create or fetch under the lock
 		lock (_lock)
 		{
 			// Re-check in the authoritative map
-			if (_typeMap.TryGetValue(type, out existingId))
-				return ref _componentTypes[existingId];
+			var localId = Volatile.Read(ref _globalTypeMap[globalId]) - 1;
+			if (localId >= 0)
+				return ref _componentTypes[localId];
 
-			ref var created = ref AddComponentType<T>();
-
-			// Publish a single, consistent snapshot
-			var newSnapshot = new Dictionary<Type, int>(_typeMap);
-			Volatile.Write(ref _snapshot, newSnapshot);
-
-			return ref created;
+			return ref AddComponentType<T>();
 		}
 	}
 
@@ -163,7 +157,23 @@ public sealed partial class ComponentRegistry
     /// <returns>Component id for <typeparamref name="T"/></returns>
     public Id<T> GetId<T>()
 	{
-		return new Id<T>(GetComponentType<T>().Id);
+		var globalId = ComponentMeta<T>.GlobalId;
+		if (globalId < _globalTypeMap.Length)
+		{
+			var localId = _globalTypeMap[globalId] - 1;
+			if (localId >= 0)
+				return new Id<T>((byte)localId);
+		}
+
+		lock (_lock)
+		{
+			// Re-check in the authoritative map
+			var localId = Volatile.Read(ref _globalTypeMap[globalId]) - 1;
+			if (localId >= 0)
+				return new Id<T>((byte)localId);
+
+			return new Id<T>(AddComponentType<T>().Id);
+		}
 	}
 
     /// <summary>
@@ -192,17 +202,23 @@ public sealed partial class ComponentRegistry
 		var internalCapacity = ComponentMeta<T>.InternalCapacity;
 		var byteSize = ComponentMeta<T>.ByteSize;
 		var isUnmanaged = ComponentMeta<T>.IsUnmanaged;
+		var globalId = ComponentMeta<T>.GlobalId;
 
 		if (byteSize > ComponentType.MaxSize)
 			throw ThrowHelper.ComponentSizeExceeded(type, ComponentType.MaxSize);
 		if (byteSize == 0 && internalCapacity > 0)
 			throw ThrowHelper.ComponentBufferZeroSize(typeof(T));
 
+		var capacity = _globalTypeMap.Length;
+		while (capacity <= globalId) capacity *= 2;
+		if (capacity != _globalTypeMap.Length)
+			Array.Resize(ref _globalTypeMap, capacity);
+
 		Volatile.Write(ref _nextId, id + 1);
 		_componentTypes[id] = new ComponentType((byte)id, (short)internalCapacity, (short)byteSize, isUnmanaged);
 		_types[id] = type;
 		_arrayFactories[id] = static (int length) => new T[length];
-		_typeMap[type] = id;
+		_globalTypeMap[globalId] = id + 1;
 		return ref _componentTypes[id];
 	}
 }

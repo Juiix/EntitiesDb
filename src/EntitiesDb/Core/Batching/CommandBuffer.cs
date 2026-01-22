@@ -37,6 +37,27 @@ public sealed partial class CommandBuffer
 	}
 
 	/// <summary>
+	/// Clears all buffered commands
+	/// </summary>
+	public void Clear()
+	{
+		lock (_lock)
+		{
+			_exceptions.Clear();
+			_entityMap.Clear();
+			_creates.Clear();
+			_destroys.Clear();
+			_entities.Clear();
+			_sets.Clear();
+			_removes.Clear();
+			foreach (var componentStore in _components)
+			{
+				componentStore?.Clear();
+			}
+		}
+	}
+
+	/// <summary>
 	/// Commits buffered commands to the database.
 	/// </summary>
 	/// <remarks>
@@ -112,7 +133,7 @@ public sealed partial class CommandBuffer
 							var componentStore = id < _components.Count ? _components[id] : null;
 							if (componentStore is null) continue; // ComponentStores for tag components are null
 
-							var offset = archetype.GetOffset(id);
+							var offset = targetArchetype.GetOffset(id);
 							if (componentStore.ComponentType.IsUnmanaged)
 							{
 								var stride = componentStore.ComponentType.Stride;
@@ -122,7 +143,7 @@ public sealed partial class CommandBuffer
 
 								// if we are overwriting an existing buffer, clear the previous one
 								if (componentStore.ComponentType.IsBuffer &&
-									archetype.Signature.Test(id))
+									targetArchetype.Signature.Test(id))
 								{
 									DynamicBuffer.Clear((void*)data);
 								}

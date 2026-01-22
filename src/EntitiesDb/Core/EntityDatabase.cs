@@ -13,7 +13,7 @@ namespace EntitiesDb;
 public sealed partial class EntityDatabase : IDisposable
 {
 	private readonly EntityMap _entityMap;
-	private Queue<Entity> _recycledEntityIds = [];
+	private Queue<Entity> _recycledEntityIds = new(1024);
 	private readonly int[] _globalChangeVersions = new int[ComponentRegistry.MaxComponents];
 
 	/// <summary>
@@ -259,14 +259,8 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	public ref readonly T0? Read<T0>(Entity entity)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-
-		// check if has component
-		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
-
 		ref readonly var component = ref entityReference.Archetype.Read<T0>(in entityReference.Slot, ids.T0);
 		return ref component;
 	}
@@ -282,14 +276,8 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-
-		// check if has component
-		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
-
 		var buffer = entityReference.Archetype.ReadBuffer<T0>(in entityReference.Slot, ids.T0);
 		return buffer;
 	}
@@ -309,14 +297,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public ref T0? Write<T0>(Entity entity)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-
-		// check if has component
-		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
-
 		ref var component = ref entityReference.Archetype.Write<T0>(in entityReference.Slot, ids.T0);
 		return ref component;
 	}
@@ -336,14 +318,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public WriteBuffer<T0> WriteBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
 		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-
-		// check if has component
-		if (!entityReference.Archetype.Has(in ids))
-			throw ThrowHelper.ComponentNotFound(entity.Id, typeof(T0));
-
 		var buffer = entityReference.Archetype.WriteBuffer<T0>(in entityReference.Slot, ids.T0);
 		return buffer;
 	}

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace EntitiesDb;
 
 public static partial class ComponentMeta
 {
+	private static int _nextGlobalId;
+
     /// <summary>
     /// Asserts that components are buffered
     /// </summary>
@@ -34,10 +37,21 @@ public static partial class ComponentMeta
 		if (ComponentMeta<T0>.IsZeroSize)
 			throw ThrowHelper.ComponentZeroSize(typeof(T0));
 	}
+
+	internal static int RegisterGlobalId()
+	{
+		var globalId = Interlocked.Increment(ref _nextGlobalId);
+		return globalId;
+	}
 }
 
 public static class ComponentMeta<T>
 {
+	/// <summary>
+	/// The global (application-scoped) id of this type
+	/// </summary>
+	public readonly static int GlobalId;
+
 	/// <summary>
 	/// The internal inline buffer capacity,  -1 if not buffered
 	/// </summary>
@@ -76,6 +90,7 @@ public static class ComponentMeta<T>
 		IsBuffered = IsUnmanaged && InternalCapacity > 0;
 		Stride = GetStride(byteSize, IsUnmanaged, InternalCapacity);
 		ByteSize = byteSize;
+		GlobalId = ComponentMeta.RegisterGlobalId();
 	}
 
 	private static int GetStride(int byteSize, bool isUnmanaged, int internalCapacity)
