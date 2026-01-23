@@ -26,8 +26,6 @@ public partial struct Chunk
 	public readonly void Set<<#= genericsC #>, <#= genericsB #>>(int index, in Offsets<<#= genericsC #>, <#= genericsB #>> offsets, <#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
-		ComponentMeta.AssertBuffered<<#= genericsB #>>();
 		<#= Indent(setsC, 8) #>
 		<#= Indent(setsB, 8) #>
 	}

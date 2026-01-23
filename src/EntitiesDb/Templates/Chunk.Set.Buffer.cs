@@ -10,7 +10,6 @@ public partial struct Chunk
 	public readonly void Set<T0>(int index, in Offsets<T0> offsets, ReadOnlySpan<T0> t0Components = default)
 		where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
 	}
 	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, ReadOnlySpan{T0})"/>
@@ -19,7 +18,6 @@ public partial struct Chunk
 		where T0 : unmanaged
         where T1 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
 	}
@@ -30,7 +28,6 @@ public partial struct Chunk
         where T1 : unmanaged
         where T2 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -43,7 +40,6 @@ public partial struct Chunk
         where T2 : unmanaged
         where T3 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -58,7 +54,6 @@ public partial struct Chunk
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -75,7 +70,6 @@ public partial struct Chunk
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -94,7 +88,6 @@ public partial struct Chunk
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -115,7 +108,6 @@ public partial struct Chunk
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -138,7 +130,6 @@ public partial struct Chunk
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -163,7 +154,6 @@ public partial struct Chunk
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -190,7 +180,6 @@ public partial struct Chunk
         where T9 : unmanaged
         where T10 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -219,7 +208,6 @@ public partial struct Chunk
         where T10 : unmanaged
         where T11 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -250,7 +238,6 @@ public partial struct Chunk
         where T11 : unmanaged
         where T12 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -283,7 +270,6 @@ public partial struct Chunk
         where T12 : unmanaged
         where T13 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -318,7 +304,6 @@ public partial struct Chunk
         where T13 : unmanaged
         where T14 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);
@@ -355,7 +340,6 @@ public partial struct Chunk
         where T14 : unmanaged
         where T15 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
 		WriteBuffer(index, offsets.T0).Set(t0Components);
         WriteBuffer(index, offsets.T1).Set(t1Components);
         WriteBuffer(index, offsets.T2).Set(t2Components);

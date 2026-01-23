@@ -188,8 +188,7 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		var e = db.Create();
-		var ex = Assert.Throws<ComponentException>(() => db.Write<Position>(e));
-		Assert.Contains(nameof(Position), ex.Message);
+		var ex = Assert.Throws<IndexOutOfRangeException>(() => db.Write<Position>(e));
 	}
 
 	[Fact]
@@ -223,7 +222,7 @@ public sealed class EntityDatabaseTests
 
 		// Removing buffer should drop the component
 		db.Remove<Damage>(e);
-		Assert.Throws<ComponentException>(() => db.WriteBuffer<Damage>(e));
+		Assert.Throws<IndexOutOfRangeException>(() => db.WriteBuffer<Damage>(e));
 		Assert.False(db.Has<Damage>(e)); // presence-bit cleared in archetype
 	}
 
@@ -241,7 +240,7 @@ public sealed class EntityDatabaseTests
 		var db = CreateDb();
 		var e = db.Create();
 		db.Add<Position>(e, new Position { X = 1, Y = 2 });
-		Assert.Throws<ComponentException>(() => db.WriteBuffer<Position>(e));
+		Assert.Throws<NullReferenceException>(() => db.WriteBuffer<Position>(e).Add(new Position()));
 	}
 
 	[Fact]

@@ -60,12 +60,9 @@ public partial struct Chunk
 	/// <returns>A readonly reference at <paramref name="index"/></returns>
 	public readonly unsafe ref readonly T0? Read<T0>(int index, Offset<T0> offset)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride))
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck))
 			: ref ((T0?[])ManagedComponents[offset.Value])[index];
 	}
 
@@ -77,11 +74,8 @@ public partial struct Chunk
 	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
 	public readonly unsafe ReadBuffer<T0> ReadBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
-		return new ReadBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
+		return new ReadBuffer<T0>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck));
 	}
 
 	/// <summary>
@@ -93,13 +87,10 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly unsafe ref T0? Write<T0>(int index, Offset<T0> offset)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		MarkChanged(offset.Id.Value);
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride))
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck))
 			: ref ((T0?[])ManagedComponents[offset.Value])[index];
 	}
 
@@ -112,12 +103,9 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly unsafe WriteBuffer<T0> WriteBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		MarkChanged(offset.Id.Value);
-		return new WriteBuffer<T0>((void*)(UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride));
+		return new WriteBuffer<T0>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck));
 	}
 
 	/// <summary>
@@ -137,12 +125,9 @@ public partial struct Chunk
 	/// <returns>A <see cref="EntitiesDb.ReadHandle{T}"/> to the first index</returns>
 	public unsafe readonly ReadHandle<T0?> ReadHandle<T0>(Offset<T0> offset)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value) * validCheck))
 			: ref ((T0?[])ManagedComponents[offset.Value])[0];
 		return new ReadHandle<T0?>(ref first);
 	}
@@ -154,11 +139,8 @@ public partial struct Chunk
 	/// <returns>A <see cref="EntitiesDb.ReadBufferHandle{T}"/> to the first index</returns>
 	public readonly unsafe ReadBufferHandle<T0> ReadBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
-		var buffer = new ReadBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
+		var buffer = new ReadBuffer<T0>((void*)((UnmanagedComponents + offset.Value) * validCheck));
 		return new ReadBufferHandle<T0>(buffer);
 	}
 
@@ -170,13 +152,10 @@ public partial struct Chunk
 	[ChunkChange]
 	public unsafe readonly WriteHandle<T0?> WriteHandle<T0>(Offset<T0> offset)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		MarkChanged(offset.Id.Value);
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset.Value))
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value) * validCheck))
 			: ref ((T0?[])ManagedComponents[offset.Value])[0];
 		return new WriteHandle<T0?>(ref first);
 	}
@@ -189,12 +168,9 @@ public partial struct Chunk
 	[ChunkChange]
 	public unsafe readonly WriteBufferHandle<T0> WriteBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
-		ComponentMeta.AssertNonZeroSize<T0>();
-		if (offset.Value < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-
+		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		MarkChanged(offset.Id.Value);
-		var buffer = new WriteBuffer<T0>((void*)(UnmanagedComponents + offset.Value));
+		var buffer = new WriteBuffer<T0>((void*)((UnmanagedComponents + offset.Value) * validCheck));
 		return new WriteBufferHandle<T0>(buffer);
 	}
 
@@ -206,7 +182,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, in T0? component)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offset) = component;
 		else MarkChanged(offset.Id.Value);
 	}
@@ -219,7 +194,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, ReadOnlySpan<T0> components) where T0 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0>();
 		WriteBuffer(index, offset).Set(components);
 	}
 

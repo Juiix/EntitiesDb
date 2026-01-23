@@ -17,7 +17,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
 	{
-		ComponentMeta.AssertNotBuffered<<#= generics #>>();
 		<#= Indent(sets, 8) #>
 	}
 <#

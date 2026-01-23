@@ -85,11 +85,7 @@ public sealed partial class EntityDatabase : IDisposable
         var addedSignature = Signature.FromIds(in ids);
 		ref var entityReference = ref GetEntity(entity);
 
-		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.Has(in ids))
-            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
-
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -118,11 +114,7 @@ public sealed partial class EntityDatabase : IDisposable
 		var addedSignature = Signature.FromIds(in ids);
 		ref var entityReference = ref GetEntity(entity);
 
-		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.Has(in ids))
-            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
-
 		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 

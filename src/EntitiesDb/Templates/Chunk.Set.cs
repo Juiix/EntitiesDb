@@ -7,7 +7,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0>(int index, in Offsets<T0> offsets, in T0? t0Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
 	}
@@ -15,7 +14,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1>(int index, in Offsets<T0, T1> offsets, in T0? t0Component = default, in T1? t1Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -25,7 +23,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2>(int index, in Offsets<T0, T1, T2> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -37,7 +34,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3>(int index, in Offsets<T0, T1, T2, T3> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -51,7 +47,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4>(int index, in Offsets<T0, T1, T2, T3, T4> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -67,7 +62,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -85,7 +79,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -105,7 +98,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -127,7 +119,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -151,7 +142,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -177,7 +167,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -205,7 +194,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -235,7 +223,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -267,7 +254,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -301,7 +287,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
@@ -337,7 +322,6 @@ public partial struct Chunk
 	[ChunkChange]
 	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, in T9? t9Component = default, in T10? t10Component = default, in T11? t11Component = default, in T12? t12Component = default, in T13? t13Component = default, in T14? t14Component = default, in T15? t15Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
 		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
         else MarkChanged(offsets.T0.Id.Value);
         if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
