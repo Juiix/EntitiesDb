@@ -116,6 +116,8 @@ public sealed partial class QueryBuilder
 	/// <returns></returns>
 	public QueryBuilder WithChangeFilter<T>()
 	{
+		if (!ComponentMeta<T>.TrackChanges)
+			throw ThrowHelper.TrackChangesMissing(typeof(T));
 		var id = Component<T>.Id;
 		_changeFilterId = id;
 		return this;
