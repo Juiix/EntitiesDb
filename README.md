@@ -10,10 +10,23 @@ EntitiesDb focuses on **raw performance**, **simple APIs**, and **zero external 
 
 * **🚀 Fast** — Chunk-based, archetype-organized storage with SIMD-friendly handles
 * **🧩 Simple** — Define any type as a component and query with expressive filters
-* **📦 Self-Contained** — Multiple isolated databases/worlds
 * **🧵 Parallel-Ready** — Built-in multithreaded query execution and reduction
 * **0️⃣ GC-Friendly** — Minimal allocations, predictable memory layout
 * **📚 Documentation** — API reference and guides in [DOCS.md](./DOCS.md)
+
+---
+
+# Features
+* Archetypes with cache-efficient chunking
+* Any type as a component
+* Component buffers for unmanaged types
+* High-performance component queries
+* Command buffers
+* Multithreaded queries
+* Manual archetype/chunk enumeration
+* Source generated delegate queries
+* Chunk change filters
+* SIMD-friendly
 
 ---
 

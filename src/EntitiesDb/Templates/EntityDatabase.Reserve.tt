@@ -16,7 +16,7 @@ public partial class EntityDatabase
 	public void Reserve<<#= generics #>>(int entityCount)
 	{
 		_entityMap.EnsureCapacity(EntityCount + entityCount - _recycledEntityIds.Count);
-		var signature = ComponentRegistry.GetSignature<<#= generics #>>();
+		var signature = Component<<#= generics #>>.Signature;
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		archetype.Reserve(entityCount);
 	}

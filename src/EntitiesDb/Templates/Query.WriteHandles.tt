@@ -13,9 +13,8 @@ public partial class Query
 #>
 	public ArchetypeChunkWriteIterator<<#= generics #>> WriteHandles<<#= generics #>>()
 	{
-		var ids = _componentRegistry.GetIds<<#= generics #>>();
 		Match();
-		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
+		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version);
 	}
 <#
 	}

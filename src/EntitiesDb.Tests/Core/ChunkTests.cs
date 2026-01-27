@@ -16,8 +16,6 @@ file struct ManagedName
 
 public unsafe class ChunkTests : IDisposable
 {
-	private readonly ComponentRegistry _registry = new();
-
 	// Unmanaged backing memory we allocate per test
 	private IntPtr _srcBlock = IntPtr.Zero;
 	private IntPtr _dstBlock = IntPtr.Zero;
@@ -31,9 +29,9 @@ public unsafe class ChunkTests : IDisposable
 	// Build a simple archetype: two unmanaged components (int, float) + one managed (ManagedName)
 	private (ComponentType[] types, int unmanagedCount) BuildComponentTypes()
 	{
-		ref readonly var ctInt = ref _registry.GetComponentType<int>();
-		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
-		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
+		ref readonly var ctInt = ref Component<int>.ComponentType;
+		ref readonly var ctFloat = ref Component<float>.ComponentType;
+		ref readonly var ctName = ref Component<ManagedName>.ComponentType;
 
 		// IMPORTANT: unmanaged first, then managed
 		var componentTypes = new[] { ctInt, ctFloat, ctName };
@@ -94,16 +92,8 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 		var dstManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 
-		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions);
-		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions);
-
-		// Alias for component types we care about
-		ref readonly var ctInt = ref _registry.GetComponentType<int>();
-		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
-		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
-		var offInt = new Offset<int>(offsets[ctInt.Id], ctInt.Id);
-		var offFloat = new Offset<float>(offsets[ctFloat.Id], ctFloat.Id);
-		var offName = new Offset<ManagedName>(offsets[ctName.Id], ctName.Id);
+		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions, offsets);
+		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions, offsets);
 
 		// Put data in src at srcIndex
 		int srcIndex = 2, dstIndex = 5;
@@ -114,12 +104,12 @@ public unsafe class ChunkTests : IDisposable
 
 		// Unmanaged components
 		// int
-		src.Write<int>(srcIndex, offInt) = 42;
+		src.Write<int>(srcIndex) = 42;
 		// float
-		src.Write<float>(srcIndex, offFloat) = 3.5f;
+		src.Write<float>(srcIndex) = 3.5f;
 
 		// Managed component: ManagedName
-		src.Write<ManagedName>(srcIndex, offName) = new ManagedName("Alice");
+		src.Write<ManagedName>(srcIndex) = new ManagedName("Alice");
 
 		// Act: transfer entity + all its components via AcceptEntity
 		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex, offsets, types.AsSpan(0, unmanagedCount));
@@ -129,11 +119,11 @@ public unsafe class ChunkTests : IDisposable
 		Assert.Equal(123, dst.Entity(dstIndex).Id);
 
 		// Assert unmanaged copied
-		Assert.Equal(42, dst.Read<int>(dstIndex, offInt));
-		Assert.Equal(3.5f, dst.Read<float>(dstIndex, offFloat));
+		Assert.Equal(42, dst.Read<int>(dstIndex));
+		Assert.Equal(3.5f, dst.Read<float>(dstIndex));
 
 		// Assert managed copied
-		Assert.Equal("Alice", dst.Read<ManagedName>(dstIndex, offName).Name);
+		Assert.Equal("Alice", dst.Read<ManagedName>(dstIndex).Name);
 	}
 
 
@@ -155,30 +145,23 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 		var dstManaged = CreateManagedArrays(types, capacity, unmanagedCount);
 
-		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions);
-		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions);
-
-		ref readonly var ctInt = ref _registry.GetComponentType<int>();
-		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
-		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
-		var offInt = new Offset<int>(offsets[ctInt.Id], ctInt.Id);
-		var offFloat = new Offset<float>(offsets[ctFloat.Id], ctFloat.Id);
-		var offName = new Offset<ManagedName>(offsets[ctName.Id], ctName.Id);
+		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions, offsets);
+		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions, offsets);
 
 		int srcIndex = 1, dstIndex = 7;
 
 		// Seed source values
-		src.Write<int>(srcIndex, offInt) = 1001;
-		src.Write<float>(srcIndex, offFloat) = -2.25f;
-		src.Write<ManagedName>(srcIndex, offName) = new ManagedName("Bob");
+		src.Write<int>(srcIndex) = 1001;
+		src.Write<float>(srcIndex) = -2.25f;
+		src.Write<ManagedName>(srcIndex) = new ManagedName("Bob");
 
 		// Act
 		src.CloneComponents(srcIndex, ref dst, dstIndex, offsets, types.AsSpan(0, unmanagedCount));
 
 		// Assert
-		Assert.Equal(1001, dst.Read<int>(dstIndex, offInt));
-		Assert.Equal(-2.25f, dst.Read<float>(dstIndex, offFloat));
-		Assert.Equal("Bob", dst.Read<ManagedName>(dstIndex, offName).Name);
+		Assert.Equal(1001, dst.Read<int>(dstIndex));
+		Assert.Equal(-2.25f, dst.Read<float>(dstIndex));
+		Assert.Equal("Bob", dst.Read<ManagedName>(dstIndex).Name);
 	}
 
 	[Fact]
@@ -193,21 +176,13 @@ public unsafe class ChunkTests : IDisposable
 		var dstChangeVersions = new int[256];
 
 		// Dst archetype: int, ManagedName (drop float)
-		ref readonly var ctInt = ref _registry.GetComponentType<int>();
-		ref readonly var ctFloat = ref _registry.GetComponentType<float>();
-		ref readonly var ctName = ref _registry.GetComponentType<ManagedName>();
-		var srcOffInt = new Offset<int>(srcOffsets[ctInt.Id], ctInt.Id);
-		var srcOffFloat = new Offset<float>(srcOffsets[ctFloat.Id], ctFloat.Id);
-		var srcOffName = new Offset<ManagedName>(srcOffsets[ctName.Id], ctName.Id);
+		ref readonly var ctInt = ref Component<int>.ComponentType;
+		ref readonly var ctName = ref Component<ManagedName>.ComponentType;
 
 		var dstTypes = new[] { ctInt, ctName }; // unmanaged first (int), then managed
 		int dstUnmanagedCount = dstTypes.Count(t => t.IsUnmanaged);
 		int dstCap = ArchetypeUtils.CalculateChunkCapacity(dstTypes, 4096);
 		var dstOffsets = ArchetypeUtils.BuildIdOffsetLookup(dstTypes, 1, dstCap);
-
-		var dstOffInt = new Offset<int>(dstOffsets[ctInt.Id], ctInt.Id);
-		var dstOffFloat = new Offset<float>(dstOffsets[ctFloat.Id], ctFloat.Id);
-		var dstOffName = new Offset<ManagedName>(dstOffsets[ctName.Id], ctName.Id);
 
 		// Allocate unmanaged blocks
 		int srcUnmanagedBytes = ComputeUnmanagedBytesTotal(srcTypes, srcCap);
@@ -219,20 +194,20 @@ public unsafe class ChunkTests : IDisposable
 		var srcManaged = CreateManagedArrays(srcTypes, srcCap, srcUnmanagedCount);
 		var dstManaged = CreateManagedArrays(dstTypes, dstCap, dstUnmanagedCount);
 
-		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions);
-		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions);
+		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions, srcOffsets);
+		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions, dstOffsets);
 
 		int srcIndex = 0, dstIndex = 3;
 
 		// Seed source values
-		src.Write<int>(srcIndex, srcOffInt) = 7;
-		src.Write<float>(srcIndex, srcOffFloat) = 9.25f;
-		src.Write<ManagedName>(srcIndex, srcOffName) = new ManagedName("Carol");
+		src.Write<int>(srcIndex) = 7;
+		src.Write<float>(srcIndex) = 9.25f;
+		src.Write<ManagedName>(srcIndex) = new ManagedName("Carol");
 
 		// Destination starts with sentinel values
-		dst.Write<int>(dstIndex, dstOffInt) = -1;
+		dst.Write<int>(dstIndex) = -1;
 		// No float in destination
-		dst.Write<ManagedName>(dstIndex, dstOffName) = new ManagedName("unset");
+		dst.Write<ManagedName>(dstIndex) = new ManagedName("unset");
 
 		// Copy only types present in destination: int + name
 		var dstSig = BuildSignatureFor(ctInt, ctName);
@@ -241,7 +216,7 @@ public unsafe class ChunkTests : IDisposable
 			srcTypes.AsSpan(0, srcUnmanagedCount), srcTypes.AsSpan(srcUnmanagedCount));
 
 		// Assert: int copied, name copied, float untouched (no float slot in dst)
-		Assert.Equal(7, dst.Read<int>(dstIndex, dstOffInt));
-		Assert.Equal("Carol", dst.Read<ManagedName>(dstIndex, dstOffName).Name);
+		Assert.Equal(7, dst.Read<int>(dstIndex));
+		Assert.Equal("Carol", dst.Read<ManagedName>(dstIndex).Name);
 	}
 }

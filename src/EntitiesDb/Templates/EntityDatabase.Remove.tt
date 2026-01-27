@@ -14,18 +14,11 @@ public partial class EntityDatabase
 	/// <inheritdoc cref="Remove{T0}(Entity)"/>
 	public void Remove<<#= generics #>>(Entity entity)
 	{
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        var removedSignature = Signature.FromIds(in ids);
+		var removedSignature = Component<<#= generics #>>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (!srcArchetype.Signature.HasAny(in removedSignature))
-			throw srcArchetype.GetComponentNotFound(entity.Id, in ids);
-			
-		// clear buffers
-        srcArchetype.Clear(in entityReference.Slot, in ids);
-
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 

@@ -39,27 +39,14 @@ internal static partial class Renderer
 
 			// fields
 			w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
-			if (hasComponents)
-			{
-				w.AppendLine("private readonly Ids" + m.IdTypesJoined + " _ids;");
-				w.AppendLine("private Offsets" + m.IdTypesJoined + " _offsets;");
-			}
 			w.AppendLine("private DangerousRef<" + m.StateType + "> state;");
 
 			// constructor
-			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate");
-			if (hasComponents) w.Append(", in Ids" + m.IdTypesJoined + " ids");
-			w.Append(", ref " + m.StateType + " state");
-			w.AppendLine(")");
+			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate, ref " + m.StateType + " state)");
 			w.AppendLine("{");
 			w.Indent();
 
 			w.AppendLine("_delegate = @delegate;");
-			if (hasComponents)
-			{
-				w.AppendLine("_ids = ids;");
-				w.AppendLine("_offsets = default;");
-			}
 			w.AppendLine("this.state = new DangerousRef<" + m.StateType + ">(ref state);");
 
 			w.Unindent();
@@ -70,9 +57,7 @@ internal static partial class Renderer
 			w.AppendLine("{");
 			w.Indent();
 
-			w.Append("return new " + m.JobName + "(_delegate");
-			if (hasComponents) w.Append(", _ids");
-			w.AppendLine(", state.Value.Create(threadIndex));");
+			w.Append("return new " + m.JobName + "(_delegate, state.Value.Create(threadIndex));");
 
 			w.Unindent();
 			w.AppendLine("}"); // create
@@ -97,18 +82,12 @@ internal static partial class Renderer
 		w.Indent();
 
 		w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
-		if (hasComponents)
-		{
-			w.AppendLine("private readonly Ids" + m.IdTypesJoined + " _ids;");
-			w.AppendLine("private Offsets" + m.IdTypesJoined + " _offsets;");
-		}
 		if (hasState)
 		{
 			w.AppendLine("private " + m.StateJobType + " state;");
 		}
 
 		w.Append("public " + m.JobName + "(" + m.DelegateName + " @delegate");
-		if (hasComponents) w.Append(", in Ids" + m.IdTypesJoined + " ids");
 		if (hasState) w.Append(", in " + m.StateJobType + " state");
 		w.AppendLine(")");
 
@@ -116,11 +95,6 @@ internal static partial class Renderer
 		w.Indent();
 
 		w.AppendLine("_delegate = @delegate;");
-		if (hasComponents)
-		{
-			w.AppendLine("_ids = ids;");
-			w.AppendLine("_offsets = default;");
-		}
 		if (hasState)
 		{
 			w.AppendLine("this.state = state;");
@@ -128,16 +102,6 @@ internal static partial class Renderer
 
 		w.Unindent();
 		w.AppendLine("}"); // constr
-
-		w.AppendLine("public void Enter(Archetype archetype)");
-		w.AppendLine("{");
-		w.Indent();
-
-		if (hasComponents)
-			w.AppendLine("_offsets = archetype.GetOffsets(in _ids);");
-
-		w.Unindent();
-		w.AppendLine("}"); // enter archetype
 
 		// foreach chunk
 		w.AppendLine("public void ForEach(in Chunk chunk)");
@@ -194,28 +158,20 @@ internal static partial class Renderer
 		// ComponentMeta assertions
 		if (m.BufferedTypes.Count > 0)
 		{
-			w.Append("global::EntitiesDb.ComponentMeta.AssertBuffered<")
+			w.Append("_ = global::EntitiesDb.ComponentBufferWritable<")
 			 .Append(string.Join(", ", m.BufferedTypes.ToArray()))
-			 .AppendLine(">();");
+			 .AppendLine(">.Check;");
 		}
 		if (m.NotBufferedTypes.Count > 0)
 		{
-			w.Append("global::EntitiesDb.ComponentMeta.AssertNotBuffered<")
+			w.Append("_ = global::EntitiesDb.ComponentSingleWritable<")
 			 .Append(string.Join(", ", m.NotBufferedTypes.ToArray()))
-			 .AppendLine(">();");
-		}
-
-		// ids
-		if (hasComponents)
-		{
-			w.Append("var ids = self.GetIds").Append(m.IdTypesJoined).AppendLine("();");
-			w.AppendLine("var all = Signature.FromIds(in ids);");
+			 .AppendLine(">.Check;");
 		}
 
 		if (m.IsAggregate)
 		{
 			w.Append("var job = new " + m.AggregateName + "(@delegate");
-			if (hasComponents) w.Append(", in ids");
 			if (hasState) w.Append(", ref state");
 			w.AppendLine(");");
 			w.AppendLine("self.ChunkJobParallel<" + m.JobName + ", " + m.AggregateName + ">(ref job, options);");
@@ -223,7 +179,6 @@ internal static partial class Renderer
 		else
 		{
 			w.Append("var job = new " + m.JobName + "(@delegate");
-			if (hasComponents) w.Append(", in ids");
 			if (hasState) w.Append(", in state");
 			w.AppendLine(");");
 			w.AppendLine("self.ChunkJobParallel(in job, options);");

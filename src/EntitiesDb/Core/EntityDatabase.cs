@@ -29,11 +29,10 @@ public sealed partial class EntityDatabase : IDisposable
 		if (options.MaxEntities <= 0) throw new ArgumentOutOfRangeException(nameof(options.MaxEntities), "Value cannot by less than or equal to 0");
 
 		_entityMap = new(options.MaxEntities);
-        ComponentRegistry = new();
-        Archetypes = new(ComponentRegistry, options.ChunkByteSize, _globalChangeVersions);
+        Archetypes = new(options.ChunkByteSize, _globalChangeVersions);
 		MaxEntities = options.MaxEntities;
 		ParallelRunner = options.ParallelThreads > 1 ? new ParallelJobRunner(options.ParallelThreads) : null;
-		QueryBuilder = new(Archetypes, ComponentRegistry, ParallelRunner, _globalChangeVersions);
+		QueryBuilder = new(Archetypes, ParallelRunner, _globalChangeVersions);
 	}
 
 	/// <summary>
@@ -52,11 +51,6 @@ public sealed partial class EntityDatabase : IDisposable
 	public ArchetypeCollection Archetypes { get; }
 
 	/// <summary>
-	/// Registry for component types and ids
-	/// </summary>
-	public ComponentRegistry ComponentRegistry { get; }
-
-	/// <summary>
 	/// A re-usable query builder
 	/// </summary>
 	public QueryBuilder QueryBuilder { get; }
@@ -73,16 +67,14 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Use <see cref="Set{T0}(Entity, T0)"/> if a component is already attached to the entity.
 	/// </remarks>
 	/// <param name="entityId">Id of the entity altered</param>
-	/// <param name="component">Component value</param>
+	/// <param name="t0Component">Component value</param>
 	/// <exception cref="EntityException"></exception>
 	/// <exception cref="ComponentException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0>(Entity entity, in T0? component = default)
+	public void Add<T0>(Entity entity, in T0? t0Component = default)
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
-		var ids = ComponentRegistry.GetIds<T0>();
-        var addedSignature = Signature.FromIds(in ids);
+		var addedSignature = ComponentSingle<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
@@ -93,7 +85,8 @@ public sealed partial class EntityDatabase : IDisposable
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		dstArchetype.Set(in entityReference.Slot, in ids, in component);
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
 	}
 
 	/// <summary>
@@ -107,11 +100,25 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public void Add<T0>(Entity entity, ReadOnlySpan<T0> components = default) where T0 : unmanaged
-    {
-        ComponentMeta.AssertBuffered<T0>();
-        var ids = ComponentRegistry.GetIds<T0>();
-		var addedSignature = Signature.FromIds(in ids);
+	public void Add<T0>(Entity entity, T0[] t0Components) where T0 : unmanaged
+	{
+		Add(entity, t0Components.AsSpan());
+	}
+
+	/// <summary>
+	/// Adds component buffers to an entity. Entity components are copied to a new <see cref="Archetype"/>.
+	/// </summary>
+	/// <remarks>
+	/// Use <see cref="Set{T0}(Entity, ReadOnlySpan{T0})"/> if a component buffer is already attached to the entity.
+	/// </remarks>
+	/// <param name="entity">The target entity</param>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<T0>(Entity entity, ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
+	{
+		var addedSignature = ComponentBuffer<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
@@ -123,7 +130,8 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		dstArchetype.Init(in entityReference.Slot, in ids, components);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
 	}
 
 	/// <summary>
@@ -160,10 +168,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Create()
 	{
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
 		var archetype = Archetypes.GetOrCreateArchetype(Signature.Empty);
 		var dstSlot = archetype.AddEntity(dstEntityId, out _);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
@@ -177,33 +185,43 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Create<T0>(in T0? t0Component = default)
 	{
-        ComponentMeta.AssertNotBuffered<T0>();
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var ids = ComponentRegistry.GetIds<T0>();
-		var signature = Signature.FromIds(in ids);
+		var signature = ComponentSingle<T0>.Signature;
+		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		var offset = archetype.GetOffset<T0>(ids.T0);
-        chunk.Set(slot.Index, offset, in t0Component);
-		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
+		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
 
 	/// <summary>
-	/// Creates an entity with components, using a prepared archetype id pairing
+	/// Creates an entity with a buffer of components
 	/// </summary>
 	/// <returns>Id of the created entity</returns>
 	/// <exception cref="MaxReachedException"></exception>
 	[StructuralChange]
 	[ChunkChange]
-	public Entity Create<T0>(in BulkCreate<T0> bulk, in T0? t0Component = default)
+	public Entity Create<T0>(T0[] t0Components) where T0 : unmanaged
 	{
-		ComponentMeta.AssertNotBuffered<T0>();
+		return Create(t0Components.AsSpan());
+	}
+
+	/// <summary>
+	/// Creates an entity with a buffer of components
+	/// </summary>
+	/// <returns>Id of the created entity</returns>
+	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public Entity Create<T0>(ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
+	{
+		var signature = ComponentBuffer<T0>.Signature;
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.Set(slot.Index, bulk.Offsets.T0, in t0Component);
-		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+		chunk.WriteBuffer<T0>(slot.Index).Set(t0Components);
+		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
@@ -219,7 +237,8 @@ public sealed partial class EntityDatabase : IDisposable
 		// get entity
 		ref var entityReference = ref GetEntity(entity);
 		var archetype = entityReference.Archetype;
-		archetype.ClearBuffers(in entityReference.Slot, archetype.Signature);
+		ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		archetype.ClearBuffers(ref chunk, in entityReference.Slot, archetype.Signature);
 		archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
 
 		_entityMap.Move(movedEntityId, in entityReference.Slot);
@@ -251,9 +270,9 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	public ref readonly T0? Read<T0>(Entity entity)
 	{
-		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var component = ref entityReference.Archetype.Read<T0>(in entityReference.Slot, ids.T0);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var component = ref chunk.Read<T0>(entityReference.Slot.Index);
 		return ref component;
 	}
 
@@ -268,9 +287,9 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <exception cref="ComponentException"></exception>
 	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
-		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-		var buffer = entityReference.Archetype.ReadBuffer<T0>(in entityReference.Slot, ids.T0);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
 		return buffer;
 	}
 
@@ -289,9 +308,9 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public ref T0? Write<T0>(Entity entity)
 	{
-		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-		ref var component = ref entityReference.Archetype.Write<T0>(in entityReference.Slot, ids.T0);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref var component = ref chunk.Write<T0>(entityReference.Slot.Index);
 		return ref component;
 	}
 
@@ -310,9 +329,9 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public WriteBuffer<T0> WriteBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
-		var ids = ComponentRegistry.GetIds<T0>();
 		ref var entityReference = ref GetEntity(entity);
-		var buffer = entityReference.Archetype.WriteBuffer<T0>(in entityReference.Slot, ids.T0);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		var buffer = chunk.WriteBuffer<T0>(entityReference.Slot.Index);
 		return buffer;
 	}
 
@@ -323,10 +342,10 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <param name="entity">The target entity</param>
 	/// <returns>If the entity has the given component type</returns>
 	/// <exception cref="EntityException"></exception>
-	public bool Has<T>(Entity entity)
+	public bool Has<T0>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		return reference.Archetype.Has(ComponentRegistry.GetIds<T>());
+		return reference.Archetype.Has<T0>();
 	}
 
 	/// <summary>
@@ -340,17 +359,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[StructuralChange]
 	public void Remove<T0>(Entity entity)
 	{
-		var ids = ComponentRegistry.GetIds<T0>();
-		var removedSignature = Signature.FromIds(in ids);
+		var removedSignature = Component<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
-		if (!srcArchetype.Has(in ids))
-			throw srcArchetype.GetComponentNotFound(entity.Id, in ids);
-
-		// clear buffers
-        srcArchetype.Clear(in entityReference.Slot, in ids);
-
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
 
@@ -367,7 +379,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Reserve<T0>(int entityCount)
 	{
 		_entityMap.EnsureCapacity(EntityCount + entityCount - _recycledEntityIds.Count);
-		var signature = ComponentRegistry.GetSignature<T0>();
+		var signature = Signature.From<T0>();
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		archetype.Reserve(entityCount);
 	}
@@ -394,24 +406,31 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+	/// </summary>
+	/// <remarks>
+	/// The data is invalid after any structural change and should not be stored.
+	/// </remarks>
+	/// <param name="entity"></param>
+	/// <returns>An <see cref="EntityData"/> for the given entity.</returns>
+	public EntityData GetEntityData(Entity entity)
+	{
+		ref var reference = ref GetEntity(entity);
+		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+		return new EntityData(ref chunk, reference.Slot.Index);
+	}
+
+	/// <summary>
 	/// Sets component values for a given entity
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="entity">The target entity</param>
 	/// <param name="t0Component">The value to set</param>
 	public void Set<T0>(Entity entity, in T0? t0Component)
-    {
-        ComponentMeta.AssertNotBuffered<T0>();
-        var ids = ComponentRegistry.GetIds<T0>();
+	{
         ref var entityReference = ref GetEntity(entity);
-
-		// check if component exists
-		var archetype = entityReference.Archetype;
-		if (!archetype.Has(in ids))
-            throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-        // set value
-        entityReference.Archetype.Set(in entityReference.Slot, in ids, in t0Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
 	}
 
 	/// <summary>
@@ -419,36 +438,31 @@ public sealed partial class EntityDatabase : IDisposable
 	/// </summary>
 	/// <remarks>
 	/// This method will overwrite any existing buffer values.
-	/// Use <see cref="GetBuffer{T}(uint)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// Use <see cref="WriteBuffer{T0}(Entity)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
 	/// </remarks>
-	/// <typeparam name="T">The buffer type</typeparam>
+	/// <typeparam name="T0">The buffer type</typeparam>
 	/// <param name="entity">The target entity</param>
-	/// <param name="values">The values to set</param>
-	public void Set<T>(Entity entity, ReadOnlySpan<T> values) where T : unmanaged
-    {
-        ComponentMeta.AssertBuffered<T>();
-        var ids = ComponentRegistry.GetIds<T>();
-        ref var entityReference = ref GetEntity(entity);
-
-        // check if component exists
-        var archetype = entityReference.Archetype;
-        if (!archetype.Has(in ids))
-            throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-        // set values
-        entityReference.Archetype.Set(in entityReference.Slot, in ids, values);
+	/// <param name="t0Components">The values to set</param>
+	public void Set<T0>(Entity entity, T0[] t0Components) where T0 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan());
 	}
 
 	/// <summary>
-	/// Pairs an archetype and component ids for bulk operations
+	/// Sets buffer values for a given entity
 	/// </summary>
-	public BulkCreate<T0> GetBulkCreate<T0>()
-	{
-		var ids = ComponentRegistry.GetIds<T0>();
-		var signature = Signature.FromIds(in ids);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var offsets = archetype.GetOffsets(in ids);
-		return new BulkCreate<T0>(archetype, in offsets);
+	/// <remarks>
+	/// This method will overwrite any existing buffer values.
+	/// Use <see cref="WriteBuffer{T0}(Entity)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// </remarks>
+	/// <typeparam name="T0">The buffer type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Components">The values to set</param>
+	public void Set<T0>(Entity entity, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
+    {
+        ref var entityReference = ref GetEntity(entity);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
 	}
 
 	/// <summary>
@@ -458,9 +472,9 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <returns></returns>
 	public ChangeFilter<T0> CreateChangeFilter<T0>()
 	{
-		var id = ComponentRegistry.GetId<T0>();
-		var version = Volatile.Read(ref _globalChangeVersions[id.Value]);
-		return new ChangeFilter<T0>(id.Value, version);
+		var id = Component<T0>.Id;
+		var version = Volatile.Read(ref _globalChangeVersions[id]);
+		return new ChangeFilter<T0>(id, version);
 	}
 
 	/// <summary>
@@ -573,17 +587,23 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <param name="dstArchetype">The <see cref="Archetype"/> to move to</param>
 	private void MoveEntity(int entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
 	{
-		// copy to new archetype
+		// add new slot
 		var srcSlot = entityReference.Slot;
 		var dstSlot = dstArchetype.AddEntity(new Entity(entityId, entityReference.Version), out _);
+
+		// clear / init buffers
+		ref var srcChunk = ref srcArchetype.GetChunk(srcSlot.ChunkIndex);
 		var removedMask = srcArchetype.Signature.AndNot(dstArchetype.Signature);
-		srcArchetype.ClearBuffers(in entityReference.Slot, in removedMask);
+		var addedMask = dstArchetype.Signature.AndNot(srcArchetype.Signature);
+		srcArchetype.ClearBuffers(ref srcChunk, in entityReference.Slot, in removedMask);
+		srcArchetype.InitBuffers(ref srcChunk, in entityReference.Slot, in addedMask);
+
+		// copy data
 		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot);
 		srcArchetype.RemoveEntity(srcSlot, out var movedEntity);
 
-		_entityMap.Move(movedEntity, in srcSlot);
-
 		// update reference
+		_entityMap.Move(movedEntity, in srcSlot);
 		entityReference = new EntityReference(dstArchetype, dstSlot, entityReference.Version);
 	}
 }

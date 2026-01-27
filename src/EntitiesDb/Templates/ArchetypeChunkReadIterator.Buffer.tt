@@ -14,19 +14,18 @@ namespace EntitiesDb;
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
 #>
 [SkipLocalsInit]
-public readonly ref struct ArchetypeChunkReadBufferIterator<<#= generics #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= generics #>> ids)
+public readonly ref struct ArchetypeChunkReadBufferIterator<<#= generics #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	<#= Indent(constraints, 4) #>
 {
 	private readonly Span<Archetype> _archetypes = archetypes;
 	private readonly ChangeFilter? _changeFilter = changeFilter;
 	private readonly int? _compareVersion = compareVersion;
-	private readonly Ids<<#= generics #>> _ids = ids;
 
 	[SkipLocalsInit]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly ArchetypeChunkReadBufferEnumerator<<#= generics #>> GetEnumerator()
 	{
-		return new(_archetypes, _changeFilter, _compareVersion, _ids);
+		return new(_archetypes, _changeFilter, _compareVersion);
 	}
 }
 <#

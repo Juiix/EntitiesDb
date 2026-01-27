@@ -13,18 +13,17 @@ namespace EntitiesDb;
 		var generics = FormatComma(index, "T{0}");
 #>
 [SkipLocalsInit]
-public readonly ref struct ArchetypeChunkReadIterator<<#= generics #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= generics #>> ids)
+public readonly ref struct ArchetypeChunkReadIterator<<#= generics #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 {
 	private readonly Span<Archetype> _archetypes = archetypes;
 	private readonly ChangeFilter? _changeFilter = changeFilter;
 	private readonly int? _compareVersion = compareVersion;
-	private readonly Ids<<#= generics #>> _ids = ids;
 
 	[SkipLocalsInit]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly ArchetypeChunkReadEnumerator<<#= generics #>> GetEnumerator()
 	{
-		return new(_archetypes, _changeFilter, _compareVersion, _ids);
+		return new(_archetypes, _changeFilter, _compareVersion);
 	}
 }
 <#

@@ -16,7 +16,7 @@ internal unsafe static class ArchetypeUtils
 	/// <param name="signature">The bitset signature</param>
 	/// <param name="unmanagedCount">The output of how many unmanaged types there are (Use as the unmanaged/managed boundary).</param>
 	/// <returns>The built component type array</returns>
-	public static ComponentType[] BuildComponentTypes(ComponentRegistry registry, in Signature signature, out int unmanagedCount)
+	public static ComponentType[] BuildComponentTypes(in Signature signature, out int unmanagedCount)
 	{
 		var componentTypes = new ComponentType[signature.PopCount()];
 		int unmanagedIndex = 0;
@@ -24,7 +24,7 @@ internal unsafe static class ArchetypeUtils
 		int nextId = 0;
 		while (signature.TryGetNextSetBit(nextId, out var id))
 		{
-			ref readonly var componentType = ref registry.GetComponentType(id);
+			ref readonly var componentType = ref ComponentRegistry.GetComponentType(id);
 			if (componentType.IsUnmanaged)
 			{
 				componentTypes[unmanagedIndex++] = componentType;
@@ -77,7 +77,12 @@ internal unsafe static class ArchetypeUtils
 		return idToOffsets;
 	}
 
-	public static int[] BuildBufferIds(ComponentType[] componentTypes, int unmanagedComponentCount)
+	/// <summary>
+	/// Builds an array of indices for buffered types in given component types
+	/// </summary>
+	/// <param name="componentTypes"></param>
+	/// <returns></returns>
+	public static int[] BuildBufferIndices(ComponentType[] componentTypes, int unmanagedComponentCount)
 	{
 		if (unmanagedComponentCount == 0)
 			return [];
@@ -105,6 +110,38 @@ internal unsafe static class ArchetypeUtils
 	}
 
 	/// <summary>
+	/// Builds an array of indices for types that track changes in given component types
+	/// </summary>
+	/// <param name="componentTypes"></param>
+	/// <returns></returns>
+	public static int[] BuildChangeTrackingIndices(ComponentType[] componentTypes)
+	{
+		if (componentTypes.Length == 0)
+			return [];
+
+		var count = 0;
+		for (int i = 0; i < componentTypes.Length; i++)
+		{
+			count += componentTypes[i].TrackChanges ? 1 : 0;
+		}
+
+		if (count == 0)
+			return [];
+
+		var indices = new int[count];
+		int bufferIndex = 0;
+		for (int i = 0; i < componentTypes.Length; i++)
+		{
+			if (componentTypes[i].TrackChanges)
+			{
+				indices[bufferIndex++] = i;
+			}
+		}
+
+		return indices;
+	}
+
+	/// <summary>
 	/// Builds a change version array copy from the global change versions
 	/// </summary>
 	/// <param name="componentTypes"></param>
@@ -114,13 +151,6 @@ internal unsafe static class ArchetypeUtils
 	{
 		var changeFilters = ArrayPool<int>.Shared.Rent(globalChangeVersions.Length);
 		Array.Copy(globalChangeVersions, changeFilters, globalChangeVersions.Length);
-		return changeFilters;
-	}
-
-    public static int[] BuildChangeVersions(ReadOnlySpan<ComponentType> componentTypes, int[] globalChangeVersions, int unmanagedCount)
-	{
-		var changeFilters = CreateTightIdArray<int>(componentTypes, unmanagedCount);
-		globalChangeVersions.AsSpan(0, changeFilters.Length).CopyTo(changeFilters);
 		return changeFilters;
 	}
 
@@ -165,7 +195,7 @@ internal unsafe static class ArchetypeUtils
 	/// <param name="managedComponentTypes">Managed component types</param>
 	/// <param name="componentRegistry">The component registry</param>
 	/// <returns>An array of <see cref="ArrayFactory"/> for each managed type</returns>
-	public static ArrayFactory[] CompileArrayFactories(ReadOnlySpan<ComponentType> managedComponentTypes, ComponentRegistry componentRegistry)
+	public static ArrayFactory[] CompileArrayFactories(ReadOnlySpan<ComponentType> managedComponentTypes)
 	{
 		if (managedComponentTypes.Length == 0)
 			return [];
@@ -174,7 +204,7 @@ internal unsafe static class ArchetypeUtils
 		int index = 0;
 		foreach (ref readonly var type in managedComponentTypes)
 		{
-			factories[index++] = componentRegistry.GetArrayFactory(type.Id);
+			factories[index++] = ComponentRegistry.GetArrayFactory(type.Id);
 		}
 		return factories;
 	}

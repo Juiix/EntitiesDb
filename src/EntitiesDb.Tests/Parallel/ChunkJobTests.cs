@@ -35,7 +35,6 @@ public sealed class ChunkJobTests
 
 		job.Execute();
 
-		Assert.True(job.ForEach.EnteredWith == archetype);
 		Assert.Equal(new[] { 11, 12, 13 }, job.ForEach.Visited);
 	}
 
@@ -75,7 +74,6 @@ public sealed class ChunkJobTests
 
 		job.Execute();
 
-		Assert.True(job.ForEach.EnteredWith == archetype);
 		Assert.Equal(new[] { 1, 2, 3, 4, 5, 6, 7, 8 }, job.ForEach.Visited);
 	}
 
@@ -111,7 +109,6 @@ public sealed class ChunkJobTests
 
 		job.Execute();
 
-		Assert.True(job.ForEach.EnteredWith == archetype);
 		Assert.Equal(new[] { 100, 101, 102, 103, 104, 105 }, job.ForEach.Visited);
 	}
 
@@ -141,7 +138,6 @@ public sealed class ChunkJobTests
 
 		job.Execute();
 
-		Assert.True(job.ForEach.EnteredWith == archetype);
 		Assert.Empty(job.ForEach.Visited);
 	}
 
@@ -153,7 +149,6 @@ public sealed class ChunkJobTests
 
 	public interface IChunkJob
 	{
-		void Enter(Archetype archetype);
 		void ForEach(in Chunk chunk);
 	}
 
@@ -202,11 +197,7 @@ public sealed class ChunkJobTests
 	 * -----------------------------------------------------*/
 	public sealed class TestJob : IChunkJob
 	{
-		public Archetype EnteredWith { get; private set; } = null!;
 		public List<int> Visited { get; } = new();
-
-		public void Enter(Archetype archetype)
-			=> EnteredWith = archetype;
 
 		public void ForEach(in Chunk chunk)
 			=> Visited.Add(chunk.Index);
@@ -225,8 +216,6 @@ public sealed class ChunkJobTests
 		public void Execute()
 		{
 			var archetype = Archetype;
-			ForEach.Enter(Archetype);
-
 			var range = Ranges[Start];
 			if (Start == End)
 			{

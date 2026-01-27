@@ -9,16 +9,14 @@ namespace EntitiesDb;
 /// </summary>
 public sealed partial class ArchetypeCollection
 {
-	private readonly ComponentRegistry _componentRegistry;
 	private readonly int _chunkByteSize;
 	private Archetype[] _archetypes = ArrayPool<Archetype>.Shared.Rent(64);
 	private int _archetypeCount = 0;
 	private readonly Dictionary<Signature, Archetype> _archetypeMap = [];
 	private readonly int[] _globalChangeVersions;
 
-	internal ArchetypeCollection(ComponentRegistry componentRegistry, int chunkByteSize, int[] globalChangeVersions)
+	internal ArchetypeCollection(int chunkByteSize, int[] globalChangeVersions)
 	{
-		_componentRegistry = componentRegistry;
 		_chunkByteSize = chunkByteSize;
 		_globalChangeVersions = globalChangeVersions;
 	}
@@ -55,9 +53,9 @@ public sealed partial class ArchetypeCollection
 		if (_archetypeMap.TryGetValue(signature, out var archetype))
 			return archetype;
 
-		var componentTypes = ArchetypeUtils.BuildComponentTypes(_componentRegistry, in signature, out var unmanagedCount);
+		var componentTypes = ArchetypeUtils.BuildComponentTypes(in signature, out var unmanagedCount);
 		var managedSpan = componentTypes.AsSpan(unmanagedCount);
-		var arrayFactories = ArchetypeUtils.CompileArrayFactories(managedSpan, _componentRegistry);
+		var arrayFactories = ArchetypeUtils.CompileArrayFactories(managedSpan);
 
 		archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, _chunkByteSize, _globalChangeVersions);
 		if (_archetypeCount >= _archetypes.Length)

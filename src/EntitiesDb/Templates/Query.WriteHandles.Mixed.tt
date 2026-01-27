@@ -21,9 +21,8 @@ public partial class Query
 	public ArchetypeChunkWriteMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>> WriteHandlesM<#= indexC #><<#= genericsC #>, <#= genericsB #>>()
 		<#= Indent(constraints, 8) #>
 	{
-		var ids = _componentRegistry.GetIds<<#= genericsC #>, <#= genericsB #>>();
 		Match();
-		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
+		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version);
 	}
 <#
 		}

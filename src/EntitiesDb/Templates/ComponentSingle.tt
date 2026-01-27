@@ -1,0 +1,21 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+		var generics = FormatComma(index, "T{0}");
+		var checks = FormatSep(index, "ComponentSingle<T{0}>.Id", "," + Environment.NewLine);
+#>
+public static class ComponentSingle<<#= generics #>>
+{
+	public readonly static Signature Signature = Signature.MultipleBits(
+		<#= Indent(checks, 8) #>
+	);
+}
+<#
+	}
+#>

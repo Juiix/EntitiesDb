@@ -15,9 +15,8 @@ public partial class Query
 	public ArchetypeChunkWriteBufferIterator<<#= generics #>> WriteHandlesB<<#= generics #>>()
 		<#= Indent(constraints, 8) #>
 	{
-		var ids = _componentRegistry.GetIds<<#= generics #>>();
 		Match();
-		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version, ids);
+		return new(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version);
 	}
 <#
 	}

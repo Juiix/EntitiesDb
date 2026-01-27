@@ -29,10 +29,9 @@ public partial class CreateEntityWithOneComponent
 		var entities = _entitiesDb.Entities;
 		entities.Reserve<Component1>(EntityCount);
 
-		var bulk = entities.GetBulkCreate<Component1>();
 		for (int i = 0; i < EntityCount; ++i)
 		{
-			entities.Create(in bulk, new Component1());
+			entities.Create(new Component1());
 		}
 	}
 }

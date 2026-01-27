@@ -13,32 +13,40 @@ public partial class CommandBuffer
 	{
 		var genericsC = Generics(indexC);
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
+		var parametersCArr = FormatComma(indexC, "in T{0}? t{0}Component");
 		var linesC = FormatLine(indexC, "SetData(entityIndex, in t{0}Component);");
+		var argsCArr = FormatComma(indexC, "in t{0}Component");
 		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
 			var parametersB = FormatComma(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
+			var parametersBArr = FormatComma(indexB, "T{0}[] t{0}Components", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 			var linesB = FormatLine(indexB, "SetData(entityIndex, t{0}Components);", indexC);
+			var argsBArr = FormatComma(indexB, "t{0}Components.AsSpan()", indexC);
 #>
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	public Entity Create<<#= genericsC #>, <#= genericsB #>>(<#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
-		ComponentMeta.AssertBuffered<<#= genericsB #>>();
+		var signature = ComponentSingle<<#= genericsC #>>.Signature | ComponentBuffer<<#= genericsB #>>.Signature;
 		lock (_lock)
 		{
 			var entity = new Entity(-_entities.Count - 1, -1);
 			var entityIndex = Register(entity);
 			_creates.Add(entityIndex);
 
-			var signature = _registry.GetSignature<<#= genericsB #>, <#= genericsC #>>();
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(linesC, 12) #>
 			<#= Indent(linesB, 12) #>
 			return entity;
 		}
+	}
+	/// <inheritdoc cref="Create{T0}(in T0)"/>
+	public Entity Create<<#= genericsC #>, <#= genericsB #>>(<#= parametersCArr #>, <#= parametersBArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		return Create(<#= argsCArr #>, <#= argsBArr #>);
 	}
 <#
 		}

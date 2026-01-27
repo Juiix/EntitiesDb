@@ -72,16 +72,10 @@ public readonly partial struct Signature : IEquatable<Signature>
 	}
 
 	/// <summary>
-	/// Gets the signature of given component id
+	/// Gets the signature of given component
 	/// </summary>
 	/// <returns>Signature of component ids</returns>
-	public static Signature FromId<T0>(Id<T0> id) => SingleBit(id.Value);
-
-	/// <summary>
-	/// Gets the signature of given component ids
-	/// </summary>
-	/// <returns>Signature of component ids</returns>
-	public static Signature FromIds<T0>(in Ids<T0> ids) => SingleBit(ids.T0.Value);
+	public static Signature From<T0>() => SingleBit(Component<T0>.Id);
 
 	// --- Queries --------------------------------------------------------------
 
@@ -328,22 +322,10 @@ public readonly partial struct Signature : IEquatable<Signature>
 	}
 
 	/// <summary>
-	/// Gets the signature of given component id
+	/// Gets the signature of given component
 	/// </summary>
 	/// <returns>Signature of component ids</returns>
-	public static Signature FromId<T0>(Id<T0> id)
-	{
-		return SingleBit(id.Value);
-	}
-
-	/// <summary>
-	/// Gets the signature of given component ids
-	/// </summary>
-	/// <returns>Signature of component ids</returns>
-	public static Signature FromIds<T0>(in Ids<T0> ids)
-    {
-        return SingleBit(ids.T0.Value);
-    }
+	public static Signature From<T0>() => SingleBit(Component<T0>.Id);
 
     // --- Queries --------------------------------------------------------------
 

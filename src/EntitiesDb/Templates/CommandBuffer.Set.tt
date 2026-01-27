@@ -13,14 +13,13 @@ public partial class CommandBuffer
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
 		var lines = FormatLine(index, "SetData(entityIndex, in t{0}Component);");
 #>
-	/// <inheritdoc cref="Set{T0}(Entity, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 	{
-		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		var signature = ComponentSingle<<#= generics #>>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<<#= generics #>>();
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(lines, 12) #>
 		}

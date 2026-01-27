@@ -8,13 +8,12 @@ namespace EntitiesDb;
 	for (int index = 1; index <= GenericCount; index++)
 	{
 		var generics = FormatComma(index, "T{0}");
-		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
-		var readHandles = FormatLine(index, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle(_offsets.T{0});");
-		var writeHandles = FormatLine(index, "[ChunkChange]" + Environment.NewLine + "public WriteHandle<T{0}?> WriteHandleT{0}() => _chunk.WriteHandle(_offsets.T{0});");
+		var readHandles = FormatLine(index, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle<T{0}>();");
+		var writeHandles = FormatLine(index, "[ChunkChange]" + Environment.NewLine + "public WriteHandle<T{0}?> WriteHandleT{0}() => _chunk.WriteHandle<T{0}>();");
 		var outs = FormatComma(index, "out WriteHandle<T{0}?> t{0}Handle");
-		var outSets = FormatLine(index, "t{0}Handle = _chunk.WriteHandle(_offsets.T{0});");
+		var outSets = FormatLine(index, "t{0}Handle = _chunk.WriteHandle<T{0}>();");
 #>
-public readonly ref struct ChunkWrite<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
+public readonly ref struct ChunkWrite<<#= generics #>>(ref readonly Chunk chunk)
 {
 #if NETSTANDARD2_1
 	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
@@ -22,7 +21,6 @@ public readonly ref struct ChunkWrite<<#= generics #>>(ref readonly Chunk chunk,
 #else
 	private readonly ref readonly Chunk _chunk = ref chunk;
 #endif
-	private readonly Offsets<<#= generics #>> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
 	

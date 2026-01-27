@@ -9,7 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2022, Unnamed Studios, LLC</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <VersionPrefix>3.1.1</VersionPrefix>
+    <VersionPrefix>3.2.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
@@ -29,11 +29,6 @@
   <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="..\EntitiesDb.SourceGenerators\bin\Release\netstandard2.0\EntitiesDb.SourceGenerators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="Templates\ComponentRegistry.GetSignature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ComponentRegistry.GetSignature.tt</DependentUpon>
-    </None>
     <None Include="Templates\Generics.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -57,26 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\Archetype.GetOffsets.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.GetOffsets.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Archetype.Init.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.Init.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Archetype.Set.Buffer.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.Set.Buffer.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Archetype.Set.Mixed.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.Set.Mixed.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Archetype.Set.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.Set.cs</LastGenOutput>
-    </None>
     <None Update="Templates\ArchetypeChunkReadEnumerator.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArchetypeChunkReadEnumerator.Buffer.cs</LastGenOutput>
@@ -105,13 +80,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArchetypeCollection.GetArchetype.cs</LastGenOutput>
     </None>
-    <None Update="Templates\BulkCreate.tt">
+    <None Update="Templates\ComponentBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BulkCreate.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Chunk.Init.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Chunk.Init.cs</LastGenOutput>
+      <LastGenOutput>ComponentBuffer.cs</LastGenOutput>
     </None>
     <None Update="Templates\ChunkRead.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -205,25 +176,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ComponentMeta.AssertNonZeroSize.cs</LastGenOutput>
     </None>
+    <None Update="Templates\Component.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Component.cs</LastGenOutput>
+    </None>
     <None Update="Templates\EntityDatabase.GetArchetype.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.GetArchetype.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Offsets.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Offsets.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\ComponentRegistry.GetSignature.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ComponentRegistry.GetSignature.cs</LastGenOutput>
-    </None>
     <None Update="Templates\EntityDatabase.Create.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Create.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\EntityDatabase.GetBulkCreate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EntityDatabase.GetBulkCreate.cs</LastGenOutput>
     </None>
     <None Update="Templates\EntityDatabase.Has.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -253,6 +216,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Generics.cs</LastGenOutput>
     </None>
+    <None Update="Templates\ComponentSingle.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentSingle.cs</LastGenOutput>
+    </None>
     <None Update="Templates\Query.WriteHandles.Buffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Query.WriteHandles.Buffer.cs</LastGenOutput>
@@ -277,10 +244,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Query.ReadHandles.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Query.GetIds.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Query.GetIds.cs</LastGenOutput>
-    </None>
     <None Update="Templates\QueryBuilder.WithOnly.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>QueryBuilder.WithOnly.cs</LastGenOutput>
@@ -300,14 +263,6 @@
     <None Update="Templates\ComponentId.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ComponentId.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\ComponentRegistry.GetIds.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ComponentRegistry.GetIds.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Ids.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Ids.cs</LastGenOutput>
     </None>
     <None Update="Templates\Chunk.SetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -345,10 +300,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ComponentMeta.AssertNotBuffered.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Archetype.Clear.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.Clear.cs</LastGenOutput>
-    </None>
     <None Update="Templates\Archetype.ThrowComponentNotFound.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Archetype.ThrowComponentNotFound.cs</LastGenOutput>
@@ -361,21 +312,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Archetype.ThrowComponentAlreadyAdded.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Archetype.GetComponentNotFound.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.GetComponentNotFound.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\Archetype.GetComponentAlreadyAdded.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Archetype.GetComponentAlreadyAdded.cs</LastGenOutput>
-    </None>
     <None Update="Templates\ChunkRead.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ChunkRead.cs</LastGenOutput>
     </None>
-    <None Update="Templates\Signature.FromIds.tt">
+    <None Update="Templates\Signature.From.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Signature.FromIds.cs</LastGenOutput>
+      <LastGenOutput>Signature.From.cs</LastGenOutput>
     </None>
     <None Update="Templates\EntityDatabase.Add.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -389,6 +332,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.Add.Mixed.cs</LastGenOutput>
     </None>
+    <None Update="Templates\ComponentSingleWritable.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentSingleWritable.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\ComponentBufferWritable.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ComponentBufferWritable.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -396,31 +347,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Templates\Archetype.GetOffsets.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Archetype.GetOffsets.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Archetype.Init.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Archetype.Init.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Archetype.Set.Buffer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Archetype.Set.Buffer.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Archetype.Set.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Archetype.Set.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Archetype.Set.Mixed.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Archetype.Set.Mixed.tt</DependentUpon>
-    </Compile>
     <Compile Update="Templates\ArchetypeChunkReadEnumerator.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -456,15 +382,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ArchetypeCollection.GetArchetype.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\BulkCreate.cs">
+    <Compile Update="Templates\ComponentBuffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>BulkCreate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\Chunk.Init.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Chunk.Init.tt</DependentUpon>
+      <DependentUpon>ComponentBuffer.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\ChunkRead.Buffer.cs">
       <DesignTime>True</DesignTime>
@@ -586,30 +507,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ComponentMeta.AssertNonZeroSize.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\Component.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Component.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\EntityDatabase.GetArchetype.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityDatabase.GetArchetype.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Offsets.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Offsets.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\ComponentRegistry.GetSignature.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ComponentRegistry.GetSignature.tt</DependentUpon>
-    </Compile>
     <Compile Update="Templates\EntityDatabase.Create.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EntityDatabase.Create.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\EntityDatabase.GetBulkCreate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EntityDatabase.GetBulkCreate.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Has.cs">
       <DesignTime>True</DesignTime>
@@ -651,6 +562,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Helpers.ttinclude</DependentUpon>
     </Compile>
+    <Compile Update="Templates\ComponentSingle.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentSingle.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\Query.WriteHandles.Buffer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -681,11 +597,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Query.ReadHandles.Mixed.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Query.GetIds.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Query.GetIds.tt</DependentUpon>
-    </Compile>
     <Compile Update="Templates\QueryBuilder.All.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -713,16 +624,6 @@
     </Compile>
     <Compile Update="Templates\ComponentId.cs">
       <DependentUpon>ComponentId.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\ComponentRegistry.GetIds.cs">
-      <DependentUpon>ComponentRegistry.GetIds.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Templates\Ids.cs">
-      <DependentUpon>Ids.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\Chunk.SetBuffer.cs">
       <DependentUpon>Chunk.Set.Buffer.tt</DependentUpon>
@@ -758,11 +659,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Templates\Archetype.Clear.cs">
-      <DependentUpon>Archetype.Clear.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Templates\Archetype.ThrowComponentNotFound.cs">
       <DependentUpon>Archetype.ThrowComponentNotFound.tt</DependentUpon>
     </Compile>
@@ -774,25 +670,15 @@
     <Compile Update="Templates\Archetype.ThrowComponentAlreadyAdded.cs">
       <DependentUpon>Archetype.ThrowComponentAlreadyAdded.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Archetype.GetComponentNotFound.cs">
-      <DependentUpon>Archetype.GetComponentNotFound.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Templates\Archetype.GetComponentAlreadyAdded.cs">
-      <DependentUpon>Archetype.GetComponentAlreadyAdded.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Templates\ChunkRead.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>ChunkRead.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\Signature.FromIds.cs">
-      <DependentUpon>Signature.FromIds.tt</DependentUpon>
+    <Compile Update="Templates\Signature.From.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DependentUpon>Signature.From.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EntityDatabase.Add.cs">
       <DependentUpon>EntityDatabase.Add.tt</DependentUpon>
@@ -808,6 +694,16 @@
       <DependentUpon>EntityDatabase.Add.Mixed.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\ComponentSingleWritable.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentSingleWritable.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ComponentBufferWritable.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ComponentBufferWritable.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

@@ -5,24 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
-internal static class DynamicBuffer
-{
-	private const int HeapTag = unchecked((int)0x8000_0000);
-	private const int SizeMask = 0x7FFF_FFFF;
-
-	public static unsafe void Clear(void* header) => Clear(ref Unsafe.AsRef<BufferHeader>(header));
-	public static void Clear(ref BufferHeader header)
-	{
-		if ((header.Size & HeapTag) != 0)
-		{
-			Marshal.FreeHGlobal(header.Heap);
-			header.Size &= SizeMask; // clear heap tag
-		}
-		header.Size = 0;
-		// keep header.Capacity as-is; it will be reset on next init if needed
-	}
-}
-
 public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 {
 	private readonly BufferHeader* _header;

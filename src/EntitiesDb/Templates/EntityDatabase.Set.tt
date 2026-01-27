@@ -12,23 +12,16 @@ public partial class EntityDatabase
         var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component");
 		var args = FormatComma(index, "in t{0}Component");
+		var sets = FormatLine(index, "chunk.Write<T{0}>(entityReference.Slot.Index) = t{0}Component;");
 #>
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 	{
-		ComponentMeta.AssertNotBuffered<<#= generics #>>();
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<<#= generics #>>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, <#= args #>);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
 	}
 <#
 	}

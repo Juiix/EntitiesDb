@@ -14,7 +14,7 @@ public partial class QueryBuilder
 	/// <inheritdoc cref="WithAll{T}()"/>
 	public QueryBuilder WithAll<<#= generics #>>()
 	{
-		_all = _componentRegistry.GetSignature<<#= generics #>>();
+		_all = Component<<#= generics #>>.Signature;
 		_filterMode = QueryFilterMode.All;
 		return this;
 	}

@@ -58,6 +58,10 @@ internal static class ThrowHelper
 	public static EntityException EntityNotFound(int entityId) =>
 		new(entityId, $"Entity not found for id: {entityId}");
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ComponentException TrackChangesMissing(Type componentType) =>
+		new(componentType, $"Component '{componentType}' is missing the `TrackChanges` attribute.");
+
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal static MaxReachedException MaxComponentsReached(int maxComponents) =>

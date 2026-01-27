@@ -7,15 +7,15 @@ namespace EntitiesDb;
 public partial struct Chunk
 {
 <#
-	for (int index = 1; index <= GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
-		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) Write(index, offsets.T{0}) = t{0}Component;" + Environment.NewLine + "else MarkChanged(offsets.T{0}.Id.Value);");
+		var sets = FormatLine(index, "Write<T{0}>(index) = t{0}Component;");
 #>
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
+	public readonly void Set<<#= generics #>>(int index, <#= parameters #>)
 	{
 		<#= Indent(sets, 8) #>
 	}

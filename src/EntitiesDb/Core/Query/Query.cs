@@ -6,17 +6,15 @@ namespace EntitiesDb;
 public sealed partial class Query
 {
 	private readonly ArchetypeCollection _archetypes;
-	private readonly ComponentRegistry _componentRegistry;
 	private readonly ParallelJobRunner? _parallelRunner;
 	private readonly QueryFilter _filter;
 	private Archetype[] _matchingArchetypes = ArrayPool<Archetype>.Shared.Rent(16);
 	private int _matchingCount = 0;
 	private int _matchVersion;
 
-	internal Query(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, ParallelJobRunner? parallelRunner, QueryFilter filter, ChangeFilter? changeFilter)
+	internal Query(ArchetypeCollection archetypes, ParallelJobRunner? parallelRunner, QueryFilter filter, ChangeFilter? changeFilter)
 	{
 		_archetypes = archetypes;
-		_componentRegistry = componentRegistry;
 		_filter = filter;
 		_parallelRunner = parallelRunner;
 		ChangeFilter = changeFilter;
@@ -95,17 +93,5 @@ public sealed partial class Query
 			}
 		}
 		_matchVersion = _archetypes.Version;
-	}
-
-	/// <inheritdoc cref="ComponentRegistry.GetId{T0}()" />
-	public Id<T0> GetId<T0>()
-	{
-		return _componentRegistry.GetId<T0>();
-	}
-
-	/// <inheritdoc cref="ComponentRegistry.GetIds{T0}()" />
-	public Ids<T0> GetIds<T0>()
-	{
-		return _componentRegistry.GetIds<T0>();
 	}
 }

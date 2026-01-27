@@ -14,8 +14,6 @@ internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 	public void Execute()
 	{
 		var archetype = Archetype;
-		ForEach.Enter(Archetype);
-
 		var range = Ranges[Start];
 		if (Start == End)
 		{

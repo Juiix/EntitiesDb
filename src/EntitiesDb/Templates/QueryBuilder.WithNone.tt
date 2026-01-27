@@ -14,7 +14,7 @@ public partial class QueryBuilder
 	/// <inheritdoc cref="WithNone{T}()"/>
 	public QueryBuilder WithNone<<#= generics #>>()
 	{
-		_none = _componentRegistry.GetSignature<<#= generics #>>();
+		_none = Component<<#= generics #>>.Signature;
 		_filterMode = QueryFilterMode.All;
 		return this;
 	}

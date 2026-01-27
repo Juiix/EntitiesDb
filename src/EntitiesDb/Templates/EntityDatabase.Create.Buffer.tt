@@ -9,44 +9,37 @@ namespace EntitiesDb;
 public partial class EntityDatabase
 {
 <#
-	for (int index = 1; index <= GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var args = FormatComma(index, "t{0}Components");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
+		var sets = FormatLine(index, "chunk.WriteBuffer<T{0}>(slot.Index).Set(t{0}Components);");
 #>
-	/// <inheritdoc cref="Create{T0}(in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertBuffered<<#= generics #>>();
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-		var signature = Signature.FromIds(in ids);
+		var signature = ComponentBuffer<<#= generics #>>.Signature;
+		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		var offsets = archetype.GetOffsets<<#= generics #>>(in ids);
-        chunk.Init(slot.Index, in offsets, <#= args #>);
-		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
+		<#= Indent(sets, 8) #>
+		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
 	}
-	/// <inheritdoc cref="Create{T0}(in ArchetypeIds{T0}, in T0?)"/>
+	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
 	[ChunkChange]
-	public Entity Create<<#= generics #>>(in BulkCreate<<#= generics #>> bulk, <#= parameters #>)
+	public Entity Create<<#= generics #>>(<#= parametersArr #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertBuffered<<#= generics #>>();
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var slot = bulk.Archetype.AddEntity(dstEntityId, out var chunk);
-        chunk.Init(slot.Index, in bulk.Offsets, <#= args #>);
-		dstReference = new EntityReference(bulk.Archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		return Create(<#= argsArr #>);
 	}
 <#
 	}

@@ -9,16 +9,16 @@ namespace EntitiesDb;
 public partial struct Chunk
 {
 <#
-	for (int index = 1; index <= GenericCount; index++)
+	for (int index = 2; index <= GenericCount; index++)
 	{
 		var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var sets = FormatLine(index, "WriteBuffer(index, offsets.T{0}).Set(t{0}Components);");
+		var sets = FormatLine(index, "WriteBuffer<T{0}>(index).Set(t{0}Components);");
 #>
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, ReadOnlySpan{T0})"/>
+	/// <inheritdoc cref="Set{T0}(int, ReadOnlySpan{T0})"/>
 	[ChunkChange]
-	public readonly void Set<<#= generics #>>(int index, in Offsets<<#= generics #>> offsets, <#= parameters #>)
+	public readonly void Set<<#= generics #>>(int index, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
 		<#= Indent(sets, 8) #>

@@ -13,26 +13,27 @@ public partial class EntityDatabase
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var args = FormatComma(index, "t{0}Components");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
+		var sets = FormatLine(index, "chunk.WriteBuffer<T{0}>(entityReference.Slot.Index).Set(t{0}Components);");
 #>
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	[ChunkChange]
 	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertBuffered<<#= generics #>>();
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentBufferWritable<<#= generics #>>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, <#= args #>);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	[ChunkChange]
+	public void Set<<#= generics #>>(Entity entity, <#= parametersArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		Set(entity, <#= argsArr #>);
 	}
 <#
 	}

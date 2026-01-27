@@ -48,7 +48,7 @@ public ref struct ReadOnlyEnumerator<T>
 	/// <summary>
 	/// A reference to the current element
 	/// </summary>
-	public readonly ref T Current
+	public ref readonly T Current
 	{
 #if NETSTANDARD2_1
 		get => ref Unsafe.Add(ref _ref.Value, _index);
