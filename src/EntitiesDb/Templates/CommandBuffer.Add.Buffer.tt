@@ -13,7 +13,9 @@ public partial class CommandBuffer
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
 		var args = FormatComma(index, "t{0}Components");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
 		var constriants = FormatLine(index, "where T{0} : unmanaged");
 #>
 	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -21,6 +23,12 @@ public partial class CommandBuffer
 		<#= Indent(constriants, 8) #>
 	{
 		Set(entity, <#= args #>);
+	}
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Add<<#= generics #>>(Entity entity, <#= parametersArr #>)
+		<#= Indent(constriants, 8) #>
+	{
+		Set(entity, <#= argsArr #>);
 	}
 <#
 	}

@@ -74,7 +74,7 @@ public sealed class CommandBufferTests
 		}
 		buffer.Commit();
 
-		var signature = db.ComponentRegistry.GetSignature<Order, FakeDb.Position, FakeDb.Velocity, TestTag, InventoryItem>();
+		var signature = Component<Order, FakeDb.Position, FakeDb.Velocity, TestTag, InventoryItem>.Signature;
 		var archetype = db.GetArchetype(signature);
 		Assert.Equal(startCount + entitiesToCreate, db.EntityCount);
 		Assert.Equal(entitiesToCreate, archetype.EntityCount);
@@ -139,7 +139,7 @@ public sealed class CommandBufferTests
 		}
 		buffer.Commit();
 
-		var signature = db.ComponentRegistry.GetSignature<Order, FakeDb.Position, TestTag>();
+		var signature = Component<Order, FakeDb.Position, TestTag>.Signature;
 		var archetype = db.GetArchetype(signature);
 		Assert.Equal(startCount + entitiesToCreate, db.EntityCount);
 		Assert.Equal(entitiesToCreate, archetype.EntityCount);

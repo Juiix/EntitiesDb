@@ -50,34 +50,21 @@ internal static partial class Renderer
 		// ComponentMeta assertions
 		if (m.BufferedTypes.Count > 0)
 		{
-			w.Append("global::EntitiesDb.ComponentMeta.AssertBuffered<")
+			w.Append("_ = global::EntitiesDb.ComponentBufferWritable<")
 			 .Append(string.Join(", ", m.BufferedTypes.ToArray()))
-			 .AppendLine(">();");
+			 .AppendLine(">.Check;");
 		}
 		if (m.NotBufferedTypes.Count > 0)
 		{
-			w.Append("global::EntitiesDb.ComponentMeta.AssertNotBuffered<")
+			w.Append("_ = global::EntitiesDb.ComponentSingleWritable<")
 			 .Append(string.Join(", ", m.NotBufferedTypes.ToArray()))
-			 .AppendLine(">();");
-		}
-
-		// ids
-		if (hasComponents)
-		{
-			w.Append("var ids = self.GetIds").Append(m.IdTypesJoined).AppendLine("();");
-			w.AppendLine("var all = Signature.FromIds(in ids);");
+			 .AppendLine(">.Check;");
 		}
 
 		// main loops
 		w.AppendLine("foreach (var archetype in self.EnumerateArchetypes())");
 		w.AppendLine("{");
 		w.Indent();
-
-		if (hasComponents)
-		{
-			w.AppendLine("if (!archetype.Signature.HasAll(in all)) continue;");
-			w.AppendLine("var offsets = archetype.GetOffsets(in ids);");
-		}
 
 		w.AppendLine("foreach (ref readonly var chunk in archetype)");
 		w.AppendLine("{");

@@ -22,24 +22,17 @@ public sealed class ArchetypeTests
 		return s;
 	}
 
-	private static ArrayFactory[] FactoriesForManaged(ComponentRegistry reg, ComponentType[] types)
+	private static ArrayFactory[] FactoriesForManaged(ComponentType[] types)
 		=> types.Where(t => !t.IsUnmanaged)
-				.Select(t => reg.GetArrayFactory(t.Id))
+				.Select(t => ComponentRegistry.GetArrayFactory(t.Id))
 				.ToArray();
 
-	private static (Archetype archetype,
-					ComponentRegistry reg,
-					Offset<int> ctInt,
-					Offset<float> ctFloat,
-					Offset<ManagedName> ctName)
-		BuildArchetype_Int_Float_Name(int chunkBytes = 4096)
+	private static Archetype BuildArchetype_Int_Float_Name(int chunkBytes = 4096)
 	{
-		var reg = new ComponentRegistry();
-
 		// Register types (ids assigned in this order)
-		ref readonly var ctInt = ref reg.GetComponentType<int>();
-		ref readonly var ctFloat = ref reg.GetComponentType<float>();
-		ref readonly var ctName = ref reg.GetComponentType<ManagedName>();
+		ref readonly var ctInt = ref Component<int>.ComponentType;
+		ref readonly var ctFloat = ref Component<float>.ComponentType;
+		ref readonly var ctName = ref Component<ManagedName>.ComponentType;
 
 		// Unmanaged first, then managed
 		var componentTypes = new[] { ctInt, ctFloat, ctName };
@@ -50,16 +43,16 @@ public sealed class ArchetypeTests
 		var signature = Sig(ctInt.Id, ctFloat.Id, ctName.Id);
 
 		// Factories for managed components (just ManagedName[] here)
-		var arrayFactories = FactoriesForManaged(reg, componentTypes);
+		var arrayFactories = FactoriesForManaged(componentTypes);
 
 		var archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, chunkBytes, globalChangeVersions);
-		return (archetype, reg, archetype.GetOffset<int>(ctInt.Id), archetype.GetOffset<float>(ctFloat.Id), archetype.GetOffset<ManagedName>(ctName.Id));
+		return archetype;
 	}
 
 	[Fact]
 	public void Constructor_Initializes_FirstChunk_And_Properties()
 	{
-		var (arch, reg, ctInt, ctFloat, ctName) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			Assert.True(arch.EntitiesPerChunk > 0);
@@ -67,13 +60,12 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunksInUse);
 
 			// Signature / HasComponent
-			Assert.True(ctInt.Exists);
-			Assert.True(ctFloat.Exists);
-			Assert.True(ctName.Exists);
+			Assert.True(arch.Has<int>());
+			Assert.True(arch.Has<float>());
+			Assert.True(arch.Has<ManagedName>());
 
 			// A type not in the archetype
-			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
-			Assert.False(arch.Has(ctGuid.Id));
+			Assert.False(arch.Has<Guid>());
 		}
 		finally
 		{
@@ -87,7 +79,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void AddEntity_FillsCurrentChunk_ThenAddsNewChunk()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;
@@ -123,7 +115,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void RemoveEntity_SwapsFromLastChunk_And_DropsEmptyLastChunk()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;
@@ -155,7 +147,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void CloneComponents_Copies_Managed_And_Unmanaged_WithinSameArchetype()
 	{
-		var (arch, _, ctInt, ctFloat, ctName) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			// Two entities in the same chunk
@@ -163,22 +155,22 @@ public sealed class ArchetypeTests
 			var dst = arch.AddEntity(new Entity(2, 0), out var dstChunk);
 
 			// Seed source component data
-			srcChunk.Write<int>(src.Index, ctInt) = 1234;
-			srcChunk.Write<float>(src.Index, ctFloat) = -9.5f;
-			srcChunk.Write<ManagedName>(src.Index, ctName) = new ManagedName("Alpha");
+			srcChunk.Write<int>(src.Index) = 1234;
+			srcChunk.Write<float>(src.Index) = -9.5f;
+			srcChunk.Write<ManagedName>(src.Index) = new ManagedName("Alpha");
 
 			// Different data in destination to ensure it changes
-			dstChunk.Write<int>(dst.Index, ctInt) = 0;
-			dstChunk.Write<float>(dst.Index, ctFloat) = 0f;
-			dstChunk.Write<ManagedName>(dst.Index, ctName) = new ManagedName("z");
+			dstChunk.Write<int>(dst.Index) = 0;
+			dstChunk.Write<float>(dst.Index) = 0f;
+			dstChunk.Write<ManagedName>(dst.Index) = new ManagedName("z");
 
 			// Act
 			arch.CloneComponents(src, dst);
 
 			// Assert: values copied
-			Assert.Equal(1234,		dstChunk.Read<int>(dst.Index, ctInt));
-			Assert.Equal(-9.5f,		dstChunk.Read<float>(dst.Index, ctFloat));
-			Assert.Equal("Alpha",	dstChunk.Read<ManagedName>(dst.Index, ctName).Name);
+			Assert.Equal(1234,		dstChunk.Read<int>(dst.Index));
+			Assert.Equal(-9.5f,		dstChunk.Read<float>(dst.Index));
+			Assert.Equal("Alpha",	dstChunk.Read<ManagedName>(dst.Index).Name);
 		}
 		finally
 		{
@@ -192,15 +184,15 @@ public sealed class ArchetypeTests
 	public void CopyComponents_ToSubsetArchetype_CopiesOnlyPresentComponents()
 	{
 		// Source: int, float, ManagedName
-		var (srcArch, reg, ctInt, ctFloat, ctName) = BuildArchetype_Int_Float_Name();
+		var srcArch = BuildArchetype_Int_Float_Name();
 
 		// Destination: int, ManagedName (no float)
-		ref readonly var dInt = ref reg.GetComponentType<int>();
-		ref readonly var dName = ref reg.GetComponentType<ManagedName>();
+		ref readonly var dInt = ref Component<int>.ComponentType;
+		ref readonly var dName = ref Component<ManagedName>.ComponentType;
 		var dstTypes = new[] { dInt, dName };
 		int dstUnmanagedCount = dstTypes.Count(t => t.IsUnmanaged);
 		var dstSig = Sig(dInt.Id, dName.Id);
-		var dstFactories = FactoriesForManaged(reg, dstTypes);
+		var dstFactories = FactoriesForManaged(dstTypes);
 		var globalChangeVersions = new int[256];
 		var dstArch = new Archetype(dstSig, dstTypes, dstFactories, dstUnmanagedCount, 4096, globalChangeVersions);
 
@@ -209,24 +201,22 @@ public sealed class ArchetypeTests
 			// Make one entity in each
 			var s = srcArch.AddEntity(new Entity(10, 0), out var sChunk);
 			var d = dstArch.AddEntity(new Entity(20, 0), out var dChunk);
-			var dstOffsetInt = dstArch.GetOffset(ctInt.Id);
-			var dstOffsetName = dstArch.GetOffset(ctName.Id);
 
 			// Seed source values
-			sChunk.Write<int>(s.Index, ctInt) = 7;
-			sChunk.Write<float>(s.Index, ctFloat) = 99.25f;
-			sChunk.Write<ManagedName>(s.Index, ctName) = new ManagedName("Carol");
+			sChunk.Write<int>(s.Index) = 7;
+			sChunk.Write<float>(s.Index) = 99.25f;
+			sChunk.Write<ManagedName>(s.Index) = new ManagedName("Carol");
 
 			// Seed destination with sentinels
-			dChunk.Write<int>(s.Index, dstOffsetInt) = -1;
-			dChunk.Write<ManagedName>(s.Index, dstOffsetName) = new ManagedName("unset");
+			dChunk.Write<int>(s.Index) = -1;
+			dChunk.Write<ManagedName>(s.Index) = new ManagedName("unset");
 
 			// Act: copy subset (int + name)
 			srcArch.CopyComponents(s, dstArch, d);
 
 			// Assert: int and name copied; float intentionally absent in dst archetype
-			Assert.Equal(7, dChunk.Read<int>(d.Index, dstOffsetInt));
-			Assert.Equal("Carol", dChunk.Read<ManagedName>(d.Index, dstOffsetName).Name);
+			Assert.Equal(7, dChunk.Read<int>(d.Index));
+			Assert.Equal("Carol", dChunk.Read<ManagedName>(d.Index).Name);
 		}
 		finally
 		{
@@ -240,7 +230,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void CurrentChunk_PointsTo_LastChunk()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			var firstPtr = arch.CurrentChunk.UnmanagedComponents;
@@ -266,17 +256,16 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Has_ByTypeId_Works_For_Present_And_Absent()
 	{
-		var (arch, reg, ctInt, ctFloat, ctName) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			// present
-			Assert.True(ctInt.Exists);
-			Assert.True(ctFloat.Exists);
-			Assert.True(ctName.Exists);
+			Assert.True(arch.Has<int>());
+			Assert.True(arch.Has<float>());
+			Assert.True(arch.Has<ManagedName>());
 
 			// absent
-			ref readonly var ctGuid = ref reg.GetComponentType<Guid>();
-			Assert.False(arch.Has(ctGuid.Id));
+			Assert.False(arch.Has<Guid>());
 		}
 		finally
 		{
@@ -289,7 +278,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Reserve_WithZero_DoesNotChangeCounts()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			Assert.Equal(0, arch.EntityCount);
@@ -313,7 +302,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Reserve_DoesNotAllocate_NewChunk_WhenCapacityNotCrossed()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;
@@ -342,7 +331,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Reserve_Allocates_Ceil_NewChunks_ForTargetTotal()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;
@@ -375,7 +364,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Reserve_FollowedBy_AddEntity_DoesNotOverAllocate()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk * 2;
@@ -404,7 +393,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void GetChunk_ReturnsRef_ToCorrectChunk()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;
@@ -432,7 +421,7 @@ public sealed class ArchetypeTests
 	[Fact]
 	public void Chunk_Enumerator_Yields_AllActiveChunks_InOrder()
 	{
-		var (arch, _, _, _, _) = BuildArchetype_Int_Float_Name();
+		var arch = BuildArchetype_Int_Float_Name();
 		try
 		{
 			int cap = arch.EntitiesPerChunk;

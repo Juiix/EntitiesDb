@@ -18,19 +18,18 @@ namespace EntitiesDb;
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 #>
 [SkipLocalsInit]
-public readonly ref struct ArchetypeChunkReadMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= genericsC #>, <#= genericsB #>> ids)
+public readonly ref struct ArchetypeChunkReadMixed<#= indexC #>Iterator<<#= genericsC #>, <#= genericsB #>>(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	<#= Indent(constraints, 4) #>
 {
 	private readonly Span<Archetype> _archetypes = archetypes;
 	private readonly ChangeFilter? _changeFilter = changeFilter;
 	private readonly int? _compareVersion = compareVersion;
-	private readonly Ids<<#= genericsC #>, <#= genericsB #>> _ids = ids;
 
 	[SkipLocalsInit]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #>, <#= genericsB #>> GetEnumerator()
 	{
-		return new(_archetypes, _changeFilter, _compareVersion, _ids);
+		return new(_archetypes, _changeFilter, _compareVersion);
 	}
 }
 <#

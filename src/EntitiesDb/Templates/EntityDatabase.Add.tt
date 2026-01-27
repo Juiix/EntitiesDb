@@ -11,23 +11,17 @@ public partial class EntityDatabase
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
-		var args = FormatComma(index, "in t{0}Component");
+		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) chunk.Write<T{0}>(entityReference.Slot.Index) = t{0}Component;");
 #>
 	/// <inheritdoc cref="Add{T0}(Entity, in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public void Add<<#= generics #>>(Entity entity, <#= parameters #>)
 	{
-		ComponentMeta.AssertNotBuffered<<#= generics #>>();
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        var addedSignature = Signature.FromIds(in ids);
+		var addedSignature = ComponentSingle<<#= generics #>>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
-		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
-
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -35,7 +29,8 @@ public partial class EntityDatabase
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		dstArchetype.Set(in entityReference.Slot, in ids, <#= args #>);
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
 	}
 <#
 	}

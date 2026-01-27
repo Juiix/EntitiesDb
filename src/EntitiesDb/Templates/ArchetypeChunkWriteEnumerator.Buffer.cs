@@ -9,23 +9,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -44,7 +40,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -75,7 +70,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -83,7 +77,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1>
@@ -92,23 +86,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -127,7 +117,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -158,7 +147,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -166,7 +154,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2>
@@ -176,23 +164,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -211,7 +195,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -242,7 +225,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -250,7 +232,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3>
@@ -261,23 +243,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -296,7 +274,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -327,7 +304,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -335,7 +311,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4>
@@ -347,23 +323,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -382,7 +354,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -413,7 +384,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -421,7 +391,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5>
@@ -434,23 +404,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5>
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -469,7 +435,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5>
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -500,7 +465,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5>
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -508,7 +472,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5>
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6>
@@ -522,23 +486,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -557,7 +517,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -588,7 +547,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -596,7 +554,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7>
@@ -611,23 +569,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -646,7 +600,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -677,7 +630,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -685,7 +637,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8>
@@ -701,23 +653,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -736,7 +684,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -767,7 +714,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -775,7 +721,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>
@@ -792,23 +738,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -827,7 +769,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -858,7 +799,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -866,7 +806,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
@@ -884,23 +824,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -919,7 +855,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -950,7 +885,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -958,7 +892,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
@@ -977,23 +911,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1012,7 +942,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -1043,7 +972,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1051,7 +979,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
@@ -1071,23 +999,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1106,7 +1030,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -1137,7 +1060,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1145,7 +1067,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
@@ -1166,23 +1088,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1201,7 +1119,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -1232,7 +1149,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1240,7 +1156,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
@@ -1262,23 +1178,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1297,7 +1209,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -1328,7 +1239,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1336,7 +1246,7 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
@@ -1359,23 +1269,19 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> ids)
+	public ArchetypeChunkWriteBufferEnumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1394,7 +1300,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -1425,7 +1330,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -1433,6 +1337,6 @@ public ref struct ArchetypeChunkWriteBufferEnumerator<T0, T1, T2, T3, T4, T5, T6
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }

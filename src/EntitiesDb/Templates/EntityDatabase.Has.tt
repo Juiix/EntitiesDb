@@ -15,8 +15,7 @@ public partial class EntityDatabase
 	public bool Has<<#= generics #>>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-		return reference.Archetype.Has(in ids);
+		return reference.Archetype.Has<<#= generics #>>();
 	}
 <#
 	}

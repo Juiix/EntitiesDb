@@ -132,28 +132,27 @@ internal static partial class ModelBuilder
 			callArgs.Add(chunks ? "entityHandle" : "entityHandle[index]");
 		}
 
-		var offsetsName = parallel ? "_offsets" : "offsets";
 		for (int i = 0; i < comps.Count; i++)
 		{
 			var c = comps[i];
-			var ofs = "T" + i.ToString();
 			var baseVar = Utilities.Sanitize(c.Name) + "Handle";
+			var displayType = Utilities.ToDisplay(c.ComponentType);
 
 			string h;
 			switch (c.Kind)
 			{
 				case ParamKind.ComponentRef:
 				case ParamKind.ComponentWriteHandle:
-					h = "var " + baseVar + " = chunk.WriteHandle(" + offsetsName + "." + ofs + ");"; break;
+					h = "var " + baseVar + " = chunk.WriteHandle<" + displayType + ">();"; break;
 				case ParamKind.ComponentIn:
 				case ParamKind.ComponentReadHandle:
-					h = "var " + baseVar + " = chunk.ReadHandle(" + offsetsName + "." + ofs + ");"; break;
+					h = "var " + baseVar + " = chunk.ReadHandle<" + displayType + ">();"; break;
 				case ParamKind.WriteBuffer:
 				case ParamKind.WriteBufferHandle:
-					h = "var " + baseVar + " = chunk.WriteBufferHandle(" + offsetsName + "." + ofs + ");"; break;
+					h = "var " + baseVar + " = chunk.WriteBufferHandle<" + displayType + ">();"; break;
 				case ParamKind.ReadBuffer:
 				case ParamKind.ReadBufferHandle:
-					h = "var " + baseVar + " = chunk.ReadBufferHandle(" + offsetsName + "." + ofs + ");"; break;
+					h = "var " + baseVar + " = chunk.ReadBufferHandle<" + displayType + ">();"; break;
 				default:
 					h = ""; break;
 			}
@@ -176,9 +175,9 @@ internal static partial class ModelBuilder
 			}
 
 			if (c.Kind is ParamKind.WriteBuffer or ParamKind.ReadBuffer or ParamKind.WriteBufferHandle or ParamKind.ReadBufferHandle)
-				bufferedTypes.Add(Utilities.ToDisplay(c.ComponentType));
+				bufferedTypes.Add(displayType);
 			else
-				notBufferedTypes.Add(Utilities.ToDisplay(c.ComponentType));
+				notBufferedTypes.Add(displayType);
 		}
 
 		if (cap.HasState)

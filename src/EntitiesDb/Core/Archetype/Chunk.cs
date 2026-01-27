@@ -9,12 +9,13 @@ namespace EntitiesDb;
 /// </summary>
 public partial struct Chunk
 {
-	internal Chunk(nint unmanagedComponents, Array[] managedComponents, int[] globalChangeVersions, int[] localChangeVersions)
+	internal Chunk(nint unmanagedComponents, Array[] managedComponents, int[] globalChangeVersions, int[] localChangeVersions, short[] idToOffsets)
 	{
 		UnmanagedComponents = unmanagedComponents;
 		ManagedComponents = managedComponents;
 		GlobalChangeVersions = globalChangeVersions;
 		LocalChangeVersions = localChangeVersions;
+		IdToOffsets = idToOffsets;
 	}
 
 	/// <summary>
@@ -38,6 +39,11 @@ public partial struct Chunk
 	internal readonly int[] GlobalChangeVersions { get; }
 
 	/// <summary>
+	/// Id to offset mapping
+	/// </summary>
+	internal readonly short[] IdToOffsets { get; }
+
+	/// <summary>
 	/// The count of entities stored in this chunk
 	/// </summary>
 	public int EntityCount { readonly get; internal set; }
@@ -58,12 +64,14 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly reference at <paramref name="index"/></returns>
-	public readonly unsafe ref readonly T0? Read<T0>(int index, Offset<T0> offset)
+	public readonly unsafe ref readonly T0? Read<T0>(int index)
 	{
-		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
+		var id = ComponentSingleWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck))
-			: ref ((T0?[])ManagedComponents[offset.Value])[index];
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck))
+			: ref ((T0?[])ManagedComponents[offset])[index];
 	}
 
 	/// <summary>
@@ -72,10 +80,12 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
-	public readonly unsafe ReadBuffer<T0> ReadBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	public readonly unsafe ReadBuffer<T0> ReadBuffer<T0>(int index) where T0 : unmanaged
 	{
-		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		return new ReadBuffer<T0>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck));
+		var id = ComponentBufferWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		return new ReadBuffer<T0>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck));
 	}
 
 	/// <summary>
@@ -85,13 +95,15 @@ public partial struct Chunk
 	/// <param name="index">The index to get</param>
 	/// <returns>A reference at <paramref name="index"/></returns>
 	[ChunkChange]
-	public readonly unsafe ref T0? Write<T0>(int index, Offset<T0> offset)
+	public readonly unsafe ref T0? Write<T0>(int index)
 	{
-		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		MarkChanged(offset.Id.Value);
+		var id = ComponentSingleWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck))
-			: ref ((T0?[])ManagedComponents[offset.Value])[index];
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck))
+			: ref ((T0?[])ManagedComponents[offset])[index];
 	}
 
 	/// <summary>
@@ -101,11 +113,13 @@ public partial struct Chunk
 	/// <param name="index">The index to get</param>
 	/// <returns>A buffer of components at <paramref name="index"/></returns>
 	[ChunkChange]
-	public readonly unsafe WriteBuffer<T0> WriteBuffer<T0>(int index, Offset<T0> offset) where T0 : unmanaged
+	public readonly unsafe WriteBuffer<T0> WriteBuffer<T0>(int index) where T0 : unmanaged
 	{
-		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		MarkChanged(offset.Id.Value);
-		return new WriteBuffer<T0>((void*)((UnmanagedComponents + offset.Value + index * ComponentMeta<T0>.Stride) * validCheck));
+		var id = ComponentBufferWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		return new WriteBuffer<T0>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck));
 	}
 
 	/// <summary>
@@ -123,12 +137,14 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.ReadHandle{T}"/> to the first index</returns>
-	public unsafe readonly ReadHandle<T0?> ReadHandle<T0>(Offset<T0> offset)
+	public unsafe readonly ReadHandle<T0?> ReadHandle<T0>()
 	{
-		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
+		var id = ComponentSingleWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value) * validCheck))
-			: ref ((T0?[])ManagedComponents[offset.Value])[0];
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset) * validCheck))
+			: ref ((T0?[])ManagedComponents[offset])[0];
 		return new ReadHandle<T0?>(ref first);
 	}
 
@@ -137,10 +153,12 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.ReadBufferHandle{T}"/> to the first index</returns>
-	public readonly unsafe ReadBufferHandle<T0> ReadBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
+	public readonly unsafe ReadBufferHandle<T0> ReadBufferHandle<T0>() where T0 : unmanaged
 	{
-		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		var buffer = new ReadBuffer<T0>((void*)((UnmanagedComponents + offset.Value) * validCheck));
+		var id = ComponentBufferWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		var buffer = new ReadBuffer<T0>((void*)((UnmanagedComponents + offset) * validCheck));
 		return new ReadBufferHandle<T0>(buffer);
 	}
 
@@ -150,13 +168,15 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.WriteHandle{T}"/> to the first index</returns>
 	[ChunkChange]
-	public unsafe readonly WriteHandle<T0?> WriteHandle<T0>(Offset<T0> offset)
+	public unsafe readonly WriteHandle<T0?> WriteHandle<T0>()
 	{
-		var validCheck = offset.Value >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		MarkChanged(offset.Id.Value);
+		var id = ComponentSingleWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		//LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset.Value) * validCheck))
-			: ref ((T0?[])ManagedComponents[offset.Value])[0];
+			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset) * validCheck))
+			: ref ((T0?[])ManagedComponents[offset])[0];
 		return new WriteHandle<T0?>(ref first);
 	}
 
@@ -166,11 +186,13 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.WriteBufferHandle{T}"/> to the first index</returns>
 	[ChunkChange]
-	public unsafe readonly WriteBufferHandle<T0> WriteBufferHandle<T0>(Offset<T0> offset) where T0 : unmanaged
+	public unsafe readonly WriteBufferHandle<T0> WriteBufferHandle<T0>() where T0 : unmanaged
 	{
-		var validCheck = offset.Value >= 0 & ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
-		MarkChanged(offset.Id.Value);
-		var buffer = new WriteBuffer<T0>((void*)((UnmanagedComponents + offset.Value) * validCheck));
+		var id = ComponentBufferWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		var buffer = new WriteBuffer<T0>((void*)((UnmanagedComponents + offset) * validCheck));
 		return new WriteBufferHandle<T0>(buffer);
 	}
 
@@ -178,23 +200,22 @@ public partial struct Chunk
 	/// Sets and replaces component value values
 	/// </summary>
 	/// <param name="index">The chunk index</param>
-	/// <param name="component"></param>
+	/// <param name="t0Component"></param>
 	[ChunkChange]
-	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, in T0? component)
+	public readonly void Set<T0>(int index, in T0? t0Component)
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offset) = component;
-		else MarkChanged(offset.Id.Value);
+		Write<T0>(index) = t0Component;
 	}
 
 	/// <summary>
 	/// Sets and replaces component value values
 	/// </summary>
 	/// <param name="index">The chunk index</param>
-	/// <param name="components"></param>
+	/// <param name="t0Components"></param>
 	[ChunkChange]
-	public unsafe readonly void Set<T0>(int index, Offset<T0> offset, ReadOnlySpan<T0> components) where T0 : unmanaged
+	public readonly void Set<T0>(int index, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
 	{
-		WriteBuffer(index, offset).Set(components);
+		WriteBuffer<T0>(index).Set(t0Components);
 	}
 
 	/// <summary>
@@ -207,21 +228,16 @@ public partial struct Chunk
 	}
 
 	/// <summary>
-	/// Initializes component value values
-	/// </summary>
-	internal readonly void Init<T0>(int index, in Offsets<T0> offsets, ReadOnlySpan<T0> components) where T0 : unmanaged
-	{
-		WriteBuffer(index, offsets.T0).Init(components);
-	}
-
-	/// <summary>
 	/// Clears a buffer of components and releases allocated lists
 	/// </summary>
 	/// <param name="index">Index of the buffer to clear</param>
 	/// <param name="typeId">The component type id</param>
-	internal readonly unsafe void ClearBuffer<T>(int index, Offset<T> offset)
+	internal readonly unsafe void ClearBuffer<T>(int index)
 	{
-		ref var header = ref Unsafe.AsRef<BufferHeader>(((byte*)UnmanagedComponents + offset.Value + index * ComponentMeta<T>.Stride));
+		var id = Component<T>.Id;
+		var offset = IdToOffsets[id];
+		var validCheck = offset >= 0 ? 1 : 0;
+		ref var header = ref Unsafe.AsRef<BufferHeader>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T>.Stride) * validCheck));
 		DynamicBuffer.Clear(ref header);
 	}
 
@@ -232,7 +248,8 @@ public partial struct Chunk
 	/// <param name="typeId">The component type id</param>
 	internal readonly unsafe void ClearBuffer(int index, int offset, int stride)
 	{
-		ref var header = ref Unsafe.AsRef<BufferHeader>(((byte*)UnmanagedComponents + offset + index * stride));
+		var validCheck = offset >= 0 ? 1 : 0;
+		ref var header = ref Unsafe.AsRef<BufferHeader>((void*)((UnmanagedComponents + offset + index * stride) * validCheck));
 		DynamicBuffer.Clear(ref header);
 	}
 
@@ -251,7 +268,8 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0"></typeparam>
 	/// <param name="id"></param>
-	internal readonly void MarkChanged(byte id)
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal readonly void MarkChanged(int id)
 	{
 		LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 	}
@@ -289,6 +307,11 @@ public partial struct Chunk
 		var dstPtr = UnmanagedComponents;
 		foreach (ref readonly var componentType in unmanagedComponentTypes)
 		{
+			if (componentType.IsTag)
+			{
+				continue;
+			}
+
 			var offset = offsets[componentType.Id];
 			Unsafe.CopyBlock(
 				(byte*)dstPtr + offset + componentType.Stride * dstIndex,
@@ -330,11 +353,22 @@ public partial struct Chunk
 
 			// copy component
 			var offset = offsets[componentType.Id];
-			Unsafe.CopyBlock(
-				(byte*)dstPtr + offset + componentType.Stride * dstIndex,
-				(byte*)srcPtr + offset + componentType.Stride * srcIndex,
-				(uint)componentType.Stride
-			);
+			if (componentType.IsBuffer)
+			{
+				DynamicBuffer.Clone(
+					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
+					(byte*)srcPtr + offset + componentType.Stride * srcIndex,
+					(uint)componentType.Stride
+				);
+			}
+			else
+			{
+				Unsafe.CopyBlock(
+					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
+					(byte*)srcPtr + offset + componentType.Stride * srcIndex,
+					(uint)componentType.Stride
+				);
+			}
 		}
 
 		// copy managed components
@@ -403,15 +437,25 @@ public partial struct Chunk
 		}
 	}
 
-	internal readonly nint WriteUnmanaged(int id, int offset)
+	/// <summary>
+	/// Gets a Write pointer to an unmanaged component array
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="offset"></param>
+	/// <returns></returns>
+	internal readonly nint WriteUnmanaged(int offset)
 	{
-		MarkChanged((byte)id);
 		return UnmanagedComponents + offset;
 	}
 
-	internal readonly Array WriteManaged(int id, int offset)
+	/// <summary>
+	/// Gets a Write array to a managed component array
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="offset"></param>
+	/// <returns></returns>
+	internal readonly Array WriteManaged(int offset)
 	{
-		MarkChanged((byte)id);
 		return ManagedComponents[offset];
 	}
 }

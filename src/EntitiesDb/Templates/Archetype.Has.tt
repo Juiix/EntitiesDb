@@ -12,10 +12,8 @@ public partial class Archetype
 		var generics = Generics(index);
 		var sets = FormatSep(index, "Signature.Test(ids.T{0}.Value)", " &&" + Environment.NewLine);
 #>
-	/// <inheritdoc cref="Has{T0}(in Ids{T0})"/>
-	public bool Has<<#= generics #>>(in Ids<<#= generics #>> ids) =>
-		<#= Indent(sets, 8) #>
-		;
+	/// <inheritdoc cref="Has{T0}()"/>
+	public bool Has<<#= generics #>>() => Signature.HasAny(Component<<#= generics #>>.Signature);
 <#
 	}
 #>

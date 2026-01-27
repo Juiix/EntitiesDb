@@ -217,10 +217,10 @@ internal static class FakeDb
 
 	public static void FillTest(this EntityDatabase db, float chunks = 4.5f)
 	{
-		var bulkCreate = db.GetBulkCreate<Component1, Component2>();
+		db.Reserve<Component1, Component2>(100_000);
 		for (int i = 0; i < 100_000; i++)
 		{
-			db.Create(in bulkCreate, new Component1(), new Component2(1));
+			db.Create(new Component1(), new Component2(1));
 		}
 	}
 

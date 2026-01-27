@@ -10,7 +10,6 @@ public partial class SystemWithOneComponent
 	private class EntitiesDbContext : EntitiesDbBaseContext
 	{
 		public Query Query;
-		public Id<Component1> Id;
 
 		public EntitiesDbContext(int entityCount)
 		{
@@ -22,7 +21,6 @@ public partial class SystemWithOneComponent
 			Query = Entities.QueryBuilder
 				.WithAll<Component1>()
 				.Build();
-			Id = Entities.ComponentRegistry.GetId<Component1>();
 		}
 	}
 

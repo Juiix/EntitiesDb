@@ -16,14 +16,13 @@ public partial class CommandBuffer
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 	{
-		ComponentMeta.AssertNotBuffered<<#= generics #>>();
+		var signature = ComponentSingle<<#= generics #>>.Signature;
 		lock (_lock)
 		{
 			var entity = new Entity(-_entities.Count - 1, -1);
 			var entityIndex = Register(entity);
 			_creates.Add(entityIndex);
 
-			var signature = _registry.GetSignature<<#= generics #>>();
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(lines, 12) #>
 			return entity;

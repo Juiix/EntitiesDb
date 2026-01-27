@@ -5,7 +5,6 @@ namespace EntitiesDb;
 public sealed partial class QueryBuilder
 {
 	private readonly ArchetypeCollection _archetypes;
-	private readonly ComponentRegistry _componentRegistry;
 	private readonly ParallelJobRunner? _parallelRunner;
 	private readonly int[] _globalChangeVersions;
 	private int _changeFilterId = -1;
@@ -14,10 +13,9 @@ public sealed partial class QueryBuilder
 	private Signature _none;
 	private QueryFilterMode _filterMode;
 
-	internal QueryBuilder(ArchetypeCollection archetypes, ComponentRegistry componentRegistry, ParallelJobRunner? parallelRunner, int[] globalChangeVersions)
+	internal QueryBuilder(ArchetypeCollection archetypes, ParallelJobRunner? parallelRunner, int[] globalChangeVersions)
 	{
 		_archetypes = archetypes;
-		_componentRegistry = componentRegistry;
 		_parallelRunner = parallelRunner;
 		_globalChangeVersions = globalChangeVersions;
 	}
@@ -44,7 +42,7 @@ public sealed partial class QueryBuilder
 	{
 		var changeVersion = _changeFilterId >= 0 ? Volatile.Read(ref _globalChangeVersions[_changeFilterId]) : -1;
 		var changeFilter = _changeFilterId >= 0 ? new ChangeFilter(_changeFilterId, changeVersion) : null;
-		var query = new Query(_archetypes, _componentRegistry, _parallelRunner, new QueryFilter(_all, _any, _none, _filterMode), changeFilter);
+		var query = new Query(_archetypes, _parallelRunner, new QueryFilter(_all, _any, _none, _filterMode), changeFilter);
 		Clear();
 		return query;
 	}
@@ -58,7 +56,7 @@ public sealed partial class QueryBuilder
 	/// <returns>The <see cref="QueryBuilder"/> instance</returns>
 	public QueryBuilder WithAll<T>()
 	{
-		var id = _componentRegistry.GetId<T>().Value;
+		var id = Component<T>.Id;
 		_all = Signature.SingleBit(id);
 		_filterMode = QueryFilterMode.All;
 		return this;
@@ -73,7 +71,7 @@ public sealed partial class QueryBuilder
 	/// <returns>The <see cref="QueryBuilder"/> instance</returns>
 	public QueryBuilder WithAny<T>()
 	{
-		var id = _componentRegistry.GetId<T>().Value;
+		var id = Component<T>.Id;
 		_any = Signature.SingleBit(id);
 		_filterMode = QueryFilterMode.All;
 		return this;
@@ -88,7 +86,7 @@ public sealed partial class QueryBuilder
 	/// <returns>The <see cref="QueryBuilder"/> instance</returns>
 	public QueryBuilder WithNone<T>()
 	{
-		var id = _componentRegistry.GetId<T>().Value;
+		var id = Component<T>.Id;
 		_none = Signature.SingleBit(id);
 		_filterMode = QueryFilterMode.All;
 		return this;
@@ -103,8 +101,8 @@ public sealed partial class QueryBuilder
 	/// <returns>The <see cref="QueryBuilder"/> instance</returns>
 	public QueryBuilder WithOnly<T>()
 	{
-		ref readonly var componentType = ref _componentRegistry.GetComponentType<T>();
-		_all = Signature.SingleBit(componentType.Id);
+		var id = Component<T>.Id;
+		_all = Signature.SingleBit(id);
 		_any = Signature.Empty;
 		_none = Signature.Empty;
 		_filterMode = QueryFilterMode.Only;
@@ -118,7 +116,8 @@ public sealed partial class QueryBuilder
 	/// <returns></returns>
 	public QueryBuilder WithChangeFilter<T>()
 	{
-		_changeFilterId = _componentRegistry.GetId<T>().Value;
+		var id = Component<T>.Id;
+		_changeFilterId = id;
 		return this;
 	}
 }

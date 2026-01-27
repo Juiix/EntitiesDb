@@ -13,21 +13,28 @@ public partial class CommandBuffer
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
 		var lines = FormatLine(index, "SetData(entityIndex, t{0}Components);");
 		var constriants = FormatLine(index, "where T{0} : unmanaged");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
 #>
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<<#= generics #>>(Entity entity, <#= parameters #>)
 		<#= Indent(constriants, 8) #>
 	{
-		ComponentMeta.AssertBuffered<<#= generics #>>();
+		var signature = ComponentBufferWritable<<#= generics #>>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<<#= generics #>>();
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(lines, 12) #>
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<<#= generics #>>(Entity entity, <#= parametersArr #>)
+		<#= Indent(constriants, 8) #>
+	{
+		Set(entity, <#= argsArr #>);
 	}
 <#
 	}

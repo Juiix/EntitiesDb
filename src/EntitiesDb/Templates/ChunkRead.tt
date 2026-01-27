@@ -9,11 +9,11 @@ namespace EntitiesDb;
 	{
 		var generics = FormatComma(index, "T{0}");
 		var parameters = FormatComma(index, "Offset<T{0}> t{0}");
-		var handles = FormatLine(index, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle(_offsets.T{0});");
+		var handles = FormatLine(index, "public ReadHandle<T{0}?> ReadHandleT{0}() => _chunk.ReadHandle<T{0}>();");
 		var outs = FormatComma(index, "out ReadHandle<T{0}?> t{0}Handle");
-		var outSets = FormatLine(index, "t{0}Handle = _chunk.ReadHandle(_offsets.T{0});");
+		var outSets = FormatLine(index, "t{0}Handle = _chunk.ReadHandle<T{0}>();");
 #>
-public readonly ref struct ChunkRead<<#= generics #>>(ref readonly Chunk chunk, Offsets<<#= generics #>> offsets)
+public readonly ref struct ChunkRead<<#= generics #>>(ref readonly Chunk chunk)
 {
 #if NETSTANDARD2_1
 	private readonly ReadOnlyRef<Chunk> _chunkRef = new ReadOnlyRef<Chunk>(in chunk);
@@ -21,7 +21,6 @@ public readonly ref struct ChunkRead<<#= generics #>>(ref readonly Chunk chunk, 
 #else
 	private readonly ref readonly Chunk _chunk = ref chunk;
 #endif
-	private readonly Offsets<<#= generics #>> _offsets = offsets;
 
 	public int EntityCount => _chunk.EntityCount;
 	

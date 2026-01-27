@@ -22,23 +22,19 @@ public ref struct ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
-	private readonly Ids<<#= genericsC #>, <#= genericsB #>> _ids;
 	private readonly int _compareVersion;
 	private int _index;
-	private Offsets<<#= genericsC #>, <#= genericsB #>> _offsets;
 
 	[SkipLocalsInit]
-	public ArchetypeChunkReadMixed<#= indexC #>Enumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion, Ids<<#= genericsC #>, <#= genericsB #>> ids)
+	public ArchetypeChunkReadMixed<#= indexC #>Enumerator(Span<Archetype> archetypes, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
-		_ids = ids;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 		if (_archetypes.MoveNext())
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -57,7 +53,6 @@ public ref struct ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #
 
 					var a = _archetypes.Current;
 					_index = a.ChunksInUse - 1;
-					_offsets = a.GetOffsets(in _ids);
 				}
 
 				if (_changeFilter == null)
@@ -88,7 +83,6 @@ public ref struct ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #
 		{
 			var archetype = _archetypes.Current;
 			_index = archetype.ChunksInUse;
-			_offsets = archetype.GetOffsets(in _ids);
 		}
 	}
 
@@ -96,7 +90,7 @@ public ref struct ArchetypeChunkReadMixed<#= indexC #>Enumerator<<#= genericsC #
 	{
 		[SkipLocalsInit]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		get => new(ref _archetypes.Current.GetChunk(_index), _offsets);
+		get => new(ref _archetypes.Current.GetChunk(_index));
 	}
 }
 <#

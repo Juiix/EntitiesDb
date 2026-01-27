@@ -43,7 +43,7 @@ public sealed class SourceGenQueryTests
 			.WithOnly<Health>()
 			.Build();
 
-		var healthId = db.ComponentRegistry.GetId<Health>();
+		var healthId = Component<Health>.Id;
 		var results = new List<(int Id, Health Health)>();
 		query.ForEach((Entity e, in Health h, ref List<(int Id, Health Health)> results) =>
 		{

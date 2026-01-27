@@ -46,7 +46,12 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// Indices of bufferable types
 	/// </summary>
-	private readonly int[] _bufferIds;
+	private readonly int[] _bufferIndices;
+
+	/// <summary>
+	/// Indices of types tracking changes
+	/// </summary>
+	private readonly int[] _changeTrackingIndices;
 
 	/// <summary>
 	/// Array used to store chunks
@@ -70,7 +75,8 @@ public unsafe sealed partial class Archetype
 
 		_chunks = ArrayPool<Chunk>.Shared.Rent(1);
         _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, unmanagedComponentCount, EntitiesPerChunk);
-		_bufferIds = ArchetypeUtils.BuildBufferIds(componentTypes, unmanagedComponentCount);
+		_bufferIndices = ArchetypeUtils.BuildBufferIndices(componentTypes, unmanagedComponentCount);
+		_changeTrackingIndices = ArchetypeUtils.BuildChangeTrackingIndices(componentTypes);
 
 		AddChunk();
 	}
@@ -133,41 +139,10 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// If this <see cref="Archetype"/> contains a given component
 	/// </summary>
-	/// <returns>If this <see cref="Archetype"/> has component with <paramref name="typeId"/></returns>
+	/// <returns>If this <see cref="Archetype"/> has component of type <typeparamref name="T"/></returns>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool Has<T>(Id<T> id) =>
-		Signature.Test(id.Value);
-
-	/// <summary>
-	/// If this <see cref="Archetype"/> contains a given component
-	/// </summary>
-	/// <param name="ids">Component ids from <see cref="ComponentRegistry.GetIds{T}()"/></param>
-	/// <returns>If this <see cref="Archetype"/> has <typeparamref name="T"/></returns>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Has<T0>(in Ids<T0> ids) =>
-        Signature.Test(ids.T0.Value);
-
-	/// <summary>
-	/// Gets offset for a given id
-	/// </summary>
-	/// <returns>Offsets for <paramref name="ids"/></returns>
-	public Offset<T0> GetOffset<T0>(Id<T0> id)
-	{
-		var offsets = _idToOffsets;
-		return new Offset<T0>(offsets[id.Value], id);
-	}
-
-	/// <summary>
-	/// Gets offsets for given ids
-	/// </summary>
-	/// <returns>Offsets for <paramref name="ids"/></returns>
-	public Offsets<T0> GetOffsets<T0>(in Ids<T0> ids)
-	{
-		var offsets = _idToOffsets;
-		return new Offsets<T0>(
-			new Offset<T0>(offsets[ids.T0.Value], ids.T0)
-		);
-	}
+	public bool Has<T>() =>
+		Signature.Test(Component<T>.Id);
 
 	/// <summary>
 	/// Returns a chunk enumerator
@@ -180,18 +155,6 @@ public unsafe sealed partial class Archetype
 	public ReadOnlyEnumerator<Chunk> GetEnumerator() => new(_chunks.AsSpan(0, ChunksInUse));
 
 	/// <summary>
-	/// Clears a target slot and released buffer lists
-	/// </summary>
-	/// <param name="slot">The target slot</param>
-	/// <param name="ids">Component ids</param>
-	internal void Clear<T0>(in EntitySlot slot, in Ids<T0> ids)
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offsets = GetOffsets(in ids);
-		if (ComponentMeta<T0>.IsBuffered) chunk.ClearBuffer(slot.Index, offsets.T0);
-    }
-
-	/// <summary>
 	/// Gets the offset of a component type with a given id
 	/// </summary>
 	/// <param name="id">The component type id</param>
@@ -200,92 +163,6 @@ public unsafe sealed partial class Archetype
 	{
 		return _idToOffsets[id];
 	}
-
-	/// <summary>
-	/// Gets a readonly component at a given slot
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <param name="slot"></param>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	internal ref readonly T? Read<T>(in EntitySlot slot, Id<T> id)
-    {
-        ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(id);
-		return ref chunk.Read(slot.Index, offset);
-	}
-
-	/// <summary>
-	/// Gets a readonly buffer at a given slot
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <param name="slot"></param>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	internal ReadBuffer<T> ReadBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
-    {
-        ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(id);
-		return chunk.ReadBuffer(slot.Index, offset);
-	}
-
-	/// <summary>
-	/// Gets a component at a given slot
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <param name="slot"></param>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	internal ref T? Write<T>(in EntitySlot slot, Id<T> id)
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(id);
-		return ref chunk.Write(slot.Index, offset);
-	}
-
-	/// <summary>
-	/// Gets a buffer at a given slot
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	/// <param name="slot"></param>
-	/// <param name="id"></param>
-	/// <returns></returns>
-	internal WriteBuffer<T> WriteBuffer<T>(in EntitySlot slot, Id<T> id) where T : unmanaged
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(id);
-		return chunk.WriteBuffer(slot.Index, offset);
-	}
-
-	/// <summary>
-	/// Initializes a buffer of components at a given slot
-	/// </summary>
-	internal void Init<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components) where T0 : unmanaged
-    {
-        ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(ids.T0);
-		chunk.WriteBuffer(slot.Index, offset).Init(components);
-	}
-
-	/// <summary>
-	/// Sets a component at a given slot
-	/// </summary>
-	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, in T0? component = default)
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(ids.T0);
-		chunk.Set(slot.Index, offset, in component);
-	}
-
-	/// <summary>
-	/// Sets a buffer of components at a given slot
-	/// </summary>
-	internal void Set<T0>(in EntitySlot slot, in Ids<T0> ids, ReadOnlySpan<T0> components = default) where T0 : unmanaged
-	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		var offset = GetOffset(ids.T0);
-		chunk.Set(slot.Index, offset, components);
-    }
 
 	/// <summary>
 	/// Reserves space for additional entities
@@ -310,7 +187,7 @@ public unsafe sealed partial class Archetype
 			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
-			_chunks[i] = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters);
+			_chunks[i] = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
 		}
 		ChunksAllocated = newChunkCount;
 	}
@@ -339,7 +216,7 @@ public unsafe sealed partial class Archetype
 			Unsafe.InitBlock((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
-			chunk = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters);
+			chunk = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
 		}
 
 		ChunksInUse = ++count;
@@ -402,18 +279,36 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	/// <param name="slot"></param>
 	/// <param name="mask"></param>
-	internal void ClearBuffers(in EntitySlot slot, in Signature mask)
+	internal void ClearBuffers(ref Chunk chunk, in EntitySlot slot, in Signature mask)
 	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
-		for (int i = 0; i < _bufferIds.Length; i++)
+		for (int i = 0; i < _bufferIndices.Length; i++)
 		{
-			var typeIndex = _bufferIds[i];
+			var typeIndex = _bufferIndices[i];
 			ref var componentType = ref ComponentTypes[typeIndex];
 			if (!mask.Test(componentType.Id)) continue;
 
 			var offset = _idToOffsets[componentType.Id];
 			var stride = componentType.Stride;
 			DynamicBuffer.Clear((byte*)chunk.UnmanagedComponents + offset + stride * slot.Index);
+		}
+	}
+
+	/// <summary>
+	/// Initializes buffers for a given entity slot
+	/// </summary>
+	/// <param name="slot"></param>
+	/// <param name="mask"></param>
+	internal void InitBuffers(ref Chunk chunk, in EntitySlot slot, in Signature mask)
+	{
+		for (int i = 0; i < _bufferIndices.Length; i++)
+		{
+			var typeIndex = _bufferIndices[i];
+			ref var componentType = ref ComponentTypes[typeIndex];
+			if (!mask.Test(componentType.Id)) continue;
+
+			var offset = _idToOffsets[componentType.Id];
+			var stride = componentType.Stride;
+			DynamicBuffer.Init((byte*)chunk.UnmanagedComponents + offset + stride * slot.Index, componentType.InternalCapacity);
 		}
 	}
 
@@ -455,8 +350,14 @@ public unsafe sealed partial class Archetype
 			srcSlot.Index, ref dstChunk, dstSlot.Index,
 			_idToOffsets, UnmanagedComponentTypes);
 
-		foreach (ref readonly var type in ComponentTypes.AsSpan())
-			dstChunk.MarkChanged(type.Id);
+		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		{
+			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
+			if (type.TrackChanges)
+			{
+				dstChunk.MarkChanged(type.Id);
+			}
+		}
 	}
 
 	/// <summary>
@@ -470,6 +371,15 @@ public unsafe sealed partial class Archetype
 			srcSlot.Index, _idToOffsets,
 			dstArchetype.Signature, ref dstChunk, dstSlot.Index, dstArchetype._idToOffsets,
 			UnmanagedComponentTypes, ManagedComponentTypes);
+
+		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		{
+			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
+			if (type.TrackChanges)
+			{
+				dstChunk.MarkChanged(type.Id);
+			}
+		}
 	}
 
 	/// <summary>

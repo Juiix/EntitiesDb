@@ -10,15 +10,21 @@ public partial class CommandBuffer
 		where T0 : unmanaged
         where T1 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1>();
+		var signature = ComponentBufferWritable<T0, T1>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1>(Entity entity, T0[] t0Components, T1[] t1Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
@@ -26,16 +32,23 @@ public partial class CommandBuffer
         where T1 : unmanaged
         where T2 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2>();
+		var signature = ComponentBufferWritable<T0, T1, T2>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
             SetData(entityIndex, t2Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
@@ -44,17 +57,25 @@ public partial class CommandBuffer
         where T2 : unmanaged
         where T3 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
             SetData(entityIndex, t2Components);
             SetData(entityIndex, t3Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
@@ -64,11 +85,10 @@ public partial class CommandBuffer
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -76,6 +96,16 @@ public partial class CommandBuffer
             SetData(entityIndex, t3Components);
             SetData(entityIndex, t4Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
@@ -86,11 +116,10 @@ public partial class CommandBuffer
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -99,6 +128,17 @@ public partial class CommandBuffer
             SetData(entityIndex, t4Components);
             SetData(entityIndex, t5Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
@@ -110,11 +150,10 @@ public partial class CommandBuffer
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -124,6 +163,18 @@ public partial class CommandBuffer
             SetData(entityIndex, t5Components);
             SetData(entityIndex, t6Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
@@ -136,11 +187,10 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -151,6 +201,19 @@ public partial class CommandBuffer
             SetData(entityIndex, t6Components);
             SetData(entityIndex, t7Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
@@ -164,11 +227,10 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -180,6 +242,20 @@ public partial class CommandBuffer
             SetData(entityIndex, t7Components);
             SetData(entityIndex, t8Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
@@ -194,11 +270,10 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -211,6 +286,21 @@ public partial class CommandBuffer
             SetData(entityIndex, t8Components);
             SetData(entityIndex, t9Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default)
@@ -226,11 +316,10 @@ public partial class CommandBuffer
         where T9 : unmanaged
         where T10 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -244,6 +333,22 @@ public partial class CommandBuffer
             SetData(entityIndex, t9Components);
             SetData(entityIndex, t10Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default)
@@ -260,11 +365,10 @@ public partial class CommandBuffer
         where T10 : unmanaged
         where T11 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -279,6 +383,23 @@ public partial class CommandBuffer
             SetData(entityIndex, t10Components);
             SetData(entityIndex, t11Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components, T11[] t11Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+        where T11 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan(), t11Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default)
@@ -296,11 +417,10 @@ public partial class CommandBuffer
         where T11 : unmanaged
         where T12 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -316,6 +436,24 @@ public partial class CommandBuffer
             SetData(entityIndex, t11Components);
             SetData(entityIndex, t12Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components, T11[] t11Components, T12[] t12Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+        where T11 : unmanaged
+        where T12 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan(), t11Components.AsSpan(), t12Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default)
@@ -334,11 +472,10 @@ public partial class CommandBuffer
         where T12 : unmanaged
         where T13 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -355,6 +492,25 @@ public partial class CommandBuffer
             SetData(entityIndex, t12Components);
             SetData(entityIndex, t13Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components, T11[] t11Components, T12[] t12Components, T13[] t13Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+        where T11 : unmanaged
+        where T12 : unmanaged
+        where T13 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan(), t11Components.AsSpan(), t12Components.AsSpan(), t13Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default)
@@ -374,11 +530,10 @@ public partial class CommandBuffer
         where T13 : unmanaged
         where T14 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -396,6 +551,26 @@ public partial class CommandBuffer
             SetData(entityIndex, t13Components);
             SetData(entityIndex, t14Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components, T11[] t11Components, T12[] t12Components, T13[] t13Components, T14[] t14Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+        where T11 : unmanaged
+        where T12 : unmanaged
+        where T13 : unmanaged
+        where T14 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan(), t11Components.AsSpan(), t12Components.AsSpan(), t13Components.AsSpan(), t14Components.AsSpan());
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Entity entity, ReadOnlySpan<T0> t0Components = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default, ReadOnlySpan<T10> t10Components = default, ReadOnlySpan<T11> t11Components = default, ReadOnlySpan<T12> t12Components = default, ReadOnlySpan<T13> t13Components = default, ReadOnlySpan<T14> t14Components = default, ReadOnlySpan<T15> t15Components = default)
@@ -416,11 +591,10 @@ public partial class CommandBuffer
         where T14 : unmanaged
         where T15 : unmanaged
 	{
-		ComponentMeta.AssertBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
+		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
-			var signature = _registry.GetSignature<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
@@ -439,5 +613,26 @@ public partial class CommandBuffer
             SetData(entityIndex, t14Components);
             SetData(entityIndex, t15Components);
 		}
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
+	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Entity entity, T0[] t0Components, T1[] t1Components, T2[] t2Components, T3[] t3Components, T4[] t4Components, T5[] t5Components, T6[] t6Components, T7[] t7Components, T8[] t8Components, T9[] t9Components, T10[] t10Components, T11[] t11Components, T12[] t12Components, T13[] t13Components, T14[] t14Components, T15[] t15Components)
+		where T0 : unmanaged
+        where T1 : unmanaged
+        where T2 : unmanaged
+        where T3 : unmanaged
+        where T4 : unmanaged
+        where T5 : unmanaged
+        where T6 : unmanaged
+        where T7 : unmanaged
+        where T8 : unmanaged
+        where T9 : unmanaged
+        where T10 : unmanaged
+        where T11 : unmanaged
+        where T12 : unmanaged
+        where T13 : unmanaged
+        where T14 : unmanaged
+        where T15 : unmanaged
+	{
+		Set(entity, t0Components.AsSpan(), t1Components.AsSpan(), t2Components.AsSpan(), t3Components.AsSpan(), t4Components.AsSpan(), t5Components.AsSpan(), t6Components.AsSpan(), t7Components.AsSpan(), t8Components.AsSpan(), t9Components.AsSpan(), t10Components.AsSpan(), t11Components.AsSpan(), t12Components.AsSpan(), t13Components.AsSpan(), t14Components.AsSpan(), t15Components.AsSpan());
 	}
 }

@@ -5,74 +5,69 @@ namespace EntitiesDb;
 
 public partial struct Chunk
 {
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1>(int index, in Offsets<T0, T1> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default)
+	public readonly void Set<T0, T1>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default)
 		where T1 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2>(int index, in Offsets<T0, T1, T2> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
+	public readonly void Set<T0, T1, T2>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3>(int index, in Offsets<T0, T1, T2, T3> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
+	public readonly void Set<T0, T1, T2, T3>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4>(int index, in Offsets<T0, T1, T2, T3, T4> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
@@ -80,18 +75,17 @@ public partial struct Chunk
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
@@ -100,19 +94,18 @@ public partial struct Chunk
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
@@ -122,20 +115,19 @@ public partial struct Chunk
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T1 : unmanaged
         where T2 : unmanaged
         where T3 : unmanaged
@@ -146,96 +138,85 @@ public partial struct Chunk
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-		WriteBuffer(index, offsets.T1).Set(t1Components);
-        WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+		WriteBuffer<T1>(index).Set(t1Components);
+        WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2>(int index, in Offsets<T0, T1, T2> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default)
+	public readonly void Set<T0, T1, T2>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default)
 		where T2 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3>(int index, in Offsets<T0, T1, T2, T3> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
+	public readonly void Set<T0, T1, T2, T3>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4>(int index, in Offsets<T0, T1, T2, T3, T4> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
@@ -243,20 +224,18 @@ public partial struct Chunk
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
@@ -265,21 +244,19 @@ public partial struct Chunk
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T2 : unmanaged
         where T3 : unmanaged
         where T4 : unmanaged
@@ -289,107 +266,90 @@ public partial struct Chunk
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-		WriteBuffer(index, offsets.T2).Set(t2Components);
-        WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+		WriteBuffer<T2>(index).Set(t2Components);
+        WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3>(int index, in Offsets<T0, T1, T2, T3> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default)
+	public readonly void Set<T0, T1, T2, T3>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default)
 		where T3 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4>(int index, in Offsets<T0, T1, T2, T3, T4> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
@@ -397,22 +357,19 @@ public partial struct Chunk
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T3 : unmanaged
         where T4 : unmanaged
         where T5 : unmanaged
@@ -421,118 +378,95 @@ public partial struct Chunk
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-		WriteBuffer(index, offsets.T3).Set(t3Components);
-        WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+		WriteBuffer<T3>(index).Set(t3Components);
+        WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4>(int index, in Offsets<T0, T1, T2, T3, T4> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default)
 		where T4 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default)
 		where T4 : unmanaged
         where T5 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T4 : unmanaged
         where T5 : unmanaged
         where T6 : unmanaged
@@ -540,354 +474,255 @@ public partial struct Chunk
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-		WriteBuffer(index, offsets.T4).Set(t4Components);
-        WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+		WriteBuffer<T4>(index).Set(t4Components);
+        WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in Offsets<T0, T1, T2, T3, T4, T5> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default)
 		where T5 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-		WriteBuffer(index, offsets.T5).Set(t5Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+		WriteBuffer<T5>(index).Set(t5Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default)
 		where T5 : unmanaged
         where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-		WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+		WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-		WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+		WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-		WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+		WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T5 : unmanaged
         where T6 : unmanaged
         where T7 : unmanaged
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-		WriteBuffer(index, offsets.T5).Set(t5Components);
-        WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+		WriteBuffer<T5>(index).Set(t5Components);
+        WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default)
 		where T6 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-		WriteBuffer(index, offsets.T6).Set(t6Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+		WriteBuffer<T6>(index).Set(t6Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default)
 		where T6 : unmanaged
         where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-		WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+		WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T6 : unmanaged
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-		WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+		WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T6 : unmanaged
         where T7 : unmanaged
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-		WriteBuffer(index, offsets.T6).Set(t6Components);
-        WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+		WriteBuffer<T6>(index).Set(t6Components);
+        WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default)
 		where T7 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-		WriteBuffer(index, offsets.T7).Set(t7Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+		WriteBuffer<T7>(index).Set(t7Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default)
 		where T7 : unmanaged
         where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-		WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+		WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T7 : unmanaged
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-		WriteBuffer(index, offsets.T7).Set(t7Components);
-        WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+		WriteBuffer<T7>(index).Set(t7Components);
+        WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default)
 		where T8 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-        if (!ComponentMeta<T7>.IsZeroSize) Write(index, offsets.T7) = t7Component;
-        else MarkChanged(offsets.T7.Id.Value);
-		WriteBuffer(index, offsets.T8).Set(t8Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+        Write<T7>(index) = t7Component;
+		WriteBuffer<T8>(index).Set(t8Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default, ReadOnlySpan<T9> t9Components = default)
 		where T8 : unmanaged
         where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-        if (!ComponentMeta<T7>.IsZeroSize) Write(index, offsets.T7) = t7Component;
-        else MarkChanged(offsets.T7.Id.Value);
-		WriteBuffer(index, offsets.T8).Set(t8Components);
-        WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+        Write<T7>(index) = t7Component;
+		WriteBuffer<T8>(index).Set(t8Components);
+        WriteBuffer<T9>(index).Set(t9Components);
 	}
-	/// <inheritdoc cref="Set{T0}(int, Offset{T0}, in T0?)"/>
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
 	[ChunkChange]
-	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in Offsets<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9> offsets, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, ReadOnlySpan<T9> t9Components = default)
+	public readonly void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(int index, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, ReadOnlySpan<T9> t9Components = default)
 		where T9 : unmanaged
 	{
-		if (!ComponentMeta<T0>.IsZeroSize) Write(index, offsets.T0) = t0Component;
-        else MarkChanged(offsets.T0.Id.Value);
-        if (!ComponentMeta<T1>.IsZeroSize) Write(index, offsets.T1) = t1Component;
-        else MarkChanged(offsets.T1.Id.Value);
-        if (!ComponentMeta<T2>.IsZeroSize) Write(index, offsets.T2) = t2Component;
-        else MarkChanged(offsets.T2.Id.Value);
-        if (!ComponentMeta<T3>.IsZeroSize) Write(index, offsets.T3) = t3Component;
-        else MarkChanged(offsets.T3.Id.Value);
-        if (!ComponentMeta<T4>.IsZeroSize) Write(index, offsets.T4) = t4Component;
-        else MarkChanged(offsets.T4.Id.Value);
-        if (!ComponentMeta<T5>.IsZeroSize) Write(index, offsets.T5) = t5Component;
-        else MarkChanged(offsets.T5.Id.Value);
-        if (!ComponentMeta<T6>.IsZeroSize) Write(index, offsets.T6) = t6Component;
-        else MarkChanged(offsets.T6.Id.Value);
-        if (!ComponentMeta<T7>.IsZeroSize) Write(index, offsets.T7) = t7Component;
-        else MarkChanged(offsets.T7.Id.Value);
-        if (!ComponentMeta<T8>.IsZeroSize) Write(index, offsets.T8) = t8Component;
-        else MarkChanged(offsets.T8.Id.Value);
-		WriteBuffer(index, offsets.T9).Set(t9Components);
+		Write<T0>(index) = t0Component;
+        Write<T1>(index) = t1Component;
+        Write<T2>(index) = t2Component;
+        Write<T3>(index) = t3Component;
+        Write<T4>(index) = t4Component;
+        Write<T5>(index) = t5Component;
+        Write<T6>(index) = t6Component;
+        Write<T7>(index) = t7Component;
+        Write<T8>(index) = t8Component;
+		WriteBuffer<T9>(index).Set(t9Components);
 	}
 }

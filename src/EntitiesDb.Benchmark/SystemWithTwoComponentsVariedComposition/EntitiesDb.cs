@@ -10,7 +10,6 @@ public partial class SystemWithTwoComponentsVariedComposition
 	private class EntitiesDbContext : EntitiesDbBaseContext
 	{
 		public Query Query;
-		public Ids<Component1, Component2> Ids;
 
 		public EntitiesDbContext(int entityCount)
 		{
@@ -28,7 +27,6 @@ public partial class SystemWithTwoComponentsVariedComposition
 			Query = Entities.QueryBuilder
 				.WithAll<Component1>()
 				.Build();
-			Ids = Entities.ComponentRegistry.GetIds<Component1, Component2>();
 		}
 	}
 

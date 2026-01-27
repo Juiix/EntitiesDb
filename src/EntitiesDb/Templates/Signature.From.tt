@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+namespace EntitiesDb;
+
+public readonly partial struct Signature
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var accessors = FormatSep(index, "ComponentRegistry<T{0}>.Id", "," + Environment.NewLine);
+#>
+	/// <inheritdoc cref="From{T0}()"/>
+	public static Signature From<<#= generics #>>()
+	{
+		return MultipleBits(
+			<#= Indent(accessors, 12) #>
+		);
+	}
+<#
+	}
+#>
+}

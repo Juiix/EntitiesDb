@@ -22,25 +22,11 @@
 
 EntitiesDb is built around a classic data-oriented ECS design:
 
-### **Entities**
-
-Lightweight integer IDs. They have no data themselves — components define the data.
-
-### **Components**
-
-Plain C# types (`struct`, `class`, `record`, etc). Stored densely in chunked arrays.
-
-### **Archetypes**
-
-Unique sets of components. Entities with the same component signature are grouped into the same chunk layout.
-
-### **Queries**
-
-Pull in chunks of entities matching component filters — the basis for all system updates.
-
-### **Source-Generated Iterators**
-
-`ForEach` methods generate strongly-typed, allocation-free iteration code.
+* **Entities**: Lightweight integer IDs. They have no data themselves — components define the data.
+* **Components**: Plain C# types (`struct`, `class`, `record`, etc). Stored densely in chunked arrays.
+* **Archetypes**: Unique sets of components. Entities with the same component signature are grouped into the same chunk layout.
+* **Queries**: Pull in chunks of entities matching component filters — the basis for all system updates.
+* **Source-Generated Iterators**: `ForEach` methods generate strongly-typed, allocation-free iteration code.
 
 ---
 
@@ -58,17 +44,17 @@ var options = new EntityDatabaseOptions(
 var db = new EntityDatabase(options);
 ```
 
-Each database is completely isolated, allowing multiple worlds.
-
 ---
 
 # Entities
 
 ```csharp
+// create entity
 var entity = db.Create(new Position(10, 10), new Health(100, 100));
-
 db.Exists(entity);      // true
-db.Destroy(entity.Id);  // destroy
+
+// destroy entity
+db.Destroy(entity);     // destroy
 db.Exists(entity);      // false
 ```
 
@@ -79,26 +65,27 @@ db.Exists(entity);      // false
 
 # Components
 
-Components are simple data types:
+Components are simple data types that can be `struct` or `class`:
 
 ```csharp
 public record struct Position(float X, float Y);
 public record struct Velocity(float Dx, float Dy);
 ```
+> *`class` components should be avoided when fast enumeration is a priority of the component*
 
 ### Add / Read / Write / Remove
 
 ```csharp
-db.Add(entity.Id, new Velocity(10, 10));
+db.Add(entity, new Velocity(10, 10));
 
-db.Has<Velocity>(entity.Id);                // true
+db.Has<Velocity>(entity);                // true
 
-db.Set(entity.Id, new Velocity(200, 200));  // overwrite component
+db.Set(entity, new Velocity(200, 200));  // overwrite component
 
-db.Remove<Velocity>(entity.Id);
+db.Remove<Velocity>(entity);
 
 // Read-only
-readonly ref var position = ref db.Read<Position>(entity.Id);
+ref readonly var position = ref db.Read<Position>(entity);
 
 // Write
 ref var pos = ref db.Write<Position>(entity.Id);
@@ -113,7 +100,7 @@ Buffers act like **inline component lists**, stored directly in the chunk.
 Only `unmanaged` types can be buffered.
 
 ```csharp
-[Buffer(8)]
+[Buffer(8)] // use the buffer attribute to mark a component as buffered and passing the inline buffer size
 public record struct InventoryItem(int Id, int Count);
 ```
 
@@ -126,7 +113,7 @@ var entity = db.Create(
     new[] {
         new InventoryItem(1, 1),
         new InventoryItem(2, 10)
-    } // Buffer must be the last argument
+    } // Buffers must be the last component arguments
 );
 ```
 
@@ -149,7 +136,7 @@ write.Add(new InventoryItem(3, 5));
 
 ## Tags
 
-Tags are **zero-data components** used for classification:
+Tags are **zero-data components** used for classification and filtering:
 
 ```csharp
 [Tag] public struct PlayerTag { }
@@ -241,12 +228,18 @@ query.ForEachChunk((int len,
 
 # Change Filter
 
+Enable change filtering with the `TrackChanges` attribute:
+```csharp
+[TrackChanges]
+public record struct Position(float X, float Y);
+```
+
 Only enumerate chunks whose components were written recently.
 
 ```csharp
 var query = db.QueryBuilder
     .WithAll<Position, SentPosition, PositionDelta>()
-    .WithChangeFilter<Position>()
+    .WithChangeFilter<Position>()                         // add change filter
     .Build();
 
 query.ForEach((in Position pos, ref SentPosition sent, ref PositionDelta delta) =>

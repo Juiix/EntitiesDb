@@ -13,38 +13,35 @@ public partial class EntityDatabase
 	{
 		var genericsC = Generics(indexC); 
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
-		var argsC = FormatComma(indexC, "in t{0}Component");
-		var idArgsC = FormatComma(indexC, "ids.T{0}");
+		var parametersCArr = FormatComma(indexC, "in T{0}? t{0}Component");
+		var argsCArr = FormatComma(indexC, "in t{0}Component");
+		var setsC = FormatLine(indexC, "chunk.Write<T{0}>(entityReference.Slot.Index) = t{0}Component;");
 		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
 			var parametersB = FormatComma(indexB, "ReadOnlySpan<T{0}> t{0}Components = default", indexC);
+			var parametersBArr = FormatComma(indexB, "T{0}[] t{0}Components", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
-			var argsB = FormatComma(indexB, "t{0}Components", indexC);
-			var idArgsB = FormatComma(indexB, "ids.T{0}", indexC);
+			var argsBArr = FormatComma(indexB, "t{0}Components.AsSpan()", indexC);
+			var setsB = FormatLine(indexB, "chunk.WriteBuffer<T{0}>(entityReference.Slot.Index).Set(t{0}Components);", indexC);
 #>
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
-	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity,<#= parametersC #>, <#= parametersB #>)
+	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity, <#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertNotBuffered<<#= genericsC #>>();
-		ComponentMeta.AssertBuffered<<#= genericsB #>>();
-		var ids = ComponentRegistry.GetIds<<#= genericsC #>,<#= genericsB #>>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<<#= genericsC #>>.Check + ComponentBufferWritable<<#= genericsB #>>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		var cIds = new Ids<<#= genericsC #>>(<#= idArgsC #>);
-		archetype.Set(in entityReference.Slot, in cIds, <#= argsC #>);
-
-		var bIds = new Ids<<#= genericsB #>>(<#= idArgsB #>);
-		archetype.Init(in entityReference.Slot, in bIds, <#= argsB #>);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(setsC, 8) #>
+		<#= Indent(setsB, 8) #>
+	}
+	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
+	[ChunkChange]
+	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity, <#= parametersCArr #>, <#= parametersBArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		Set(entity, <#= argsCArr #>, <#= argsBArr #>);
 	}
 <#
 		}

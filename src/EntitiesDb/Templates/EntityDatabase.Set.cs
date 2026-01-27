@@ -7,255 +7,255 @@ public partial class EntityDatabase
 	[ChunkChange]
 	public void Set<T0, T1>(Entity entity, in T0? t0Component, in T1? t1Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1>();
-		var ids = ComponentRegistry.GetIds<T0, T1>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component, in T11? t11Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
+        chunk.Write<T11>(entityReference.Slot.Index) = t11Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component, in T11? t11Component, in T12? t12Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
+        chunk.Write<T11>(entityReference.Slot.Index) = t11Component;
+        chunk.Write<T12>(entityReference.Slot.Index) = t12Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component, in T11? t11Component, in T12? t12Component, in T13? t13Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
+        chunk.Write<T11>(entityReference.Slot.Index) = t11Component;
+        chunk.Write<T12>(entityReference.Slot.Index) = t12Component;
+        chunk.Write<T13>(entityReference.Slot.Index) = t13Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component, in T11? t11Component, in T12? t12Component, in T13? t13Component, in T14? t14Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
+        chunk.Write<T11>(entityReference.Slot.Index) = t11Component;
+        chunk.Write<T12>(entityReference.Slot.Index) = t12Component;
+        chunk.Write<T13>(entityReference.Slot.Index) = t13Component;
+        chunk.Write<T14>(entityReference.Slot.Index) = t14Component;
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(Entity entity, in T0? t0Component, in T1? t1Component, in T2? t2Component, in T3? t3Component, in T4? t4Component, in T5? t5Component, in T6? t6Component, in T7? t7Component, in T8? t8Component, in T9? t9Component, in T10? t10Component, in T11? t11Component, in T12? t12Component, in T13? t13Component, in T14? t14Component, in T15? t15Component)
 	{
-		ComponentMeta.AssertNotBuffered<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
-		var ids = ComponentRegistry.GetIds<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>();
-        var checkSignature = Signature.FromIds(in ids);
+		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Check;
 		ref var entityReference = ref GetEntity(entity);
-
-		// check already added
-		var archetype = entityReference.Archetype;
-		if (!archetype.Signature.HasAny(in checkSignature))
-			throw archetype.GetComponentNotFound(entity.Id, in ids);
-
-		// set component value
-		archetype.Set(in entityReference.Slot, in ids, in t0Component, in t1Component, in t2Component, in t3Component, in t4Component, in t5Component, in t6Component, in t7Component, in t8Component, in t9Component, in t10Component, in t11Component, in t12Component, in t13Component, in t14Component, in t15Component);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+        chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
+        chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
+        chunk.Write<T3>(entityReference.Slot.Index) = t3Component;
+        chunk.Write<T4>(entityReference.Slot.Index) = t4Component;
+        chunk.Write<T5>(entityReference.Slot.Index) = t5Component;
+        chunk.Write<T6>(entityReference.Slot.Index) = t6Component;
+        chunk.Write<T7>(entityReference.Slot.Index) = t7Component;
+        chunk.Write<T8>(entityReference.Slot.Index) = t8Component;
+        chunk.Write<T9>(entityReference.Slot.Index) = t9Component;
+        chunk.Write<T10>(entityReference.Slot.Index) = t10Component;
+        chunk.Write<T11>(entityReference.Slot.Index) = t11Component;
+        chunk.Write<T12>(entityReference.Slot.Index) = t12Component;
+        chunk.Write<T13>(entityReference.Slot.Index) = t13Component;
+        chunk.Write<T14>(entityReference.Slot.Index) = t14Component;
+        chunk.Write<T15>(entityReference.Slot.Index) = t15Component;
 	}
 }

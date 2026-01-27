@@ -13,15 +13,13 @@ public sealed class ManualQueryTests
 			.WithNone<EnemyTag>()
 			.Build();
 
-		var ids = db.ComponentRegistry.GetIds<Position, Health>();
 		foreach (var archetype in query)
 		{
-			var offsets = archetype.GetOffsets(in ids);
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
-				var positions = chunk.WriteHandle<Position>(offsets.T0);
-				var healths = chunk.WriteHandle<Health>(offsets.T1);
+				var positions = chunk.WriteHandle<Position>();
+				var healths = chunk.WriteHandle<Health>();
 				foreach (var index in chunk)
 				{
 					ref readonly var entity = ref entities[index];
@@ -59,16 +57,14 @@ public sealed class ManualQueryTests
 			.WithOnly<Health>()
 			.Build();
 
-		var healthId = db.ComponentRegistry.GetId<Health>();
 		var results = new List<(int Id, Health Health)>();
 
 		foreach (var archetype in query)
 		{
-			var offset = archetype.GetOffset(healthId);
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
-				var healths = chunk.WriteHandle(offset);
+				var healths = chunk.WriteHandle<Health>();
 
 				foreach (var i in chunk)
 				{
@@ -96,17 +92,15 @@ public sealed class ManualQueryTests
 			.WithNone<Velocity>()
 			.Build();
 
-		var posId = db.ComponentRegistry.GetId<Position>();
 		var results = new List<int>();
 
 		foreach (var archetype in query)
 		{
-			var offset = archetype.GetOffset(posId);
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
 				// Position is guaranteed present by the filter
-				var positions = chunk.WriteHandle<Position>(offset);
+				var positions = chunk.WriteHandle<Position>();
 				foreach (var i in chunk)
 				{
 					ref readonly var e = ref entities[i];
@@ -132,16 +126,14 @@ public sealed class ManualQueryTests
 			.WithOnly<Position>()
 			.Build();
 
-		var posId = db.ComponentRegistry.GetId<Position>();
 		var positions = new Dictionary<int, Position>();
 
 		foreach (var archetype in query)
 		{
-			var offset = archetype.GetOffset(posId);
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
-				var pos = chunk.WriteHandle<Position>(offset);
+				var pos = chunk.WriteHandle<Position>();
 				foreach (var i in chunk)
 				{
 					ref readonly var e = ref entities[i];
@@ -167,17 +159,15 @@ public sealed class ManualQueryTests
 			.WithNone<MerchantTag>()
 			.Build();
 
-		var ids = db.ComponentRegistry.GetIds<Position, NameTag>();
 		var found = new Dictionary<int, (Position Pos, string Name)>();
 
 		foreach (var archetype in query)
 		{
-			var offsets = archetype.GetOffsets(in ids);
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
-				var positions = chunk.WriteHandle<Position>(offsets.T0);
-				var names = chunk.WriteHandle<NameTag>(offsets.T1);
+				var positions = chunk.WriteHandle<Position>();
+				var names = chunk.WriteHandle<NameTag>();
 
 				foreach (var i in chunk)
 				{
@@ -209,13 +199,12 @@ public sealed class ManualQueryTests
 			.WithNone<BossTag>()
 			.Build();
 
-		var nameId = db.ComponentRegistry.GetId<NameTag>();
 		var ids = new List<int>();
 		var names = new List<string>();
 
 		foreach (var archetype in query)
 		{
-			var nameOffset = archetype.GetOffset(nameId);
+			var hasName = archetype.Has<NameTag>();
 			foreach (ref readonly var chunk in archetype)
 			{
 				var entities = chunk.EntityHandle();
@@ -225,9 +214,9 @@ public sealed class ManualQueryTests
 					ids.Add(e.Id);
 				}
 
-				if (nameOffset.Exists)
+				if (hasName)
 				{
-					var nameTags = chunk.WriteHandle<NameTag>(nameOffset);
+					var nameTags = chunk.WriteHandle<NameTag>();
 					foreach (var i in chunk)
 					{
 						ref var nt = ref nameTags[i];
@@ -279,17 +268,14 @@ public sealed class ManualQueryTests
 		var entityHandle = default(ReadHandle<Entity>);
 		var invHandle = default(WriteBufferHandle<InventoryItem>);
 
-		var invId = db.ComponentRegistry.GetId<InventoryItem>();
-
 		var lengths = new Dictionary<int, int>();
 
 		foreach (var archetype in query)
 		{
-			var offset = archetype.GetOffset(invId);
 			foreach (ref readonly var chunk in archetype)
 			{
 				entityHandle = chunk.EntityHandle();
-				invHandle = chunk.WriteBufferHandle<InventoryItem>(offset);
+				invHandle = chunk.WriteBufferHandle<InventoryItem>();
 
 				foreach (var i in chunk)
 				{
@@ -375,17 +361,15 @@ public sealed class ManualQueryTests
 
 		var entityHandle = default(ReadHandle<Entity>);
 		var dmgHandle = default(ReadBufferHandle<Damage>);
-		var dmgId = db.ComponentRegistry.GetId<Damage>();
 
 		var seenAny = false;
 
 		foreach (var archetype in query)
 		{
-			var offset = archetype.GetOffset(dmgId);
 			foreach (ref readonly var chunk in archetype)
 			{
 				entityHandle = chunk.EntityHandle();
-				dmgHandle = chunk.ReadBufferHandle<Damage>(offset);
+				dmgHandle = chunk.ReadBufferHandle<Damage>();
 
 				foreach (var i in chunk)
 				{

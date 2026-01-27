@@ -13,8 +13,10 @@ public partial class EntityDatabase
 	{
         var generics = Generics(index);
 		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components = default");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
 		var constraints = FormatLine(index, "where T{0} : unmanaged");
-		var args = FormatComma(index, "t{0}Components");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
+		var sets = FormatLine(index, "chunk.WriteBuffer<T{0}>(entityReference.Slot.Index).Set(t{0}Components);");
 #>
 	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -22,16 +24,10 @@ public partial class EntityDatabase
 	public void Add<<#= generics #>>(Entity entity, <#= parameters #>)
 		<#= Indent(constraints, 8) #>
 	{
-		ComponentMeta.AssertBuffered<<#= generics #>>();
-		var ids = ComponentRegistry.GetIds<<#= generics #>>();
-        var addedSignature = Signature.FromIds(in ids);
+		var addedSignature = ComponentBuffer<<#= generics #>>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
-		// check already added
 		var srcArchetype = entityReference.Archetype;
-		if (srcArchetype.Signature.HasAny(in addedSignature))
-            throw srcArchetype.GetComponentAlreadyAdded(entity.Id, in ids);
-
         var dstSignature = srcArchetype.Signature.Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -39,7 +35,16 @@ public partial class EntityDatabase
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 
 		// set component value
-		dstArchetype.Init(in entityReference.Slot, in ids, <#= args #>);
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
+	}
+	/// <inheritdoc cref="Add{T0}(Entity, ReadOnlySpan{T0})"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<<#= generics #>>(Entity entity, <#= parametersArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		Add(entity, <#= argsArr #>);
 	}
 <#
 	}
