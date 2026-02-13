@@ -41,7 +41,7 @@ public sealed class ParallelJobRunner : IParallelJobRunner, IDisposable
 
 		_workersStart.Set();
 
-		RunJob(jobs.Span[0], jobs.Length);
+		RunJob(jobs.Span[0], ThreadCount);
 
 		_countdown.Wait();
 		_countdown.Reset();
@@ -81,7 +81,7 @@ public sealed class ParallelJobRunner : IParallelJobRunner, IDisposable
 			var jobs = _jobs.Span;
 			RunJob(threadIndex < jobs.Length
 				? jobs[threadIndex]
-				: null, jobs.Length);
+				: null, ThreadCount);
 		}
 	}
 
@@ -124,15 +124,5 @@ public sealed class ParallelJobRunner : IParallelJobRunner, IDisposable
 			threads[i] = thread;
 		}
 		return threads;
-	}
-
-	private static AutoResetEvent[] CreateStartEvents(int v)
-	{
-		var events = new AutoResetEvent[v];
-		for (int i = 0; i < v; i++)
-		{
-			events[i] = new AutoResetEvent(false);
-		}
-		return events;
 	}
 }

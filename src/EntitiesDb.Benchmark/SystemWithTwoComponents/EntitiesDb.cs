@@ -55,7 +55,7 @@ public partial class SystemWithTwoComponents
 	public void EntitiesDb_ForEachChunkParallel_Simd()
 	{
 		var sum = Vector256<int>.One;
-		_entitiesDb.Query.ForEachChunkParallel(static (int length, WriteHandle<Component1> handleA, WriteHandle<Component2> handleB, ref Vector256<int> sum) =>
+		_entitiesDb.Query.ForEachChunkParallel(static (int length, ReadHandle<Entity> entities, WriteHandle<Component1> handleA, WriteHandle<Component2> handleB, ref Vector256<int> sum) =>
 		{
 			var alignedLength = length - (length & 7);
 			var simdHandleA = handleA.Reinterpret<Component1, Vector256<int>>();
