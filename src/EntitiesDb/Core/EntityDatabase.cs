@@ -15,23 +15,27 @@ public sealed partial class EntityDatabase : IDisposable
 	private readonly EntityMap _entityMap;
 	private Queue<Entity> _recycledEntityIds = new(1024);
 	private readonly int[] _globalChangeVersions = new int[ComponentRegistry.MaxComponents];
+	private readonly bool _disposeParallelRunner = false;
+
+	/// <inheritdoc cref="EntityDatabase(EntityDatabaseOptions, IParallelJobRunner?)"/>
+	public EntityDatabase(EntityDatabaseOptions options) : this(options, null) { }
 
 	/// <summary>
 	/// Creates a new <see cref="EntityDatabase"/> instance
 	/// </summary>
-	/// <param name="chunkByteSize">The size in bytes of a chunk</param>
-	/// <param name="maxEntities">The maximum entities to store</param>
-	/// <param name="parallelRunner">The <see cref="ParallelJobRunner"/> used for parallel support</param>
+	/// <param name="options">Options for the <see cref="EntityDatabase"/> instance</param>
+	/// <param name="parallelJobRunner">The <see cref="IParallelJobRunner"/> used for parallel support, otherwise a <see cref="ParallelJobRunner"/> instance is used</param>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public EntityDatabase(EntityDatabaseOptions options)
+	public EntityDatabase(EntityDatabaseOptions options, IParallelJobRunner? parallelJobRunner = null)
 	{
-		if (options.ChunkByteSize <= 0) throw new ArgumentOutOfRangeException(nameof(options.ChunkByteSize), "Value cannot by less than or equal to 0");
-		if (options.MaxEntities <= 0) throw new ArgumentOutOfRangeException(nameof(options.MaxEntities), "Value cannot by less than or equal to 0");
+		if (options.ChunkByteSize <= 0) throw new ArgumentOutOfRangeException(nameof(options.ChunkByteSize), "Value cannot be less than or equal to 0");
+		if (options.MaxEntities <= 0) throw new ArgumentOutOfRangeException(nameof(options.MaxEntities), "Value cannot be less than or equal to 0");
 
+		_disposeParallelRunner = parallelJobRunner == null;
 		_entityMap = new(options.MaxEntities);
-        Archetypes = new(options.ChunkByteSize, _globalChangeVersions);
+		Archetypes = new(options.ChunkByteSize, _globalChangeVersions);
 		MaxEntities = options.MaxEntities;
-		ParallelRunner = options.ParallelThreads > 1 ? new ParallelJobRunner(options.ParallelThreads) : null;
+		ParallelRunner = options.ParallelThreads > 1 ? parallelJobRunner ?? new ParallelJobRunner(options.ParallelThreads) : null;
 		QueryBuilder = new(Archetypes, ParallelRunner, _globalChangeVersions);
 	}
 
@@ -56,9 +60,9 @@ public sealed partial class EntityDatabase : IDisposable
 	public QueryBuilder QueryBuilder { get; }
 
 	/// <summary>
-	/// Enables parallel jobs
+	/// Enables parallel job execution. Null if ParallelThreads passed was less than or equal to 1
 	/// </summary>
-	internal ParallelJobRunner? ParallelRunner { get; }
+	public IParallelJobRunner? ParallelRunner { get; }
 
 	/// <summary>
 	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
@@ -189,7 +193,7 @@ public sealed partial class EntityDatabase : IDisposable
 		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(slot.Index) = t0Component;
 		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
@@ -491,7 +495,8 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Dispose()
 	{
 		Archetypes.Dispose();
-		ParallelRunner?.Dispose();
+		if (_disposeParallelRunner && ParallelRunner is ParallelJobRunner runner)
+			runner.Dispose();
 	}
 
 	/// <summary>

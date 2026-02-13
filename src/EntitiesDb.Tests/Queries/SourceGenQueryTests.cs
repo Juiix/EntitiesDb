@@ -144,8 +144,13 @@ public sealed class SourceGenQueryTests
 			ids.Add(e.Id);
 		}, ref ids);
 
+		var nameQuery = db.QueryBuilder
+			.WithAll<EnemyTag, NameTag>()
+			.WithNone<BossTag>()
+			.Build();
+
 		var names = new List<string>();
-		query.ForEach((Entity e, in NameTag nt, ref List<string> names) =>
+		nameQuery.ForEach((Entity e, in NameTag nt, ref List<string> names) =>
 		{
 			names.Add(nt.Text);
 		}, ref names);

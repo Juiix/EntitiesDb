@@ -1,6 +1,6 @@
 ﻿namespace EntitiesDb;
 
-internal interface IJob
+public interface IJob
 {
 	void Execute();
 }

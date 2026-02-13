@@ -9,7 +9,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1>(Entity entity, in T0? t0Component = default, ReadOnlySpan<T1> t1Components = default)
 		where T1 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -29,7 +29,7 @@ public partial class CommandBuffer
 		where T1 : unmanaged
         where T2 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -52,7 +52,7 @@ public partial class CommandBuffer
         where T2 : unmanaged
         where T3 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -78,7 +78,7 @@ public partial class CommandBuffer
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -107,7 +107,7 @@ public partial class CommandBuffer
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -139,7 +139,7 @@ public partial class CommandBuffer
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -174,7 +174,7 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -212,7 +212,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -253,7 +253,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0>.Signature | ComponentBufferWritable<T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -288,7 +288,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, ReadOnlySpan<T2> t2Components = default)
 		where T2 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -309,7 +309,7 @@ public partial class CommandBuffer
 		where T2 : unmanaged
         where T3 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -333,7 +333,7 @@ public partial class CommandBuffer
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -360,7 +360,7 @@ public partial class CommandBuffer
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -390,7 +390,7 @@ public partial class CommandBuffer
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -423,7 +423,7 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -459,7 +459,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -498,7 +498,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1>.Signature | ComponentBufferWritable<T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -532,7 +532,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, ReadOnlySpan<T3> t3Components = default)
 		where T3 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -554,7 +554,7 @@ public partial class CommandBuffer
 		where T3 : unmanaged
         where T4 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -579,7 +579,7 @@ public partial class CommandBuffer
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -607,7 +607,7 @@ public partial class CommandBuffer
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -638,7 +638,7 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -672,7 +672,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -709,7 +709,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2>.Signature | ComponentBufferWritable<T3, T4, T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -742,7 +742,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, ReadOnlySpan<T4> t4Components = default)
 		where T4 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -765,7 +765,7 @@ public partial class CommandBuffer
 		where T4 : unmanaged
         where T5 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -791,7 +791,7 @@ public partial class CommandBuffer
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -820,7 +820,7 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -852,7 +852,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -887,7 +887,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3>.Signature | ComponentBufferWritable<T4, T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -919,7 +919,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4, T5>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, ReadOnlySpan<T5> t5Components = default)
 		where T5 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -943,7 +943,7 @@ public partial class CommandBuffer
 		where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -970,7 +970,7 @@ public partial class CommandBuffer
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1000,7 +1000,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1033,7 +1033,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4>.Signature | ComponentBufferWritable<T5, T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1064,7 +1064,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4, T5, T6>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, ReadOnlySpan<T6> t6Components = default)
 		where T6 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1089,7 +1089,7 @@ public partial class CommandBuffer
 		where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1117,7 +1117,7 @@ public partial class CommandBuffer
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1148,7 +1148,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5>.Signature | ComponentBufferWritable<T6, T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1178,7 +1178,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, ReadOnlySpan<T7> t7Components = default)
 		where T7 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1204,7 +1204,7 @@ public partial class CommandBuffer
 		where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7, T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7, T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1233,7 +1233,7 @@ public partial class CommandBuffer
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7, T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6>.Signature | ComponentBufferWritable<T7, T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1262,7 +1262,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, ReadOnlySpan<T8> t8Components = default)
 		where T8 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Signature | ComponentBufferWritable<T8>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6, T7>.Signature | ComponentBufferWritable<T8>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1289,7 +1289,7 @@ public partial class CommandBuffer
 		where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Signature | ComponentBufferWritable<T8, T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6, T7>.Signature | ComponentBufferWritable<T8, T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);
@@ -1317,7 +1317,7 @@ public partial class CommandBuffer
 	public void Set<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>(Entity entity, in T0? t0Component = default, in T1? t1Component = default, in T2? t2Component = default, in T3? t3Component = default, in T4? t4Component = default, in T5? t5Component = default, in T6? t6Component = default, in T7? t7Component = default, in T8? t8Component = default, ReadOnlySpan<T9> t9Components = default)
 		where T9 : unmanaged
 	{
-		var signature = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature | ComponentBufferWritable<T9>.Signature;
+		var signature = ComponentSingle<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature | ComponentBufferWritable<T9>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);

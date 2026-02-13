@@ -29,7 +29,7 @@ public partial class CommandBuffer
 	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity, <#= parametersC #>, <#= parametersB #>)
 		<#= Indent(constraints, 8) #>
 	{
-		var signature = ComponentSingleWritable<<#= genericsC #>>.Signature | ComponentBufferWritable<<#= genericsB #>>.Signature;
+		var signature = ComponentSingle<<#= genericsC #>>.Signature | ComponentBufferWritable<<#= genericsB #>>.Signature;
 		lock (_lock)
 		{
 			var entityIndex = Register(entity);

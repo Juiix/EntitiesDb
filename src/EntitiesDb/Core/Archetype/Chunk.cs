@@ -173,7 +173,7 @@ public partial struct Chunk
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
 		var validCheck = offset >= 0 ? 1 : 0;
-		//LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
 			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset) * validCheck))
 			: ref ((T0?[])ManagedComponents[offset])[0];

@@ -6,13 +6,13 @@ namespace EntitiesDb;
 public sealed partial class Query
 {
 	private readonly ArchetypeCollection _archetypes;
-	private readonly ParallelJobRunner? _parallelRunner;
+	private readonly IParallelJobRunner? _parallelRunner;
 	private readonly QueryFilter _filter;
 	private Archetype[] _matchingArchetypes = ArrayPool<Archetype>.Shared.Rent(16);
 	private int _matchingCount = 0;
 	private int _matchVersion;
 
-	internal Query(ArchetypeCollection archetypes, ParallelJobRunner? parallelRunner, QueryFilter filter, ChangeFilter? changeFilter)
+	internal Query(ArchetypeCollection archetypes, IParallelJobRunner? parallelRunner, QueryFilter filter, ChangeFilter? changeFilter)
 	{
 		_archetypes = archetypes;
 		_filter = filter;

@@ -5,7 +5,7 @@ namespace EntitiesDb;
 public sealed partial class QueryBuilder
 {
 	private readonly ArchetypeCollection _archetypes;
-	private readonly ParallelJobRunner? _parallelRunner;
+	private readonly IParallelJobRunner? _parallelRunner;
 	private readonly int[] _globalChangeVersions;
 	private int _changeFilterId = -1;
 	private Signature _all;
@@ -13,7 +13,7 @@ public sealed partial class QueryBuilder
 	private Signature _none;
 	private QueryFilterMode _filterMode;
 
-	internal QueryBuilder(ArchetypeCollection archetypes, ParallelJobRunner? parallelRunner, int[] globalChangeVersions)
+	internal QueryBuilder(ArchetypeCollection archetypes, IParallelJobRunner? parallelRunner, int[] globalChangeVersions)
 	{
 		_archetypes = archetypes;
 		_parallelRunner = parallelRunner;

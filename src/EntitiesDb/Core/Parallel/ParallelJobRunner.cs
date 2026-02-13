@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace EntitiesDb;
 
-internal sealed class ParallelJobRunner : IDisposable
+public sealed class ParallelJobRunner : IParallelJobRunner, IDisposable
 {
 	private readonly Thread[] _threads;
 	private readonly Exception[] _exceptions;
@@ -31,6 +31,8 @@ internal sealed class ParallelJobRunner : IDisposable
 	public void ExecuteJobs(Memory<IJob?> jobs)
 	{
 		if (jobs.Length == 0) return;
+		if (jobs.Length > ThreadCount)
+			throw new InvalidOperationException("Cannot run more jobs than threads available. Keep job count below ThreadCount");
 
 		_jobs = jobs;
 		Interlocked.Increment(ref _run);

@@ -156,7 +156,7 @@ public sealed class ChangeFilterTests
 	}
 
 	[Fact]
-	public void Query_AddComponent_MovesEntity_MarksTwoChunks()
+	public void Query_AddComponent_MovesEntity_MarksOneChunk()
 	{
 		using var db = CreateDb();
 		db.FillPlayers();
@@ -164,16 +164,16 @@ public sealed class ChangeFilterTests
 		var query = db.QueryBuilder
 			.WithAll<Position>()
 			.WithAny<PlayerTag, BossTag>()
-			.WithChangeFilter<BossTag>()
+			.WithChangeFilter<ComponentTracked>()
 			.Build();
 
 		// 1. No chunks
 		Assert.Equal(0, query.CountChunks());
 
 		// Add a tag the player doesn't have to force an archetype move that still matches the query
-		db.Add(new Entity(0, 0), new BossTag());
+		db.Add(new Entity(0, 0), new ComponentTracked());
 
-		// 2. Two chunks (src & dst both have Position/PlayerTag and were written)
+		// 2. One chunk (dst both have Position/PlayerTag and were written)
 		Assert.Equal(1, query.CountChunks());
 
 		// 3. Consumed

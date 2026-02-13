@@ -3,7 +3,7 @@
 internal static class FakeDb
 {
 	// --- Core components already present ---
-	public record struct Position(float X, float Y);
+	[TrackChanges] public record struct Position(float X, float Y);
 	public record struct Health(int Value, int Max);
 
 	// --- Extra components for richer archetypes ---
@@ -12,12 +12,13 @@ internal static class FakeDb
 	public record struct Stamina(int Value, int Max);
 	public record struct Component1(int Value);
 	public record struct Component2(int Value);
+	[TrackChanges] public record struct ComponentTracked(int Value);
 
 	// Managed (has a reference)
 	public record struct NameTag(string Text);
 
 	// Buffered components (arrays-per-entity; internal capacities chosen to let some stay inline and some promote to heap)
-	[Buffer(4)] public record struct InventoryItem(int ItemId, int Count);
+	[Buffer(4)] [TrackChanges] public record struct InventoryItem(int ItemId, int Count);
 	[Buffer(8)] public record struct Damage(int Amount);
 
 	// Tags (zero-size)
