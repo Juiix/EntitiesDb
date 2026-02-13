@@ -470,18 +470,6 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
-	/// Creates a new <see cref="ChangeFilter{T}"/> with the current change state
-	/// </summary>
-	/// <typeparam name="T0"></typeparam>
-	/// <returns></returns>
-	public ChangeFilter<T0> CreateChangeFilter<T0>()
-	{
-		var id = Component<T0>.Id;
-		var version = Volatile.Read(ref _globalChangeVersions[id]);
-		return new ChangeFilter<T0>(id, version);
-	}
-
-	/// <summary>
 	/// Creates a new <see cref="CommandBuffer"/> for this <see cref="EntityDatabase"/> instance
 	/// </summary>
 	/// <param name="initialCapacity"></param>

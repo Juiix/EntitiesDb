@@ -41,7 +41,7 @@ public sealed partial class QueryBuilder
 	public Query Build()
 	{
 		var changeVersion = _changeFilterId >= 0 ? Volatile.Read(ref _globalChangeVersions[_changeFilterId]) : -1;
-		var changeFilter = _changeFilterId >= 0 ? new ChangeFilter(_changeFilterId, changeVersion) : null;
+		var changeFilter = _changeFilterId >= 0 ? new ChangeFilter(_changeFilterId, changeVersion, _globalChangeVersions) : null;
 		var query = new Query(_archetypes, _parallelRunner, new QueryFilter(_all, _any, _none, _filterMode), changeFilter);
 		Clear();
 		return query;

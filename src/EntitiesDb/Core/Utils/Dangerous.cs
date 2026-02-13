@@ -18,14 +18,17 @@ internal static unsafe class Dangerous
 
 	public static bool InterlockedExchangeIfGreaterThan(ref int location, int comparison, int newValue)
 	{
-		int initialValue;
-		do
+		unchecked
 		{
-			initialValue = Volatile.Read(ref location);
-			if (initialValue >= comparison) return false;
+			int initialValue;
+			do
+			{
+				initialValue = Volatile.Read(ref location);
+				if (initialValue - comparison > 0) return false;
+			}
+			while (Interlocked.CompareExchange(ref location, newValue, initialValue) != initialValue);
+			return true;
 		}
-		while (Interlocked.CompareExchange(ref location, newValue, initialValue) != initialValue);
-		return true;
 	}
 }
 

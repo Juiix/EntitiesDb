@@ -20,8 +20,7 @@ public sealed partial class Query
 		ChangeFilter = changeFilter;
 	}
 
-	public ChangeFilter? ChangeFilter { get; }
-
+	private ChangeFilter? ChangeFilter { get; }
 	private Span<Archetype> MatchingArchetypesSpan => _matchingArchetypes.AsSpan(0, _matchingCount);
 
 	/// <summary>
@@ -94,4 +93,9 @@ public sealed partial class Query
 		}
 		_matchVersion = _archetypes.Version;
 	}
+
+	/// <summary>
+	/// Resets all pending changes for this query. The next enumeration will only return changes from now on.
+	/// </summary>
+	public void ResetChanges() => ChangeFilter?.Reset();
 }

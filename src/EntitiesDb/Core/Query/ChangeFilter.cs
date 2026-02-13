@@ -1,23 +1,24 @@
-﻿namespace EntitiesDb;
+﻿using System.Threading;
+
+namespace EntitiesDb;
 
 public class ChangeFilter
 {
 	internal int InternalVersion;
 
-	internal ChangeFilter(int id, int version)
+	internal ChangeFilter(int id, int version, int[] globalChangeVersions)
 	{
 		Id = id;
 		InternalVersion = version;
+		GlobalChangeVersions = globalChangeVersions;
 	}
 
 	public int Id { get; }
 	public int Version => InternalVersion;
-}
+	public int[] GlobalChangeVersions { get; }
 
-public sealed class ChangeFilter<T> : ChangeFilter
-{
-	internal ChangeFilter(int id, int version) : base(id, version)
+	public void Reset()
 	{
-
+		InternalVersion = Volatile.Read(ref GlobalChangeVersions[Id]);
 	}
 }
