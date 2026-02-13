@@ -219,6 +219,17 @@ public partial struct Chunk
 	}
 
 	/// <summary>
+	/// If this chunk contains components of type <typeparamref name="T0"/>
+	/// </summary>
+	/// <typeparam name="T0"></typeparam>
+	/// <returns></returns>
+	public readonly bool Has<T0>()
+	{
+		var id = Component<T0>.Id;
+		return IdToOffsets[id] >= 0;
+	}
+
+	/// <summary>
 	/// Returns an index enumerator
 	/// </summary>
 	/// <returns></returns>
