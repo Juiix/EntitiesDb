@@ -53,9 +53,6 @@ internal unsafe static class ArchetypeUtils
 	/// <returns>An id -> offset lookup array</returns>
 	public static short[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int unmanagedCount, int chunkCapacity)
 	{
-		if (componentTypes.Length == 0)
-			return [];
-
 		var idToOffsets = new short[ComponentRegistry.MaxComponents];// CreateTightIdArray<short>(componentTypes, unmanagedCount);
 		Array.Fill(idToOffsets, (short)-1);
 

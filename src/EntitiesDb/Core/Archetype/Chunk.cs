@@ -68,9 +68,9 @@ public partial struct Chunk
 	{
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 & !ComponentMeta<T0>.IsBuffered & !ComponentMeta<T0>.IsZeroSize ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck))
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
 			: ref ((T0?[])ManagedComponents[offset])[index];
 	}
 
@@ -84,8 +84,8 @@ public partial struct Chunk
 	{
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
-		return new ReadBuffer<T0>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck));
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
+		return new ReadBuffer<T0>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride));
 	}
 
 	/// <summary>
@@ -99,10 +99,10 @@ public partial struct Chunk
 	{
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck))
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
 			: ref ((T0?[])ManagedComponents[offset])[index];
 	}
 
@@ -117,9 +117,9 @@ public partial struct Chunk
 	{
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
-		return new WriteBuffer<T0>((void*)((UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride) * validCheck));
+		return new WriteBuffer<T0>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride));
 	}
 
 	/// <summary>
@@ -141,9 +141,9 @@ public partial struct Chunk
 	{
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset) * validCheck))
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset))
 			: ref ((T0?[])ManagedComponents[offset])[0];
 		return new ReadHandle<T0?>(ref first);
 	}
@@ -157,8 +157,8 @@ public partial struct Chunk
 	{
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
-		var buffer = new ReadBuffer<T0>((void*)((UnmanagedComponents + offset) * validCheck));
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
+		var buffer = new ReadBuffer<T0>((void*)(UnmanagedComponents + offset));
 		return new ReadBufferHandle<T0>(buffer);
 	}
 
@@ -172,10 +172,10 @@ public partial struct Chunk
 	{
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)((UnmanagedComponents + offset) * validCheck))
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset))
 			: ref ((T0?[])ManagedComponents[offset])[0];
 		return new WriteHandle<T0?>(ref first);
 	}
@@ -190,9 +190,9 @@ public partial struct Chunk
 	{
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
-		var validCheck = offset >= 0 ? 1 : 0;
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
 		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
-		var buffer = new WriteBuffer<T0>((void*)((UnmanagedComponents + offset) * validCheck));
+		var buffer = new WriteBuffer<T0>((void*)(UnmanagedComponents + offset));
 		return new WriteBufferHandle<T0>(buffer);
 	}
 
@@ -356,8 +356,8 @@ public partial struct Chunk
 			if (componentType.IsBuffer)
 			{
 				DynamicBuffer.Clone(
-					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
 					(byte*)srcPtr + offset + componentType.Stride * srcIndex,
+					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
 					(uint)componentType.Stride
 				);
 			}
