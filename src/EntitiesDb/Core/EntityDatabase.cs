@@ -586,10 +586,11 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// clear / init buffers
 		ref var srcChunk = ref srcArchetype.GetChunk(srcSlot.ChunkIndex);
+		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
 		var removedMask = srcArchetype.Signature.AndNot(dstArchetype.Signature);
 		var addedMask = dstArchetype.Signature.AndNot(srcArchetype.Signature);
-		srcArchetype.ClearBuffers(ref srcChunk, in entityReference.Slot, in removedMask);
-		srcArchetype.InitBuffers(ref srcChunk, in entityReference.Slot, in addedMask);
+		srcArchetype.ClearBuffers(ref srcChunk, in srcSlot, in removedMask);
+		dstArchetype.InitBuffers(ref dstChunk, in dstSlot, in addedMask);
 
 		// copy data
 		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot);
