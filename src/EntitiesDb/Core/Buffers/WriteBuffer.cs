@@ -99,11 +99,18 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 		get => new(DataPtr, GetSize());
 	}
 
+	public ReadBuffer<T> ReadOnly
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get => new(_header);
+	}
+
 	public ReadOnlySpan<T> ReadOnlySpan
 	{
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		get => new(DataPtr, GetSize());
 	}
+
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref T GetPinnableReference()
