@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace EntitiesDb.Core.Buffers;
+namespace EntitiesDb;
 
 public unsafe sealed class StandaloneBuffer<T> : IDisposable where T : unmanaged
 {
