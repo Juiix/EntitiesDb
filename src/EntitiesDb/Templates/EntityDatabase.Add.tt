@@ -32,6 +32,25 @@ public partial class EntityDatabase
 		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
 		<#= Indent(sets, 8) #>
 	}
+	/// <inheritdoc cref="Add{T0}(int, in T0)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<<#= generics #>>(int entityId, <#= parameters #>)
+	{
+		var addedSignature = ComponentSingle<<#= generics #>>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
+	}
 <#
 	}
 #>

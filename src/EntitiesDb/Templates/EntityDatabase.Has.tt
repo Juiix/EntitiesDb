@@ -17,6 +17,12 @@ public partial class EntityDatabase
 		ref var reference = ref GetEntity(entity);
 		return reference.Archetype.Has<<#= generics #>>();
 	}
+	/// <inheritdoc cref="Has{T0}(int)"/>
+	public bool Has<<#= generics #>>(int entityId)
+	{
+		ref var reference = ref GetEntity(entityId);
+		return reference.Archetype.Has<<#= generics #>>();
+	}
 <#
 	}
 #>

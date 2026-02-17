@@ -36,12 +36,30 @@ public partial class EntityDatabase
 		<#= Indent(setsC, 8) #>
 		<#= Indent(setsB, 8) #>
 	}
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
+	[ChunkChange]
+	public void Set<<#= genericsC #>, <#= genericsB #>>(int entityId, <#= parametersC #>, <#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		_ = ComponentSingleWritable<<#= genericsC #>>.Check + ComponentBufferWritable<<#= genericsB #>>.Check;
+		ref var entityReference = ref GetEntity(entityId);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(setsC, 8) #>
+		<#= Indent(setsB, 8) #>
+	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>
 	[ChunkChange]
 	public void Set<<#= genericsC #>, <#= genericsB #>>(Entity entity, <#= parametersCArr #>, <#= parametersBArr #>)
 		<#= Indent(constraints, 8) #>
 	{
 		Set(entity, <#= argsCArr #>, <#= argsBArr #>);
+	}
+	/// <inheritdoc cref="Set{T0}(int, in T0)"/>
+	[ChunkChange]
+	public void Set<<#= genericsC #>, <#= genericsB #>>(int entityId, <#= parametersCArr #>, <#= parametersBArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		Set(entityId, <#= argsCArr #>, <#= argsBArr #>);
 	}
 <#
 		}

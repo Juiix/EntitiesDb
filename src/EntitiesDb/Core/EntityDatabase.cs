@@ -68,7 +68,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
 	/// </summary>
 	/// <remarks>
-	/// Use <see cref="Set{T0}(Entity, T0)"/> if a component is already attached to the entity.
+	/// Use <see cref="Set{T0}(Entity, in T0)"/> if a component is already attached to the entity.
 	/// </remarks>
 	/// <param name="entityId">Id of the entity altered</param>
 	/// <param name="t0Component">Component value</param>
@@ -94,6 +94,40 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Use <see cref="Set{T0}(Entity, in T0)"/> if a component is already attached to the entity.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Add{T0}(Entity, in T0)"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <param name="entityId">Id of the entity altered</param>
+	/// <param name="t0Component">Component value</param>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<T0>(int entityId, in T0? t0Component = default)
+	{
+		var addedSignature = ComponentSingle<T0>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+	}
+
+	/// <summary>
 	/// Adds component buffers to an entity. Entity components are copied to a new <see cref="Archetype"/>.
 	/// </summary>
 	/// <remarks>
@@ -107,6 +141,27 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Add<T0>(Entity entity, T0[] t0Components) where T0 : unmanaged
 	{
 		Add(entity, t0Components.AsSpan());
+	}
+
+	/// <summary>
+	/// Adds component buffers to an entity. Entity components are copied to a new <see cref="Archetype"/>.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Use <see cref="Set{T0}(Entity, ReadOnlySpan{T0})"/> if a component buffer is already attached to the entity.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Add{T0}(Entity, T0[])"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <param name="entity">The target entity</param>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<T0>(int entityId, T0[] t0Components) where T0 : unmanaged
+	{
+		Add(entityId, t0Components.AsSpan());
 	}
 
 	/// <summary>
@@ -139,6 +194,40 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Adds component buffers to an entity. Entity components are copied to a new <see cref="Archetype"/>.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Use <see cref="Set{T0}(Entity, ReadOnlySpan{T0})"/> if a component buffer is already attached to the entity.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Add{T0}(Entity, ReadOnlySpan{T0})"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <param name="entity">The target entity</param>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<T0>(int entityId, ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
+	{
+		var addedSignature = ComponentBuffer<T0>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// buffers must be initialized for first use since
+		// SetBuffer relies on internal state
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+	}
+
+	/// <summary>
 	/// Clones an existing entity and its components
 	/// </summary>
 	/// <param name="entity">The target entity</param>
@@ -151,6 +240,34 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		// get entity
 		ref var srcReference = ref GetEntity(entity);
+
+		// get id & copy components
+		var archetype = srcReference.Archetype;
+		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
+		var dstSlot = archetype.AddEntity(dstEntityId, out _);
+		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		archetype.CloneComponents(in srcReference.Slot, in dstSlot);
+		EntityCount++;
+
+		return dstEntityId;
+	}
+
+	/// <summary>
+	/// Clones an existing entity and its components
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Clone(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <param name="entity">The target entity</param>
+	/// <returns>Id of the cloned entity</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="MaxReachedException"></exception>
+	[StructuralChange]
+	[ChunkChange]
+	public Entity Clone(int entityId)
+	{
+		// get entity
+		ref var srcReference = ref GetEntity(entityId);
 
 		// get id & copy components
 		var archetype = srcReference.Archetype;
@@ -281,6 +398,26 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Returns a readonly reference to a component for an entity.
+	/// Ref values may be invalid after structural changes and should not be stored.
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Read{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <typeparam name="T0">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>Reference to the component for the given entity</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	public ref readonly T0? Read<T0>(int entityId)
+	{
+		ref var entityReference = ref GetEntity(entityId);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var component = ref chunk.Read<T0>(entityReference.Slot.Index);
+		return ref component;
+	}
+
+	/// <summary>
 	/// Returns a readonly component buffer for an entity.
 	/// Buffer is invalid after structural changes and should not be stored.
 	/// </summary>
@@ -292,6 +429,26 @@ public sealed partial class EntityDatabase : IDisposable
 	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entity);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
+		return buffer;
+	}
+
+	/// <summary>
+	/// Returns a readonly component buffer for an entity.
+	/// Buffer is invalid after structural changes and should not be stored.
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="ReadBuffer{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <typeparam name="T0">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>Component buffer for the given entity</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	public ReadBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
+	{
+		ref var entityReference = ref GetEntity(entityId);
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
 		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
 		return buffer;
@@ -319,6 +476,32 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Returns a reference to a component for an entity.
+	/// Ref values may be invalid after structural changes and should not be stored.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Marks the accessed <see cref="Chunk"/> as changed.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Write{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <typeparam name="T0">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>Reference to the component for the given entity</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[ChunkChange]
+	public ref T0? Write<T0>(int entityId)
+	{
+		ref var entityReference = ref GetEntity(entityId);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref var component = ref chunk.Write<T0>(entityReference.Slot.Index);
+		return ref component;
+	}
+
+	/// <summary>
 	/// Returns a component buffer for an entity.
 	/// Buffer is invalid after structural changes and should not be stored.
 	/// </summary>
@@ -340,6 +523,32 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Returns a component buffer for an entity.
+	/// Buffer is invalid after structural changes and should not be stored.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// Marks the accessed <see cref="Chunk"/> as changed.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="WriteBuffer{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <typeparam name="T0">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>Component buffer for the given entity</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[ChunkChange]
+	public WriteBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
+	{
+		ref var entityReference = ref GetEntity(entityId);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		var buffer = chunk.WriteBuffer<T0>(entityReference.Slot.Index);
+		return buffer;
+	}
+
+	/// <summary>
 	/// Returns if an entity has given component types
 	/// </summary>
 	/// <typeparam name="T">Component type</typeparam>
@@ -349,6 +558,22 @@ public sealed partial class EntityDatabase : IDisposable
 	public bool Has<T0>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
+		return reference.Archetype.Has<T0>();
+	}
+
+	/// <summary>
+	/// Returns if an entity has given component types
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Has{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <typeparam name="T">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>If the entity has the given component type</returns>
+	/// <exception cref="EntityException"></exception>
+	public bool Has<T0>(int entityId)
+	{
+		ref var reference = ref GetEntity(entityId);
 		return reference.Archetype.Has<T0>();
 	}
 
@@ -375,6 +600,31 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Removes components from a given entity
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Remove{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <typeparam name="T0">Component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <returns>If the component was found and removed</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+	public void Remove<T0>(int entityId)
+	{
+		var removedSignature = Component<T0>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+		var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+	}
+
+	/// <summary>
 	/// Reserves space for a given amounts of entities in a matching <see cref="Archetype"/>
 	/// </summary>
 	/// <typeparam name="T0"></typeparam>
@@ -396,6 +646,20 @@ public sealed partial class EntityDatabase : IDisposable
 	public Archetype GetArchetype(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
+		return entityReference.Archetype;
+	}
+
+	/// <summary>
+	/// Gets the archetype of a given entity
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="GetArchetype(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <param name="entity">The target entity</param>
+	/// <returns>The entity's archetype</returns>
+	public Archetype GetArchetype(int entityId)
+	{
+		ref var entityReference = ref GetEntity(entityId);
 		return entityReference.Archetype;
 	}
 
@@ -425,14 +689,52 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+	/// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The data is invalid after any structural change and should not be stored.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Has{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <param name="entity"></param>
+	/// <returns>An <see cref="EntityData"/> for the given entity.</returns>
+	public EntityData GetEntityData(int entityId)
+	{
+		ref var reference = ref GetEntity(entityId);
+		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+		return new EntityData(ref chunk, reference.Slot.Index);
+	}
+
+	/// <summary>
 	/// Sets component values for a given entity
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
 	/// <param name="entity">The target entity</param>
 	/// <param name="t0Component">The value to set</param>
+	[ChunkChange]
 	public void Set<T0>(Entity entity, in T0? t0Component)
 	{
         ref var entityReference = ref GetEntity(entity);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+	}
+
+	/// <summary>
+	/// Sets component values for a given entity
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Set{T0}(Entity, in T0)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <typeparam name="T">The component type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Component">The value to set</param>
+	[ChunkChange]
+	public void Set<T0>(int entityId, in T0? t0Component)
+	{
+		ref var entityReference = ref GetEntity(entityId);
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
 	}
@@ -447,6 +749,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <typeparam name="T0">The buffer type</typeparam>
 	/// <param name="entity">The target entity</param>
 	/// <param name="t0Components">The values to set</param>
+	[ChunkChange]
 	public void Set<T0>(Entity entity, T0[] t0Components) where T0 : unmanaged
 	{
 		Set(entity, t0Components.AsSpan());
@@ -456,15 +759,62 @@ public sealed partial class EntityDatabase : IDisposable
 	/// Sets buffer values for a given entity
 	/// </summary>
 	/// <remarks>
+	/// <para>
 	/// This method will overwrite any existing buffer values.
 	/// Use <see cref="WriteBuffer{T0}(Entity)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Set{T0}(Entity, T0[])"/> if the entityId has potentially been recycled.
+	/// </para>
 	/// </remarks>
 	/// <typeparam name="T0">The buffer type</typeparam>
 	/// <param name="entity">The target entity</param>
 	/// <param name="t0Components">The values to set</param>
+	[ChunkChange]
+	public void Set<T0>(int entityId, T0[] t0Components) where T0 : unmanaged
+	{
+		Set(entityId, t0Components.AsSpan());
+	}
+
+	/// <summary>
+	/// Sets buffer values for a given entity
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This method will overwrite any existing buffer values.
+	/// Use <see cref="WriteBuffer{T0}(Entity)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// </para>
+	/// </remarks>
+	/// <typeparam name="T0">The buffer type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Components">The values to set</param>
+	[ChunkChange]
 	public void Set<T0>(Entity entity, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
     {
         ref var entityReference = ref GetEntity(entity);
+		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+	}
+
+	/// <summary>
+	/// Sets buffer values for a given entity
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This method will overwrite any existing buffer values.
+	/// Use <see cref="WriteBuffer{T0}(Entity)"/> and <see cref="WriteBuffer{T}.AddRange(ReadOnlySpan{T})"/> to append values.
+	/// </para>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="Set{T0}(Entity, ReadOnlySpan{T0})"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <typeparam name="T0">The buffer type</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Components">The values to set</param>
+	[ChunkChange]
+	public void Set<T0>(int entityId, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
+	{
+		ref var entityReference = ref GetEntity(entityId);
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
 	}
@@ -522,7 +872,7 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
-	/// Gets an internal <see cref="EntityReference"/> to a given entity id
+	/// Gets an internal <see cref="EntityReference"/> to a given entity struct. Checks version equality.
 	/// </summary>
 	/// <param name="entityId">The target entity</param>
 	/// <returns>A reference to the entity</returns>
@@ -533,6 +883,21 @@ public sealed partial class EntityDatabase : IDisposable
 		ref var entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
 		if (!foundEntity || entityReference.Version != entity.Version)
 			throw ThrowHelper.EntityNotFound(entity.Id);
+		return ref entityReference;
+	}
+
+	/// <summary>
+	/// Gets an internal <see cref="EntityReference"/> to a given entity id
+	/// </summary>
+	/// <param name="entityId">The target entity</param>
+	/// <returns>A reference to the entity</returns>
+	/// <exception cref="EntityException"></exception>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal ref EntityReference GetEntity(int entityId)
+	{
+		ref var entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
+		if (!foundEntity)
+			throw ThrowHelper.EntityNotFound(entityId);
 		return ref entityReference;
 	}
 

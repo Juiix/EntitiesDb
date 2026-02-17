@@ -25,6 +25,20 @@ public partial class EntityDatabase
 		// move entity to new archetype
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
 	}
+	/// <inheritdoc cref="Remove{T0}(int)"/>
+	public void Remove<<#= generics #>>(int entityId)
+	{
+		var removedSignature = Component<<#= generics #>>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		// check already added
+		var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+	}
 <#
 	}
 #>

@@ -46,6 +46,27 @@ public partial class EntityDatabase
 		<#= Indent(setsC, 8) #>
 		<#= Indent(setsB, 8) #>
 	}
+	/// <inheritdoc cref="Add{T0}(int, in T0)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<<#= genericsC #>, <#= genericsB #>>(int entityId, <#= parametersC #>, <#= parametersB #>)
+		<#= Indent(constraints, 8) #>
+	{
+		var addedSignature = ComponentSingle<<#= genericsC #>>.Signature | ComponentBuffer<<#= genericsB #>>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(setsC, 8) #>
+		<#= Indent(setsB, 8) #>
+	}
 	/// <inheritdoc cref="Add{T0}(Entity, in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
@@ -53,6 +74,14 @@ public partial class EntityDatabase
 		<#= Indent(constraints, 8) #>
 	{
 		Add(entity, <#= argsCArr #>, <#= argsBArr #>);
+	}
+	/// <inheritdoc cref="Add{T0}(int, in T0)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void Add<<#= genericsC #>, <#= genericsB #>>(int entityId, <#= parametersCArr #>, <#= parametersBArr #>)
+		<#= Indent(constraints, 8) #>
+	{
+		Add(entityId, <#= argsCArr #>, <#= argsBArr #>);
 	}
 <#
 		}
