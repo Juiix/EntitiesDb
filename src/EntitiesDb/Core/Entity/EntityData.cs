@@ -12,6 +12,11 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
 	internal readonly int Index = index;
 
 	/// <summary>
+	/// The target <see cref="EntitiesDb.Entity"/>
+	/// </summary>
+	public Entity Entity => TargetChunk.Entity(Index);
+
+	/// <summary>
 	/// If this entity has a component of type <typeparamref name="T0"/>
 	/// </summary>
 	/// <typeparam name="T0"></typeparam>
