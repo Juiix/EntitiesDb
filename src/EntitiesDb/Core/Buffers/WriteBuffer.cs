@@ -430,25 +430,28 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 
 	public void AddRange(ReadBuffer<T> other) => AddRange(other.Span);
 
-	public void Clear()
-	{
-		if (IsHeap())
-		{
-			Marshal.FreeHGlobal(_header->Heap);
-			_header->Capacity = ComponentMeta<T>.InternalCapacity;
-			MarkInline();
-		}
-		SetSize(0);
-	}
+	public void Clear() => Clear(false);
+    public void Clear(bool resizeCapacity)
+    {
+        if (resizeCapacity &&
+			IsHeap())
+        {
+            Marshal.FreeHGlobal(_header->Heap);
+            _header->Capacity = ComponentMeta<T>.InternalCapacity;
+            MarkInline();
+        }
+        SetSize(0);
+    }
 
-	public ref T Get(int index)
+    public ref T Get(int index)
 	{
 		int size = GetSize();
 		if ((uint)index >= (uint)size) throw new ArgumentOutOfRangeException(nameof(index));
 		return ref Unsafe.AsRef<T>(((T*)DataPtr) + index);
 	}
 
-	public void RemoveAt(int index)
+	public void RemoveAt(int index) => RemoveAt(index, false);
+	public void RemoveAt(int index, bool resizeCapacity)
 	{
 		int size = GetSize();
 		if ((uint)index >= (uint)size) throw new ArgumentOutOfRangeException(nameof(index));
@@ -461,28 +464,31 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 		}
 
 		SetSize(last);
-		ShrinkIfNeededAfterRemove();
+		if (resizeCapacity) ShrinkIfNeededAfterRemove();
 	}
 
-	public bool Remove(T item)
+	public bool Remove(T item) => Remove(item, false);
+	public bool Remove(T item, bool resizeCapacity)
 	{
 		int size = GetSize();
 		int idx = IndexOfItem(DataPtr, size, item);
 		if (idx < 0) return false;
-		RemoveAt(idx);
+		RemoveAt(idx, resizeCapacity);
 		return true;
 	}
 
+	public bool TryRemove(T item) => TryRemove(item, false);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool TryRemove(T item)
+	public bool TryRemove(T item, bool resizeCapacity)
 	{
 		int idx = IndexOf(item);
 		if (idx < 0) return false;
-		RemoveAt(idx);
+		RemoveAt(idx, resizeCapacity);
 		return true;
 	}
 
-	public void RemoveAtSwapBack(int index)
+	public void RemoveAtSwapBack(int index) => RemoveAtSwapBack(index, false);
+	public void RemoveAtSwapBack(int index, bool resizeCapacity)
 	{
 		int size = GetSize();
 		if ((uint)index >= (uint)size) throw new ArgumentOutOfRangeException(nameof(index));
@@ -492,7 +498,7 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 			((T*)DataPtr)[index] = ((T*)DataPtr)[last];
 
 		SetSize(last);
-		ShrinkIfNeededAfterRemove();
+		if (resizeCapacity) ShrinkIfNeededAfterRemove();
 	}
 
 	public void Set(ReadOnlySpan<T> items)
@@ -501,8 +507,9 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 		AddRange(items);
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved)
+	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved) => TryRemoveAtSwapBack(index, out movedOrRemoved, false);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved, bool resizeCapacity)
 	{
 		int size = GetSize();
 		if ((uint)index >= (uint)size) { movedOrRemoved = default; return false; }
@@ -513,7 +520,7 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 			((T*)DataPtr)[index] = movedOrRemoved;
 
 		SetSize(last);
-		ShrinkIfNeededAfterRemove();
+		if (resizeCapacity) ShrinkIfNeededAfterRemove();
 		return true;
 	}
 
