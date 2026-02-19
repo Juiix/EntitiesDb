@@ -61,7 +61,7 @@ internal sealed class EntityMap(int maxEntities)
 	public void Remove(int entityId)
 	{
 		ref var reference = ref GetReference(entityId);
-		_versions[entityId] = reference.Version;
+		_versions[entityId] = reference.Version + 1;
 		reference = default;
 	}
 

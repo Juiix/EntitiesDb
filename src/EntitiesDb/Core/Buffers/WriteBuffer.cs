@@ -501,7 +501,37 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 		if (resizeCapacity) ShrinkIfNeededAfterRemove();
 	}
 
-	public void Set(ReadOnlySpan<T> items)
+    public void RemoveRange(int index, int count) => RemoveRange(index, count, false);
+
+    public void RemoveRange(int index, int count, bool resizeCapacity)
+    {
+        int size = GetSize();
+
+        if ((uint)index > (uint)size)
+            throw new ArgumentOutOfRangeException(nameof(index));
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count));
+        if (count == 0)
+            return;
+
+        int end = index + count;
+        if (end > size)
+            throw new ArgumentOutOfRangeException(nameof(count));
+
+        int newSize = size - count;
+
+        // If we’re not removing from the end, shift the tail down.
+        if (end < size)
+        {
+            var span = new Span<T>(DataPtr, size);
+            span.Slice(end, size - end).CopyTo(span.Slice(index));
+        }
+
+        SetSize(newSize);
+        if (resizeCapacity) ShrinkIfNeededAfterRemove();
+    }
+
+    public void Set(ReadOnlySpan<T> items)
 	{
 		Clear();
 		AddRange(items);

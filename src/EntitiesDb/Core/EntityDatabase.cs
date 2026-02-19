@@ -369,6 +369,31 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Destroys a given entity
+    /// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Destroy(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+    /// <param name="entity">The target entity</param>
+    /// <exception cref="EntityException"></exception>
+    [StructuralChange]
+    public void Destroy(int entityId)
+    {
+        // get entity
+        ref var entityReference = ref GetEntity(entityId);
+        var archetype = entityReference.Archetype;
+        ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        archetype.ClearBuffers(ref chunk, in entityReference.Slot, archetype.Signature);
+        archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
+
+		var version = entityReference.Version;
+        _entityMap.Move(movedEntityId, in entityReference.Slot);
+        _entityMap.Remove(entityId);
+        EntityCount--;
+        _recycledEntityIds.Enqueue(new Entity(entityId, version));
+    }
+
+    /// <summary>
 	/// Returns if an entity exists at a given id
 	/// </summary>
 	/// <param name="entity">Entity to check</param>
@@ -381,6 +406,20 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Returns if an entity exists at a given id
+    /// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Exists(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+    /// <param name="entity">Entity to check</param>
+    /// <returns>If an entity exists at the given id &amp; the <see cref="Entity.Version"/> is the same.</returns>
+    public bool Exists(int entityId)
+    {
+        _entityMap.TryGetReference(entityId, out var foundEntity);
+        return foundEntity;
+    }
+
+    /// <summary>
 	/// Returns a readonly reference to a component for an entity.
 	/// Ref values may be invalid after structural changes and should not be stored.
 	/// </summary>
