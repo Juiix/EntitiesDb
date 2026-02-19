@@ -493,7 +493,123 @@ public sealed partial class EntityDatabase : IDisposable
 		return buffer;
 	}
 
+    /// <summary>
+    /// <para>
+	/// Attempts to read a component for an entity. Will return false if the entity does not have the component.
+	/// </para>
+	/// <para>
+	/// This method will still throw if the entity does not exist.
+	/// </para>
+    /// </summary>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Reference to the component for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool TryRead<T0>(Entity entity, out T0? component)
+    {
+        ref var entityReference = ref GetEntity(entity);
+		if (!entityReference.Archetype.Has<T0>())
+		{
+			component = default;
+			return false;
+		}
+
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        component = chunk.Read<T0>(entityReference.Slot.Index);
+		return true;
+    }
+
+    /// <summary>
+    /// <para>
+	/// Attempts to read a component for an entity. Will return false if the entity does not have the component.
+	/// </para>
+	/// <para>
+	/// This method will still throw if the entity does not exist.
+	/// </para>
+    /// </summary>
+    /// <remarks>
+    /// This method does not check version equality. Prefer <see cref="TryRead{T0}(Entity, out T0)"/> if the entityId has potentially been recycled.
+    /// </remarks>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Reference to the component for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool TryRead<T0>(int entityId, out T0? component)
+    {
+        ref var entityReference = ref GetEntity(entityId);
+        if (!entityReference.Archetype.Has<T0>())
+        {
+            component = default;
+            return false;
+        }
+
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        component = chunk.Read<T0>(entityReference.Slot.Index);
+        return true;
+    }
+
+    /// <summary>
+    /// <para>
+    /// Attempts to read a buffer of components for an entity. Will return false if the entity does not have the component.
+	/// </para>
+	/// <para>
+	/// Buffer is invalid after structural changes and should not be stored.
+	/// </para>
+	/// <para>
+	/// This method will still throw if the entity does not exist.
+	/// </para>
+    /// </summary>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Component buffer for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool TryReadBuffer<T0>(Entity entity, out ReadBuffer<T0> buffer) where T0 : unmanaged
+    {
+        ref var entityReference = ref GetEntity(entity);
+        if (!entityReference.Archetype.Has<T0>())
+        {
+            buffer = default;
+            return false;
+        }
+
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
+        return true;
+    }
+
 	/// <summary>
+    /// <para>
+    /// Attempts to read a buffer of components for an entity. Will return false if the entity does not have the component.
+	/// </para>
+	/// <para>
+	/// Buffer is invalid after structural changes and should not be stored.
+	/// </para>
+	/// <para>
+	/// This method will still throw if the entity does not exist.
+	/// </para>
+    /// </summary>
+    /// <remarks>
+    /// This method does not check version equality. Prefer <see cref="TryReadBuffer{T0}(Entity, out EntitiesDb.ReadBuffer{T0})"/> if the entityId has potentially been recycled.
+    /// </remarks>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Component buffer for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool TryReadBuffer<T0>(int entityId, out ReadBuffer<T0> buffer) where T0 : unmanaged
+    {
+        ref var entityReference = ref GetEntity(entityId);
+        if (!entityReference.Archetype.Has<T0>())
+        {
+            buffer = default;
+            return false;
+        }
+
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
+        return true;
+    }
+
+    /// <summary>
 	/// Returns a reference to a component for an entity.
 	/// Ref values may be invalid after structural changes and should not be stored.
 	/// </summary>
