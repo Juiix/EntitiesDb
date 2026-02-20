@@ -29,8 +29,8 @@ internal sealed class EntityMap(int maxEntities)
 		EnsureCapacity(_count);
 		var version = _versions[entityId];
 		entity = new Entity(entityId, version);
-		return ref GetReference(entityId);
-	}
+		return ref _references[entityId];
+    }
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref EntityReference GetReference(int entityId)
@@ -47,21 +47,21 @@ internal sealed class EntityMap(int maxEntities)
 			return ref Unsafe.NullRef<EntityReference>();
 		}
 
-		ref var entityReference = ref GetReference(entityId);
-		found = entityReference.Archetype != null;
+		ref var entityReference = ref _references[entityId];
+        found = entityReference.Archetype != null;
 		return ref entityReference;
 	}
 
 	public void Move(int entityId, in EntitySlot slot)
 	{
-		ref var entityReference = ref GetReference(entityId);
-		entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
+		ref var entityReference = ref _references[entityId];
+        entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
 	}
 
 	public void Remove(int entityId)
 	{
-		ref var reference = ref GetReference(entityId);
-		_versions[entityId] = reference.Version + 1;
+		ref var reference = ref _references[entityId];
+        _versions[entityId] = reference.Version + 1;
 		reference = default;
 	}
 

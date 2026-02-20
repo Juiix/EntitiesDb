@@ -33,51 +33,7 @@ internal static partial class Renderer
 		// Aggregate
 		if (m.IsAggregate)
 		{
-			w.AppendLine("private struct " + m.AggregateName + " : IParallelAggregate<" + m.JobName + ">");
-			w.AppendLine("{");
-			w.Indent();
-
-			// fields
-			w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
-			w.AppendLine("public DangerousRef<" + m.StateType + "> state;");
-
-			// constructor
-			w.Append("public " + m.AggregateName + "(" + m.DelegateName + " @delegate");
-			w.Append(", ref " + m.StateType + " state");
-			w.AppendLine(")");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.AppendLine("_delegate = @delegate;");
-			w.AppendLine("this.state = new DangerousRef<" + m.StateType + ">(ref state);");
-
-			w.Unindent();
-			w.AppendLine("}"); // constructor
-
-			// create
-			w.AppendLine("public " + m.JobName + " Create(int threadIndex)");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.Append("return new " + m.JobName + "(_delegate");
-			if (hasComponents) w.Append(", _ids");
-			w.AppendLine(", state.Value.Create(threadIndex));");
-
-			w.Unindent();
-			w.AppendLine("}"); // create
-
-			// join
-			w.AppendLine("public void Join(int threadIndex, ref " + m.JobName + " job)");
-			w.AppendLine("{");
-			w.Indent();
-
-			w.AppendLine("state.Value.Join(threadIndex, ref job.state);");
-
-			w.Unindent();
-			w.AppendLine("}"); // join
-
-			w.Unindent();
-			w.AppendLine("}"); // Aggregate
+			RenderAggregate(m, w);
 		}
 
 		// Job
