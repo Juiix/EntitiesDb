@@ -180,6 +180,18 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Component.cs</LastGenOutput>
     </None>
+    <None Update="Templates\EntityDatabase.AddAndRemove.Buffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.AddAndRemove.Buffer.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.AddAndRemove.Mixed.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.AddAndRemove.Mixed.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\EntityDatabase.AddAndRemove.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EntityDatabase.AddAndRemove.cs</LastGenOutput>
+    </None>
     <None Update="Templates\EntityDatabase.GetArchetype.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityDatabase.GetArchetype.cs</LastGenOutput>
@@ -511,6 +523,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Component.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.AddAndRemove.Buffer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.AddAndRemove.Buffer.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.AddAndRemove.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.AddAndRemove.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EntityDatabase.AddAndRemove.Mixed.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityDatabase.AddAndRemove.Mixed.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EntityDatabase.GetArchetype.cs">
       <DesignTime>True</DesignTime>

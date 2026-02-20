@@ -228,6 +228,156 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Adds components to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <param name="t0Component">Component value</param>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(Entity entity, in T0? t0Component, in Signature removedSignature)
+    {
+        var addedSignature = ComponentSingle<T0>.Signature;
+        ref var entityReference = ref GetEntity(entity);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
+
+        // set component value
+        ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+        if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+    }
+
+	/// <summary>
+	/// Adds components to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This method does not check version equality. Prefer <see cref="AddAndRemove{T0}(Entity, in T0, in Signature)"/> if the entityId has potentially been recycled.
+	/// </para>
+	/// </remarks>
+	/// <param name="entityId">The target entity id</param>
+	/// <param name="t0Component">Component value</param>
+	/// <param name="removedSignature">The signature of components to remove. Use <see cref="Component{T}"/> for quick generation.</param>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(int entityId, in T0? t0Component, in Signature removedSignature)
+    {
+        var addedSignature = ComponentSingle<T0>.Signature;
+        ref var entityReference = ref GetEntity(entityId);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+        // set component value
+        ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+        if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+    }
+
+    /// <summary>
+    /// Adds component buffers to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+	/// <param name="removedSignature">The signature of components to remove. Use <see cref="Component{T}"/> for quick generation.</param>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(Entity entity, T0[] t0Components, in Signature removedSignature) where T0 : unmanaged
+    {
+        AddAndRemove(entity, t0Components.AsSpan(), in removedSignature);
+    }
+
+    /// <summary>
+    /// Adds component buffers to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method does not check version equality. Prefer <see cref="AddAndRemove{T0}(Entity, T0[], in Signature)"/> if the entityId has potentially been recycled.
+    /// </para>
+    /// </remarks>
+    /// <param name="entityId">The target entity</param>
+	/// <param name="removedSignature">The signature of components to remove. Use <see cref="Component{T}"/> for quick generation.</param>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(int entityId, T0[] t0Components, in Signature removedSignature) where T0 : unmanaged
+    {
+        AddAndRemove(entityId, t0Components.AsSpan(), in removedSignature);
+    }
+
+    /// <summary>
+    /// Adds component buffers to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+	/// <param name="removedSignature">The signature of components to remove. Use <see cref="Component{T}"/> for quick generation.</param>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(Entity entity, ReadOnlySpan<T0> t0Components, in Signature removedSignature) where T0 : unmanaged
+    {
+        var addedSignature = ComponentBuffer<T0>.Signature;
+        ref var entityReference = ref GetEntity(entity);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
+
+        // buffers must be initialized for first use since
+        // SetBuffer relies on internal state
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+    }
+
+    /// <summary>
+    /// Adds component buffers to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method does not check version equality. Prefer <see cref="AddAndRemove{T0}(Entity, ReadOnlySpan{T0}, in Signature)"/> if the entityId has potentially been recycled.
+    /// </para>
+    /// </remarks>
+    /// <param name="entityId">The target entity</param>
+	/// <param name="removedSignature">The signature of components to remove. Use <see cref="Component{T}"/> for quick generation.</param>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public void AddAndRemove<T0>(int entityId, ReadOnlySpan<T0> t0Components, in Signature removedSignature) where T0 : unmanaged
+    {
+        var addedSignature = ComponentBuffer<T0>.Signature;
+        ref var entityReference = ref GetEntity(entityId);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+        // buffers must be initialized for first use since
+        // SetBuffer relies on internal state
+        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+        chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+    }
+
+    /// <summary>
 	/// Clones an existing entity and its components
 	/// </summary>
 	/// <param name="entity">The target entity</param>

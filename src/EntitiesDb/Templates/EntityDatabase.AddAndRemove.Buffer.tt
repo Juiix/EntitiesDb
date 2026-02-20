@@ -1,0 +1,80 @@
+<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Text" #>
+<#@ include file="Generics.ttinclude" #>
+using System;
+
+namespace EntitiesDb;
+
+public partial class EntityDatabase
+{
+<#
+	for (int index = 2; index <= GenericCount; index++)
+	{
+        var generics = Generics(index);
+		var parameters = FormatComma(index, "ReadOnlySpan<T{0}> t{0}Components");
+		var parametersArr = FormatComma(index, "T{0}[] t{0}Components");
+		var constraints = FormatLine(index, "where T{0} : unmanaged");
+		var argsArr = FormatComma(index, "t{0}Components.AsSpan()");
+		var sets = FormatLine(index, "chunk.WriteBuffer<T{0}>(entityReference.Slot.Index).Set(t{0}Components);");
+#>
+	/// <inheritdoc cref="AddAndRemove{T0}(Entity, ReadOnlySpan{T0}, in Signature)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void AddAndRemove<<#= generics #>>(Entity entity, <#= parameters #>, in Signature removedSignature)
+		<#= Indent(constraints, 8) #>
+	{
+		var addedSignature = ComponentBuffer<<#= generics #>>.Signature;
+		ref var entityReference = ref GetEntity(entity);
+
+		var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
+	}
+	/// <inheritdoc cref="AddAndRemove{T0}(int, ReadOnlySpan{T0}, in Signature)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void AddAndRemove<<#= generics #>>(int entityId, <#= parameters #>, in Signature removedSignature)
+		<#= Indent(constraints, 8) #>
+	{
+		var addedSignature = ComponentBuffer<<#= generics #>>.Signature;
+		ref var entityReference = ref GetEntity(entityId);
+
+		var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
+		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+
+		// move entity to new archetype
+		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+
+		// set component value
+		ref readonly var chunk = ref dstArchetype.GetChunk(entityReference.Slot.ChunkIndex);
+		<#= Indent(sets, 8) #>
+	}
+	/// <inheritdoc cref="AddAndRemove{T0}(Entity, T0[], in Signature)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void AddAndRemove<<#= generics #>>(Entity entity, <#= parametersArr #>, in Signature removedSignature)
+		<#= Indent(constraints, 8) #>
+	{
+		AddAndRemove(entity, <#= argsArr #>, in removedSignature);
+	}
+	/// <inheritdoc cref="AddAndRemove{T0}(int, T0[], in Signature)"/>
+	[StructuralChange]
+	[ChunkChange]
+	public void AddAndRemove<<#= generics #>>(int entityId, <#= parametersArr #>, in Signature removedSignature)
+		<#= Indent(constraints, 8) #>
+	{
+		AddAndRemove(entityId, <#= argsArr #>, in removedSignature);
+	}
+<#
+	}
+#>
+}

@@ -198,7 +198,7 @@ public unsafe class WriteBufferTests
 		for (int i = 0; i < 5; i++) h.Buffer.Add(new BufferedInt(i)); // promote to heap
 		Assert.True(IsHeap(h.Header));
 
-		h.Buffer.Clear();
+		h.Buffer.Clear(true);
 		Assert.False(IsHeap(h.Header));   // now inline
 		Assert.Equal(0, h.Buffer.Length);
 		Assert.Equal(0, LogicalSize(h.Header));
@@ -213,9 +213,9 @@ public unsafe class WriteBufferTests
 		Assert.True(IsHeap(h.Header));
 
 		// removing 3 yields size=2 < capacity / 3 => inline
-		h.Buffer.RemoveAt(4);
-		h.Buffer.RemoveAt(3);
-		h.Buffer.RemoveAt(2);
+		h.Buffer.RemoveAt(4, true);
+		h.Buffer.RemoveAt(3, true);
+		h.Buffer.RemoveAt(2, true);
 		Assert.False(IsHeap(h.Header));
 		Assert.Equal(2, h.Buffer.Length);
 		Assert.Equal(Arr(new[] { 0, 1 }), h.Buffer.Span.ToArray());
