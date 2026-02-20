@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace EntitiesDb;
 
@@ -930,6 +929,51 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Removes components from a given entity
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+	/// <param name="removedSignature">Signature of components to remove. Use <see cref="Component{T}"/> to generate.</param>
+    /// <returns>If the component was found and removed</returns>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
+    public void Remove(Entity entity, in Signature removedSignature)
+    {
+        ref var entityReference = ref GetEntity(entity);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
+    }
+
+	/// <summary>
+	/// Removes components from a given entity
+	/// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Remove{T0}(Entity)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+	/// <param name="entityId">The target entity</param>
+	/// <param name="removedSignature">Signature of components to remove. Use <see cref="Component{T}"/> to generate.</param>
+	/// <returns>If the component was found and removed</returns>
+	/// <exception cref="EntityException"></exception>
+	/// <exception cref="ComponentException"></exception>
+	[StructuralChange]
+    public void Remove(int entityId, in Signature removedSignature)
+    {
+        ref var entityReference = ref GetEntity(entityId);
+
+        var srcArchetype = entityReference.Archetype;
+        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
+        var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
+
+        // move entity to new archetype
+        MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+    }
+
+    /// <summary>
 	/// Reserves space for a given amounts of entities in a matching <see cref="Archetype"/>
 	/// </summary>
 	/// <typeparam name="T0"></typeparam>
