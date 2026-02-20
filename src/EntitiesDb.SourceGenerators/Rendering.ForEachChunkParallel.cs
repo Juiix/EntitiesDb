@@ -44,7 +44,7 @@ internal static partial class Renderer
 		w.AppendLine("private readonly " + m.DelegateName + " _delegate;");
 		if (hasState)
 		{
-			w.AppendLine("private " + m.StateJobType + " state;");
+			w.AppendLine("public " + m.StateJobType + " state;");
 		}
 
 		w.Append("public " + m.JobName + "(" + m.DelegateName + " @delegate");
