@@ -1127,7 +1127,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// The data is invalid after any structural change and should not be stored.
 	/// </para>
 	/// <para>
-	/// This method does not check version equality. Prefer <see cref="Has{T0}(Entity)"/> if the entityId has potentially been recycled.
+    /// This method does not check version equality. Prefer <see cref="GetEntityData(Entity)"/> if the entityId has potentially been recycled.
 	/// </para>
 	/// </remarks>
 	/// <param name="entity"></param>
@@ -1140,6 +1140,55 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Tries to get <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+    /// </summary>
+    /// <remarks>
+    /// The data is invalid after any structural change and should not be stored.
+    /// </remarks>
+    /// <param name="entity"></param>
+    /// <returns>If an <see cref="EntityData"/> was found for the given entity.</returns>
+    public bool TryGetEntityData(Entity entity, out EntityData data)
+    {
+        ref var reference = ref Unsafe.NullRef<EntityReference>();
+		if (!TryGetEntity(entity, ref reference))
+		{
+			data = default;
+            return false;
+        }
+
+        ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+        data = new EntityData(ref chunk, reference.Slot.Index);
+		return true;
+    }
+
+    /// <summary>
+    /// Tries to get <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The data is invalid after any structural change and should not be stored.
+    /// </para>
+    /// <para>
+    /// This method does not check version equality. Prefer <see cref="TryGetEntityData(Entity, out EntityData)"/> if the entityId has potentially been recycled.
+    /// </para>
+    /// </remarks>
+    /// <param name="entityId"></param>
+    /// <returns>If an <see cref="EntityData"/> was found for the given entity.</returns>
+    public bool TryGetEntityData(int entityId, out EntityData data)
+    {
+        ref var reference = ref Unsafe.NullRef<EntityReference>();
+        if (!TryGetEntity(entityId, ref reference))
+        {
+            data = default;
+            return false;
+        }
+
+        ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+        data = new EntityData(ref chunk, reference.Slot.Index);
+        return true;
+    }
+
+    /// <summary>
 	/// Sets component values for a given entity
 	/// </summary>
 	/// <typeparam name="T">The component type</typeparam>
@@ -1316,6 +1365,30 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Trys to get an internal <see cref="EntityReference"/> to a given entity struct. Checks version equality.
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <returns>If the entity was found and reference set</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal bool TryGetEntity(Entity entity, ref EntityReference entityReference)
+    {
+        entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
+		return foundEntity && entityReference.Version == entity.Version;
+    }
+
+    /// <summary>
+    /// Trys to get an internal <see cref="EntityReference"/> to a given entity id
+    /// </summary>
+    /// <param name="entityId">The target entity</param>
+    /// <returns>If the entity was found and reference set</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal bool TryGetEntity(int entityId, ref EntityReference entityReference)
+    {
+        entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
+        return foundEntity;
+    }
+
+    /// <summary>
 	/// Moves a target entity to a new archetype. New components will be defaulted.
 	/// </summary>
 	/// <param name="entity">The target entity</param>
