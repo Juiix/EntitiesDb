@@ -537,7 +537,57 @@ public unsafe readonly ref struct WriteBuffer<T> where T : unmanaged
 		AddRange(items);
 	}
 
-	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved) => TryRemoveAtSwapBack(index, out movedOrRemoved, false);
+    public void Insert(int index, T item) => Insert(index, ref item);
+
+    public void Insert(int index, ref T item)
+    {
+        int size = GetSize();
+        if ((uint)index > (uint)size) // allow insert at end
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        if (size == int.MaxValue) throw new OutOfMemoryException("Max size reached.");
+
+        // Make room
+        EnsureCapacityFor(size + 1);
+
+        var p = (T*)DataPtr;
+
+        // If inserting not-at-end, shift tail right by 1.
+        if (index < size)
+        {
+            // Use Span copy for memmove semantics (handles overlap correctly).
+            var span = new Span<T>(p, size + 1); // +1 because capacity now guarantees room
+            span.Slice(index, size - index).CopyTo(span.Slice(index + 1));
+        }
+
+        p[index] = item;
+        SetSize(size + 1);
+    }
+
+    public void InsertRange(int index, ReadOnlySpan<T> items)
+    {
+        int count = items.Length;
+        if (count == 0) return;
+
+        int size = GetSize();
+        if ((uint)index > (uint)size)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        int newSize = checked(size + count);
+        EnsureCapacityFor(newSize);
+
+        var span = new Span<T>((T*)DataPtr, newSize);
+
+        // Shift tail right by count
+        if (index < size)
+            span.Slice(index, size - index).CopyTo(span.Slice(index + count));
+
+        // Copy new items into the gap
+        items.CopyTo(span.Slice(index, count));
+        SetSize(newSize);
+    }
+
+    public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved) => TryRemoveAtSwapBack(index, out movedOrRemoved, false);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public bool TryRemoveAtSwapBack(int index, out T movedOrRemoved, bool resizeCapacity)
 	{
