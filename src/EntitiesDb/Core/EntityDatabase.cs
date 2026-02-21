@@ -586,6 +586,45 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
+    /// Moves an entity to a new signature
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <exception cref="EntityException"></exception>
+    [ChunkChange]
+    [StructuralChange]
+    public void Move(Entity entity, in Signature signature)
+    {
+        // get entity
+        ref var entityReference = ref GetEntity(entity.Id);
+        var srcArchetype = entityReference.Archetype;
+        var dstArchetype = Archetypes.GetOrCreateArchetype(signature);
+
+        // move entity to new archetype
+        MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
+    }
+
+    /// <summary>
+    /// Moves an entity to a new signature
+    /// </summary>
+	/// <remarks>
+	/// This method does not check version equality. Prefer <see cref="Move(Entity, in Signature)"/> if the entityId has potentially been recycled.
+	/// </remarks>
+    /// <param name="entityId">The target entity</param>
+    /// <exception cref="EntityException"></exception>
+    [ChunkChange]
+    [StructuralChange]
+    public void Move(int entityId, in Signature signature)
+    {
+        // get entity
+        ref var entityReference = ref GetEntity(entityId);
+        var srcArchetype = entityReference.Archetype;
+        var dstArchetype = Archetypes.GetOrCreateArchetype(signature);
+
+        // move entity to new archetype
+        MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
+    }
+
+    /// <summary>
 	/// Returns a readonly reference to a component for an entity.
 	/// Ref values may be invalid after structural changes and should not be stored.
 	/// </summary>
@@ -1009,6 +1048,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// </summary>
 	/// <param name="entity">The target entity</param>
 	/// <returns>The entity's archetype</returns>
+    /// <exception cref="EntityException"></exception>
 	public Archetype GetArchetype(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
@@ -1023,6 +1063,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// </remarks>
 	/// <param name="entity">The target entity</param>
 	/// <returns>The entity's archetype</returns>
+    /// <exception cref="EntityException"></exception>
 	public Archetype GetArchetype(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
@@ -1040,6 +1081,30 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Gets the signature of a given entity
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <returns>The entity's signature</returns>
+	/// <exception cref="EntityException"></exception>
+    public Signature GetSignature(Entity entity)
+    {
+        ref var entityReference = ref GetEntity(entity);
+        return entityReference.Archetype.Signature;
+    }
+
+    /// <summary>
+    /// Gets the signature of a given entity
+    /// </summary>
+    /// <param name="entityId">The target entity</param>
+    /// <returns>The entity's signature</returns>
+	/// <exception cref="EntityException"></exception>
+    public Signature GetSignature(int entityId)
+    {
+        ref var entityReference = ref GetEntity(entityId);
+        return entityReference.Archetype.Signature;
+    }
+
+    /// <summary>
 	/// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
 	/// </summary>
 	/// <remarks>
