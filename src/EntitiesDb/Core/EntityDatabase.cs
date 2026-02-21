@@ -447,6 +447,23 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
+    /// Creates an entity with components defined in the given signature. All component values are defaulted
+    /// </summary>
+    /// <returns>Id of the created entity</returns>
+    /// <exception cref="MaxReachedException"></exception>
+    [StructuralChange]
+    [ChunkChange]
+    public Entity Create(in Signature signature)
+    {
+        ref var entityReference = ref GetNextEntityId(out var dstEntityId);
+        var archetype = Archetypes.GetOrCreateArchetype(in signature);
+        var dstSlot = archetype.AddEntity(dstEntityId, out _);
+        entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+        EntityCount++;
+        return dstEntityId;
+    }
+
+    /// <summary>
 	/// Creates an entity with components
 	/// </summary>
 	/// <returns>Id of the created entity</returns>
@@ -1201,23 +1218,6 @@ public sealed partial class EntityDatabase : IDisposable
 
 		Archetypes.TrimExcess();
 		_recycledEntityIds = new Queue<Entity>(_recycledEntityIds.Where(x => x.Id < maxEntityId));
-	}
-
-	/// <summary>
-	/// Creates an entity with the given <see cref="Signature"/>. All components are default.
-	/// </summary>
-	/// <returns>Id of the created entity</returns>
-	/// <exception cref="MaxReachedException"></exception>
-	[StructuralChange]
-	[ChunkChange]
-	internal Entity Create(in Signature signature)
-	{
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(signature);
-		var dstSlot = archetype.AddEntity(dstEntityId, out _);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
 	}
 
 	/// <summary>
