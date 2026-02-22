@@ -18,6 +18,8 @@ public readonly ref struct Ref<T>
 	/// </summary>
 	internal readonly Span<T> Span;
 
+	public bool IsEmpty => Span.IsEmpty;
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Ref{T}"/> struct.
 	/// </summary>

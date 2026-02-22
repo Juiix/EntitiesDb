@@ -1,15 +1,20 @@
-﻿namespace EntitiesDb;
+﻿using System.Runtime.CompilerServices;
+
+namespace EntitiesDb;
 
 public readonly ref struct EntityData(ref Chunk chunk, int index)
 {
 #if NETSTANDARD2_1
 	internal readonly Ref<Chunk> ChunkRef = new(ref chunk);
 	internal readonly ref Chunk TargetChunk => ref ChunkRef.Value;
+    public bool IsNull => ChunkRef.IsEmpty;
 #else
 	internal readonly ref Chunk TargetChunk = ref chunk;
+
+    public bool IsNull => Unsafe.IsNullRef(ref TargetChunk);
 #endif
 
-	internal readonly int Index = index;
+    internal readonly int Index = index;
 
 	/// <summary>
 	/// The target <see cref="EntitiesDb.Entity"/>
