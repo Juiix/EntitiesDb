@@ -32,6 +32,12 @@ internal sealed class EntityMap(int maxEntities)
 		return ref _references[entityId];
     }
 
+	public void Clear()
+	{
+		_count = 0;
+		Array.Clear(_versions, 0, _versions.Length);
+	}
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref EntityReference GetReference(int entityId)
 	{

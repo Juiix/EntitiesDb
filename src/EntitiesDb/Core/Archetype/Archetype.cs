@@ -155,6 +155,24 @@ public unsafe sealed partial class Archetype
 	public ReadOnlyEnumerator<Chunk> GetEnumerator() => new(_chunks.AsSpan(0, ChunksInUse));
 
 	/// <summary>
+	/// Clears all entities
+	/// </summary>
+	internal void Clear()
+	{
+		for (int i = 0; i < ChunksInUse; i++)
+		{
+			ref var chunk = ref _chunks[i];
+			for (int j = 0; i < EntityCount; j++)
+				ClearBuffers(ref chunk, j, in Signature);
+            foreach (var array in chunk.ManagedComponents)
+                Array.Clear(array, 0, EntityCount);
+            chunk.EntityCount = 0;
+		}
+		ChunksInUse = 1;
+		EntityCount = 0;
+	}
+
+	/// <summary>
 	/// Gets the offset of a component type with a given id
 	/// </summary>
 	/// <param name="id">The component type id</param>
@@ -279,7 +297,7 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	/// <param name="slot"></param>
 	/// <param name="mask"></param>
-	internal void ClearBuffers(ref Chunk chunk, in EntitySlot slot, in Signature mask)
+	internal void ClearBuffers(ref Chunk chunk, int index, in Signature mask)
 	{
 		for (int i = 0; i < _bufferIndices.Length; i++)
 		{
@@ -289,7 +307,7 @@ public unsafe sealed partial class Archetype
 
 			var offset = _idToOffsets[componentType.Id];
 			var stride = componentType.Stride;
-			DynamicBuffer.Clear((byte*)chunk.UnmanagedComponents + offset + stride * slot.Index);
+			DynamicBuffer.Clear((byte*)chunk.UnmanagedComponents + offset + stride * index);
 		}
 	}
 
@@ -363,14 +381,14 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// Copies components into an external <see cref="Archetype"/>
 	/// </summary>
-	internal void CopyComponents(in EntitySlot srcSlot, Archetype dstArchetype, in EntitySlot dstSlot)
+	internal void CopyComponents(in EntitySlot srcSlot, Archetype dstArchetype, in EntitySlot dstSlot, bool clearManaged = true)
 	{
 		ref var srcChunk = ref GetChunk(srcSlot.ChunkIndex);
 		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
 		srcChunk.CopyComponents(
 			srcSlot.Index, _idToOffsets,
 			dstArchetype.Signature, ref dstChunk, dstSlot.Index, dstArchetype._idToOffsets,
-			UnmanagedComponentTypes, ManagedComponentTypes);
+			UnmanagedComponentTypes, ManagedComponentTypes, clearManaged);
 
 		for (int i = 0; i < _changeTrackingIndices.Length; i++)
 		{

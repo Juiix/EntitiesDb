@@ -377,6 +377,19 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
+    /// Clears all data, destroys all entities and resets versions.
+    /// </summary>
+	/// <remarks>
+	/// Call <see cref="TrimExcess(bool)"/> to return memory.
+	/// </remarks>
+    public void Clear()
+    {
+		Archetypes.Clear();
+		_entityMap.Clear();
+		EntityCount = 0;
+    }
+
+    /// <summary>
 	/// Clones an existing entity and its components
 	/// </summary>
 	/// <param name="entity">The target entity</param>
@@ -525,7 +538,7 @@ public sealed partial class EntityDatabase : IDisposable
 		ref var entityReference = ref GetEntity(entity);
 		var archetype = entityReference.Archetype;
 		ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		archetype.ClearBuffers(ref chunk, in entityReference.Slot, archetype.Signature);
+		archetype.ClearBuffers(ref chunk, entityReference.Slot.Index, archetype.Signature);
 		archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
 
 		_entityMap.Move(movedEntityId, in entityReference.Slot);
@@ -549,7 +562,7 @@ public sealed partial class EntityDatabase : IDisposable
         ref var entityReference = ref GetEntity(entityId);
         var archetype = entityReference.Archetype;
         ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        archetype.ClearBuffers(ref chunk, in entityReference.Slot, archetype.Signature);
+        archetype.ClearBuffers(ref chunk, entityReference.Slot.Index, archetype.Signature);
         archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
 
 		var version = entityReference.Version;
@@ -1441,11 +1454,11 @@ public sealed partial class EntityDatabase : IDisposable
 		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
 		var removedMask = srcArchetype.Signature.AndNot(dstArchetype.Signature);
 		var addedMask = dstArchetype.Signature.AndNot(srcArchetype.Signature);
-		srcArchetype.ClearBuffers(ref srcChunk, in srcSlot, in removedMask);
+		srcArchetype.ClearBuffers(ref srcChunk, srcSlot.Index, in removedMask);
 		dstArchetype.InitBuffers(ref dstChunk, in dstSlot, in addedMask);
 
 		// copy data
-		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot);
+		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot, clearManaged: true);
 		srcArchetype.RemoveEntity(srcSlot, out var movedEntity);
 
 		// update reference

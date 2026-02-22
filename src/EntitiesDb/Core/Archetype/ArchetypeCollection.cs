@@ -44,6 +44,15 @@ public sealed partial class ArchetypeCollection
 	}
 
 	/// <summary>
+	/// Clears all entities in archetypes
+	/// </summary>
+	internal void Clear()
+	{
+		foreach (var archetype in _archetypes)
+			archetype.Clear();
+    }
+
+	/// <summary>
 	/// Gets an existing or Creates a new <see cref="Archetype"/> for the given <see cref="Signature"/>
 	/// </summary>
 	/// <param name="signature">The signature of the <see cref="Archetype"/> to get</param>

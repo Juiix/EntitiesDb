@@ -337,6 +337,7 @@ public partial struct Chunk
 			var srcArray = srcChunk.ManagedComponents[i];
 			var dstArray = ManagedComponents[i];
 			Array.Copy(srcArray, srcIndex, dstArray, dstIndex, 1);
+			Array.Clear(srcArray, srcIndex, 1); // clear managed
 		}
 
 		return srcEntity.Id;
@@ -406,7 +407,8 @@ public partial struct Chunk
 	internal readonly unsafe void CopyComponents(
 		int srcIndex, short[] srcOffsets,
 		in Signature dstSignature, ref Chunk dstChunk, int dstIndex, short[] dstOffsets,
-		ReadOnlySpan<ComponentType> unmanagedComponentTypes, ReadOnlySpan<ComponentType> managedComponentTypes)
+		ReadOnlySpan<ComponentType> unmanagedComponentTypes, ReadOnlySpan<ComponentType> managedComponentTypes,
+		bool clearManaged = false)
 	{
 		// copy unmanaged components
 		var srcPtr = UnmanagedComponents;
@@ -439,12 +441,17 @@ public partial struct Chunk
 				continue; // component doesn't exist in the destination chunk
 			}
 
-			var dstArrayIndex = dstOffsets[componentType.Id];
+			var srcArray = srcMananagedComponents[srcArrayIndex++];
+            var dstArrayIndex = dstOffsets[componentType.Id];
 			Array.Copy(
-				srcMananagedComponents[srcArrayIndex++], srcIndex,
+                srcArray, srcIndex,
 				dstMananagedComponents[dstArrayIndex], dstIndex,
 				1
 			);
+			if (clearManaged)
+			{
+                Array.Clear(srcArray, srcIndex, 1); // clear managed
+            }
 		}
 	}
 
