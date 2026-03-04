@@ -1162,8 +1162,8 @@ public sealed partial class EntityDatabase : IDisposable
     /// <returns>If an <see cref="EntityData"/> was found for the given entity.</returns>
     public bool TryGetEntityData(Entity entity, out EntityData data)
     {
-        ref var reference = ref Unsafe.NullRef<EntityReference>();
-		if (!TryGetEntity(entity, ref reference))
+        ref var reference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
+		if (!foundEntity || entity.Version != reference.Version)
 		{
 			data = default;
             return false;
@@ -1189,8 +1189,8 @@ public sealed partial class EntityDatabase : IDisposable
     /// <returns>If an <see cref="EntityData"/> was found for the given entity.</returns>
     public bool TryGetEntityData(int entityId, out EntityData data)
     {
-        ref var reference = ref Unsafe.NullRef<EntityReference>();
-        if (!TryGetEntity(entityId, ref reference))
+        ref var reference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
+        if (!foundEntity)
         {
             data = default;
             return false;

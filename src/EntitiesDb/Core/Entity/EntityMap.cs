@@ -11,6 +11,7 @@ internal sealed class EntityMap(int maxEntities)
 	private EntityReference[] _references = new EntityReference[Math.Min(MinReferenceSize, maxEntities)];
 	private int[] _versions = new int[Math.Min(MinReferenceSize, maxEntities)];
 	private int _count = 0;
+	private EntityReference _null;
 
 	public int NextEntityId => _count;
 
@@ -47,10 +48,10 @@ internal sealed class EntityMap(int maxEntities)
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref EntityReference TryGetReference(int entityId, out bool found)
 	{
-		if (entityId >= _count)
+		if ((uint)entityId >= (uint)_count)
 		{
 			found = false;
-			return ref Unsafe.NullRef<EntityReference>();
+			return ref _null;
 		}
 
 		ref var entityReference = ref _references[entityId];
