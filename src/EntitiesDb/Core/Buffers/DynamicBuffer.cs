@@ -24,9 +24,6 @@ internal static class DynamicBuffer
 	public static unsafe void Clone(void* src, void* dst, uint stride) => Clone(ref Unsafe.AsRef<BufferHeader>(src), ref Unsafe.AsRef<BufferHeader>(dst), stride);
 	public static unsafe void Clone(ref BufferHeader src, ref BufferHeader dst, uint stride)
 	{
-		const int HeapTag = unchecked((int)0x8000_0000);
-		const int SizeMask = 0x7FFF_FFFF;
-
 		int size = src.Size & SizeMask;
 		bool isHeap = (src.Size & HeapTag) != 0;
 

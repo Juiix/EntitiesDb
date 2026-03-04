@@ -520,7 +520,7 @@ public sealed partial class EntityDatabase : IDisposable
 		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Set(t0Components);
+		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
 		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;

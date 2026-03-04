@@ -23,7 +23,7 @@ public partial class EntityDatabase
 			var parametersBArr = FormatComma(indexB, "T{0}[] t{0}Components", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 			var argsBArr = FormatComma(indexB, "t{0}Components.AsSpan()", indexC);
-			var setsB = FormatLine(indexB, "chunk.WriteBuffer<T{0}>(slot.Index).Set(t{0}Components);", indexC);
+			var setsB = FormatLine(indexB, "chunk.WriteBuffer<T{0}>(slot.Index).Init(t{0}Components);", indexC);
 #>
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
