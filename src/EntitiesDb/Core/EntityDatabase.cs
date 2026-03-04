@@ -470,8 +470,9 @@ public sealed partial class EntityDatabase : IDisposable
     {
         ref var entityReference = ref GetNextEntityId(out var dstEntityId);
         var archetype = Archetypes.GetOrCreateArchetype(in signature);
-        var dstSlot = archetype.AddEntity(dstEntityId, out _);
+        var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
         entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		archetype.InitBuffers(ref chunk, in dstSlot, in signature);
         EntityCount++;
         return dstEntityId;
     }
@@ -1378,30 +1379,6 @@ public sealed partial class EntityDatabase : IDisposable
 	}
 
 	/// <summary>
-    /// Trys to get an internal <see cref="EntityReference"/> to a given entity struct. Checks version equality.
-    /// </summary>
-    /// <param name="entity">The target entity</param>
-    /// <returns>If the entity was found and reference set</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool TryGetEntity(Entity entity, ref EntityReference entityReference)
-    {
-        entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
-		return foundEntity && entityReference.Version == entity.Version;
-    }
-
-    /// <summary>
-    /// Trys to get an internal <see cref="EntityReference"/> to a given entity id
-    /// </summary>
-    /// <param name="entityId">The target entity</param>
-    /// <returns>If the entity was found and reference set</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal bool TryGetEntity(int entityId, ref EntityReference entityReference)
-    {
-        entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
-        return foundEntity;
-    }
-
-    /// <summary>
 	/// Moves a target entity to a new archetype. New components will be defaulted.
 	/// </summary>
 	/// <param name="entity">The target entity</param>
