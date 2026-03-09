@@ -224,9 +224,9 @@ public sealed partial class EntityDatabase : IDisposable
 		// SetBuffer relies on internal state
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Adds components to an entity while removing others. Entity components are copied to a new <see cref="Archetype"/>.
     /// </summary>
     /// <param name="entity">The target entity</param>
@@ -390,13 +390,13 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Clones an existing entity and its components
-	/// </summary>
-	/// <param name="entity">The target entity</param>
-	/// <returns>Id of the cloned entity</returns>
-	/// <exception cref="EntityException"></exception>
-	/// <exception cref="MaxReachedException"></exception>
-	[StructuralChange]
+    /// Clones an existing entity and its components
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Id of the cloned entity</returns>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="MaxReachedException"></exception>
+    [StructuralChange]
 	[ChunkChange]
 	public Entity Clone(Entity entity)
 	{
@@ -457,9 +457,9 @@ public sealed partial class EntityDatabase : IDisposable
 		entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
 		EntityCount++;
 		return dstEntityId;
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Creates an entity with components defined in the given signature. All component values are defaulted
     /// </summary>
     /// <returns>Id of the created entity</returns>
@@ -472,17 +472,18 @@ public sealed partial class EntityDatabase : IDisposable
         var archetype = Archetypes.GetOrCreateArchetype(in signature);
         var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
         entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
+		archetype.InitComponents(ref chunk, dstSlot.Index, in signature);
 		archetype.InitBuffers(ref chunk, in dstSlot, in signature);
         EntityCount++;
         return dstEntityId;
     }
 
     /// <summary>
-	/// Creates an entity with components
-	/// </summary>
-	/// <returns>Id of the created entity</returns>
-	/// <exception cref="MaxReachedException"></exception>
-	[StructuralChange]
+    /// Creates an entity with components
+    /// </summary>
+    /// <returns>Id of the created entity</returns>
+    /// <exception cref="MaxReachedException"></exception>
+    [StructuralChange]
 	[ChunkChange]
 	public Entity Create<T0>(in T0? t0Component = default)
 	{
@@ -546,9 +547,9 @@ public sealed partial class EntityDatabase : IDisposable
 		_entityMap.Remove(entity.Id);
 		EntityCount--;
 		_recycledEntityIds.Enqueue(entity);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Destroys a given entity
     /// </summary>
 	/// <remarks>
@@ -574,18 +575,18 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Returns if an entity exists at a given id
-	/// </summary>
-	/// <param name="entity">Entity to check</param>
-	/// <returns>If an entity exists at the given id &amp; the <see cref="Entity.Version"/> is the same.</returns>
-	public bool Exists(Entity entity)
+    /// Returns if an entity exists at a given id
+    /// </summary>
+    /// <param name="entity">Entity to check</param>
+    /// <returns>If an entity exists at the given id &amp; the <see cref="Entity.Version"/> is the same.</returns>
+    public bool Exists(Entity entity)
 	{
 		ref var entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
 		return foundEntity &&
 			entityReference.Version == entity.Version;
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Returns if an entity exists at a given id
     /// </summary>
 	/// <remarks>
@@ -639,15 +640,15 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Returns a readonly reference to a component for an entity.
-	/// Ref values may be invalid after structural changes and should not be stored.
-	/// </summary>
-	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entity">The target entity</param>
-	/// <returns>Reference to the component for the given entity</returns>
-	/// <exception cref="EntityException"></exception>
-	/// <exception cref="ComponentException"></exception>
-	public ref readonly T0? Read<T0>(Entity entity)
+    /// Returns a readonly reference to a component for an entity.
+    /// Ref values may be invalid after structural changes and should not be stored.
+    /// </summary>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Reference to the component for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    public ref readonly T0? Read<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
@@ -710,7 +711,7 @@ public sealed partial class EntityDatabase : IDisposable
 		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
 		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
 		return buffer;
-	}
+    }
 
     /// <summary>
     /// <para>
@@ -796,7 +797,7 @@ public sealed partial class EntityDatabase : IDisposable
         return true;
     }
 
-	/// <summary>
+    /// <summary>
     /// <para>
     /// Attempts to read a buffer of components for an entity. Will return false if the entity does not have the component.
 	/// </para>
@@ -829,18 +830,18 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Returns a reference to a component for an entity.
-	/// Ref values may be invalid after structural changes and should not be stored.
-	/// </summary>
-	/// <remarks>
-	/// Marks the accessed <see cref="Chunk"/> as changed.
-	/// </remarks>
-	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entity">The target entity</param>
-	/// <returns>Reference to the component for the given entity</returns>
-	/// <exception cref="EntityException"></exception>
-	/// <exception cref="ComponentException"></exception>
-	[ChunkChange]
+    /// Returns a reference to a component for an entity.
+    /// Ref values may be invalid after structural changes and should not be stored.
+    /// </summary>
+    /// <remarks>
+    /// Marks the accessed <see cref="Chunk"/> as changed.
+    /// </remarks>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>Reference to the component for the given entity</returns>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [ChunkChange]
 	public ref T0? Write<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
@@ -949,17 +950,46 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var reference = ref GetEntity(entityId);
 		return reference.Archetype.Has<T0>();
-	}
+    }
 
-	/// <summary>
-	/// Removes components from a given entity
-	/// </summary>
-	/// <typeparam name="T0">Component type</typeparam>
-	/// <param name="entity">The target entity</param>
-	/// <returns>If the component was found and removed</returns>
-	/// <exception cref="EntityException"></exception>
-	/// <exception cref="ComponentException"></exception>
-	[StructuralChange]
+    /// <summary>
+    /// Returns if an entity has any 1 of the given component types
+    /// </summary>
+    /// <typeparam name="T">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>If the entity has the given component type</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool HasAny<T0>(Entity entity)
+    {
+        ref var reference = ref GetEntity(entity);
+        return reference.Archetype.HasAny<T0>();
+    }
+
+    /// <summary>
+    /// Returns if an entity has any 1 of the given component types
+    /// </summary>
+    /// <remarks>
+    /// This method does not check version equality. Prefer <see cref="HasAny{T0}(Entity)"/> if the entityId has potentially been recycled.
+    /// </remarks>
+    /// <typeparam name="T">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>If the entity has any 1 of the given component types</returns>
+    /// <exception cref="EntityException"></exception>
+    public bool HasAny<T0>(int entityId)
+    {
+        ref var reference = ref GetEntity(entityId);
+        return reference.Archetype.HasAny<T0>();
+    }
+
+    /// <summary>
+    /// Removes components from a given entity
+    /// </summary>
+    /// <typeparam name="T0">Component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <returns>If the component was found and removed</returns>
+    /// <exception cref="EntityException"></exception>
+    /// <exception cref="ComponentException"></exception>
+    [StructuralChange]
 	public void Remove<T0>(Entity entity)
 	{
 		var removedSignature = Component<T0>.Signature;
@@ -996,9 +1026,9 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Removes components from a given entity
     /// </summary>
     /// <param name="entity">The target entity</param>
@@ -1044,11 +1074,11 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Reserves space for a given amounts of entities in a matching <see cref="Archetype"/>
-	/// </summary>
-	/// <typeparam name="T0"></typeparam>
-	/// <param name="entityCount">The amount of entity space to reserve</param>
-	[StructuralChange]
+    /// Reserves space for a given amounts of entities in a matching <see cref="Archetype"/>
+    /// </summary>
+    /// <typeparam name="T0"></typeparam>
+    /// <param name="entityCount">The amount of entity space to reserve</param>
+    [StructuralChange]
 	public void Reserve<T0>(int entityCount)
 	{
 		_entityMap.EnsureCapacity(EntityCount + entityCount - _recycledEntityIds.Count);
@@ -1057,28 +1087,28 @@ public sealed partial class EntityDatabase : IDisposable
 		archetype.Reserve(entityCount);
 	}
 
-	/// <summary>
-	/// Gets the archetype of a given entity
-	/// </summary>
-	/// <param name="entity">The target entity</param>
-	/// <returns>The entity's archetype</returns>
+    /// <summary>
+    /// Gets the archetype of a given entity
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <returns>The entity's archetype</returns>
     /// <exception cref="EntityException"></exception>
-	public Archetype GetArchetype(Entity entity)
+    public Archetype GetArchetype(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
 		return entityReference.Archetype;
 	}
 
-	/// <summary>
-	/// Gets the archetype of a given entity
-	/// </summary>
-	/// <remarks>
-	/// This method does not check version equality. Prefer <see cref="GetArchetype(Entity)"/> if the entityId has potentially been recycled.
-	/// </remarks>
-	/// <param name="entity">The target entity</param>
-	/// <returns>The entity's archetype</returns>
+    /// <summary>
+    /// Gets the archetype of a given entity
+    /// </summary>
+    /// <remarks>
+    /// This method does not check version equality. Prefer <see cref="GetArchetype(Entity)"/> if the entityId has potentially been recycled.
+    /// </remarks>
+    /// <param name="entity">The target entity</param>
+    /// <returns>The entity's archetype</returns>
     /// <exception cref="EntityException"></exception>
-	public Archetype GetArchetype(int entityId)
+    public Archetype GetArchetype(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
 		return entityReference.Archetype;
@@ -1092,9 +1122,9 @@ public sealed partial class EntityDatabase : IDisposable
 	public Archetype GetArchetype(in Signature signature)
 	{
 		return Archetypes.GetOrCreateArchetype(in signature);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Gets the signature of a given entity
     /// </summary>
     /// <param name="entity">The target entity</param>
@@ -1119,41 +1149,41 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
-	/// </summary>
-	/// <remarks>
-	/// The data is invalid after any structural change and should not be stored.
-	/// </remarks>
-	/// <param name="entity"></param>
-	/// <returns>An <see cref="EntityData"/> for the given entity.</returns>
-	public EntityData GetEntityData(Entity entity)
+    /// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+    /// </summary>
+    /// <remarks>
+    /// The data is invalid after any structural change and should not be stored.
+    /// </remarks>
+    /// <param name="entity"></param>
+    /// <returns>An <see cref="EntityData"/> for the given entity.</returns>
+    public EntityData GetEntityData(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
 		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
 		return new EntityData(ref chunk, reference.Slot.Index);
-	}
+    }
 
-	/// <summary>
-	/// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// The data is invalid after any structural change and should not be stored.
-	/// </para>
-	/// <para>
+    /// <summary>
+    /// Gets <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The data is invalid after any structural change and should not be stored.
+    /// </para>
+    /// <para>
     /// This method does not check version equality. Prefer <see cref="GetEntityData(Entity)"/> if the entityId has potentially been recycled.
-	/// </para>
-	/// </remarks>
-	/// <param name="entity"></param>
-	/// <returns>An <see cref="EntityData"/> for the given entity.</returns>
-	public EntityData GetEntityData(int entityId)
+    /// </para>
+    /// </remarks>
+    /// <param name="entity"></param>
+    /// <returns>An <see cref="EntityData"/> for the given entity.</returns>
+    public EntityData GetEntityData(int entityId)
 	{
 		ref var reference = ref GetEntity(entityId);
 		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
 		return new EntityData(ref chunk, reference.Slot.Index);
-	}
+    }
 
-	/// <summary>
+    /// <summary>
     /// Tries to get <see cref="EntityData"/> for faster read/write of multiple components. Avoid's duplicate entity slot lookups.
     /// </summary>
     /// <remarks>
@@ -1203,12 +1233,12 @@ public sealed partial class EntityDatabase : IDisposable
     }
 
     /// <summary>
-	/// Sets component values for a given entity
-	/// </summary>
-	/// <typeparam name="T">The component type</typeparam>
-	/// <param name="entity">The target entity</param>
-	/// <param name="t0Component">The value to set</param>
-	[ChunkChange]
+    /// Sets component values for a given entity
+    /// </summary>
+    /// <typeparam name="T">The component type</typeparam>
+    /// <param name="entity">The target entity</param>
+    /// <param name="t0Component">The value to set</param>
+    [ChunkChange]
 	public void Set<T0>(Entity entity, in T0? t0Component)
 	{
         ref var entityReference = ref GetEntity(entity);
@@ -1376,14 +1406,14 @@ public sealed partial class EntityDatabase : IDisposable
 		if (!foundEntity)
 			throw ThrowHelper.EntityNotFound(entityId);
 		return ref entityReference;
-	}
+    }
 
-	/// <summary>
-	/// Moves a target entity to a new archetype. New components will be defaulted.
-	/// </summary>
-	/// <param name="entity">The target entity</param>
-	/// <param name="targetArchetype">The target archetype</param>
-	[StructuralChange]
+    /// <summary>
+    /// Moves a target entity to a new archetype. New components will be defaulted.
+    /// </summary>
+    /// <param name="entity">The target entity</param>
+    /// <param name="targetArchetype">The target archetype</param>
+    [StructuralChange]
 	internal void Move(Entity entity, Archetype targetArchetype)
 	{
 		ref var entityReference = ref GetEntity(entity);

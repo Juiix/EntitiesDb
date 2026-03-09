@@ -23,6 +23,18 @@ public partial class EntityDatabase
 		ref var reference = ref GetEntity(entityId);
 		return reference.Archetype.Has<<#= generics #>>();
 	}
+	/// <inheritdoc cref="HasAny{T0}(Entity)"/>
+	public bool HasAny<<#= generics #>>(Entity entity)
+	{
+		ref var reference = ref GetEntity(entity);
+		return reference.Archetype.HasAny<<#= generics #>>();
+	}
+	/// <inheritdoc cref="HasAny{T0}(int)"/>
+	public bool HasAny<<#= generics #>>(int entityId)
+	{
+		ref var reference = ref GetEntity(entityId);
+		return reference.Archetype.HasAny<<#= generics #>>();
+	}
 <#
 	}
 #>

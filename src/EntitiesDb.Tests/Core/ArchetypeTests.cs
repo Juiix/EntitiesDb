@@ -77,6 +77,25 @@ public sealed class ArchetypeTests
 	}
 
 	[Fact]
+	public void HasAndHasAny_WithMultipleTypes_ReportExpectedPresence()
+	{
+		var arch = BuildArchetype_Int_Float_Name();
+		try
+		{
+			Assert.True(arch.Has<int, float>());
+			Assert.False(arch.Has<int, Guid>());
+			Assert.True(arch.HasAny<int, Guid>());
+			Assert.False(arch.HasAny<Guid, DateTime>());
+		}
+		finally
+		{
+			arch = null!;
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+	}
+
+	[Fact]
 	public void AddEntity_FillsCurrentChunk_ThenAddsNewChunk()
 	{
 		var arch = BuildArchetype_Int_Float_Name();

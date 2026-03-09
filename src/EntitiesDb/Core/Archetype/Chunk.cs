@@ -230,6 +230,14 @@ public partial struct Chunk
 	}
 
 	/// <summary>
+	/// If this chunk contains any 1 of the given components
+	/// </summary>
+	/// <typeparam name="T0"></typeparam>
+	/// <returns></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public readonly bool HasAny<T0>() => Has<T0>();
+
+	/// <summary>
 	/// Returns an index enumerator
 	/// </summary>
 	/// <returns></returns>

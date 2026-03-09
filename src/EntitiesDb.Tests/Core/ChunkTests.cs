@@ -72,6 +72,27 @@ public unsafe class ChunkTests : IDisposable
 	}
 
 	[Fact]
+	public void HasAndHasAny_WithMultipleTypes_ReportExpectedPresence()
+	{
+		var (types, unmanagedCount) = BuildComponentTypes();
+		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, 4096);
+		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
+		var globalChangeVersions = new int[256];
+		var localChangeVersions = new int[256];
+
+		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
+		_srcBlock = Marshal.AllocHGlobal(unmanagedBytes);
+
+		var managed = CreateManagedArrays(types, capacity, unmanagedCount);
+		var chunk = new Chunk(_srcBlock, managed, globalChangeVersions, localChangeVersions, offsets);
+
+		Assert.True(chunk.Has<int, float>());
+		Assert.False(chunk.Has<int, Guid>());
+		Assert.True(chunk.HasAny<int, Guid>());
+		Assert.False(chunk.HasAny<Guid, DateTime>());
+	}
+
+	[Fact]
 	public void AddEntity_GetEntity_AcceptEntity_CopyAll_Data_Roundtrip()
 	{
 		// Arrange archetype and capacity

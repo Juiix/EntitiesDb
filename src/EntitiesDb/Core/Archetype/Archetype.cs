@@ -144,10 +144,18 @@ public unsafe sealed partial class Archetype
 	public bool Has<T>() =>
 		Signature.Test(Component<T>.Id);
 
-	/// <summary>
-	/// Returns a chunk enumerator
-	/// </summary>
-	public ChunkIterator GetChunks(ChangeFilter? changeFilter = null, int? compareVersion = null) => new(_chunks.AsSpan(0, ChunksInUse), changeFilter, compareVersion);
+    /// <summary>
+    /// If this <see cref="Archetype"/> contains any 1 of the given components
+    /// </summary>
+    /// <returns>If this <see cref="Archetype"/> has component of type <typeparamref name="T"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool HasAny<T>() =>
+        Signature.Test(Component<T>.Id);
+
+    /// <summary>
+    /// Returns a chunk enumerator
+    /// </summary>
+    public ChunkIterator GetChunks(ChangeFilter? changeFilter = null, int? compareVersion = null) => new(_chunks.AsSpan(0, ChunksInUse), changeFilter, compareVersion);
 
 	/// <summary>
 	/// Returns a chunk enumerator
@@ -290,6 +298,42 @@ public unsafe sealed partial class Archetype
 	{
 		ref var chunk = ref _chunks[entitySlot.ChunkIndex];
 		return ref chunk.WriteEntity(entitySlot.Index);
+	}
+
+	/// <summary>
+	/// Initializes non-buffer components to default values for a given entity slot
+	/// </summary>
+	internal void InitComponents(ref Chunk chunk, int index, in Signature mask)
+	{
+		for (int i = 0; i < _unmangedComponentCount; i++)
+		{
+			ref readonly var componentType = ref ComponentTypes[i];
+			if (!mask.Test(componentType.Id) ||
+				componentType.IsTag ||
+				componentType.IsBuffer)
+			{
+				continue;
+			}
+
+			var offset = _idToOffsets[componentType.Id];
+			Unsafe.InitBlock(
+				(void*)(chunk.UnmanagedComponents + offset + componentType.Stride * index),
+				0,
+				(uint)componentType.Stride
+			);
+		}
+
+		for (int i = _unmangedComponentCount; i < ComponentTypes.Length; i++)
+		{
+			ref readonly var componentType = ref ComponentTypes[i];
+			if (!mask.Test(componentType.Id))
+			{
+				continue;
+			}
+
+			var arrayIndex = _idToOffsets[componentType.Id];
+			Array.Clear(chunk.ManagedComponents[arrayIndex], index, 1);
+		}
 	}
 
 	/// <summary>

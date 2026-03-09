@@ -55,6 +55,32 @@ public sealed class EntityDatabaseTests
 	}
 
 	[Fact]
+	public void CreateWithSignature_DefaultsComponents_WhenSlotIsReused()
+	{
+		var db = CreateDb();
+		var signature = Signature.Empty
+			.WithSet(Component<Position>.Id)
+			.WithSet(Component<NameTag>.Id)
+			.WithSet(Component<Damage>.Id);
+
+		var e1 = db.Create(signature);
+		db.Set(e1, new Position { X = 12, Y = -3 });
+		db.Set(e1, new NameTag("stale"));
+		db.Set<Damage>(e1, new[] { new Damage(7), new Damage(8) });
+		db.Destroy(e1);
+
+		var e2 = db.Create(signature);
+
+		var p = db.Write<Position>(e2);
+		var n = db.Write<NameTag>(e2);
+		var b = db.WriteBuffer<Damage>(e2);
+		Assert.Equal(0f, p.X);
+		Assert.Equal(0f, p.Y);
+		Assert.Null(n.Text);
+		Assert.Equal(0, b.Length);
+	}
+
+	[Fact]
 	public void DestroyEntity_Removes_And_Compacts()
 	{
 		var db = CreateDb();
@@ -196,6 +222,19 @@ public sealed class EntityDatabaseTests
 	{
 		var db = CreateDb();
 		Assert.Throws<EntityException>(() => db.Has<Position>(new Entity(999, 0)));
+	}
+
+	[Fact]
+	public void HasAndHasAny_WithMultipleTypes_ReportExpectedPresence()
+	{
+		var db = CreateDb();
+		var e = db.Create();
+		db.Add<Position>(e, new Position { X = 1, Y = 2 });
+
+		Assert.True(db.Has<Position>(e));
+		Assert.False(db.Has<Position, Health>(e));
+		Assert.True(db.HasAny<Position, Health>(e));
+		Assert.False(db.HasAny<Health, NameTag>(e));
 	}
 
 	// -------------------- Buffered components via [Buffered] --------------------
