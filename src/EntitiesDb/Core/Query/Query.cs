@@ -51,7 +51,7 @@ public sealed partial class Query
 	/// <summary>
 	/// <see cref="ArchetypeChunkIterator"/> for matching <see cref="Chunk"/>'s of entities
 	/// </summary>
-	public ArchetypeChunkIterator Enumerate()
+	public ArchetypeChunkIterator EnumerateChunks()
 	{
 		Match();
 		return new ArchetypeChunkIterator(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version);
@@ -60,10 +60,10 @@ public sealed partial class Query
 	/// <summary>
 	/// <see cref="ArchetypeChunkEnumerator"/> for matching <see cref="Archetype"/> entities
 	/// </summary>
-	public ArchetypeEnumerator GetEnumerator()
+	public ArchetypeChunkEnumerator GetEnumerator()
 	{
 		Match();
-		return new ArchetypeEnumerator(MatchingArchetypesSpan);
+		return new ArchetypeChunkEnumerator(MatchingArchetypesSpan, ChangeFilter, ChangeFilter?.Version);
 	}
 
 	/// <summary>
