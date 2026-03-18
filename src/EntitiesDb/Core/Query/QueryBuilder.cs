@@ -29,6 +29,7 @@ public sealed partial class QueryBuilder
 		_any = default;
 		_none = default;
 		_filterMode = QueryFilterMode.All;
+		_changeFilterId = -1;
 	}
 
 	/// <summary>
