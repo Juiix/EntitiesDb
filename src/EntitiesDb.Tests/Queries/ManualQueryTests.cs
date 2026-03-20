@@ -13,35 +13,32 @@ public sealed class ManualQueryTests
 			.WithNone<EnemyTag>()
 			.Build();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
+			var entities = chunk.EntityHandle();
+			var positions = chunk.WriteHandle<Position>();
+			var healths = chunk.WriteHandle<Health>();
+			foreach (var index in chunk)
 			{
-				var entities = chunk.EntityHandle();
-				var positions = chunk.WriteHandle<Position>();
-				var healths = chunk.WriteHandle<Health>();
-				foreach (var index in chunk)
-				{
-					ref readonly var entity = ref entities[index];
-					ref var position = ref positions[index];
-					ref var health = ref healths[index];
+				ref readonly var entity = ref entities[index];
+				ref var position = ref positions[index];
+				ref var health = ref healths[index];
 
-					Assert.InRange(entity.Id, 0, 2);
-					switch (entity.Id)
-					{
-						case 0:
-							Assert.Equal(new Position(1, 1), position);
-							Assert.Equal(new Health(10, 10), health);
-							break;
-						case 1:
-							Assert.Equal(new Position(2, 3), position);
-							Assert.Equal(new Health(9, 10), health);
-							break;
-						case 2:
-							Assert.Equal(new Position(5, 5), position);
-							Assert.Equal(new Health(12, 12), health);
-							break;
-					}
+				Assert.InRange(entity.Id, 0, 2);
+				switch (entity.Id)
+				{
+					case 0:
+						Assert.Equal(new Position(1, 1), position);
+						Assert.Equal(new Health(10, 10), health);
+						break;
+					case 1:
+						Assert.Equal(new Position(2, 3), position);
+						Assert.Equal(new Health(9, 10), health);
+						break;
+					case 2:
+						Assert.Equal(new Position(5, 5), position);
+						Assert.Equal(new Health(12, 12), health);
+						break;
 				}
 			}
 		}
@@ -59,19 +56,16 @@ public sealed class ManualQueryTests
 
 		var results = new List<(int Id, Health Health)>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
-			{
-				var entities = chunk.EntityHandle();
-				var healths = chunk.WriteHandle<Health>();
+			var entities = chunk.EntityHandle();
+			var healths = chunk.WriteHandle<Health>();
 
-				foreach (var i in chunk)
-				{
-					ref readonly var e = ref entities[i];
-					ref var h = ref healths[i];
-					results.Add((e.Id, h));
-				}
+			foreach (var i in chunk)
+			{
+				ref readonly var e = ref entities[i];
+				ref var h = ref healths[i];
+				results.Add((e.Id, h));
 			}
 		}
 
@@ -94,19 +88,16 @@ public sealed class ManualQueryTests
 
 		var results = new List<int>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
+			var entities = chunk.EntityHandle();
+			// Position is guaranteed present by the filter
+			var positions = chunk.WriteHandle<Position>();
+			foreach (var i in chunk)
 			{
-				var entities = chunk.EntityHandle();
-				// Position is guaranteed present by the filter
-				var positions = chunk.WriteHandle<Position>();
-				foreach (var i in chunk)
-				{
-					ref readonly var e = ref entities[i];
-					_ = positions[i]; // touch to ensure presence
-					results.Add(e.Id);
-				}
+				ref readonly var e = ref entities[i];
+				_ = positions[i]; // touch to ensure presence
+				results.Add(e.Id);
 			}
 		}
 
@@ -128,17 +119,14 @@ public sealed class ManualQueryTests
 
 		var positions = new Dictionary<int, Position>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
+			var entities = chunk.EntityHandle();
+			var pos = chunk.WriteHandle<Position>();
+			foreach (var i in chunk)
 			{
-				var entities = chunk.EntityHandle();
-				var pos = chunk.WriteHandle<Position>();
-				foreach (var i in chunk)
-				{
-					ref readonly var e = ref entities[i];
-					positions[e.Id] = pos[i];
-				}
+				ref readonly var e = ref entities[i];
+				positions[e.Id] = pos[i];
 			}
 		}
 
@@ -161,21 +149,18 @@ public sealed class ManualQueryTests
 
 		var found = new Dictionary<int, (Position Pos, string Name)>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
-			{
-				var entities = chunk.EntityHandle();
-				var positions = chunk.WriteHandle<Position>();
-				var names = chunk.WriteHandle<NameTag>();
+			var entities = chunk.EntityHandle();
+			var positions = chunk.WriteHandle<Position>();
+			var names = chunk.WriteHandle<NameTag>();
 
-				foreach (var i in chunk)
-				{
-					ref readonly var e = ref entities[i];
-					ref var p = ref positions[i];
-					ref var nt = ref names[i];
-					found[e.Id] = (p, nt!.Text);
-				}
+			foreach (var i in chunk)
+			{
+				ref readonly var e = ref entities[i];
+				ref var p = ref positions[i];
+				ref var nt = ref names[i];
+				found[e.Id] = (p, nt!.Text);
 			}
 		}
 
@@ -202,26 +187,22 @@ public sealed class ManualQueryTests
 		var ids = new List<int>();
 		var names = new List<string>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			var hasName = archetype.Has<NameTag>();
-			foreach (ref readonly var chunk in archetype)
+			var entities = chunk.EntityHandle();
+			foreach (var i in chunk)
 			{
-				var entities = chunk.EntityHandle();
+				ref readonly var e = ref entities[i];
+				ids.Add(e.Id);
+			}
+
+			if (chunk.Has<NameTag>())
+			{
+				var nameTags = chunk.WriteHandle<NameTag>();
 				foreach (var i in chunk)
 				{
-					ref readonly var e = ref entities[i];
-					ids.Add(e.Id);
-				}
-
-				if (hasName)
-				{
-					var nameTags = chunk.WriteHandle<NameTag>();
-					foreach (var i in chunk)
-					{
-						ref var nt = ref nameTags[i];
-						names.Add(nt.Text);
-					}
+					ref var nt = ref nameTags[i];
+					names.Add(nt.Text);
 				}
 			}
 		}
@@ -244,12 +225,9 @@ public sealed class ManualQueryTests
 			.Build();
 
 		var count = 0;
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
-			{
-				foreach (var _ in chunk) count++;
-			}
+			foreach (var _ in chunk) count++;
 		}
 
 		Assert.Equal(0, count);
@@ -265,41 +243,34 @@ public sealed class ManualQueryTests
 			.WithAll<PlayerTag>()
 			.Build();
 
-		var entityHandle = default(ReadHandle<Entity>);
-		var invHandle = default(WriteBufferHandle<InventoryItem>);
-
 		var lengths = new Dictionary<int, int>();
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
+			var entityHandle = chunk.EntityHandle();
+			var invHandle = chunk.WriteBufferHandle<InventoryItem>();
+
+			foreach (var i in chunk)
 			{
-				entityHandle = chunk.EntityHandle();
-				invHandle = chunk.WriteBufferHandle<InventoryItem>();
+				ref readonly var e = ref entityHandle[i];
+				var inv = invHandle[i];
 
-				foreach (var i in chunk)
+				lengths[e.Id] = inv.Length;
+
+				// Spot-check content we know from the seed data:
+				// Player 0 (Alice): 2 items => (1,2), (2,1)
+				if (e.Id == 0)
 				{
-					ref readonly var e = ref entityHandle[i];
-					// buffer per-entity
-					var inv = invHandle[i];
+					Assert.Equal(2, inv.Length);
+					Assert.Equal(new InventoryItem(1, 2), inv[0]);
+					Assert.Equal(new InventoryItem(2, 1), inv[1]);
+				}
 
-					lengths[e.Id] = inv.Length;
-
-					// Spot-check content we know from the seed data:
-					// Player 0 (Alice): 2 items => (1,2), (2,1)
-					if (e.Id == 0)
-					{
-						Assert.Equal(2, inv.Length);
-						Assert.Equal(new InventoryItem(1, 2), inv[0]);
-						Assert.Equal(new InventoryItem(2, 1), inv[1]);
-					}
-
-					// Player 2 (Cara): 1 item => (8,1)
-					if (e.Id == 2)
-					{
-						Assert.Equal(1, inv.Length);
-						Assert.Equal(new InventoryItem(8, 1), inv[0]);
-					}
+				// Player 2 (Cara): 1 item => (8,1)
+				if (e.Id == 2)
+				{
+					Assert.Equal(1, inv.Length);
+					Assert.Equal(new InventoryItem(8, 1), inv[0]);
 				}
 			}
 		}
@@ -359,28 +330,22 @@ public sealed class ManualQueryTests
 			.WithAll<BossTag>()
 			.Build();
 
-		var entityHandle = default(ReadHandle<Entity>);
-		var dmgHandle = default(ReadBufferHandle<Damage>);
-
 		var seenAny = false;
 
-		foreach (var archetype in query)
+		foreach (ref readonly var chunk in query)
 		{
-			foreach (ref readonly var chunk in archetype)
+			var entityHandle = chunk.EntityHandle();
+			var dmgHandle = chunk.ReadBufferHandle<Damage>();
+
+			foreach (var i in chunk)
 			{
-				entityHandle = chunk.EntityHandle();
-				dmgHandle = chunk.ReadBufferHandle<Damage>();
+				seenAny = true;
+				ref readonly var e = ref entityHandle[i];
+				var dmg = dmgHandle[i];
 
-				foreach (var i in chunk)
-				{
-					seenAny = true;
-					ref readonly var e = ref entityHandle[i];
-					var dmg = dmgHandle[i];
-
-					// We don't rely on the exact count, only that bosses carry a "large" buffer.
-					// Buffered attribute for Damage is 8, so ensure bosses exceed that to catch promotion paths.
-					Assert.True(dmg.Length > 8, $"Boss {e.Id} should have > 8 damage entries");
-				}
+				// We don't rely on the exact count, only that bosses carry a "large" buffer.
+				// Buffered attribute for Damage is 8, so ensure bosses exceed that to catch promotion paths.
+				Assert.True(dmg.Length > 8, $"Boss {e.Id} should have > 8 damage entries");
 			}
 		}
 

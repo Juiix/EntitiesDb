@@ -75,7 +75,7 @@ public sealed partial class CommandBuffer
 					try
 					{
 						ref var bufferedEntity = ref entitiesSpan[entityIndex];
-						var signature = bufferedEntity.SetIndex >= 0 ? _sets[entityIndex] : default;
+						var signature = bufferedEntity.SetIndex >= 0 ? _sets[bufferedEntity.SetIndex] : default;
 						bufferedEntity = bufferedEntity with
 						{
 							Entity = _database.Create(in signature)
@@ -94,6 +94,7 @@ public sealed partial class CommandBuffer
 					{
 						ref var bufferedEntity = ref entitiesSpan[entityIndex];
 						_database.Destroy(bufferedEntity.Entity);
+						bufferedEntity = bufferedEntity with { SetIndex = -1, RemoveIndex = -1 };
 					}
 					catch (Exception e)
 					{
@@ -105,6 +106,7 @@ public sealed partial class CommandBuffer
 				for (int entityIndex = 0; entityIndex < entitiesSpan.Length; entityIndex++)
 				{
 					ref var bufferedEntity = ref entitiesSpan[entityIndex];
+					if (bufferedEntity.SetIndex < 0 && bufferedEntity.RemoveIndex < 0) continue;
 					try
 					{
 						var archetype = _database.GetArchetype(bufferedEntity.Entity);
@@ -163,7 +165,7 @@ public sealed partial class CommandBuffer
 								var sourceArray = componentStore.Components;
 								var sourceIndex = componentStore.GetComponentIndex(entityIndex);
 								Array.Copy(
-									sourceArray, entityIndex,
+									sourceArray, sourceIndex,
 									array, reference.Slot.Index,
 									1);
 							}
