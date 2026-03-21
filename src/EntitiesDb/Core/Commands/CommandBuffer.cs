@@ -169,6 +169,8 @@ public sealed partial class CommandBuffer
 									array, reference.Slot.Index,
 									1);
 							}
+
+							componentStore.ClearEntityIndex(entityIndex);
 						}
 					}
 					catch (Exception e)

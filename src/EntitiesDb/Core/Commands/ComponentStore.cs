@@ -22,6 +22,12 @@ internal sealed class ComponentStore(ComponentType componentType, ArrayFactory a
         Count = 0;
     }
 
+    public void ClearEntityIndex(int entityIndex)
+    {
+        if (entityIndex < _entityMap.Length)
+            _entityMap[entityIndex] = 0;
+    }
+
     public int GetComponentIndex(int entityIndex)
     {
         if (entityIndex >= _entityMap.Length)
