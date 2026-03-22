@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
@@ -1356,6 +1355,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <inheritdoc cref="IDisposable.Dispose"/>
 	public void Dispose()
 	{
+		_entityMap.Dispose();
 		Archetypes.Dispose();
 		if (_disposeParallelRunner && ParallelRunner is ParallelJobRunner runner)
 			runner.Dispose();
@@ -1375,7 +1375,13 @@ public sealed partial class EntityDatabase : IDisposable
 		var maxEntityId = _entityMap.NextEntityId;
 
 		Archetypes.TrimExcess();
-		_recycledEntityIds = new Queue<Entity>(_recycledEntityIds.Where(x => x.Id < maxEntityId));
+		var trimmedQueue = new Queue<Entity>();
+		foreach (var entity in _recycledEntityIds)
+		{
+			if (entity.Id < maxEntityId)
+				trimmedQueue.Enqueue(entity);
+		}
+		_recycledEntityIds = trimmedQueue;
 	}
 
 	/// <summary>

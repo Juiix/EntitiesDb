@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
+[SkipLocalsInit]
 internal ref struct ChangeFilterEnumerator
 {
 	private readonly ReadOnlySpan<Chunk> _chunks;
 	private readonly ChangeFilter _changeFilter;
+	private readonly int _changeFilterId;
 	private readonly int _compareVersion;
 	private int _index = -1;
 	private int _size = 0;
@@ -14,6 +17,7 @@ internal ref struct ChangeFilterEnumerator
 	{
 		_chunks = chunks;
 		_changeFilter = changeFilter;
+		_changeFilterId = changeFilter.Id;
 		_compareVersion = compareVersion;
 
 		_index = chunks.Length;
@@ -30,7 +34,7 @@ internal ref struct ChangeFilterEnumerator
 			for (; _index >= 0; _index--)
 			{
 				ref readonly var chunk = ref _chunks[_index];
-				var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
+				var chunkVersion = chunk.LocalChangeVersions[_changeFilterId];
 				if ((chunkVersion - _compareVersion) <= 0)
 				{
 					if (_size > 0)

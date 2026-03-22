@@ -48,7 +48,7 @@ public sealed partial class ArchetypeCollection
 	/// </summary>
 	internal void Clear()
 	{
-		foreach (var archetype in _archetypes)
+		foreach (var archetype in _archetypes.AsSpan(0, _archetypeCount))
 			archetype.Clear();
     }
 

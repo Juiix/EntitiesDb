@@ -7,6 +7,7 @@ namespace EntitiesDb;
 /// <summary>
 /// A chunk of entities, stored as rows across tight component array columns
 /// </summary>
+[SkipLocalsInit]
 public partial struct Chunk
 {
 	internal Chunk(nint unmanagedComponents, Array[] managedComponents, int[] globalChangeVersions, int[] localChangeVersions, short[] idToOffsets)
@@ -53,6 +54,7 @@ public partial struct Chunk
 	/// </summary>
 	/// <param name="index">The index of the <see cref="EntitiesDb.Entity"/> to get</param>
 	/// <returns>A reference to the <see cref="EntitiesDb.Entity"/> at <paramref name="index"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe readonly ref readonly Entity Entity(int index)
 	{
 		return ref Unsafe.AsRef<Entity>((byte*)UnmanagedComponents + index * sizeof(Entity));
@@ -64,6 +66,7 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly reference at <paramref name="index"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly unsafe ref readonly T0? Read<T0>(int index)
 	{
 		var id = ComponentSingleWritable<T0>.Id;
@@ -80,6 +83,7 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <param name="index">The index to get</param>
 	/// <returns>A readonly buffer of components at <paramref name="index"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly unsafe ReadBuffer<T0> ReadBuffer<T0>(int index) where T0 : unmanaged
 	{
 		var id = ComponentBufferWritable<T0>.Id;
@@ -95,6 +99,7 @@ public partial struct Chunk
 	/// <param name="index">The index to get</param>
 	/// <returns>A reference at <paramref name="index"/></returns>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly unsafe ref T0? Write<T0>(int index)
 	{
 		var id = ComponentSingleWritable<T0>.Id;
@@ -113,6 +118,7 @@ public partial struct Chunk
 	/// <param name="index">The index to get</param>
 	/// <returns>A buffer of components at <paramref name="index"/></returns>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly unsafe WriteBuffer<T0> WriteBuffer<T0>(int index) where T0 : unmanaged
 	{
 		var id = ComponentBufferWritable<T0>.Id;
@@ -127,6 +133,7 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.WriteHandle{T}"/> to the first index</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly ReadHandle<Entity> EntityHandle()
 	{
 		return new ReadHandle<Entity>(ref WriteEntity(0));
@@ -137,6 +144,7 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.ReadHandle{T}"/> to the first index</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe readonly ReadHandle<T0?> ReadHandle<T0>()
 	{
 		var id = ComponentSingleWritable<T0>.Id;
@@ -153,6 +161,7 @@ public partial struct Chunk
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.ReadBufferHandle{T}"/> to the first index</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly unsafe ReadBufferHandle<T0> ReadBufferHandle<T0>() where T0 : unmanaged
 	{
 		var id = ComponentBufferWritable<T0>.Id;
@@ -168,6 +177,7 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.WriteHandle{T}"/> to the first index</returns>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe readonly WriteHandle<T0?> WriteHandle<T0>()
 	{
 		var id = ComponentSingleWritable<T0>.Id;
@@ -186,6 +196,7 @@ public partial struct Chunk
 	/// <typeparam name="T0">The component type</typeparam>
 	/// <returns>A <see cref="EntitiesDb.WriteBufferHandle{T}"/> to the first index</returns>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public unsafe readonly WriteBufferHandle<T0> WriteBufferHandle<T0>() where T0 : unmanaged
 	{
 		var id = ComponentBufferWritable<T0>.Id;
@@ -202,6 +213,7 @@ public partial struct Chunk
 	/// <param name="index">The chunk index</param>
 	/// <param name="t0Component"></param>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly void Set<T0>(int index, in T0? t0Component)
 	{
 		Write<T0>(index) = t0Component;
@@ -213,6 +225,7 @@ public partial struct Chunk
 	/// <param name="index">The chunk index</param>
 	/// <param name="t0Components"></param>
 	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public readonly void Set<T0>(int index, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
 	{
 		WriteBuffer<T0>(index).Set(t0Components);

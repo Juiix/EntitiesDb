@@ -9,6 +9,7 @@ public unsafe ref struct ArchetypeChunkEnumerator
 {
 	private ArchetypeEnumerator _archetypes;
 	private readonly ChangeFilter? _changeFilter;
+	private readonly int _changeFilterId;
 	private readonly int _compareVersion;
 	private int _index;
 
@@ -17,6 +18,7 @@ public unsafe ref struct ArchetypeChunkEnumerator
 	{
 		_archetypes = new ArchetypeEnumerator(archetypes);
 		_changeFilter = changeFilter;
+		_changeFilterId = changeFilter?.Id ?? 0;
 		_compareVersion = compareVersion ?? _changeFilter?.Version ?? 0;
 
 		// Make it move once, otherwise we can not check directly for Current.Size which results in bad behaviour
@@ -51,7 +53,7 @@ public unsafe ref struct ArchetypeChunkEnumerator
 				for (; _index >= 0; _index--)
 				{
 					ref readonly var chunk = ref archetype.GetChunk(_index);
-					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
+					var chunkVersion = chunk.LocalChangeVersions[_changeFilterId];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
 						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);

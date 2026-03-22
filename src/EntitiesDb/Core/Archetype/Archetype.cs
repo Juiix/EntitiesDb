@@ -170,10 +170,10 @@ public unsafe sealed partial class Archetype
 		for (int i = 0; i < ChunksInUse; i++)
 		{
 			ref var chunk = ref _chunks[i];
-			for (int j = 0; i < EntityCount; j++)
+			for (int j = 0; j < chunk.EntityCount; j++)
 				ClearBuffers(ref chunk, j, in Signature);
             foreach (var array in chunk.ManagedComponents)
-                Array.Clear(array, 0, EntityCount);
+                Array.Clear(array, 0, chunk.EntityCount);
             chunk.EntityCount = 0;
 		}
 		ChunksInUse = 1;
