@@ -72,4 +72,62 @@ internal static class DynamicBuffer
 		header.Capacity = internalCapacity;
 		header.Heap = 0;
 	}
+
+	/// <summary>
+	/// Appends elements from a source buffer to a target buffer using raw memory operations.
+	/// </summary>
+	public static unsafe void Append(void* target, void* source, int elementSize, int internalCapacity)
+		=> Append(ref Unsafe.AsRef<BufferHeader>(target), ref Unsafe.AsRef<BufferHeader>(source), elementSize, internalCapacity);
+
+	public static unsafe void Append(ref BufferHeader target, ref BufferHeader source, int elementSize, int internalCapacity)
+	{
+		int sourceSize = source.Size & SizeMask;
+		if (sourceSize == 0) return;
+
+		int targetSize = target.Size & SizeMask;
+		int newSize = targetSize + sourceSize;
+
+		// ensure target capacity
+		int targetCap = target.Capacity;
+		if (newSize > targetCap)
+		{
+			int newCap = internalCapacity;
+			while (newCap < newSize) newCap <<= 1;
+
+			bool targetIsHeap = (target.Size & HeapTag) != 0;
+			byte* targetInline = (byte*)Unsafe.AsPointer(ref target) + BufferHeader.DataOffset;
+
+			int newBytes = newCap * elementSize;
+			int copyBytes = targetSize * elementSize;
+			void* dst = (void*)Marshal.AllocHGlobal(newBytes);
+
+			void* targetData = targetIsHeap ? (void*)target.Heap : targetInline;
+			if (copyBytes > 0)
+				Buffer.MemoryCopy(targetData, dst, newBytes, copyBytes);
+
+			if (targetIsHeap)
+				Marshal.FreeHGlobal(target.Heap);
+
+			target.Heap = (nint)dst;
+			target.Capacity = newCap;
+			target.Size = (newSize & SizeMask) | HeapTag;
+		}
+		else
+		{
+			target.Size = (target.Size & HeapTag) | (newSize & SizeMask);
+		}
+
+		// get pointers to data regions
+		bool srcIsHeap = (source.Size & HeapTag) != 0;
+		byte* srcInline = (byte*)Unsafe.AsPointer(ref source) + BufferHeader.DataOffset;
+		void* srcData = srcIsHeap ? (void*)source.Heap : srcInline;
+
+		bool tgtIsHeap = (target.Size & HeapTag) != 0;
+		byte* tgtInline = (byte*)Unsafe.AsPointer(ref target) + BufferHeader.DataOffset;
+		void* tgtData = tgtIsHeap ? (void*)target.Heap : tgtInline;
+
+		// copy source elements after existing target elements
+		int srcBytes = sourceSize * elementSize;
+		Buffer.MemoryCopy(srcData, (byte*)tgtData + targetSize * elementSize, srcBytes, srcBytes);
+	}
 }

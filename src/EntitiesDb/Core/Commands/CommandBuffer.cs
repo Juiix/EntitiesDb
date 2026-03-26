@@ -144,16 +144,32 @@ public sealed partial class CommandBuffer
 								var sourceData = (byte[])componentStore.Components;
 								var sourceIndex = componentStore.GetComponentIndex(entityIndex) * stride;
 
-								// if we are overwriting an existing buffer, clear the previous one
 								if (componentStore.ComponentType.IsBuffer &&
-									targetArchetype.Signature.Test(id))
+									componentStore.IsAppendMode(entityIndex))
 								{
-									DynamicBuffer.Clear((void*)data);
+									// append mode: add source elements to existing buffer
+									fixed (byte* src = &sourceData[sourceIndex])
+									{
+										DynamicBuffer.Append(
+											(void*)data,
+											src,
+											componentStore.ComponentType.ElementSize,
+											componentStore.ComponentType.InternalCapacity);
+									}
 								}
-
-								fixed (byte* src = &sourceData[sourceIndex])
+								else
 								{
-									Unsafe.CopyBlock((void*)data, src, (uint)stride);
+									// set mode: clear existing buffer and copy full stride
+									if (componentStore.ComponentType.IsBuffer &&
+										targetArchetype.Signature.Test(id))
+									{
+										DynamicBuffer.Clear((void*)data);
+									}
+
+									fixed (byte* src = &sourceData[sourceIndex])
+									{
+										Unsafe.CopyBlock((void*)data, src, (uint)stride);
+									}
 								}
 							}
 							else
@@ -316,6 +332,55 @@ public sealed partial class CommandBuffer
 	}
 
 	/// <summary>
+	/// Appends elements to an existing buffer component, or adds the buffer if the entity doesn't have it
+	/// </summary>
+	/// <typeparam name="T0">The type of buffer element</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Component">The element to append</param>
+	public unsafe void AddOrAppend<T0>(Entity entity, in T0 t0Component)
+		where T0 : unmanaged
+	{
+		var signature = ComponentBuffer<T0>.Signature;
+		lock (_lock)
+		{
+			var entityIndex = Register(entity);
+			RegisterSet(entityIndex, in signature);
+			var span = new ReadOnlySpan<T0>(Unsafe.AsPointer(ref Unsafe.AsRef(in t0Component)), 1);
+			AppendData(entityIndex, span);
+		}
+	}
+
+	/// <summary>
+	/// Appends elements to an existing buffer component, or adds the buffer if the entity doesn't have it
+	/// </summary>
+	/// <typeparam name="T0">The type of buffer element</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Components">The elements to append</param>
+	public void AddOrAppend<T0>(Entity entity, T0[] t0Components)
+		where T0 : unmanaged
+	{
+		AddOrAppend(entity, t0Components.AsSpan());
+	}
+
+	/// <summary>
+	/// Appends elements to an existing buffer component, or adds the buffer if the entity doesn't have it
+	/// </summary>
+	/// <typeparam name="T0">The type of buffer element</typeparam>
+	/// <param name="entity">The target entity</param>
+	/// <param name="t0Components">The elements to append</param>
+	public void AddOrAppend<T0>(Entity entity, ReadOnlySpan<T0> t0Components)
+		where T0 : unmanaged
+	{
+		var signature = ComponentBuffer<T0>.Signature;
+		lock (_lock)
+		{
+			var entityIndex = Register(entity);
+			RegisterSet(entityIndex, in signature);
+			AppendData(entityIndex, t0Components);
+		}
+	}
+
+	/// <summary>
 	/// Buffers components to be removed from a given entity
 	/// </summary>
 	/// <typeparam name="T0">The type of component to remove</typeparam>
@@ -450,5 +515,13 @@ public sealed partial class CommandBuffer
 		if (componentType.IsTag) return;
 		var componentStore = GetComponentStore(componentType.Id);
 		componentStore.SetData(entityIndex, components);
+	}
+
+	private void AppendData<T>(int entityIndex, ReadOnlySpan<T> components) where T : unmanaged
+	{
+		var componentType = Component<T>.ComponentType;
+		if (componentType.IsTag) return;
+		var componentStore = GetComponentStore(componentType.Id);
+		componentStore.AppendData(entityIndex, components);
 	}
 }

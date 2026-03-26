@@ -269,6 +269,179 @@ public sealed class CommandBufferTests
 	}
 
 	[Fact]
+	public void AddOrAppend_ExistingBuffer_AppendsElements()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		InventoryItem[] initial = [new(1, 1), new(2, 1)];
+		var entity = db.Create((ReadOnlySpan<InventoryItem>)initial);
+
+		buffer.AddOrAppend(entity, new InventoryItem(3, 1));
+		buffer.AddOrAppend(entity, new InventoryItem(4, 1));
+		buffer.Commit();
+
+		var items = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(4, items.Length);
+		Assert.Equal(1, items[0].ItemId);
+		Assert.Equal(2, items[1].ItemId);
+		Assert.Equal(3, items[2].ItemId);
+		Assert.Equal(4, items[3].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_NoBuffer_CreatesBuffer()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create();
+
+		InventoryItem[] items = [new(10, 1), new(20, 2)];
+		buffer.AddOrAppend(entity, (ReadOnlySpan<InventoryItem>)items);
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(2, result.Length);
+		Assert.Equal(10, result[0].ItemId);
+		Assert.Equal(20, result[1].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_MultipleCallsAccumulate()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create();
+
+		buffer.AddOrAppend(entity, new InventoryItem(1, 1));
+		buffer.AddOrAppend(entity, new InventoryItem(2, 2));
+		buffer.AddOrAppend(entity, new InventoryItem(3, 3));
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(1, result[0].ItemId);
+		Assert.Equal(2, result[1].ItemId);
+		Assert.Equal(3, result[2].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_AfterSet_AppendsWins()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create();
+
+		InventoryItem[] setItems = [new(1, 1), new(2, 1)];
+		buffer.Set(entity, (ReadOnlySpan<InventoryItem>)setItems);
+		buffer.AddOrAppend(entity, new InventoryItem(3, 1));
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(1, result.Length);
+		Assert.Equal(3, result[0].ItemId);
+	}
+
+	[Fact]
+	public void Set_AfterAddOrAppend_SetWins()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create();
+
+		buffer.AddOrAppend(entity, new InventoryItem(1, 1));
+		buffer.AddOrAppend(entity, new InventoryItem(2, 1));
+		InventoryItem[] setItems = [new(99, 5)];
+		buffer.Set(entity, (ReadOnlySpan<InventoryItem>)setItems);
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(1, result.Length);
+		Assert.Equal(99, result[0].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_SingleElement()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		InventoryItem[] initial = [new(1, 1)];
+		var entity = db.Create((ReadOnlySpan<InventoryItem>)initial);
+
+		buffer.AddOrAppend(entity, new InventoryItem(2, 2));
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(2, result.Length);
+		Assert.Equal(1, result[0].ItemId);
+		Assert.Equal(2, result[1].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_OnCreatedEntity()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = buffer.Create();
+		buffer.Set(entity, new Order(0));
+
+		buffer.AddOrAppend(entity, new InventoryItem(1, 1));
+		buffer.AddOrAppend(entity, new InventoryItem(2, 2));
+		buffer.Commit();
+
+		// find the created entity via query
+		var query = db.QueryBuilder.WithOnly<Order, InventoryItem>().Build();
+		int count = 0;
+		foreach (var (length, orders, itemBuffers) in query.ReadHandlesM1<Order, InventoryItem>())
+		{
+			for (int i = 0; i < length; i++)
+			{
+				var items = itemBuffers[i];
+				Assert.Equal(2, items.Length);
+				Assert.Equal(1, items[0].ItemId);
+				Assert.Equal(2, items[1].ItemId);
+				count++;
+			}
+		}
+		Assert.Equal(1, count);
+	}
+
+	[Fact]
+	public void AddOrAppend_SpanOverload()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		InventoryItem[] initial = [new(1, 1)];
+		var entity = db.Create((ReadOnlySpan<InventoryItem>)initial);
+
+		InventoryItem[] toAppend = [new(2, 2), new(3, 3), new(4, 4)];
+		buffer.AddOrAppend(entity, (ReadOnlySpan<InventoryItem>)toAppend);
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(4, result.Length);
+		Assert.Equal(1, result[0].ItemId);
+		Assert.Equal(2, result[1].ItemId);
+		Assert.Equal(3, result[2].ItemId);
+		Assert.Equal(4, result[3].ItemId);
+	}
+
+	[Fact]
+	public void AddOrAppend_ArrayOverload()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create();
+
+		buffer.AddOrAppend(entity, new InventoryItem[] { new(5, 1), new(6, 2) });
+		buffer.Commit();
+
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		Assert.Equal(2, result.Length);
+		Assert.Equal(5, result[0].ItemId);
+		Assert.Equal(6, result[1].ItemId);
+	}
+
+	[Fact]
 	public void Remove_2Components()
 	{
 		var db = CreateDb();

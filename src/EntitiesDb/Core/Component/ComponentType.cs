@@ -26,6 +26,11 @@ public readonly struct ComponentType(byte id, short internalCapacity, short byte
 	public readonly short Stride { get; } = (short)GetStride(byteSize, isUnmanaged, internalCapacity);
 
 	/// <summary>
+	/// The size of a single element in bytes
+	/// </summary>
+	public readonly short ElementSize { get; } = byteSize;
+
+	/// <summary>
 	/// Flags of this component type
 	/// </summary>
 	public readonly ComponentFlags Flags { get; } = flags;
