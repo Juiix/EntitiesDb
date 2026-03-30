@@ -442,6 +442,55 @@ public sealed class CommandBufferTests
 	}
 
 	[Fact]
+	public void Remove_ThenSet_ComponentIsPresent()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create(new Component1(1));
+
+		buffer.Remove<Component1>(entity);
+		buffer.Set(entity, new Component1(42));
+		buffer.Commit();
+
+		Assert.True(db.Has<Component1>(entity));
+		Assert.Equal(42, db.Write<Component1>(entity).Value);
+	}
+
+	[Fact]
+	public void Set_ThenRemove_ComponentIsRemoved()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		var entity = db.Create(new Component1(1));
+
+		buffer.Set(entity, new Component1(42));
+		buffer.Remove<Component1>(entity);
+		buffer.Commit();
+
+		Assert.False(db.Has<Component1>(entity));
+	}
+
+	[Fact]
+	public void Remove_ThenAddOrAppend_ComponentIsPresent()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(128);
+		InventoryItem[] initial = [new(1, 1)];
+		var entity = db.Create((ReadOnlySpan<InventoryItem>)initial);
+
+		buffer.Remove<InventoryItem>(entity);
+		buffer.AddOrAppend(entity, new InventoryItem(99, 5));
+		buffer.Commit();
+
+		Assert.True(db.Has<InventoryItem>(entity));
+		var result = db.ReadBuffer<InventoryItem>(entity);
+		// AddOrAppend clears the pending remove, so existing buffer stays and gets appended to
+		Assert.Equal(2, result.Length);
+		Assert.Equal(1, result[0].ItemId);
+		Assert.Equal(99, result[1].ItemId);
+	}
+
+	[Fact]
 	public void Remove_2Components()
 	{
 		var db = CreateDb();

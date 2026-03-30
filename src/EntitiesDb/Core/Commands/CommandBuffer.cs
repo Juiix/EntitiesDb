@@ -475,6 +475,21 @@ public sealed partial class CommandBuffer
 		{
 			RemoveIndex = RegisterIndex(reference.RemoveIndex, in signature, ref _removes)
 		};
+
+		// Clear pending sets for removed components
+		if (reference.SetIndex >= 0)
+		{
+			_sets[reference.SetIndex] = _sets[reference.SetIndex].AndNot(in signature);
+
+			int nextId = 0;
+			var sig = signature;
+			while (sig.TryGetNextSetBit(nextId, out var id))
+			{
+				nextId = id + 1;
+				if (id < _components.Count)
+					_components[id]?.ClearEntityIndex(entityIndex);
+			}
+		}
 	}
 
 	private void RegisterSet(int entityIndex, in Signature signature)
@@ -484,6 +499,12 @@ public sealed partial class CommandBuffer
 		{
 			SetIndex = RegisterIndex(reference.SetIndex, in signature, ref _sets)
 		};
+
+		// Clear pending removes for set components
+		if (reference.RemoveIndex >= 0)
+		{
+			_removes[reference.RemoveIndex] = _removes[reference.RemoveIndex].AndNot(in signature);
+		}
 	}
 
 	private static int RegisterIndex(int index, in Signature signature, ref SpanList<Signature> list)
