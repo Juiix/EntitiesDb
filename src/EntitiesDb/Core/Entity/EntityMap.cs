@@ -86,7 +86,7 @@ internal sealed class EntityMap(int maxEntities)
 		if (newLen > _maxEntities) newLen = _maxEntities;
 
 		var newRefs = ArrayPool<EntityReference>.Shared.Rent(newLen);
-		Array.Copy(_references, newRefs, _count);
+		Array.Copy(_references, newRefs, _references.Length);
 		ArrayPool<EntityReference>.Shared.Return(_references, true);
 		_references = newRefs;
 
