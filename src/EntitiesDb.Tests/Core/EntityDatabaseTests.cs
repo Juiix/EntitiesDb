@@ -39,6 +39,35 @@ public sealed class EntityDatabaseTests
 	private static EntityDatabase CreateDb(int chunkBytes = 4096, int maxEntities = 1_000)
 		=> new(new(chunkBytes, maxEntities));
 
+	// Regression: Add of an already-present component resolved to a self-move that
+	// appended a duplicate chunk record and pointed the entity map one slot past
+	// the chunk count — later structural ops then corrupted other entities and
+	// left ghost records in chunks.
+	[Fact]
+	public void Add_ComponentAlreadyPresent_KeepsEntityAndNeighborsValid()
+	{
+		var db = CreateDb();
+		var a = db.Create(new Health { Value = 1 });
+		var b = db.Create(new Health { Value = 2 });
+
+		// duplicate adds — must behave like Set, not corrupt the map
+		db.Add(a, new Health { Value = 5 });
+		db.Add(a, new Health { Value = 7 });
+
+		Assert.Equal(7, db.Read<Health>(a).Value);
+		Assert.Equal(2, db.Read<Health>(b).Value);
+
+		// structural ops after the duplicate add stay consistent
+		db.Add(a, new Position { X = 3 });
+		Assert.Equal(7, db.Read<Health>(a).Value);
+		Assert.Equal(3, db.Read<Position>(a).X);
+
+		db.Destroy(a);
+		Assert.False(db.Exists(a));
+		Assert.Equal(2, db.Read<Health>(b).Value);
+		Assert.Equal(1, db.EntityCount);
+	}
+
 	// -------------------- Entity lifecycle --------------------
 
 	[Fact]

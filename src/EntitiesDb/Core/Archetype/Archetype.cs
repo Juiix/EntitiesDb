@@ -386,6 +386,14 @@ public unsafe sealed partial class Archetype
 		ref var lastChunk = ref GetChunk(lastChunkIndex);
 
 		var removedIndex = lastChunk.EntityCount - 1;
+
+		// guard structural invariants: a violation here means the entity map and
+		// chunk storage have diverged — fail loudly instead of corrupting memory
+		// via negative-index copies
+		if (slot.ChunkIndex > lastChunkIndex || removedIndex < 0 || slot.Index >= _chunks[slot.ChunkIndex].EntityCount)
+			throw new EntityException(-1,
+				$"RemoveEntity invariant violation: slot={slot.Index}@chunk{slot.ChunkIndex} (chunkCount={_chunks[slot.ChunkIndex].EntityCount}) " +
+				$"ChunksInUse={ChunksInUse} lastChunkCount={lastChunk.EntityCount} archetypeEntityCount={EntityCount}");
 		movedEntityId = chunk.AcceptEntity(
 			slot.Index, ref lastChunk, removedIndex,
 			_idToOffsets, UnmanagedComponentTypes);

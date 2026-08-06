@@ -1458,6 +1458,12 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <param name="dstArchetype">The <see cref="Archetype"/> to move to</param>
 	private void MoveEntity(int entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
 	{
+		// adding a component the entity already has (or removing one it lacks)
+		// resolves to the same archetype — a self-move would append a duplicate
+		// chunk record and point the entity map one past the chunk count
+		if (ReferenceEquals(srcArchetype, dstArchetype))
+			return;
+
 		// add new slot
 		var srcSlot = entityReference.Slot;
 		var dstSlot = dstArchetype.AddEntity(new Entity(entityId, entityReference.Version), out _);
