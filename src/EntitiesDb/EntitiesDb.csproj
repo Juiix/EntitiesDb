@@ -15,6 +15,7 @@
     <FileVersion>$(VersionPrefix)</FileVersion>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReleaseNotes>3.6.0: parallel queries execute one fork/join across all matching archetypes (was one per archetype); Archetype.Reserve zero-initializes unmanaged chunk memory.</PackageReleaseNotes>
     <Title>EntitiesDb</Title>
     <Product>EntitiesDb</Product>
     <PackageId>EntitiesDb</PackageId>
