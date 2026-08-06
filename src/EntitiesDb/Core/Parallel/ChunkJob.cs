@@ -1,9 +1,11 @@
-﻿#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 namespace EntitiesDb;
 
 internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 {
-	public Archetype Archetype;
+	// Ranges may span multiple archetypes (one fan-out per query, not per
+	// archetype) — RangeArchetypes is index-aligned with Ranges.
+	public SpanList<Archetype> RangeArchetypes;
 	public SpanList<ChunkRange> Ranges;
 	public int Start;
 	public int End;
@@ -13,7 +15,7 @@ internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 
 	public void Execute()
 	{
-		var archetype = Archetype;
+		var archetype = RangeArchetypes[Start];
 		var range = Ranges[Start];
 		if (Start == End)
 		{
@@ -33,6 +35,7 @@ internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 
 		for (int i = Start + 1; i < End; i++)
 		{
+			archetype = RangeArchetypes[i];
 			range = Ranges[i];
 			for (int j = 0; j < range.Size; j++)
 			{
@@ -41,6 +44,7 @@ internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 			}
 		}
 
+		archetype = RangeArchetypes[End];
 		range = Ranges[End];
 		for (int i = 0; i < Last; i++)
 		{
