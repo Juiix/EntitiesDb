@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 
 namespace EntitiesDb;
 
@@ -28,13 +29,12 @@ public partial class Query
 		var compareVersion = changeFilter?.Version;
 
 		var jobPool = JobMeta<T>.JobPool;
-		var jobsPool = JobMeta<T>.ArrayPool;
 		var rangesPool = JobMeta.RangesPool;
-		var jobs = jobsPool.Rent();
 		var ranges = rangesPool.Rent();
 		var threadCount = options.MaxThreads > 0
 			? Math.Min(options.MaxThreads, _parallelRunner.ThreadCount)
 			: _parallelRunner.ThreadCount;
+		var jobs = ArrayPool<IJob?>.Shared.Rent(threadCount);
 		int jobMax = 0;
 		foreach (var archetype in EnumerateArchetypes())
 		{
@@ -78,7 +78,7 @@ public partial class Query
 			jobPool.Return(job);
 			jobs[i] = null;
 		}
-		jobsPool.Return(jobs);
+		ArrayPool<IJob?>.Shared.Return(jobs);
 		rangesPool.Return(ranges);
 	}
 
