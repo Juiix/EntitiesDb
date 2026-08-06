@@ -5,6 +5,7 @@ namespace EntitiesDb;
 public static class JobMeta
 {
 	internal static ObjectPool<SpanList<ChunkRange>> RangesPool { get; } = new(() => new(256), Environment.ProcessorCount, prefill: Environment.ProcessorCount);
+	internal static ObjectPool<SpanList<Archetype>> RangeArchetypesPool { get; } = new(() => new(256), Environment.ProcessorCount, prefill: Environment.ProcessorCount);
 
 	public static void Prefill<T>() where T : IChunkJob
 	{

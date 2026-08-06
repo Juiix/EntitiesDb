@@ -211,6 +211,9 @@ public unsafe sealed partial class Archetype
 		for (var i = ChunksAllocated; i < newChunkCount; i++)
 		{
 			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
+			// zero like AddChunk does — reserved chunks must not hold garbage when
+			// they are later brought into use
+			Unsafe.InitBlock((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
 			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
 			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
 			_chunks[i] = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
