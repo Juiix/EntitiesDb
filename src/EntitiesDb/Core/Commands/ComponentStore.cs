@@ -137,18 +137,20 @@ internal sealed class ComponentStore(ComponentType componentType, ArrayFactory a
 		while (newCapacity < capacity) newCapacity *= 2;
         _capacity = newCapacity;
 
+        // Count is pre-incremented for the component being registered, which has not
+        // been written yet — only the existing components (the full old array) exist
         if (ComponentType.IsUnmanaged)
         {
             var array = (byte[])Components;
             var newArray = new byte[ComponentType.Stride * newCapacity];
-            array.AsSpan(0, Count * ComponentType.Stride).CopyTo(newArray);
+            array.CopyTo(newArray, 0);
             Components = newArray;
         }
         else
         {
             var array = Components;
             var newArray = _arrayFactory.Invoke(newCapacity);
-            Array.Copy(array, newArray, Count);
+            Array.Copy(array, newArray, array.Length);
             Components = newArray;
         }
 	}

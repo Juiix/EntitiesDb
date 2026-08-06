@@ -9,6 +9,28 @@ public sealed class CommandBufferTests
 	private record struct Component2(int Value);
 	[Tag] private record struct TestTag();
 
+	// Regression: growing a ComponentStore past its initial capacity threw
+	// ArgumentOutOfRangeException — the resize copied Count components, but Count is
+	// pre-incremented for the component being registered, overrunning the old array.
+	[Fact]
+	public void Set_GrowsComponentStorePastInitialCapacity()
+	{
+		var db = CreateDb();
+		var buffer = db.CreateCommandBuffer(4);
+		const int entityCount = 100; // far beyond the initial capacity of 4
+
+		var entities = new Entity[entityCount];
+		for (int i = 0; i < entityCount; i++)
+			entities[i] = db.Create(new Component1(-1));
+
+		for (int i = 0; i < entityCount; i++)
+			buffer.Set(entities[i], new Component1(i));
+		buffer.Commit();
+
+		for (int i = 0; i < entityCount; i++)
+			Assert.Equal(i, db.Read<Component1>(entities[i]).Value);
+	}
+
 	[Fact]
 	public void Create_EmptyEntities()
 	{
