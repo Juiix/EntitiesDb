@@ -40,7 +40,7 @@ public sealed class ParallelJobRunnerTests : IDisposable
 	}
 
 	[Fact]
-	public void ExecuteJobs_RunsEachJobExactlyOnce_OnCorrectThreads()
+	public void ExecuteJobs_RunsEachJobExactlyOnce_TheFirstOnTheCaller()
 	{
 		const int threadCount = 4;
 
@@ -63,12 +63,82 @@ public sealed class ParallelJobRunnerTests : IDisposable
 		// Each job should be executed exactly once
 		Assert.Equal(Enumerable.Repeat(1, threadCount), hits);
 
-		// Slot 0 must have executed on the calling thread
+		// Slot 0 must have executed on the calling thread; the others on a worker, or on the caller
+		// when it got to them before their worker did
 		Assert.Equal(_callingThreadId, jobs[0].ExecutedByThreadId);
+	}
 
-		// Other jobs must not have run on the calling thread
-		foreach (var job in jobs.Skip(1))
-			Assert.NotEqual(_callingThreadId, job.ExecutedByThreadId);
+	[Fact]
+	public void ExecuteJobs_OneJob_RunsOnTheCaller_WithoutSignallingAWorker()
+	{
+		using var runner = new ParallelJobRunner(4, "TestRunner-One");
+		var job = new RecordingJob(() => { });
+		var memory = new Memory<IJob?>(new IJob?[] { job });
+
+		for (int i = 0; i < 100; i++)
+		{
+			runner.ExecuteJobs(memory);
+			Assert.Equal(_callingThreadId, job.ExecutedByThreadId);
+		}
+
+		// one player = one chunk = one job: the workers stay asleep (they used to be woken, and
+		// waited for, on every call — scheduler ping-pong when threads outnumber cores)
+		Assert.Equal(0, runner.WorkersSignalled);
+	}
+
+	[Fact]
+	public void ExecuteJobs_SignalsOnlyTheWorkersTheJobsNeed()
+	{
+		using var runner = new ParallelJobRunner(8, "TestRunner-Some");
+		var jobs = new IJob?[] { new RecordingJob(() => { }), new RecordingJob(() => { }), new RecordingJob(() => { }) };
+
+		runner.ExecuteJobs(jobs);
+
+		Assert.Equal(2, runner.WorkersSignalled);
+	}
+
+	[Fact]
+	public void ExecuteJobs_RunsJobsConcurrently_OnTheWorkers()
+	{
+		// every job waits until all three have started: only possible if two workers took theirs
+		// while the caller was still in job 0 (the caller only helps once its own job is done)
+		const int count = 3;
+		using var runner = new ParallelJobRunner(count, "TestRunner-Concurrent");
+		var started = 0;
+		var allStarted = new bool[count];
+		var jobs = new IJob?[count];
+		for (int i = 0; i < count; i++)
+		{
+			int index = i;
+			jobs[i] = new RecordingJob(() =>
+			{
+				Interlocked.Increment(ref started);
+				allStarted[index] = SpinWait.SpinUntil(() => Volatile.Read(ref started) == count, TimeSpan.FromSeconds(10));
+			});
+		}
+
+		runner.ExecuteJobs(jobs);
+
+		Assert.All(allStarted, sawEveryone => Assert.True(sawEveryone));
+	}
+
+	[Fact]
+	public void ExecuteJobs_ManyCallsBackToBack_RunEveryJobExactlyOnce()
+	{
+		// the caller takes jobs its workers haven't started, so late wake-ups race the next call's
+		// jobs: none may be lost or run twice
+		const int threadCount = 4;
+		using var runner = new ParallelJobRunner(threadCount, "TestRunner-Stress");
+		var total = 0;
+		var jobs = new IJob?[threadCount];
+		for (int i = 0; i < threadCount; i++)
+			jobs[i] = new RecordingJob(() => Interlocked.Increment(ref total));
+
+		for (int call = 0; call < 10_000; call++)
+			runner.ExecuteJobs(jobs.AsMemory(0, 1 + call % threadCount));
+
+		// 1 + 2 + 3 + 4 jobs per four calls
+		Assert.Equal(10_000 / threadCount * 10, total);
 	}
 
 	[Fact]
