@@ -39,6 +39,7 @@ internal static class Utilities
 				case ParamKind.ComponentRef: arr[i] = "ref " + t + " " + n; break;
 				case ParamKind.ComponentIn: arr[i] = "in " + t + " " + n; break;
 				case ParamKind.ComponentWriteHandle: arr[i] = t + " " + n; break;
+				case ParamKind.UntrackedWriteHandle: arr[i] = t + " " + n; break;
 				case ParamKind.ComponentReadHandle: arr[i] = t + " " + n; break;
 				case ParamKind.WriteBuffer: arr[i] = t + " " + n; break;
 				case ParamKind.WriteBufferHandle: arr[i] = t + " " + n; break;

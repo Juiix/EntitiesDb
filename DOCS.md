@@ -401,6 +401,21 @@ foreach (var (length, healths) in query.WriteHandles<Health>())
 }
 ```
 
+Taking a `WriteHandle<T>` marks the chunk changed for `T` whether or not anything is written. When a job
+only sometimes writes a `[TrackChanges]` component, take an `UntrackedWriteHandle<T>` (a `ForEachChunk*`
+parameter, or `chunk.UntrackedWriteHandle<T>()`) and call `MarkChanged()` when it did — change filters then
+see only the chunks it really modified:
+
+```csharp
+query.ForEachChunkParallel((int length, ReadHandle<Position> positions, UntrackedWriteHandle<Dirty> dirty) =>
+{
+    var changed = false;
+    for (int i = 0; i < length; i++)
+        if (positions[i].Moved) { dirty[i].Flags |= DirtyFlags.Position; changed = true; }
+    if (changed) dirty.MarkChanged();
+});
+```
+
 ### Combined
 
 ```csharp

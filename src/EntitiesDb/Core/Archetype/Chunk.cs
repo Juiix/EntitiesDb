@@ -191,6 +191,37 @@ public partial struct Chunk
 	}
 
 	/// <summary>
+	/// Returns a handle to a component at the first index that does <b>not</b> mark this chunk changed;
+	/// call <see cref="UntrackedWriteHandle{T}.MarkChanged"/> (or <see cref="MarkChanged{T0}"/>) once
+	/// something was actually written
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	/// <returns>A <see cref="EntitiesDb.UntrackedWriteHandle{T}"/> to the first index</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public unsafe readonly UntrackedWriteHandle<T0?> UntrackedWriteHandle<T0>()
+	{
+		var id = ComponentSingleWritable<T0>.Id;
+		var offset = IdToOffsets[id];
+		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
+		ref var first = ref ComponentMeta<T0>.IsUnmanaged
+			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset))
+			: ref ((T0?[])ManagedComponents[offset])[0];
+		return new UntrackedWriteHandle<T0?>(ref first, ComponentMeta<T0>.TrackChanges ? LocalChangeVersions : null, GlobalChangeVersions, id);
+	}
+
+	/// <summary>
+	/// Marks this chunk changed for <typeparamref name="T0"/> (nothing for a component without [TrackChanges])
+	/// </summary>
+	/// <typeparam name="T0">The component type</typeparam>
+	[ChunkChange]
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public readonly void MarkChanged<T0>()
+	{
+		if (ComponentMeta<T0>.TrackChanges)
+			MarkChanged(Component<T0>.Id);
+	}
+
+	/// <summary>
 	/// Returns a handle to a buffer of components at the first index
 	/// </summary>
 	/// <typeparam name="T0">The component type</typeparam>

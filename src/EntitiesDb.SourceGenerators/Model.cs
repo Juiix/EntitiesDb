@@ -144,6 +144,8 @@ internal static partial class ModelBuilder
 				case ParamKind.ComponentRef:
 				case ParamKind.ComponentWriteHandle:
 					h = "var " + baseVar + " = chunk.WriteHandle<" + displayType + ">();"; break;
+				case ParamKind.UntrackedWriteHandle:
+					h = "var " + baseVar + " = chunk.UntrackedWriteHandle<" + displayType + ">();"; break;
 				case ParamKind.ComponentIn:
 				case ParamKind.ComponentReadHandle:
 					h = "var " + baseVar + " = chunk.ReadHandle<" + displayType + ">();"; break;

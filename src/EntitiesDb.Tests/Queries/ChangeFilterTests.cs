@@ -365,6 +365,74 @@ public sealed class ChangeFilterTests
 	}
 
 	[Fact]
+	public void UntrackedWriteHandle_WritesWithoutMarking_UntilMarkChanged()
+	{
+		using var db = CreateDb();
+		var changeQuery = db.QueryBuilder.WithAll<Position, PlayerTag>().WithChangeFilter<Position>().Build();
+		db.FillPlayers();
+		Assert.Equal(5, changeQuery.CountChunks()); // consume the creation
+
+		// write in every chunk, mark only the first
+		var chunks = 0;
+		foreach (ref readonly var chunk in db.QueryBuilder.WithAll<Position, PlayerTag>().Build())
+		{
+			var positions = chunk.UntrackedWriteHandle<Position>();
+			positions[0] = new Position(9, 9);
+			if (chunks++ == 0) positions.MarkChanged();
+		}
+
+		Assert.Equal(5, chunks);
+		Assert.Equal(1, changeQuery.CountChunks());
+
+		// and Chunk.MarkChanged<T>() marks the same way
+		foreach (ref readonly var chunk in db.QueryBuilder.WithAll<Position, PlayerTag>().Build())
+			chunk.MarkChanged<Position>();
+		Assert.Equal(5, changeQuery.CountChunks());
+	}
+
+	[Fact]
+	public void ForEachChunk_UntrackedWriteHandle_ReportsOnlyTheChunksItMarks()
+	{
+		using var db = CreateDb();
+		var changeQuery = db.QueryBuilder.WithAll<Position, PlayerTag>().WithChangeFilter<Position>().Build();
+		db.FillPlayers();
+		Assert.Equal(5, changeQuery.CountChunks());
+
+		var chunkNumber = 0;
+		db.QueryBuilder.WithAll<Position, PlayerTag>().Build().ForEachChunk((int length, UntrackedWriteHandle<Position> positions, ref int chunkNumber) =>
+		{
+			for (int i = 0; i < length; i++)
+				positions[i] = new Position(i, i);
+			if (chunkNumber++ % 2 == 0)
+				positions.MarkChanged();
+		}, ref chunkNumber);
+
+		Assert.Equal(5, chunkNumber);
+		Assert.Equal(3, changeQuery.CountChunks()); // the 1st, 3rd and 5th
+	}
+
+	[Fact]
+	public void ForEachChunkParallel_UntrackedWriteHandle_ReportsOnlyTheChunksItMarks()
+	{
+		using var db = CreateDb(parallel: true);
+		var changeQuery = db.QueryBuilder.WithAll<Position, PlayerTag>().WithChangeFilter<Position>().Build();
+		db.FillPlayers();
+		Assert.Equal(5, changeQuery.CountChunks());
+		var perChunk = db.GetArchetype(new Entity(0, 0)).EntitiesPerChunk;
+
+		// mark only the partly filled chunk, from whichever thread gets it
+		var full = perChunk;
+		db.QueryBuilder.WithAll<Position, PlayerTag>().Build().ForEachChunkParallel((int length, UntrackedWriteHandle<Position> positions, ref int full) =>
+		{
+			positions[0] = new Position(1, 1);
+			if (length < full)
+				positions.MarkChanged();
+		}, ref full);
+
+		Assert.Equal(1, changeQuery.CountChunks());
+	}
+
+	[Fact]
 	public void Query_ForEachChunk_HonorsChangeFilter()
 	{
 		using var db = CreateDb();

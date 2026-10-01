@@ -10,6 +10,7 @@ internal enum ParamKind
 	EntityHandle,
 	ComponentRef,
 	ComponentWriteHandle,
+	UntrackedWriteHandle,
 	ComponentIn,
 	ComponentReadHandle,
 	WriteBuffer,
@@ -66,6 +67,12 @@ internal static class Classifier
 		{
 			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
 			return new ParamPart(ParamKind.ComponentWriteHandle, paramName, type, elem);
+		}
+
+		if (named != null && named.IsGenericType && string.Equals(named.Name, "UntrackedWriteHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
+		{
+			var elem = named.TypeArguments.Length == 1 ? named.TypeArguments[0] : type;
+			return new ParamPart(ParamKind.UntrackedWriteHandle, paramName, type, elem);
 		}
 
 		if (named != null && named.IsGenericType && string.Equals(named.Name, "ReadHandle", StringComparison.Ordinal) && string.Equals(ns, "EntitiesDb", StringComparison.Ordinal))
