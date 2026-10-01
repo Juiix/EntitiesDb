@@ -39,6 +39,59 @@ public sealed class EntityDatabaseTests
 	private static EntityDatabase CreateDb(int chunkBytes = 4096, int maxEntities = 1_000)
 		=> new(new(chunkBytes, maxEntities));
 
+	[Fact]
+	public void EntityDatabaseOptions_ParameterlessCtor_HasDefaults()
+	{
+		var options = new EntityDatabaseOptions();
+		Assert.Equal(EntityDatabaseOptions.DefaultChunkByteSize, options.ChunkByteSize);
+		Assert.Equal(int.MaxValue, options.MaxEntities);
+		Assert.Equal(-1, options.ParallelThreads);
+
+		var named = new EntityDatabaseOptions(parallelThreads: 4);
+		Assert.Equal(EntityDatabaseOptions.DefaultChunkByteSize, named.ChunkByteSize);
+		Assert.Equal(4, named.ParallelThreads);
+	}
+
+	[Fact]
+	public void TrimExcess_OnEmptyDatabase_DoesNotThrow()
+	{
+		using var db = new EntityDatabase();
+		db.TrimExcess();                       // never had entities
+
+		var e = db.Create(new Health { Value = 1 });
+		db.Clear();
+		db.TrimExcess();                       // emptied via Clear
+		db.TrimExcess(keepVersions: false);
+
+		var e2 = db.Create(new Health { Value = 2 });
+		Assert.True(db.Exists(e2));
+		Assert.Equal(1, db.EntityCount);
+		Assert.Equal(2, db.Read<Health>(e2).Value);
+	}
+
+	[Fact]
+	public void ParameterlessCtor_UsesDefaultOptions_AndIsUsable()
+	{
+		using var db = new EntityDatabase();
+
+		Assert.Equal(int.MaxValue, db.MaxEntities);
+		Assert.Null(db.ParallelRunner); // parallel disabled by default
+
+		var e = db.Create(new Position { X = 1, Y = 2 }, new Health { Value = 5 });
+		Assert.True(db.Exists(e));
+		Assert.Equal(1, db.EntityCount);
+
+		ref readonly var pos = ref db.Read<Position>(e);
+		Assert.Equal(1f, pos.X);
+		Assert.Equal(2f, pos.Y);
+
+		var query = db.QueryBuilder.WithAll<Position, Health>().Build();
+		int matched = 0;
+		query.ForEach((ref Position p, in Health h) => { p.X += h.Value; matched++; });
+		Assert.Equal(1, matched);
+		Assert.Equal(6f, db.Read<Position>(e).X);
+	}
+
 	// Regression: Add of an already-present component resolved to a self-move that
 	// appended a duplicate chunk record and pointed the entity map one slot past
 	// the chunk count — later structural ops then corrupted other entities and

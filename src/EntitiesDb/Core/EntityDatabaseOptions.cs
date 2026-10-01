@@ -1,4 +1,4 @@
-﻿namespace EntitiesDb;
+namespace EntitiesDb;
 
 /// <summary>
 /// Options for creating an <see cref="EntityDatabase"/> instance
@@ -6,8 +6,23 @@
 /// <param name="chunkByteSize">Byte-size of entity chunks</param>
 /// <param name="maxEntities">Maximum amount of entities that can be created</param>
 /// <param name="parallelThreads">How many threads to use for parallel execution, -1 to disable parallel</param>
-public readonly struct EntityDatabaseOptions(int chunkByteSize = 16384, int maxEntities = int.MaxValue, int parallelThreads = -1)
+public readonly struct EntityDatabaseOptions(int chunkByteSize = EntityDatabaseOptions.DefaultChunkByteSize, int maxEntities = int.MaxValue, int parallelThreads = -1)
 {
+	/// <summary>
+	/// The default <see cref="ChunkByteSize"/> (16 KB)
+	/// </summary>
+	public const int DefaultChunkByteSize = 16384;
+
+	/// <summary>
+	/// Default options: 16 KB chunks, unlimited entities, parallel execution disabled
+	/// </summary>
+	public static EntityDatabaseOptions Default => new();
+
+	/// <summary>
+	/// Creates options with default values: 16 KB chunks, unlimited entities, parallel execution disabled
+	/// </summary>
+	public EntityDatabaseOptions() : this(DefaultChunkByteSize, int.MaxValue, -1) { }
+
 	/// <summary>
 	/// Byte-size of entity chunks
 	/// </summary>

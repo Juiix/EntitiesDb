@@ -101,13 +101,10 @@ internal sealed class EntityMap(int maxEntities)
 
 	public void TrimExcess(bool keepVersions = true)
 	{
+		// Drop trailing dead ids (also handles an empty map, e.g. right after Clear()).
 		var liveCount = _count;
-		do
-		{
-			if (_references[liveCount - 1].Archetype != null)
-				break;
-		}
-		while (--liveCount > 0);
+		while (liveCount > 0 && _references[liveCount - 1].Archetype == null)
+			liveCount--;
 
 		_count = liveCount;
 		var newCapacity = Math.Min(_maxEntities, Math.Max(MinReferenceSize, NextPow2(Math.Max(1, liveCount))));

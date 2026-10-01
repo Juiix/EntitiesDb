@@ -15,6 +15,12 @@ public sealed partial class EntityDatabase : IDisposable
 	private readonly int[] _globalChangeVersions = new int[ComponentRegistry.MaxComponents];
 	private readonly bool _disposeParallelRunner = false;
 
+	/// <summary>
+	/// Creates a new <see cref="EntityDatabase"/> instance using default <see cref="EntityDatabaseOptions"/>
+	/// (16 KB chunks, unlimited entities, parallel execution disabled).
+	/// </summary>
+	public EntityDatabase() : this(EntityDatabaseOptions.Default, null) { }
+
 	/// <inheritdoc cref="EntityDatabase(EntityDatabaseOptions, IParallelJobRunner?)"/>
 	public EntityDatabase(EntityDatabaseOptions options) : this(options, null) { }
 
