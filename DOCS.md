@@ -102,6 +102,13 @@ using var dbB = new EntityDatabase(new EntityDatabaseOptions(parallelThreads: 8)
 
 When a runner is passed in, the database does **not** dispose it.
 
+A `ParallelJobRunner(threadCount)` runs a call's jobs on the calling thread plus up to `threadCount - 1`
+workers. A call with `n` jobs signals only `n - 1` workers (a one-job call never leaves the calling
+thread), and once the caller's own job is done it runs any job a worker hasn't started yet — so a job
+may run on any of the runner's threads, and the call never waits on a thread the scheduler hasn't
+run. Idle workers sleep instead of spinning. Still, keep `threadCount` at or below the cores the
+process can actually use: more threads than cores only adds wake-ups.
+
 ## Limits
 
 * Up to **256 distinct component types** per process (`ComponentRegistry.MaxComponents`).
@@ -364,7 +371,8 @@ query.ForEach((in Position pos, ref SentPosition sent, ref PositionDelta delta) 
 
 * `ref` marks a write, `in` marks a read — only writes bump a chunk's change version.
 * Any write access (`db.Write<T>`, `WriteHandle<T>`, `Set`, `Add`, …) marks the chunk changed for that component. Library methods that do so are annotated `[ChunkChange]`.
-* Each query remembers the last version it saw; call `query.ResetChanges()` to make the next pass see everything as changed.
+* A query's change filter starts when the query is built: changes made before that are never reported.
+* Each pass reports the chunks changed since the last pass and consumes them; call `query.ResetChanges()` to drop everything pending, so the next pass only reports changes made from then on.
 
 ---
 
