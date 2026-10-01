@@ -1,5 +1,3 @@
-﻿// See https://aka.ms/new-console-template for more information
-
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
@@ -19,10 +17,13 @@ BenchmarkSwitcher benchmark = BenchmarkSwitcher.FromTypes(new[]
 	typeof(CreateEntityWithOneComponent),
 	typeof(SystemWithOneComponent),
 	typeof(SystemWithTwoComponentsVariedComposition),
+	typeof(ParallelScaling),
 });
 
-IConfig configuration = DefaultConfig.Instance
-	.WithOptions(ConfigOptions.DisableOptimizationsValidator)
+// Release-only: the optimizations validator is intentionally left enabled so a Debug build
+// can never produce publishable numbers. Reports (incl. *-report-github.md) land in
+// BenchmarkDotNet.Artifacts/results/.
+IConfig configuration = ManualConfig.Create(DefaultConfig.Instance)
 	.WithBuildTimeout(TimeSpan.FromMinutes(10))
 	.WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest));
 

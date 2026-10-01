@@ -7,7 +7,7 @@ namespace EntitiesDb.Benchmark;
 //[HardwareCounters(BenchmarkDotNet.Diagnosers.HardwareCounter.CacheMisses)]
 public partial class SystemWithOneComponent
 {
-	[Params(100_000)]
+	[Params(100_000, 1_000_000)]
 	public int EntityCount { get; set; }
 
 	[GlobalSetup]
