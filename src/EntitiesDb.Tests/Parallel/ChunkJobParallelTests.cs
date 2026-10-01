@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace EntitiesDb.Parallel;
 
@@ -134,5 +134,86 @@ public sealed class ChunkJobParallelTests
 			query.ChunkJobParallel<CountJob, CountAggregate>(ref aggregate);
 			Assert.Equal(entityCount, aggregate.Total);
 		}
+	}
+
+	// Per-entity sum job: proves every chunk is visited exactly once (not just counted) under the
+	// dynamic chunk-claiming scheduler, across many archetypes of very different sizes.
+	private struct SumJob : IChunkJob
+	{
+		public long Sum;
+		public void ForEach(in Chunk chunk)
+		{
+			var handle = chunk.ReadHandle<Payload>();
+			for (int i = 0; i < chunk.EntityCount; i++)
+				Sum += handle[i].A;
+		}
+	}
+
+	private struct SumAggregate : IParallelAggregate<SumJob>
+	{
+		public long Total;
+		public SumJob Create(int threadIndex) => default;
+		public void Join(int threadIndex, ref SumJob job) => Total += job.Sum;
+	}
+
+	[Theory]
+	[InlineData(1)]
+	[InlineData(3)]
+	[InlineData(0)] // 0 = runner thread count
+	public void ChunkJobParallel_UnevenArchetypes_VisitsEveryChunkExactlyOnce(int maxThreads)
+	{
+		var threadCount = Math.Max(2, Environment.ProcessorCount);
+		using var runner = new ParallelJobRunner(threadCount, "TestRunner-Uneven");
+		using var db = new EntityDatabase(new EntityDatabaseOptions(1024, int.MaxValue, threadCount), runner);
+
+		// one big archetype (many chunks), one medium, one with a single partially-filled chunk
+		long expected = 0;
+		int id = 1;
+		for (int i = 0; i < 20_000; i++) { db.Create(new Payload { A = id }); expected += id++; }
+		for (int i = 0; i < 700; i++) { db.Create(new Payload { A = id }, new PayloadB()); expected += id++; }
+		for (int i = 0; i < 5; i++) { db.Create(new Payload { A = id }, new PayloadC()); expected += id++; }
+
+		var query = db.QueryBuilder.WithAll<Payload>().Build();
+		var options = maxThreads > 0 ? new EntitiesDb.ParallelOptions(maxThreads) : default;
+
+		for (int run = 0; run < 5; run++)
+		{
+			var aggregate = new SumAggregate();
+			query.ChunkJobParallel<SumJob, SumAggregate>(ref aggregate, options);
+			Assert.Equal(expected, aggregate.Total);
+		}
+	}
+
+	[Fact]
+	public void ChunkJobParallel_SteadyState_DoesNotAllocate()
+	{
+		var threadCount = Math.Max(2, Environment.ProcessorCount);
+		using var runner = new ParallelJobRunner(threadCount, "TestRunner-Alloc");
+		using var db = new EntityDatabase(new EntityDatabaseOptions(1024, int.MaxValue, threadCount), runner);
+		for (int i = 0; i < 10_000; i++)
+			db.Create(new Payload { A = i });
+		var query = db.QueryBuilder.WithAll<Payload>().Build();
+
+		// warm up pools / lazily-created sync objects
+		for (int run = 0; run < 10; run++)
+		{
+			var warm = new CountAggregate();
+			query.ChunkJobParallel<CountJob, CountAggregate>(ref warm);
+		}
+
+		// measure the calling thread (where job/work pooling happens — the old ConcurrentStack pools
+		// allocated ~300 B per call here); keep xunit's (allocating) asserts out of the loop
+		long total = 0;
+		var before = GC.GetAllocatedBytesForCurrentThread();
+		for (int run = 0; run < 100; run++)
+		{
+			var aggregate = new CountAggregate();
+			query.ChunkJobParallel<CountJob, CountAggregate>(ref aggregate);
+			total += aggregate.Total;
+		}
+		var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+
+		Assert.Equal(100L * 10_000, total);
+		Assert.True(allocated == 0, $"parallel query allocated {allocated} bytes on the calling thread over 100 calls");
 	}
 }

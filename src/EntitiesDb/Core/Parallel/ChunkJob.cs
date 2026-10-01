@@ -3,53 +3,32 @@ namespace EntitiesDb;
 
 internal sealed class ChunkJob<T> : IJob where T : IChunkJob
 {
-	// Ranges may span multiple archetypes (one fan-out per query, not per
-	// archetype) — RangeArchetypes is index-aligned with Ranges.
-	public SpanList<Archetype> RangeArchetypes;
-	public SpanList<ChunkRange> Ranges;
-	public int Start;
-	public int End;
-	public int First;
-	public int Last;
+	/// <summary>Shared work list for this parallel call (one per call, shared by all jobs).</summary>
+	public ChunkJobWork Work;
+
+	/// <summary>Per-thread job state (created by the aggregate, joined after the run).</summary>
 	public T ForEach;
 
 	public void Execute()
 	{
-		var archetype = RangeArchetypes[Start];
-		var range = Ranges[Start];
-		if (Start == End)
+		var work = Work;
+		var ranges = work.Ranges.AsSpan();
+		var archetypes = work.RangeArchetypes.AsSpan();
+		var ends = work.RangeEnds;
+
+		// claims are monotonically increasing per job, so the range index only ever moves forward
+		int rangeIndex = 0;
+		while (work.TryClaim(out var start, out var end))
 		{
-			for (int i = First; i < Last; i++)
+			for (int c = start; c < end; c++)
 			{
-				ref readonly var chunk = ref archetype.GetChunk(range.Start + i);
+				while (c >= ends[rangeIndex]) rangeIndex++;
+
+				var range = ranges[rangeIndex];
+				var offset = c - (ends[rangeIndex] - range.Size);
+				ref readonly var chunk = ref archetypes[rangeIndex].GetChunk(range.Start + offset);
 				ForEach.ForEach(in chunk);
 			}
-			return;
-		}
-
-		for (int i = First; i < range.Size; i++)
-		{
-			ref readonly var chunk = ref archetype.GetChunk(range.Start + i);
-			ForEach.ForEach(in chunk);
-		}
-
-		for (int i = Start + 1; i < End; i++)
-		{
-			archetype = RangeArchetypes[i];
-			range = Ranges[i];
-			for (int j = 0; j < range.Size; j++)
-			{
-				ref readonly var chunk = ref archetype.GetChunk(range.Start + j);
-				ForEach.ForEach(in chunk);
-			}
-		}
-
-		archetype = RangeArchetypes[End];
-		range = Ranges[End];
-		for (int i = 0; i < Last; i++)
-		{
-			ref readonly var chunk = ref archetype.GetChunk(range.Start + i);
-			ForEach.ForEach(in chunk);
 		}
 	}
 }

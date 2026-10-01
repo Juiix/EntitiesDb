@@ -28,58 +28,56 @@ public partial class Query
 		var changeFilter = ChangeFilter;
 		var compareVersion = changeFilter?.Version;
 
-		var jobPool = JobMeta<T>.JobPool;
-		var rangesPool = JobMeta.RangesPool;
-		var rangeArchetypesPool = JobMeta.RangeArchetypesPool;
-		var ranges = rangesPool.Rent();
-		var rangeArchetypes = rangeArchetypesPool.Rent();
 		var threadCount = options.MaxThreads > 0
 			? Math.Min(options.MaxThreads, _parallelRunner.ThreadCount)
 			: _parallelRunner.ThreadCount;
 
 		// collect chunk ranges across ALL matching archetypes so the whole query
-		// costs a single fork/join, instead of one barrier per archetype —
-		// otherwise parallel overhead scales with archetype fragmentation
-		int totalRanges = 0;
-		int totalChunks = 0;
+		// costs a single fork/join, instead of one barrier per archetype
+		var work = JobMeta.WorkPool.Rent();
+		work.Reset();
 		foreach (var archetype in EnumerateArchetypes())
-			AppendRanges(archetype, changeFilter, compareVersion, ref ranges, ref rangeArchetypes, threadCount, ref totalRanges, ref totalChunks);
+			AppendRanges(work, archetype, changeFilter, compareVersion);
 
-		if (totalRanges == 0)
+		if (work.TotalChunks == 0)
 		{
-			rangeArchetypesPool.Return(rangeArchetypes);
-			rangesPool.Return(ranges);
+			JobMeta.WorkPool.Return(work);
 			return;
 		}
 
-		var jobs = ArrayPool<IJob?>.Shared.Rent(threadCount);
-		int jobI = 0;
-		var chunkRanges = new ChunkRangePartitioner(ranges.AsSpan()[..totalRanges], totalChunks, threadCount);
-		foreach (var (start, end, first, last) in chunkRanges)
+		// one job per thread; jobs claim chunks dynamically from the shared work list, so a
+		// preempted thread only delays its current batch rather than the whole join
+		var jobCount = Math.Min(threadCount, work.TotalChunks);
+		work.Finish(jobCount);
+
+		var jobPool = JobMeta<T>.JobPool;
+		var jobs = ArrayPool<IJob?>.Shared.Rent(jobCount);
+		for (int i = 0; i < jobCount; i++)
 		{
 			var job = jobPool.Rent();
-			jobs[jobI] = job;
-			job.Start = start;
-			job.End = end;
-			job.First = first;
-			job.Last = last;
-			job.RangeArchetypes = rangeArchetypes;
-			job.Ranges = ranges;
-			job.ForEach = aggregate.Create(jobI++);
+			job.Work = work;
+			job.ForEach = aggregate.Create(i);
+			jobs[i] = job;
 		}
 
-		_parallelRunner.ExecuteJobs(jobs.AsMemory(0, jobI));
-
-		for (var i = 0; i < jobI; i++)
+		try
 		{
-			var job = (ChunkJob<T>)jobs[i]!;
-			aggregate.Join(i, ref job.ForEach);
-			jobPool.Return(job);
-			jobs[i] = null;
+			_parallelRunner.ExecuteJobs(jobs.AsMemory(0, jobCount));
 		}
-		ArrayPool<IJob?>.Shared.Return(jobs);
-		rangeArchetypesPool.Return(rangeArchetypes);
-		rangesPool.Return(ranges);
+		finally
+		{
+			for (var i = 0; i < jobCount; i++)
+			{
+				var job = (ChunkJob<T>)jobs[i]!;
+				aggregate.Join(i, ref job.ForEach);
+				job.Work = null!;
+				job.ForEach = default!;
+				jobPool.Return(job);
+				jobs[i] = null;
+			}
+			ArrayPool<IJob?>.Shared.Return(jobs);
+			JobMeta.WorkPool.Return(work);
+		}
 	}
 
 	public void ChunkJobParallel<T>(in T chunkJob, ParallelOptions options = default)
@@ -89,47 +87,17 @@ public partial class Query
 		ChunkJobParallel<T, DefaultAggregate<T>>(ref aggregate, options);
 	}
 
-	private static void AppendRanges(Archetype archetype, ChangeFilter? changeFilter, int? compareVersion,
-		ref SpanList<ChunkRange> ranges, ref SpanList<Archetype> rangeArchetypes, int slices,
-		ref int rangeCount, ref int chunkCount)
+	private static void AppendRanges(ChunkJobWork work, Archetype archetype, ChangeFilter? changeFilter, int? compareVersion)
 	{
 		if (changeFilter != null)
 		{
 			var filteredRanges = new ChangeFilterIterator(archetype.ChunkSpan, changeFilter, compareVersion!.Value);
 			foreach (var chunkRange in filteredRanges)
-			{
-				Append(ref ranges, ref rangeArchetypes, archetype, chunkRange, ref rangeCount);
-				chunkCount += chunkRange.Size;
-			}
+				work.Append(archetype, in chunkRange);
 		}
 		else
 		{
-			// pre-slice large archetypes so a single archetype can still split
-			// across all threads
-			foreach (var (start, size) in new RangePartitioner(archetype.ChunksInUse, slices))
-			{
-				var chunkRange = new ChunkRange(start, size);
-				Append(ref ranges, ref rangeArchetypes, archetype, chunkRange, ref rangeCount);
-				chunkCount += chunkRange.Size;
-			}
+			work.Append(archetype, new ChunkRange(0, archetype.ChunksInUse));
 		}
-	}
-
-	private static void Append(ref SpanList<ChunkRange> ranges, ref SpanList<Archetype> rangeArchetypes,
-		Archetype archetype, ChunkRange chunkRange, ref int rangeCount)
-	{
-		// the pooled lists keep prior capacity/entries; overwrite in place while
-		// slots exist, append past the end
-		if (rangeCount >= ranges.Count)
-			ranges.Add(chunkRange);
-		else
-			ranges[rangeCount] = chunkRange;
-
-		if (rangeCount >= rangeArchetypes.Count)
-			rangeArchetypes.Add(archetype);
-		else
-			rangeArchetypes[rangeCount] = archetype;
-
-		rangeCount++;
 	}
 }

@@ -68,6 +68,10 @@ internal static partial class Renderer
 		w.AppendLine("{");
 		w.Indent();
 
+		// hoist the delegate out of the per-entity loop: a field load through `this` can't be
+		// hoisted by the JIT across the user's component writes, a local can
+		w.AppendLine("var @delegate = _delegate;");
+
 		// handles
 		foreach (var l in m.HandleLines)
 			w.AppendLine(l);
@@ -77,7 +81,7 @@ internal static partial class Renderer
 		w.Indent();
 
 		// delegate call
-		w.AppendLine("_delegate(");
+		w.AppendLine("@delegate(");
 		w.Indent();
 		for (int i = 0; i < m.CallArguments.Count; i++)
 		{

@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Concurrent;
+using System;
 using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace EntitiesDb;
 
-internal sealed class ObjectPool<T>
+/// <summary>
+/// A small, thread-safe, allocation-free (after warm-up) object pool.
+/// </summary>
+/// <remarks>
+/// Backed by an array + lock rather than <see cref="System.Collections.Concurrent.ConcurrentStack{T}"/>,
+/// which allocates a node on every push and made every parallel query allocate.
+/// Contention is negligible: Rent/Return happen once per job per parallel call, on the calling thread.
+/// </remarks>
+internal sealed class ObjectPool<T> where T : class
 {
-	private readonly ConcurrentStack<T> _stack = new();
+	private readonly T?[] _items;
 	private readonly Func<T> _factory;
 	private readonly Action<T>? _reset;     // called before an item is stored back
 	private readonly Action<T>? _onDrop;    // called if an item can't be stored (pool full)
-	private readonly int _maxSize;
-
-	// Tracks items currently stored in the pool (not total created).
-	private int _count;
+	private readonly object _lock = new();
+	private int _count;                      // items currently stored
 
 	public ObjectPool(Func<T> factory, int maxSize,
 					  Action<T>? reset = null,
@@ -27,14 +31,11 @@ internal sealed class ObjectPool<T>
 		_factory = factory;
 		_reset = reset;
 		_onDrop = onDrop;
-		_maxSize = maxSize;
+		_items = new T?[maxSize];
 
-		// Prefill eagerly (best effort; stays lock-free and fast).
+		prefill = Math.Min(prefill, maxSize);
 		for (int i = 0; i < prefill; i++)
-		{
-			var item = _factory();
-			_stack.Push(item);
-		}
+			_items[i] = _factory();
 		_count = prefill;
 	}
 
@@ -42,44 +43,35 @@ internal sealed class ObjectPool<T>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T Rent()
 	{
-		if (_stack.TryPop(out var item))
+		lock (_lock)
 		{
-			// Balance the count for a successful pop.
-			Interlocked.Decrement(ref _count);
-			return item!;
+			if (_count > 0)
+			{
+				var item = _items[--_count]!;
+				_items[_count] = null;
+				return item;
+			}
 		}
 		return _factory();
 	}
 
 	/// <summary>
-	/// Return an instance to the pool. If the pool is full, optionally drop/cleanup it.
-	/// Safe to call multiple times but double-returns may waste capacity.
+	/// Return an instance to the pool. If the pool is full the item is dropped (after <c>onDrop</c>).
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void Return(T? item)
 	{
 		if (item is null) return;
 
-		// If we can't store more, drop it (best effort; small races allowed).
-		int c = Volatile.Read(ref _count);
-		if (c >= _maxSize)
+		_reset?.Invoke(item);
+		lock (_lock)
 		{
-			_onDrop?.Invoke(item);
-			return;
+			if (_count < _items.Length)
+			{
+				_items[_count++] = item;
+				return;
+			}
 		}
-
-		_reset?.Invoke(item); // e.g., clear fields, reset buffers, etc.
-
-		// Reserve a slot: increment first; if we raced and exceeded capacity, undo.
-		int newCount = Interlocked.Increment(ref _count);
-		if (newCount <= _maxSize)
-		{
-			_stack.Push(item);
-			return;
-		}
-
-		// We over-shot due to a race; undo and drop the item.
-		Interlocked.Decrement(ref _count);
 		_onDrop?.Invoke(item);
 	}
 }
