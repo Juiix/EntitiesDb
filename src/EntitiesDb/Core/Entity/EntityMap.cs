@@ -10,7 +10,7 @@ internal sealed class EntityMap(int maxEntities)
 
 	private readonly int _maxEntities = maxEntities;
 	private EntityReference[] _references = ArrayPool<EntityReference>.Shared.Rent(Math.Min(MinReferenceSize, maxEntities));
-	private int[] _versions = ArrayPool<int>.Shared.Rent(Math.Min(MinReferenceSize, maxEntities));
+	private int[] _versions = RentVersions(Math.Min(MinReferenceSize, maxEntities));
 	private int _count = 0;
 	private EntityReference _null;
 
@@ -92,7 +92,7 @@ internal sealed class EntityMap(int maxEntities)
 
 		if (newLen > _versions.Length)
 		{
-			var newVersions = ArrayPool<int>.Shared.Rent(newLen);
+			var newVersions = RentVersions(newLen);
 			Array.Copy(_versions, newVersions, _versions.Length);
 			ArrayPool<int>.Shared.Return(_versions);
 			_versions = newVersions;
@@ -119,7 +119,7 @@ internal sealed class EntityMap(int maxEntities)
 		if (!keepVersions &&
 			newCapacity < _versions.Length)
 		{
-			var newVersions = ArrayPool<int>.Shared.Rent(newCapacity);
+			var newVersions = RentVersions(newCapacity);
 			Array.Copy(_versions, newVersions, Math.Min(_versions.Length, newCapacity));
 			ArrayPool<int>.Shared.Return(_versions);
 			_versions = newVersions;
@@ -138,6 +138,18 @@ internal sealed class EntityMap(int maxEntities)
 			ArrayPool<int>.Shared.Return(_versions);
 			_versions = [];
 		}
+	}
+
+	/// <summary>
+	/// Rents a version array with every slot at 0. ArrayPool&lt;int&gt;.Shared is the whole process's: an
+	/// array comes back as its last user left it (this map's own bumped versions, or anyone else's
+	/// ints), and a fresh id must start at version 0.
+	/// </summary>
+	private static int[] RentVersions(int length)
+	{
+		var versions = ArrayPool<int>.Shared.Rent(length);
+		Array.Clear(versions, 0, versions.Length);
+		return versions;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
