@@ -9,13 +9,13 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>2022-2026, Unnamed Studios, LLC</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <VersionPrefix>3.6.1</VersionPrefix>
+    <VersionPrefix>3.7.0</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>3.6.1: parallel queries now use guided chunk claiming across threads (a preempted thread no longer stalls the join; ~20-40% faster ForEach*Parallel at physical-core thread counts) and are allocation-free in steady state; added parameterless EntityDatabase() constructor and EntityDatabaseOptions.Default; fixed TrimExcess throwing on an empty database; package now ships README, description, tags and repository metadata. 3.6.0: parallel queries execute one fork/join across all matching archetypes (was one per archetype); Archetype.Reserve zero-initializes unmanaged chunk memory.</PackageReleaseNotes>
+    <PackageReleaseNotes>3.7.0: ParallelJobRunner signals only the workers a call needs (a one-job call never leaves the calling thread), runs jobs a worker hasn't started on the caller, and parks idle workers instead of spinning - more threads than cores no longer costs milliseconds per parallel call; parallel queries claim chunks from one shared list (a preempted thread no longer stalls the join) and are allocation-free in steady state; UntrackedWriteHandle and Chunk.MarkChanged&lt;T&gt;() to write tracked components without marking every chunk; generated ForEach/ForEachChunk honour change filters; a destroy carries the moved entity's pending changes; chunks past 32 KB keep their columns apart (int offsets); fresh entity ids start at version 0; a stale EntityData throws instead of reaching another archetype (chunk arrays are no longer pooled); EntityDatabase() and EntityDatabaseOptions.Default; TrimExcess on an empty database. 3.6.0: parallel queries execute one fork/join across all matching archetypes (was one per archetype); Archetype.Reserve zero-initializes unmanaged chunk memory.</PackageReleaseNotes>
     <Title>EntitiesDb</Title>
     <Product>EntitiesDb</Product>
     <PackageId>EntitiesDb</PackageId>
