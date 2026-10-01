@@ -336,6 +336,35 @@ public sealed class ChangeFilterTests
 	}
 
 	[Fact]
+	public void Destroy_MovingAChangedEntity_KeepsItsChangeVisible()
+	{
+		using var db = CreateDb();
+		db.FillPlayers();
+
+		var changeQuery = db.QueryBuilder
+			.WithAll<Position, PlayerTag>()
+			.WithChangeFilter<Position>()
+			.Build();
+		var archetype = db.GetArchetype(new Entity(0, 0));
+		ref readonly var lastChunk = ref archetype.GetChunk(archetype.ChunksInUse - 1);
+		var last = lastChunk.Entity(lastChunk.EntityCount - 1);
+		var lastId = last.Id;
+
+		// the filter has consumed everything; only the last entity changes, in the last chunk
+		Assert.Equal(0, changeQuery.CountChunks());
+		db.Write<Position>(last) = new Position(7, 7);
+
+		// destroying an entity in the first chunk moves the last entity into its slot
+		db.Destroy(new Entity(0, 0));
+
+		var seen = new List<int>();
+		changeQuery.ForEach((Entity e, in Position p, ref List<int> seen) => seen.Add(e.Id), ref seen);
+
+		// its change used to stay behind in the last chunk, so the filter skipped the chunk it moved to
+		Assert.Contains(lastId, seen);
+	}
+
+	[Fact]
 	public void Query_ForEachChunk_HonorsChangeFilter()
 	{
 		using var db = CreateDb();

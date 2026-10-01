@@ -400,6 +400,7 @@ public unsafe sealed partial class Archetype
 		movedEntityId = chunk.AcceptEntity(
 			slot.Index, ref lastChunk, removedIndex,
 			_idToOffsets, UnmanagedComponentTypes);
+		InheritChanges(ref chunk, in lastChunk);
 
 		lastChunk.EntityCount--;
 		EntityCount--;
@@ -410,6 +411,29 @@ public unsafe sealed partial class Archetype
 		}
 
 		ChunksInUse = Math.Max(ChunksInUse - 1, 1);
+	}
+
+	/// <summary>
+	/// An entity moved into <paramref name="dst"/> takes its pending changes along: every tracked
+	/// component's change version in <paramref name="dst"/> becomes at least <paramref name="src"/>'s,
+	/// so a change filter that hasn't consumed the source chunk's changes still visits the chunk the
+	/// entity now lives in. (Never lowers a version; at worst a neighbour is reported too.)
+	/// </summary>
+	private void InheritChanges(ref Chunk dst, in Chunk src)
+	{
+		var srcVersions = src.LocalChangeVersions;
+		var dstVersions = dst.LocalChangeVersions;
+		if (ReferenceEquals(srcVersions, dstVersions)) return;
+
+		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		{
+			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
+			if (!type.TrackChanges) continue;
+
+			var version = srcVersions[type.Id];
+			if (version - dstVersions[type.Id] > 0) // wrap-safe "newer than"
+				dstVersions[type.Id] = version;
+		}
 	}
 
 	/// <summary>
