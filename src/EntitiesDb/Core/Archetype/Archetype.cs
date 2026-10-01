@@ -41,7 +41,7 @@ public unsafe sealed partial class Archetype
     /// <summary>
     /// <see cref="ComponentType.Id"/> to offset lookup table
     /// </summary>
-    private readonly short[] _idToOffsets;
+    private readonly int[] _idToOffsets;
 
 	/// <summary>
 	/// Indices of bufferable types

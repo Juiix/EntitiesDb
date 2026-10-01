@@ -10,7 +10,7 @@ namespace EntitiesDb;
 [SkipLocalsInit]
 public partial struct Chunk
 {
-	internal Chunk(nint unmanagedComponents, Array[] managedComponents, int[] globalChangeVersions, int[] localChangeVersions, short[] idToOffsets)
+	internal Chunk(nint unmanagedComponents, Array[] managedComponents, int[] globalChangeVersions, int[] localChangeVersions, int[] idToOffsets)
 	{
 		UnmanagedComponents = unmanagedComponents;
 		ManagedComponents = managedComponents;
@@ -42,7 +42,7 @@ public partial struct Chunk
 	/// <summary>
 	/// Id to offset mapping
 	/// </summary>
-	internal readonly short[] IdToOffsets { get; }
+	internal readonly int[] IdToOffsets { get; }
 
 	/// <summary>
 	/// The count of entities stored in this chunk
@@ -326,7 +326,7 @@ public partial struct Chunk
 	/// <returns>The entity id of the transferred entity</returns>
 	internal readonly unsafe int AcceptEntity(
 		int dstIndex, ref Chunk srcChunk, int srcIndex,
-		short[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
+		int[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
 	{
 		// get src entity
 		var srcEntity = srcChunk.Entity(srcIndex);
@@ -372,7 +372,7 @@ public partial struct Chunk
 	/// <param name="dstIndex">Index of the destination components</param>
 	internal readonly unsafe void CloneComponents(
 		int srcIndex, ref Chunk dstChunk, int dstIndex,
-		short[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
+		int[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
 	{
 		// copy unmanaged components
 		var srcPtr = UnmanagedComponents;
@@ -426,8 +426,8 @@ public partial struct Chunk
 	/// <param name="dstChunk">The chunk to copy into</param>
 	/// <param name="dstIndex">Index of the destination components</param>
 	internal readonly unsafe void CopyComponents(
-		int srcIndex, short[] srcOffsets,
-		in Signature dstSignature, ref Chunk dstChunk, int dstIndex, short[] dstOffsets,
+		int srcIndex, int[] srcOffsets,
+		in Signature dstSignature, ref Chunk dstChunk, int dstIndex, int[] dstOffsets,
 		ReadOnlySpan<ComponentType> unmanagedComponentTypes, ReadOnlySpan<ComponentType> managedComponentTypes,
 		bool clearManaged = false)
 	{

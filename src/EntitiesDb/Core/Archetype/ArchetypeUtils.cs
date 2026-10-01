@@ -51,16 +51,16 @@ internal unsafe static class ArchetypeUtils
 	/// <param name="unmanagedCount">The unmanaged component count</param>
 	/// <param name="chunkCapacity">The chunk entity capacity</param>
 	/// <returns>An id -> offset lookup array</returns>
-	public static short[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int unmanagedCount, int chunkCapacity)
+	public static int[] BuildIdOffsetLookup(ReadOnlySpan<ComponentType> componentTypes, int unmanagedCount, int chunkCapacity)
 	{
-		var idToOffsets = new short[ComponentRegistry.MaxComponents];// CreateTightIdArray<short>(componentTypes, unmanagedCount);
-		Array.Fill(idToOffsets, (short)-1);
+		var idToOffsets = new int[ComponentRegistry.MaxComponents];
+		Array.Fill(idToOffsets, -1);
 
 		// assign unmanaged offsets
 		var unmanagedEntitySize = sizeof(Entity);
 		foreach (ref readonly var componentType in componentTypes.Slice(0, unmanagedCount))
 		{
-			idToOffsets[componentType.Id] = (short)(componentType.IsTag ? 0 : unmanagedEntitySize * chunkCapacity);
+			idToOffsets[componentType.Id] = componentType.IsTag ? 0 : unmanagedEntitySize * chunkCapacity;
 			unmanagedEntitySize += componentType.Stride;
 		}
 
@@ -68,7 +68,7 @@ internal unsafe static class ArchetypeUtils
 		int managedIndex = 0;
 		foreach (ref readonly var componentType in componentTypes.Slice(unmanagedCount))
 		{
-			idToOffsets[componentType.Id] = (short)managedIndex++;
+			idToOffsets[componentType.Id] = managedIndex++;
 		}
 
 		return idToOffsets;
