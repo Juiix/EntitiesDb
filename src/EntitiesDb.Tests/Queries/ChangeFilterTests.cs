@@ -271,68 +271,93 @@ public sealed class ChangeFilterTests
 		Assert.Equal(0, query.CountChunks());
 	}
 
+	// Source-generated ForEach / ForEachChunk must honor the query's change filter exactly like
+	// ReadHandles/WriteHandles do: after the filter is consumed nothing is visited; a single write
+	// makes exactly that chunk visible; visiting with a `ref` parameter re-marks the chunk.
 	[Fact]
-	public void Query_ForEachRef_ReturnsAllChunks()
+	public void Query_ForEachRef_VisitsOnlyChangedChunks_AndReMarksThem()
 	{
 		using var db = CreateDb();
+
+		// a change filter sees changes made after the query is built, so build it before the players exist
+		var changeQuery = db.QueryBuilder
+			.WithAll<Position, PlayerTag>()
+			.WithChangeFilter<Position>()
+			.Build();
 		db.FillPlayers();
 
-		var forEachQuery = db.QueryBuilder
-			.WithAll<Position, PlayerTag>()
-			.Build();
+		// 1. all 5 chunks are "changed" right after creation; a ref ForEach visits them all and re-marks them
+		int visited = 0;
+		changeQuery.ForEach((ref Position p) => { visited++; });
+		Assert.Equal(db.QueryBuilder.WithAll<Position, PlayerTag>().Build().CountEntities(), visited);
+		Assert.Equal(5, changeQuery.CountChunks());   // re-marked by the ref parameter
+
+		// 2. consumed -> a further ref ForEach sees nothing (and therefore marks nothing)
+		visited = 0;
+		changeQuery.ForEach((ref Position p) => { visited++; });
+		Assert.Equal(0, visited);
+		Assert.Equal(0, changeQuery.CountChunks());
+
+		// 3. write to one entity -> exactly one chunk is visited, and re-marked
+		ref var position = ref db.Write<Position>(new Entity(0, 0));
+		visited = 0;
+		changeQuery.ForEach((ref Position p) => { visited++; });
+		Assert.True(visited > 0 && visited <= db.GetArchetype(new Entity(0, 0)).EntitiesPerChunk, $"visited {visited}");
+		Assert.Equal(1, changeQuery.CountChunks());
+	}
+
+	[Fact]
+	public void Query_ForEachIn_VisitsOnlyChangedChunks_AndDoesNotMark()
+	{
+		using var db = CreateDb();
 
 		var changeQuery = db.QueryBuilder
 			.WithAll<Position, PlayerTag>()
 			.WithChangeFilter<Position>()
 			.Build();
+		db.FillPlayers();
 
-		// 1.
-		// No chunks
+		// 1. consume
+		Assert.Equal(5, changeQuery.CountChunks());
 		Assert.Equal(0, changeQuery.CountChunks());
 
-		// get Position components
-		changeQuery.ForEach((ref Position p) =>
-		{
+		// 2. an `in` ForEach on a consumed filter visits nothing
+		int visited = 0;
+		changeQuery.ForEachAlt((in Position position) => { visited++; });
+		Assert.Equal(0, visited);
+		Assert.Equal(0, changeQuery.CountChunks());
 
-		});
-
-		// 2.
-		// All 5 chunks
-		Assert.Equal(5, changeQuery.CountChunks());
-
-		// 3.
-		// No chunks
+		// 3. write one entity: `in` ForEach visits that chunk but does not re-mark it
+		db.Write<Position>(new Entity(0, 0)) = new Position(1, 1);
+		visited = 0;
+		changeQuery.ForEachAlt((in Position position) => { visited++; });
+		Assert.True(visited > 0, "expected the changed chunk to be visited");
 		Assert.Equal(0, changeQuery.CountChunks());
 	}
 
-
 	[Fact]
-	public void Query_ForEachIn_ReturnsNoChunks()
+	public void Query_ForEachChunk_HonorsChangeFilter()
 	{
 		using var db = CreateDb();
-		db.FillPlayers();
-
-		var forEachQuery = db.QueryBuilder
-			.WithAll<Position, PlayerTag>()
-			.Build();
 
 		var changeQuery = db.QueryBuilder
 			.WithAll<Position, PlayerTag>()
 			.WithChangeFilter<Position>()
 			.Build();
+		db.FillPlayers();
 
-		// 1.
-		// No chunks
-		Assert.Equal(0, changeQuery.CountChunks());
+		int chunks = 0;
+		changeQuery.ForEachChunk((int length, ReadHandle<Position> positions) => { chunks++; });
+		Assert.Equal(5, chunks);
 
-		// get Position components
-		changeQuery.ForEachAlt((in Position position) =>
-		{
+		chunks = 0;
+		changeQuery.ForEachChunk((int length, ReadHandle<Position> positions) => { chunks++; });
+		Assert.Equal(0, chunks);
 
-		});
-
-		// 2.
-		// No chunks
-		Assert.Equal(0, changeQuery.CountChunks());
+		db.Write<Position>(new Entity(0, 0)) = new Position(2, 2);
+		chunks = 0;
+		changeQuery.ForEachChunk((int length, WriteHandle<Position> positions) => { chunks++; });
+		Assert.Equal(1, chunks);
+		Assert.Equal(1, changeQuery.CountChunks()); // WriteHandle re-marked it
 	}
 }

@@ -63,11 +63,8 @@ internal static partial class Renderer
 		}
 
 		// main loops
-		w.AppendLine("foreach (var archetype in self.EnumerateArchetypes())");
-		w.AppendLine("{");
-		w.Indent();
-
-		w.AppendLine("foreach (ref readonly var chunk in archetype)");
+		// EnumerateChunks() applies the query's change filter (Archetype's own enumerator does not)
+		w.AppendLine("foreach (ref readonly var chunk in self.EnumerateChunks())");
 		w.AppendLine("{");
 		w.Indent();
 
@@ -97,9 +94,6 @@ internal static partial class Renderer
 
 		w.Unindent();
 		w.AppendLine("}"); // foreach chunk
-
-		w.Unindent();
-		w.AppendLine("}"); // foreach archetype
 
 		w.Unindent();
 		w.AppendLine("}"); // method
