@@ -56,6 +56,8 @@ public unsafe sealed partial class Archetype
 	/// <summary>
 	/// Array used to store chunks
 	/// </summary>
+	// at least this many chunk slots: arrays grow by doubling, and replacing one invalidates EntityData
+	private const int InitialChunkCapacity = 16;
 	private Chunk[] _chunks;
 
 	/// <summary>
@@ -73,7 +75,7 @@ public unsafe sealed partial class Archetype
 		_unmanagedChunkByteSize = ArchetypeUtils.CalculateUnmanagedSize(componentTypes.AsSpan(0, unmanagedComponentCount)) * EntitiesPerChunk;
 		_globalChangeVersions = globalChangeVersions;
 
-		_chunks = ArrayPool<Chunk>.Shared.Rent(1);
+		_chunks = new Chunk[InitialChunkCapacity];
         _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, unmanagedComponentCount, EntitiesPerChunk);
 		_bufferIndices = ArchetypeUtils.BuildBufferIndices(componentTypes, unmanagedComponentCount);
 		_changeTrackingIndices = ArchetypeUtils.BuildChangeTrackingIndices(componentTypes);
@@ -200,13 +202,7 @@ public unsafe sealed partial class Archetype
 		var newChunkCount = (newTotal + EntitiesPerChunk - 1) / EntitiesPerChunk;
 
 		if (newChunkCount > _chunks.Length)
-		{
-			// expand array
-			var newArray = ArrayPool<Chunk>.Shared.Rent(newChunkCount);
-			Array.Copy(_chunks, newArray, ChunksAllocated);
-			ArrayPool<Chunk>.Shared.Return(_chunks, true);
-			_chunks = newArray;
-		}
+			ReplaceChunkArray(Math.Max(newChunkCount, _chunks.Length * 2));
 
 		for (var i = ChunksAllocated; i < newChunkCount; i++)
 		{
@@ -229,13 +225,7 @@ public unsafe sealed partial class Archetype
 	{
 		var count = ChunksInUse;
 		if (count == _chunks.Length)
-		{
-			// expand array
-			var newArray = ArrayPool<Chunk>.Shared.Rent(count + 1);
-			Array.Copy(_chunks, newArray, count);
-			ArrayPool<Chunk>.Shared.Return(_chunks, true);
-			_chunks = newArray;
-		}
+			ReplaceChunkArray(Math.Max(InitialChunkCapacity, count * 2));
 
 		ref var chunk = ref _chunks[count];
 		if (count >= ChunksAllocated)
@@ -493,16 +483,22 @@ public unsafe sealed partial class Archetype
 		}
 		ChunksAllocated = ChunksInUse;
 
-		// try resize chunk array
-		var newArray = ArrayPool<Chunk>.Shared.Rent(ChunksAllocated);
-		if (newArray.Length == _chunks.Length)
-		{
-			ArrayPool<Chunk>.Shared.Return(newArray);
-			return;
-		}
+		// shrink the chunk array
+		var length = Math.Max(InitialChunkCapacity, ChunksAllocated);
+		if (length < _chunks.Length)
+			ReplaceChunkArray(length);
+	}
 
+	/// <summary>
+	/// Moves the chunks into a new array of <paramref name="length"/>. The old array is cleared and left to
+	/// the GC, never pooled: a chunk ref or <see cref="EntityData"/> still pointing into it then finds an
+	/// empty chunk (EntityData throws) instead of whatever another archetype rented that array for.
+	/// </summary>
+	private void ReplaceChunkArray(int length)
+	{
+		var newArray = new Chunk[length];
 		Array.Copy(_chunks, newArray, ChunksAllocated);
-		ArrayPool<Chunk>.Shared.Return(_chunks, true);
+		Array.Clear(_chunks, 0, _chunks.Length);
 		_chunks = newArray;
 	}
 

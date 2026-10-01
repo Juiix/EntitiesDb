@@ -13,6 +13,12 @@ internal static class ThrowHelper
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
+	public static void ThrowStaleEntityData() =>
+		throw new InvalidOperationException(
+			"EntityData used after its archetype's chunk array was replaced: since it was taken, an entity was created in " +
+			"(or moved into) that archetype, or TrimExcess ran. Take EntityData again after creating entities.");
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
 	public static ComponentException ComponentBuffered(Type componentType) =>
 		new(componentType, $"Component '{componentType.FullName}' is buffered and must be added or removed using buffer methods.");
 

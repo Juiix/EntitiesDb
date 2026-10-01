@@ -17,9 +17,25 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     internal readonly int Index = index;
 
 	/// <summary>
+	/// <see cref="TargetChunk"/>, checked. An archetype's chunk array is replaced (and the old one cleared)
+	/// when it grows or is trimmed; a chunk without offsets means this EntityData outlived its array.
+	/// </summary>
+	private ref Chunk Live
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get
+		{
+			ref var chunk = ref TargetChunk;
+			if (chunk.IdToOffsets is null)
+				ThrowHelper.ThrowStaleEntityData();
+			return ref chunk;
+		}
+	}
+
+	/// <summary>
 	/// The target <see cref="EntitiesDb.Entity"/>
 	/// </summary>
-	public Entity Entity => TargetChunk.Entity(Index);
+	public Entity Entity => Live.Entity(Index);
 
 	/// <summary>
 	/// If this entity has a component of type <typeparamref name="T0"/>
@@ -28,7 +44,7 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
 	/// <returns></returns>
 	public bool Has<T0>()
 	{
-		return TargetChunk.Has<T0>();
+		return Live.Has<T0>();
 	}
 
     /// <summary>
@@ -44,7 +60,7 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     /// <exception cref="ComponentException"></exception>
     public readonly ref readonly T? Read<T>()
 	{
-		return ref TargetChunk.Read<T>(Index);
+		return ref Live.Read<T>(Index);
 	}
 
     /// <summary>
@@ -60,7 +76,7 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     /// <exception cref="ComponentException"></exception>
     public readonly ReadBuffer<T> ReadBuffer<T>() where T : unmanaged
 	{
-		return TargetChunk.ReadBuffer<T>(Index);
+		return Live.ReadBuffer<T>(Index);
     }
 
     /// <summary>
@@ -71,13 +87,13 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     /// <exception cref="ComponentException"></exception>
     public bool TryRead<T>(out T? component)
     {
-		if (!TargetChunk.Has<T>())
+		if (!Live.Has<T>())
 		{
 			component = default;
 			return false;
 		}
 
-		component = TargetChunk.Read<T>(Index);
+		component = Live.Read<T>(Index);
 		return true;
 	}
 
@@ -95,13 +111,13 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     /// <exception cref="ComponentException"></exception>
     public bool TryReadBuffer<T>(out ReadBuffer<T> buffer) where T : unmanaged
     {
-        if (!TargetChunk.Has<T>())
+        if (!Live.Has<T>())
         {
             buffer = default;
             return false;
         }
 
-        buffer = TargetChunk.ReadBuffer<T>(Index);
+        buffer = Live.ReadBuffer<T>(Index);
 		return true;
     }
 
@@ -122,7 +138,7 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     [ChunkChange]
 	public readonly ref T? Write<T>()
 	{
-		return ref TargetChunk.Write<T>(Index);
+		return ref Live.Write<T>(Index);
 	}
 
     /// <summary>
@@ -142,6 +158,6 @@ public readonly ref struct EntityData(ref Chunk chunk, int index)
     [ChunkChange]
 	public readonly WriteBuffer<T> WriteBuffer<T>() where T : unmanaged
 	{
-		return TargetChunk.WriteBuffer<T>(Index);
+		return Live.WriteBuffer<T>(Index);
 	}
 }
