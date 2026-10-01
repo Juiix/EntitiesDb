@@ -7,20 +7,30 @@
     <Authors>Tucker Ulrich</Authors>
     <Company>Unnamed Studios, LLC</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>2022, Unnamed Studios, LLC</Copyright>
+    <Copyright>2022-2026, Unnamed Studios, LLC</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <VersionPrefix>3.6.0</VersionPrefix>
+    <VersionPrefix>3.6.1</VersionPrefix>
     <Version>$(VersionPrefix)</Version>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>3.6.0: parallel queries execute one fork/join across all matching archetypes (was one per archetype); Archetype.Reserve zero-initializes unmanaged chunk memory.</PackageReleaseNotes>
+    <PackageReleaseNotes>3.6.1: parallel queries now use guided chunk claiming across threads (a preempted thread no longer stalls the join; ~20-40% faster ForEach*Parallel at physical-core thread counts) and are allocation-free in steady state; added parameterless EntityDatabase() constructor and EntityDatabaseOptions.Default; fixed TrimExcess throwing on an empty database; package now ships README, description, tags and repository metadata. 3.6.0: parallel queries execute one fork/join across all matching archetypes (was one per archetype); Archetype.Reserve zero-initializes unmanaged chunk memory.</PackageReleaseNotes>
     <Title>EntitiesDb</Title>
     <Product>EntitiesDb</Product>
     <PackageId>EntitiesDb</PackageId>
+    <Description>A high-performance, lightweight Entity Component System (ECS) for C#. Archetype and chunk based storage, source-generated ForEach queries, inline component buffers, tags, change filters, multithreaded query execution, SIMD-friendly handles and command buffers — with zero external dependencies on .NET 8.</Description>
+    <PackageTags>ecs;entity-component-system;entities;components;gamedev;game-engine;simulation;data-oriented;archetype;simd;performance;dotnet;csharp</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/Juiix/EntitiesDb</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Juiix/EntitiesDb</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
     <PackageReference Include="System.Memory" Version="4.6.3" />
