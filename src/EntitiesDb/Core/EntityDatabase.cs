@@ -391,6 +391,9 @@ public sealed partial class EntityDatabase : IDisposable
     {
 		Archetypes.Clear();
 		_entityMap.Clear();
+		// ids freed before the clear point past the reset map; handing them out again created entities
+		// that lookups by id could not find
+		_recycledEntityIds.Clear();
 		EntityCount = 0;
     }
 
