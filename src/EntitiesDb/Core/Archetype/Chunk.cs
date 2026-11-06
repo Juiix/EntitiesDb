@@ -488,12 +488,14 @@ public partial struct Chunk
 		var dstMananagedComponents = dstChunk.ManagedComponents;
 		foreach (ref readonly var componentType in managedComponentTypes)
 		{
+			// advance for every source managed type, including ones this move drops — skipping the
+			// increment on `continue` paired every later component with its neighbour's array
+			var srcArray = srcMananagedComponents[srcArrayIndex++];
 			if (!dstSignature.Test(componentType.Id))
 			{
 				continue; // component doesn't exist in the destination chunk
 			}
 
-			var srcArray = srcMananagedComponents[srcArrayIndex++];
             var dstArrayIndex = dstOffsets[componentType.Id];
 			Array.Copy(
                 srcArray, srcIndex,
