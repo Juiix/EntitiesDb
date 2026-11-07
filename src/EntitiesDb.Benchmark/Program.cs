@@ -18,6 +18,7 @@ BenchmarkSwitcher benchmark = BenchmarkSwitcher.FromTypes(new[]
 	typeof(SystemWithOneComponent),
 	typeof(SystemWithTwoComponentsVariedComposition),
 	typeof(ParallelScaling),
+	typeof(StructuralChanges),
 });
 
 // Release-only: the optimizations validator is intentionally left enabled so a Debug build

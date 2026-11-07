@@ -7,5 +7,6 @@ internal static class Categories
 	public const string Structs = nameof(Structs);
 
 	public const string Create = nameof(Create);
+	public const string Structural = nameof(Structural);
 	public const string System = nameof(System);
 }
