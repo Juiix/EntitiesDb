@@ -447,7 +447,7 @@ public sealed partial class CommandBuffer
 			try
 			{
 				ref var reference = ref database.GetEntity(bufferedEntity.Entity);
-				var source = reference.Archetype;
+				var source = database.ArchetypeOf(in reference);
 				var targetSignature = source.Signature;
 				if (setIndex >= 0) targetSignature = targetSignature.Or(in sets[setIndex]);
 				if (bufferedEntity.RemoveIndex >= 0) targetSignature = targetSignature.AndNot(in removes[bufferedEntity.RemoveIndex]);

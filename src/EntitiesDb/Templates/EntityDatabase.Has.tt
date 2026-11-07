@@ -15,25 +15,25 @@ public partial class EntityDatabase
 	public bool Has<<#= generics #>>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		return reference.Archetype.Has<<#= generics #>>();
+		return ArchetypeOf(in reference).Has<<#= generics #>>();
 	}
 	/// <inheritdoc cref="Has{T0}(int)"/>
 	public bool Has<<#= generics #>>(int entityId)
 	{
 		ref var reference = ref GetEntity(entityId);
-		return reference.Archetype.Has<<#= generics #>>();
+		return ArchetypeOf(in reference).Has<<#= generics #>>();
 	}
 	/// <inheritdoc cref="HasAny{T0}(Entity)"/>
 	public bool HasAny<<#= generics #>>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		return reference.Archetype.HasAny<<#= generics #>>();
+		return ArchetypeOf(in reference).HasAny<<#= generics #>>();
 	}
 	/// <inheritdoc cref="HasAny{T0}(int)"/>
 	public bool HasAny<<#= generics #>>(int entityId)
 	{
 		ref var reference = ref GetEntity(entityId);
-		return reference.Archetype.HasAny<<#= generics #>>();
+		return ArchetypeOf(in reference).HasAny<<#= generics #>>();
 	}
 <#
 	}

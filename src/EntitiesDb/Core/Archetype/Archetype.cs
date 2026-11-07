@@ -108,6 +108,34 @@ public unsafe sealed partial class Archetype
 	~Archetype() => DoDispose();
 
 	/// <summary>
+	/// This archetype's slot in its <see cref="ArchetypeCollection"/>'s index table (at least 1): how entity
+	/// map entries name their archetype. Stable while the archetype lives.
+	/// </summary>
+	internal int Index { get; private set; }
+
+	/// <summary>
+	/// The collection whose index table holds this archetype; told when the chunk array is replaced
+	/// </summary>
+	private ArchetypeCollection? _owner;
+
+	internal void Attach(ArchetypeCollection owner, int index)
+	{
+		_owner = owner;
+		Index = index;
+	}
+
+	internal void Detach()
+	{
+		_owner = null;
+		Index = 0;
+	}
+
+	/// <summary>
+	/// The chunk array (its length is the chunk capacity, not the chunk count)
+	/// </summary>
+	internal Chunk[] ChunkArray => _chunks;
+
+	/// <summary>
 	/// How many entities are stored per chunk
 	/// </summary>
 	public int EntitiesPerChunk { get; }
@@ -288,91 +316,6 @@ public unsafe sealed partial class Archetype
 	internal ref Chunk GetChunk(int index)
 	{
 		return ref _chunks[index];
-	}
-
-	// By-entity access. The slot comes from the entity map, so its chunk index is in range, and the
-	// offset is read from this archetype instead of the chunk: the two loads overlap rather than chain.
-
-	/// <summary>
-	/// Readonly ref to component <typeparamref name="T0"/> of the entity at <paramref name="slot"/>
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ref readonly T0? Read<T0>(EntitySlot slot)
-	{
-		var offset = ArrayAccess.At(_idToOffsets, ComponentSingleWritable<T0>.Id);
-		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		return ref ComponentRef<T0>(ref ArrayAccess.At(_chunks, slot.ChunkIndex), offset, slot.Index);
-	}
-
-	/// <summary>
-	/// Copies component <typeparamref name="T0"/> of the entity at <paramref name="slot"/>; false when this
-	/// archetype has no <typeparamref name="T0"/>
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal bool TryRead<T0>(EntitySlot slot, out T0? component)
-	{
-		var offset = ArrayAccess.At(_idToOffsets, Component<T0>.Id);
-		if (offset < 0)
-		{
-			component = default;
-			return false;
-		}
-		_ = ComponentSingleWritable<T0>.Id; // a buffer component present throws here, as Read does
-		component = ComponentRef<T0>(ref ArrayAccess.At(_chunks, slot.ChunkIndex), offset, slot.Index);
-		return true;
-	}
-
-	/// <summary>
-	/// Ref to component <typeparamref name="T0"/> of the entity at <paramref name="slot"/>; marks its chunk changed
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ref T0? Write<T0>(EntitySlot slot)
-	{
-		var id = ComponentSingleWritable<T0>.Id;
-		var offset = ArrayAccess.At(_idToOffsets, id);
-		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		ref var chunk = ref ArrayAccess.At(_chunks, slot.ChunkIndex);
-		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(chunk.LocalChangeVersions, _globalChangeVersions, id);
-		return ref ComponentRef<T0>(ref chunk, offset, slot.Index);
-	}
-
-	/// <summary>
-	/// Buffer <typeparamref name="T0"/> of the entity at <paramref name="slot"/>
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal ReadBuffer<T0> ReadBuffer<T0>(EntitySlot slot) where T0 : unmanaged
-	{
-		var offset = ArrayAccess.At(_idToOffsets, ComponentBufferWritable<T0>.Id);
-		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		return new ReadBuffer<T0>(BufferPointer<T0>(ref ArrayAccess.At(_chunks, slot.ChunkIndex), offset, slot.Index));
-	}
-
-	/// <summary>
-	/// Buffer <typeparamref name="T0"/> of the entity at <paramref name="slot"/>; marks its chunk changed
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	internal WriteBuffer<T0> WriteBuffer<T0>(EntitySlot slot) where T0 : unmanaged
-	{
-		var id = ComponentBufferWritable<T0>.Id;
-		var offset = ArrayAccess.At(_idToOffsets, id);
-		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		ref var chunk = ref ArrayAccess.At(_chunks, slot.ChunkIndex);
-		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(chunk.LocalChangeVersions, _globalChangeVersions, id);
-		return new WriteBuffer<T0>(BufferPointer<T0>(ref chunk, offset, slot.Index));
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static ref T0? ComponentRef<T0>(ref Chunk chunk, int offset, int index)
-	{
-		return ref ComponentMeta<T0>.IsUnmanaged
-			? ref Unsafe.AsRef<T0?>((void*)(chunk.UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
-			: ref ((T0?[])chunk.ManagedComponents[offset])[index];
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static void* BufferPointer<T0>(ref Chunk chunk, int offset, int index) where T0 : unmanaged
-	{
-		return (void*)(chunk.UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride);
 	}
 
 	/// <summary>
@@ -673,6 +616,7 @@ public unsafe sealed partial class Archetype
 		Array.Copy(_chunks, newArray, ChunksAllocated);
 		Array.Clear(_chunks, 0, _chunks.Length);
 		_chunks = newArray;
+		_owner?.ChunkArrayReplaced(this);
 	}
 
 	internal void Dispose()

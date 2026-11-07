@@ -42,7 +42,7 @@ EntitiesDb is built around a classic data-oriented ECS design:
 
 # EntityDatabase
 
-`EntityDatabase` is the container for all entities, archetypes and chunks. It is `IDisposable` — chunk memory is unmanaged and freed on `Dispose`.
+`EntityDatabase` is the container for all entities, archetypes and chunks. It is `IDisposable` — chunk memory and the entity map (id → location, 16 bytes per id) are unmanaged and freed on `Dispose`. Creating entities therefore allocates almost nothing on the GC heap, even while the database grows.
 
 ```csharp
 using var db = new EntityDatabase();          // default options
@@ -84,7 +84,7 @@ Maintenance:
 
 ```csharp
 db.Clear();               // destroy every entity and reset versions (memory stays allocated)
-db.TrimExcess();          // release unused chunk memory (call rarely, not per tick)
+db.TrimExcess();          // release unused chunk and entity-map memory (call rarely, not per tick)
 ```
 
 ## Parallel Runner
@@ -136,7 +136,7 @@ db.Destroy(entity);     // destroy
 db.Exists(entity);      // false
 ```
 
-* `Entity` carries an `Id` and a `Version`. Ids are recycled after `Destroy`; the version lets `Exists`/`Read`/… reject stale handles.
+* `Entity` carries an `Id` and a `Version`. Ids are recycled after `Destroy`, oldest first; the version lets `Exists`/`Read`/… reject stale handles.
 * Every entity API has an `Entity` overload (checks the version) and an `int entityId` overload (skips the version check — faster, use when you know the id is live).
 * Pass **up to 16 components** when creating or adding (fast path).
 * Structural changes (`Create` / `Add` / `Remove` / `Destroy` / `Clone` / `Move`) are **not thread-safe** and must not be made inside parallel execution — use a [Command Buffer](#command-buffers).

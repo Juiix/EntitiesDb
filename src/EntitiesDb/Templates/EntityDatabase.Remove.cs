@@ -10,7 +10,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -24,7 +24,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -38,7 +38,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -52,7 +52,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -66,7 +66,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -80,7 +80,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -94,7 +94,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -108,7 +108,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -122,7 +122,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -136,7 +136,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -150,7 +150,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -164,7 +164,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -178,7 +178,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -192,7 +192,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -206,7 +206,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -220,7 +220,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -234,7 +234,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -248,7 +248,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -262,7 +262,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -276,7 +276,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -290,7 +290,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -304,7 +304,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -318,7 +318,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -332,7 +332,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -346,7 +346,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -360,7 +360,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -374,7 +374,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -388,7 +388,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -402,7 +402,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entity);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -416,7 +416,7 @@ public partial class EntityDatabase
 		ref var entityReference = ref GetEntity(entityId);
 
 		// check already added
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 

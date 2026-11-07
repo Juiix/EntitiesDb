@@ -9,7 +9,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
 	}
@@ -19,7 +19,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
 	}
@@ -29,7 +29,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -40,7 +40,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -51,7 +51,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -63,7 +63,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -75,7 +75,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -88,7 +88,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -101,7 +101,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -115,7 +115,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -129,7 +129,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -144,7 +144,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -159,7 +159,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -175,7 +175,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -191,7 +191,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -208,7 +208,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -225,7 +225,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -243,7 +243,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -261,7 +261,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -280,7 +280,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -299,7 +299,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -319,7 +319,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -339,7 +339,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -360,7 +360,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -381,7 +381,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -403,7 +403,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -425,7 +425,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -448,7 +448,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -471,7 +471,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Check;
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;
@@ -495,7 +495,7 @@ public partial class EntityDatabase
 	{
 		_ = ComponentSingleWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Check;
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
+		ref readonly var chunk = ref ArchetypeOf(in entityReference).GetChunk(entityReference.Slot.ChunkIndex);
 		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
         chunk.Write<T1>(entityReference.Slot.Index) = t1Component;
         chunk.Write<T2>(entityReference.Slot.Index) = t2Component;

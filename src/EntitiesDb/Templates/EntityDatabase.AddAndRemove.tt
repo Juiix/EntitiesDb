@@ -21,7 +21,7 @@ public partial class EntityDatabase
 		var addedSignature = ComponentSingle<<#= generics #>>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -40,7 +40,7 @@ public partial class EntityDatabase
 		var addedSignature = ComponentSingle<<#= generics #>>.Signature;
 		ref var entityReference = ref GetEntity(entityId);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
 		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 

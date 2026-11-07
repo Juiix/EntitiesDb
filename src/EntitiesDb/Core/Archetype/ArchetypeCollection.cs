@@ -14,6 +14,14 @@ public sealed partial class ArchetypeCollection
 	private Archetype[] _archetypes = ArrayPool<Archetype>.Shared.Rent(64);
 	private int _archetypeCount = 0;
 	private readonly Dictionary<Signature, Archetype> _archetypeMap = [];
+
+	/// <summary>
+	/// <see cref="Archetype.Index"/> -> archetype. Slot 0 stays empty: an entity map entry with archetype
+	/// index 0 holds no entity. A trimmed archetype's slot is reused only after it is emptied here.
+	/// </summary>
+	private ArchetypeSlot[] _slots = new ArchetypeSlot[64];
+	private int _nextIndex = 1;
+	private readonly Stack<int> _freeIndices = new();
 	private readonly int[] _globalChangeVersions;
 	private Archetype? _lastArchetype;
 
@@ -30,6 +38,16 @@ public sealed partial class ArchetypeCollection
 	/// When this number changes, Queries should rematch archetypes
 	/// </remarks>
 	internal int Version { get; private set; }
+
+	/// <summary>
+	/// The archetype at <paramref name="index"/>, an <see cref="Archetype.Index"/> read from a live entity
+	/// map entry (so the slot is in range and filled)
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal ref ArchetypeSlot SlotAt(int index) => ref ArrayAccess.At(_slots, index);
+
+	internal void ChunkArrayReplaced(Archetype archetype) =>
+		_slots[archetype.Index].Chunks = archetype.ChunkArray;
 
 	public Span<Archetype> AsSpan() => _archetypes.AsSpan(0, _archetypeCount);
 
@@ -132,6 +150,12 @@ public sealed partial class ArchetypeCollection
 		}
 		_archetypes[_archetypeCount++] = archetype;
 		_archetypeMap.Add(signature, archetype);
+
+		var index = _freeIndices.Count > 0 ? _freeIndices.Pop() : _nextIndex++;
+		if (index >= _slots.Length)
+			Array.Resize(ref _slots, _slots.Length * 2);
+		archetype.Attach(this, index);
+		_slots[index] = new ArchetypeSlot(archetype);
 		Version++;
 		return archetype;
 	}
@@ -154,6 +178,9 @@ public sealed partial class ArchetypeCollection
 				}
 				_archetypes[_archetypeCount] = null!;
 				_archetypeMap.Remove(archetype.Signature);
+				_slots[archetype.Index] = default; // empty: no entity map entry names it
+				_freeIndices.Push(archetype.Index);
+				archetype.Detach();
 				removedAny = true;
 				continue;
 			}
@@ -182,5 +209,10 @@ public sealed partial class ArchetypeCollection
 		Array.Clear(_archetypes, 0, _archetypeCount);
 		_archetypeCount = 0;
 		_lastArchetype = null;
+		foreach (var archetype in _archetypes.AsSpan(0, _archetypeCount))
+			archetype.Detach();
+		Array.Clear(_slots, 0, _slots.Length);
+		_nextIndex = 1;
+		_freeIndices.Clear();
 	}
 }

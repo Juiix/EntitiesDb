@@ -11,7 +11,6 @@ namespace EntitiesDb;
 public sealed partial class EntityDatabase : IDisposable
 {
 	private readonly EntityMap _entityMap;
-	private Queue<Entity> _recycledEntityIds = new(1024);
 	private readonly int[] _globalChangeVersions = ChangeVersions.Create();
 	private readonly bool _disposeParallelRunner = false;
 
@@ -89,7 +88,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entity);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentSingle<T0>.Id, in ComponentSingle<T0>.Signature);
 
 		// move entity to new archetype
@@ -121,7 +120,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entityId);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentSingle<T0>.Id, in ComponentSingle<T0>.Signature);
 
 		// move entity to new archetype
@@ -184,7 +183,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entity);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentBuffer<T0>.Id, in ComponentBuffer<T0>.Signature);
 
 		// move entity to new archetype
@@ -192,7 +191,7 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+		SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -215,7 +214,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entityId);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentBuffer<T0>.Id, in ComponentBuffer<T0>.Signature);
 
 		// move entity to new archetype
@@ -223,7 +222,7 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+		SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -240,7 +239,7 @@ public sealed partial class EntityDatabase : IDisposable
         var addedSignature = ComponentSingle<T0>.Signature;
         ref var entityReference = ref GetEntity(entity);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -272,7 +271,7 @@ public sealed partial class EntityDatabase : IDisposable
         var addedSignature = ComponentSingle<T0>.Signature;
         ref var entityReference = ref GetEntity(entityId);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -331,7 +330,7 @@ public sealed partial class EntityDatabase : IDisposable
         var addedSignature = ComponentBuffer<T0>.Signature;
         ref var entityReference = ref GetEntity(entity);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -340,7 +339,7 @@ public sealed partial class EntityDatabase : IDisposable
 
         // buffers must be initialized for first use since
         // SetBuffer relies on internal state
-        entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+        SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -362,7 +361,7 @@ public sealed partial class EntityDatabase : IDisposable
         var addedSignature = ComponentBuffer<T0>.Signature;
         ref var entityReference = ref GetEntity(entityId);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature).Or(in addedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
 
@@ -371,7 +370,7 @@ public sealed partial class EntityDatabase : IDisposable
 
         // buffers must be initialized for first use since
         // SetBuffer relies on internal state
-        entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+        SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -383,10 +382,7 @@ public sealed partial class EntityDatabase : IDisposable
     public void Clear()
     {
 		Archetypes.Clear();
-		_entityMap.Clear();
-		// ids freed before the clear point past the reset map; handing them out again created entities
-		// that lookups by id could not find
-		_recycledEntityIds.Clear();
+		_entityMap.Clear(); // also forgets freed ids: they pointed past the reset map
 		EntityCount = 0;
     }
 
@@ -402,7 +398,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public Entity Clone(Entity entity)
 	{
 		ref var srcReference = ref GetEntity(entity);
-		return CloneEntity(srcReference.Archetype, srcReference.Slot);
+		return CloneEntity(ArchetypeOf(in srcReference), srcReference.Slot);
 	}
 
 	/// <summary>
@@ -420,7 +416,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public Entity Clone(int entityId)
 	{
 		ref var srcReference = ref GetEntity(entityId);
-		return CloneEntity(srcReference.Archetype, srcReference.Slot);
+		return CloneEntity(ArchetypeOf(in srcReference), srcReference.Slot);
 	}
 
 	/// <summary>
@@ -501,7 +497,6 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entity);
 		DestroyEntity(entity.Id, ref entityReference);
-		_recycledEntityIds.Enqueue(entity);
     }
 
     /// <summary>
@@ -516,9 +511,7 @@ public sealed partial class EntityDatabase : IDisposable
     public void Destroy(int entityId)
     {
         ref var entityReference = ref GetEntity(entityId);
-		var version = entityReference.Version;
 		DestroyEntity(entityId, ref entityReference);
-        _recycledEntityIds.Enqueue(new Entity(entityId, version));
     }
 
     /// <summary>
@@ -558,7 +551,7 @@ public sealed partial class EntityDatabase : IDisposable
     {
         // get entity
         ref var entityReference = ref GetEntity(entity.Id);
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstArchetype = Archetypes.GetOrCreateArchetype(signature);
 
         // move entity to new archetype
@@ -579,7 +572,7 @@ public sealed partial class EntityDatabase : IDisposable
     {
         // get entity
         ref var entityReference = ref GetEntity(entityId);
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstArchetype = Archetypes.GetOrCreateArchetype(signature);
 
         // move entity to new archetype
@@ -598,7 +591,7 @@ public sealed partial class EntityDatabase : IDisposable
     public ref readonly T0? Read<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		return ref entityReference.Archetype.Read<T0>(entityReference.Slot);
+		return ref SlotOf(in entityReference).Read<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -616,7 +609,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref readonly T0? Read<T0>(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		return ref entityReference.Archetype.Read<T0>(entityReference.Slot);
+		return ref SlotOf(in entityReference).Read<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -631,7 +624,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entity);
-		return entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
+		return SlotOf(in entityReference).ReadBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -649,7 +642,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ReadBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		return entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
+		return SlotOf(in entityReference).ReadBuffer<T0>(entityReference.Slot);
     }
 
     /// <summary>
@@ -667,7 +660,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryRead<T0>(Entity entity, out T0? component)
     {
         ref var entityReference = ref GetEntity(entity);
-        return entityReference.Archetype.TryRead(entityReference.Slot, out component);
+        return SlotOf(in entityReference).TryRead(entityReference.Slot, out component);
     }
 
     /// <summary>
@@ -688,7 +681,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryRead<T0>(int entityId, out T0? component)
     {
         ref var entityReference = ref GetEntity(entityId);
-        return entityReference.Archetype.TryRead(entityReference.Slot, out component);
+        return SlotOf(in entityReference).TryRead(entityReference.Slot, out component);
     }
 
     /// <summary>
@@ -709,13 +702,13 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryReadBuffer<T0>(Entity entity, out ReadBuffer<T0> buffer) where T0 : unmanaged
     {
         ref var entityReference = ref GetEntity(entity);
-        if (!entityReference.Archetype.Has<T0>())
+        if (!SlotOf(in entityReference).Has<T0>())
         {
             buffer = default;
             return false;
         }
 
-        buffer = entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
+        buffer = SlotOf(in entityReference).ReadBuffer<T0>(entityReference.Slot);
         return true;
     }
 
@@ -740,13 +733,13 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryReadBuffer<T0>(int entityId, out ReadBuffer<T0> buffer) where T0 : unmanaged
     {
         ref var entityReference = ref GetEntity(entityId);
-        if (!entityReference.Archetype.Has<T0>())
+        if (!SlotOf(in entityReference).Has<T0>())
         {
             buffer = default;
             return false;
         }
 
-        buffer = entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
+        buffer = SlotOf(in entityReference).ReadBuffer<T0>(entityReference.Slot);
         return true;
     }
 
@@ -766,7 +759,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref T0? Write<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		return ref entityReference.Archetype.Write<T0>(entityReference.Slot);
+		return ref SlotOf(in entityReference).Write<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -790,7 +783,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref T0? Write<T0>(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		return ref entityReference.Archetype.Write<T0>(entityReference.Slot);
+		return ref SlotOf(in entityReference).Write<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -809,7 +802,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public WriteBuffer<T0> WriteBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entity);
-		return entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot);
+		return SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -833,7 +826,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public WriteBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		return entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot);
+		return SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -846,7 +839,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public bool Has<T0>(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		return reference.Archetype.Has<T0>();
+		return SlotOf(in reference).Has<T0>();
 	}
 
 	/// <summary>
@@ -862,7 +855,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public bool Has<T0>(int entityId)
 	{
 		ref var reference = ref GetEntity(entityId);
-		return reference.Archetype.Has<T0>();
+		return SlotOf(in reference).Has<T0>();
     }
 
     /// <summary>
@@ -875,7 +868,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool HasAny<T0>(Entity entity)
     {
         ref var reference = ref GetEntity(entity);
-        return reference.Archetype.HasAny<T0>();
+        return SlotOf(in reference).Has<T0>();
     }
 
     /// <summary>
@@ -891,7 +884,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool HasAny<T0>(int entityId)
     {
         ref var reference = ref GetEntity(entityId);
-        return reference.Archetype.HasAny<T0>();
+        return SlotOf(in reference).Has<T0>();
     }
 
     /// <summary>
@@ -907,7 +900,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entity);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetRemoveArchetype(srcArchetype, Component<T0>.Id, in Component<T0>.Signature);
 
 		// move entity to new archetype
@@ -930,7 +923,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetEntity(entityId);
 
-		var srcArchetype = entityReference.Archetype;
+		var srcArchetype = ArchetypeOf(in entityReference);
 		var dstArchetype = Archetypes.GetRemoveArchetype(srcArchetype, Component<T0>.Id, in Component<T0>.Signature);
 
 		// move entity to new archetype
@@ -950,7 +943,7 @@ public sealed partial class EntityDatabase : IDisposable
     {
         ref var entityReference = ref GetEntity(entity);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
 
@@ -974,7 +967,7 @@ public sealed partial class EntityDatabase : IDisposable
     {
         ref var entityReference = ref GetEntity(entityId);
 
-        var srcArchetype = entityReference.Archetype;
+        var srcArchetype = ArchetypeOf(in entityReference);
         var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
         var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
 
@@ -990,7 +983,7 @@ public sealed partial class EntityDatabase : IDisposable
     [StructuralChange]
 	public void Reserve<T0>(int entityCount)
 	{
-		_entityMap.EnsureCapacity(EntityCount + entityCount - _recycledEntityIds.Count);
+		_entityMap.EnsureCapacity(EntityCount + entityCount - _entityMap.FreeCount);
 		var signature = Signature.From<T0>();
 		var archetype = Archetypes.GetOrCreateArchetype(in signature);
 		archetype.Reserve(entityCount);
@@ -1005,7 +998,7 @@ public sealed partial class EntityDatabase : IDisposable
     public Archetype GetArchetype(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		return entityReference.Archetype;
+		return ArchetypeOf(in entityReference);
 	}
 
     /// <summary>
@@ -1020,7 +1013,7 @@ public sealed partial class EntityDatabase : IDisposable
     public Archetype GetArchetype(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		return entityReference.Archetype;
+		return ArchetypeOf(in entityReference);
 	}
 
 	/// <summary>
@@ -1042,7 +1035,7 @@ public sealed partial class EntityDatabase : IDisposable
     public Signature GetSignature(Entity entity)
     {
         ref var entityReference = ref GetEntity(entity);
-        return entityReference.Archetype.Signature;
+        return ArchetypeOf(in entityReference).Signature;
     }
 
     /// <summary>
@@ -1054,7 +1047,7 @@ public sealed partial class EntityDatabase : IDisposable
     public Signature GetSignature(int entityId)
     {
         ref var entityReference = ref GetEntity(entityId);
-        return entityReference.Archetype.Signature;
+        return ArchetypeOf(in entityReference).Signature;
     }
 
     /// <summary>
@@ -1068,7 +1061,7 @@ public sealed partial class EntityDatabase : IDisposable
     public EntityData GetEntityData(Entity entity)
 	{
 		ref var reference = ref GetEntity(entity);
-		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+		ref var chunk = ref ArchetypeOf(in reference).GetChunk(reference.Slot.ChunkIndex);
 		return new EntityData(ref chunk, reference.Slot.Index);
     }
 
@@ -1088,7 +1081,7 @@ public sealed partial class EntityDatabase : IDisposable
     public EntityData GetEntityData(int entityId)
 	{
 		ref var reference = ref GetEntity(entityId);
-		ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+		ref var chunk = ref ArchetypeOf(in reference).GetChunk(reference.Slot.ChunkIndex);
 		return new EntityData(ref chunk, reference.Slot.Index);
     }
 
@@ -1109,7 +1102,7 @@ public sealed partial class EntityDatabase : IDisposable
             return false;
         }
 
-        ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+        ref var chunk = ref ArchetypeOf(in reference).GetChunk(reference.Slot.ChunkIndex);
         data = new EntityData(ref chunk, reference.Slot.Index);
 		return true;
     }
@@ -1136,7 +1129,7 @@ public sealed partial class EntityDatabase : IDisposable
             return false;
         }
 
-        ref var chunk = ref reference.Archetype.GetChunk(reference.Slot.ChunkIndex);
+        ref var chunk = ref ArchetypeOf(in reference).GetChunk(reference.Slot.ChunkIndex);
         data = new EntityData(ref chunk, reference.Slot.Index);
         return true;
     }
@@ -1151,7 +1144,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(Entity entity, in T0? t0Component)
 	{
         ref var entityReference = ref GetEntity(entity);
-		entityReference.Archetype.Write<T0>(entityReference.Slot) = t0Component;
+		SlotOf(in entityReference).Write<T0>(entityReference.Slot) = t0Component;
 	}
 
 	/// <summary>
@@ -1167,7 +1160,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(int entityId, in T0? t0Component)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		entityReference.Archetype.Write<T0>(entityReference.Slot) = t0Component;
+		SlotOf(in entityReference).Write<T0>(entityReference.Slot) = t0Component;
 	}
 
 	/// <summary>
@@ -1223,7 +1216,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(Entity entity, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
     {
         ref var entityReference = ref GetEntity(entity);
-		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+		SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -1245,7 +1238,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(int entityId, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
+		SlotOf(in entityReference).WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -1277,17 +1270,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[StructuralChange]
 	public void TrimExcess(bool keepVersions = true)
 	{
-		_entityMap.TrimExcess(keepVersions);
-		var maxEntityId = _entityMap.NextEntityId;
-
+		_entityMap.TrimExcess(keepVersions); // drops freed ids past the new end
 		Archetypes.TrimExcess();
-		var trimmedQueue = new Queue<Entity>();
-		foreach (var entity in _recycledEntityIds)
-		{
-			if (entity.Id < maxEntityId)
-				trimmedQueue.Enqueue(entity);
-		}
-		_recycledEntityIds = trimmedQueue;
 	}
 
 	/// <summary>
@@ -1300,7 +1284,7 @@ public sealed partial class EntityDatabase : IDisposable
 	internal ref EntityReference GetEntity(Entity entity)
 	{
 		ref var entityReference = ref _entityMap.Find(entity.Id);
-		if (entityReference.Archetype is null || entityReference.Version != entity.Version)
+		if (entityReference.ArchetypeIndex == 0 || entityReference.Version != entity.Version)
 			throw ThrowHelper.EntityNotFound(entity.Id);
 		return ref entityReference;
 	}
@@ -1315,7 +1299,7 @@ public sealed partial class EntityDatabase : IDisposable
 	internal ref EntityReference GetEntity(int entityId)
 	{
 		ref var entityReference = ref _entityMap.Find(entityId);
-		if (entityReference.Archetype is null)
+		if (entityReference.ArchetypeIndex == 0)
 			throw ThrowHelper.EntityNotFound(entityId);
 		return ref entityReference;
     }
@@ -1329,7 +1313,7 @@ public sealed partial class EntityDatabase : IDisposable
 	internal void Move(Entity entity, Archetype targetArchetype)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		MoveEntity(entity.Id, ref entityReference, entityReference.Archetype, targetArchetype);
+		MoveEntity(entity.Id, ref entityReference, ArchetypeOf(in entityReference), targetArchetype);
 	}
 
 	/// <summary>
@@ -1340,18 +1324,21 @@ public sealed partial class EntityDatabase : IDisposable
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private ref EntityReference GetNextEntityId(out Entity entity)
 	{
-		// try recycle
-		if (_recycledEntityIds.Count != 0)
-		{
-			var recycled = _recycledEntityIds.Dequeue();
-			entity = new Entity(recycled.Id, recycled.Version + 1);
-			return ref _entityMap.GetReference(entity.Id);
-		}
-
-		// add entity
-		ref var entityReference = ref _entityMap.Add(out entity);
-		return ref entityReference;
+		return ref _entityMap.Allocate(out entity);
 	}
+
+	/// <summary>
+	/// The archetype a live entity map entry names
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal Archetype ArchetypeOf(in EntityReference reference) => Archetypes.SlotAt(reference.ArchetypeIndex).Archetype;
+
+	/// <summary>
+	/// The index table slot of a live entity map entry's archetype: its chunk and offset arrays without
+	/// the hop through the archetype object
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal ref ArchetypeSlot SlotOf(in EntityReference reference) => ref Archetypes.SlotAt(reference.ArchetypeIndex);
 
 	/// <summary>
 	/// Moves an entity between two <see cref="Archetype"/>'s, cloning matching components
@@ -1378,7 +1365,7 @@ public sealed partial class EntityDatabase : IDisposable
 		// update reference
 		if (movedEntity != entityId)
 			_entityMap.Move(movedEntity, in srcSlot);
-		entityReference = new EntityReference(dstArchetype, dstSlot, entityReference.Version);
+		entityReference = new EntityReference(dstArchetype.Index, dstSlot, entityReference.Version);
 	}
 
 	/// <summary>
@@ -1394,7 +1381,7 @@ public sealed partial class EntityDatabase : IDisposable
 	{
 		ref var entityReference = ref GetNextEntityId(out entity);
 		ref var chunk = ref archetype.AddEntity(entity, out var slot);
-		entityReference = new EntityReference(archetype, slot, entity.Version);
+		entityReference = new EntityReference(archetype.Index, slot, entity.Version);
 		EntityCount++;
 		index = slot.Index;
 		return ref chunk;
@@ -1417,7 +1404,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// </summary>
 	private void DestroyEntity(int entityId, ref EntityReference entityReference)
 	{
-		var archetype = entityReference.Archetype;
+		var archetype = ArchetypeOf(in entityReference);
 		var slot = entityReference.Slot;
 		ref var chunk = ref archetype.GetChunk(slot.ChunkIndex);
 		archetype.ClearBuffers(ref chunk, slot.Index);
