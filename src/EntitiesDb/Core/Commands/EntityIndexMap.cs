@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
@@ -30,6 +31,27 @@ internal struct EntityIndexMap
 	/// </summary>
 	public readonly bool ClearIsCheaperThanRemoving(int entryCount) =>
 		_pageCount > 0 && (long)entryCount * 16 >= (long)_pageCount * PageSize;
+
+	/// <summary>
+	/// The pages add up to a large-object-heap-sized amount: worth handing back to the pool
+	/// </summary>
+	public readonly bool IsLarge => (long)_pageCount * PageSize * sizeof(int) >= 85_000;
+
+	/// <summary>
+	/// Unregisters every entity and returns the pages to the pool
+	/// </summary>
+	public void Release()
+	{
+		for (int i = 0; i < _pages.Length; i++)
+		{
+			if (_pages[i] is { } page)
+			{
+				ArrayPool<int>.Shared.Return(page);
+				_pages[i] = null;
+			}
+		}
+		_pageCount = 0;
+	}
 
 	/// <summary>
 	/// Unregisters every entity, keeping the pages
@@ -79,7 +101,9 @@ internal struct EntityIndexMap
 		var page = _pages[pageIndex];
 		if (page is null)
 		{
-			_pages[pageIndex] = page = new int[PageSize];
+			page = ArrayPool<int>.Shared.Rent(PageSize); // exactly PageSize: a power of two
+			Array.Clear(page, 0, page.Length);
+			_pages[pageIndex] = page;
 			_pageCount++;
 		}
 		page[entityId & PageMask] = entityIndex + 1;

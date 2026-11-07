@@ -16,6 +16,11 @@ internal struct SpanList<T>
 	private T[] _items;
 	private int _count;
 
+	/// <summary>
+	/// After <see cref="Release"/>: the capacity the next growth goes to in one step
+	/// </summary>
+	private int _nextCapacity;
+
 	public SpanList()
 	{
 		_items = [];
@@ -191,12 +196,25 @@ internal struct SpanList<T>
 			Capacity = _count;
 	}
 
+	/// <summary>
+	/// Empties the list and returns its array to the pool; the next add rents <paramref name="nextCapacity"/>
+	/// slots at once instead of growing step by step
+	/// </summary>
+	public void Release(int nextCapacity)
+	{
+		if (_items.Length != 0)
+			ArrayPool<T>.Shared.Return(_items, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
+		_items = [];
+		_count = 0;
+		_nextCapacity = nextCapacity;
+	}
+
 	/// <summary>Ensure capacity is at least <paramref name="min"/>.</summary>
 	public void EnsureCapacity(int min)
 	{
 		if (_items.Length >= min) return;
 
-		int newCap = _items.Length == 0 ? DefaultCapacity : _items.Length * 2;
+		int newCap = _items.Length == 0 ? Math.Max(DefaultCapacity, _nextCapacity) : _items.Length * 2;
 		if ((uint)newCap > 0X7FEFFFFF) newCap = 0X7FEFFFFF; // same max as List<T>
 		if (newCap < min) newCap = min;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
@@ -49,6 +50,18 @@ internal sealed class ComponentStore
 	private int _capacity;
 	private int _count;
 
+	/// <summary>
+	/// Sizes to rent again after <see cref="Clear"/> handed large arrays back to the pool
+	/// </summary>
+	private int _entityHint;
+	private int _valueHint;
+
+	/// <summary>
+	/// Arrays at least this large (the large object heap's threshold) go back to the pool at
+	/// <see cref="Clear"/>: a buffer built per batch then reuses them instead of allocating them again
+	/// </summary>
+	private const int PooledBytes = 85_000;
+
 	public ComponentStore(ComponentType componentType, ArrayFactory arrayFactory, int initialCapacity)
 	{
 		initialCapacity = Math.Max(initialCapacity, 4);
@@ -59,11 +72,23 @@ internal sealed class ComponentStore
 		_isUnmanaged = componentType.IsUnmanaged;
 		_isBuffer = componentType.IsBuffer;
 		TrackChanges = componentType.TrackChanges;
-		_capacity = initialCapacity;
-		_entityMap = new int[initialCapacity];
-		_appendMode = new bool[initialCapacity];
-		_bytes = _isUnmanaged ? new byte[initialCapacity * _stride] : [];
-		_managed = _isUnmanaged ? Array.Empty<byte>() : arrayFactory.Invoke(initialCapacity);
+
+		// pooled arrays: only the entity map must start zeroed; values and append flags are always
+		// written before they are read
+		_entityMap = RentZeroed(initialCapacity);
+		_appendMode = ArrayPool<bool>.Shared.Rent(initialCapacity);
+		if (_isUnmanaged)
+		{
+			_bytes = ArrayPool<byte>.Shared.Rent(initialCapacity * Math.Max(_stride, 1));
+			_capacity = _bytes.Length / Math.Max(_stride, 1);
+			_managed = Array.Empty<byte>();
+		}
+		else
+		{
+			_bytes = [];
+			_managed = arrayFactory.Invoke(initialCapacity);
+			_capacity = initialCapacity;
+		}
 	}
 
 	/// <summary>
@@ -89,6 +114,36 @@ internal sealed class ComponentStore
 		Array.Clear(_appendMode, 0, _entityHighWater);
 		_entityHighWater = 0;
 		_count = 0;
+
+		if ((long)_entityMap.Length * sizeof(int) >= PooledBytes || _bytes.Length >= PooledBytes)
+			ReleaseArrays();
+	}
+
+	/// <summary>
+	/// Hands the pooled arrays back (empty store); the next registration rents them at their old size
+	/// </summary>
+	private void ReleaseArrays()
+	{
+		_entityHint = Math.Max(_entityHint, _entityMap.Length);
+		ArrayPool<int>.Shared.Return(_entityMap);
+		ArrayPool<bool>.Shared.Return(_appendMode);
+		_entityMap = [];
+		_appendMode = [];
+		if (_isUnmanaged)
+		{
+			_valueHint = Math.Max(_valueHint, _capacity);
+			if (_bytes.Length != 0)
+				ArrayPool<byte>.Shared.Return(_bytes);
+			_bytes = [];
+			_capacity = 0;
+		}
+	}
+
+	private static int[] RentZeroed(int length)
+	{
+		var array = ArrayPool<int>.Shared.Rent(length);
+		Array.Clear(array, 0, array.Length);
+		return array;
 	}
 
 	/// <summary>
@@ -239,30 +294,45 @@ internal sealed class ComponentStore
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	private void GrowValues(int capacity)
 	{
-		var newCapacity = _capacity;
+		var newCapacity = Math.Max(4, Math.Max(_capacity, _valueHint));
 		while (newCapacity < capacity) newCapacity *= 2;
-		_capacity = newCapacity;
 
 		if (_isUnmanaged)
 		{
-			var newBytes = new byte[_stride * newCapacity];
-			_bytes.CopyTo(newBytes, 0);
+			var stride = Math.Max(_stride, 1);
+			var newBytes = ArrayPool<byte>.Shared.Rent(stride * newCapacity);
+			// Register counts the new value before growing: copy only what the old array holds
+			_bytes.AsSpan(0, Math.Min(_bytes.Length, _count * _stride)).CopyTo(newBytes);
+			if (_bytes.Length != 0)
+				ArrayPool<byte>.Shared.Return(_bytes);
 			_bytes = newBytes;
+			_capacity = newBytes.Length / stride;
 		}
 		else
 		{
 			var newArray = _arrayFactory.Invoke(newCapacity);
 			Array.Copy(_managed, newArray, _managed.Length);
 			_managed = newArray;
+			_capacity = newCapacity;
 		}
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
 	private void GrowEntityMap(int capacity)
 	{
-		var newCapacity = _entityMap.Length;
+		var newCapacity = Math.Max(4, Math.Max(_entityMap.Length, _entityHint));
 		while (newCapacity < capacity) newCapacity *= 2;
-		Array.Resize(ref _entityMap, newCapacity);
-		Array.Resize(ref _appendMode, newCapacity);
+
+		var entityMap = RentZeroed(newCapacity);
+		_entityMap.AsSpan(0, Math.Min(_entityMap.Length, _entityHighWater)).CopyTo(entityMap);
+		var appendMode = ArrayPool<bool>.Shared.Rent(entityMap.Length);
+		_appendMode.AsSpan(0, Math.Min(_appendMode.Length, _entityHighWater)).CopyTo(appendMode);
+		if (_entityMap.Length != 0)
+		{
+			ArrayPool<int>.Shared.Return(_entityMap);
+			ArrayPool<bool>.Shared.Return(_appendMode);
+		}
+		_entityMap = entityMap;
+		_appendMode = appendMode;
 	}
 }

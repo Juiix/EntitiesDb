@@ -522,7 +522,11 @@ public sealed partial class CommandBuffer
 	private void Reset()
 	{
 		_exceptions.Clear();
-		if (_existing.ClearIsCheaperThanRemoving(_existingCount))
+		if (_existing.IsLarge)
+		{
+			_existing.Release();
+		}
+		else if (_existing.ClearIsCheaperThanRemoving(_existingCount))
 		{
 			_existing.Clear();
 		}
@@ -542,7 +546,19 @@ public sealed partial class CommandBuffer
 		_sets.Clear();
 		_removes.Clear();
 		foreach (var store in _activeStores.AsSpan())
-			store.Clear();
+			store.Clear(); // hands its large arrays back to the pool
+
+		// large lists go back to the pool too: a buffer created per batch then takes over the last one's
+		// warm arrays instead of allocating (and soon collecting) new ones; a reused buffer rents them back
+		ReleaseIfLarge(ref _entities);
+		ReleaseIfLarge(ref _destroys);
+	}
+
+	private static void ReleaseIfLarge<T>(ref SpanList<T> list)
+	{
+		var capacity = list.Capacity;
+		if ((long)capacity * Unsafe.SizeOf<T>() >= 85_000)
+			list.Release(capacity);
 	}
 
 	// ---- recording --------------------------------------------------------------------------

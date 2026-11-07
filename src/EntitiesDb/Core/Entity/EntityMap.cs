@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace EntitiesDb;
 
@@ -39,6 +38,7 @@ internal sealed unsafe class EntityMap
 	/// The block the last resize replaced
 	/// </summary>
 	private EntityReference* _retired;
+	private int _retiredCapacity;
 
 	private int _freeHead = -1;
 	private int _freeTail = -1;
@@ -218,14 +218,14 @@ internal sealed unsafe class EntityMap
 	{
 		// Find trusts _count to keep ids inside the block: none may stay in range
 		_count = 0;
-		_capacity = 0;
 		ResetFreeList();
 		_spilledVersions = null;
 		if (_entries != null)
 		{
-			Marshal.FreeHGlobal((nint)_entries);
+			ReturnBlock(_entries, _capacity);
 			_entries = null;
 		}
+		_capacity = 0;
 		FreeRetired();
 	}
 
@@ -264,6 +264,7 @@ internal sealed unsafe class EntityMap
 
 		FreeRetired();
 		_retired = _entries;
+		_retiredCapacity = _capacity;
 		_entries = entries;
 		_capacity = newCapacity;
 	}
@@ -310,13 +311,19 @@ internal sealed unsafe class EntityMap
 	{
 		if (_retired != null)
 		{
-			Marshal.FreeHGlobal((nint)_retired);
+			ReturnBlock(_retired, _retiredCapacity);
 			_retired = null;
 		}
 	}
 
+	// blocks come from and go back to a pool shared by every database: a disposed database's map
+	// is the next one's, already faulted in
+
 	private static EntityReference* AllocateBlock(int count) =>
-		(EntityReference*)Marshal.AllocHGlobal((nint)((long)count * sizeof(EntityReference)));
+		(EntityReference*)NativeBlockPool.Rent((long)count * sizeof(EntityReference));
+
+	private static void ReturnBlock(EntityReference* entries, int count) =>
+		NativeBlockPool.Return((nint)entries, (long)count * sizeof(EntityReference));
 
 	private static EntityReference* AllocateZeroed(int count)
 	{
