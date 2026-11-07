@@ -10,6 +10,11 @@ namespace EntitiesDb.Benchmark;
 /// </summary>
 [BenchmarkCategory(Categories.Structural, Categories.EntitiesDb)]
 [MemoryDiagnoser]
+// One invocation per iteration (IterationSetup): a method the workload calls once per iteration, such
+// as CommandBuffer.Commit with its per-entity loop, stays unoptimized for its first ~30-50 calls.
+// Without a long warmup BenchmarkDotNet can stop measuring before that, and compares tier-0 code.
+[WarmupCount(80)]
+[MinIterationCount(30)]
 public class StructuralChanges
 {
 	private EntityDatabase _db;

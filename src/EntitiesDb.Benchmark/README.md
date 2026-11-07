@@ -63,6 +63,12 @@ header (CPU, OS, runtime) intact.
 The optimizations validator is intentionally **enabled**: a Debug build fails validation instead of
 silently producing bad numbers.
 
+`CreateEntityWithOneComponent` and `StructuralChanges` rebuild their database before every iteration
+(`IterationSetup`, one invocation each), so a method the workload calls once per iteration — such as
+`CommandBuffer.Commit`, which holds the per-entity loop — stays unoptimized for its first ~30-50 calls.
+Both classes therefore pin `[WarmupCount(80)]` and `[MinIterationCount(30)]`; without them
+BenchmarkDotNet could stop warming up early and report tier-0 timings for one side of a comparison.
+
 ## Follow-ups
 
 Ideas that would make the suite more useful, roughly in value order:
