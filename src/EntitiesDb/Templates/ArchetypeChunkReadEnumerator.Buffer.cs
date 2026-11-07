@@ -52,7 +52,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -129,7 +129,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -207,7 +207,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -286,7 +286,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -366,7 +366,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -447,7 +447,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -529,7 +529,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6>
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -612,7 +612,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -696,7 +696,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -781,7 +781,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -867,7 +867,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -954,7 +954,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -1042,7 +1042,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -1131,7 +1131,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -1221,7 +1221,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}
@@ -1312,7 +1312,7 @@ public ref struct ArchetypeChunkReadBufferEnumerator<T0, T1, T2, T3, T4, T5, T6,
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilter.Id];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}

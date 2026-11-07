@@ -12,7 +12,7 @@ public sealed partial class EntityDatabase : IDisposable
 {
 	private readonly EntityMap _entityMap;
 	private Queue<Entity> _recycledEntityIds = new(1024);
-	private readonly int[] _globalChangeVersions = new int[ComponentRegistry.MaxComponents];
+	private readonly int[] _globalChangeVersions = ChangeVersions.Create();
 	private readonly bool _disposeParallelRunner = false;
 
 	/// <summary>
@@ -192,8 +192,7 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -224,8 +223,7 @@ public sealed partial class EntityDatabase : IDisposable
 
 		// buffers must be initialized for first use since
 		// SetBuffer relies on internal state
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -342,8 +340,7 @@ public sealed partial class EntityDatabase : IDisposable
 
         // buffers must be initialized for first use since
         // SetBuffer relies on internal state
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+        entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -374,8 +371,7 @@ public sealed partial class EntityDatabase : IDisposable
 
         // buffers must be initialized for first use since
         // SetBuffer relies on internal state
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+        entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
     }
 
     /// <summary>
@@ -602,9 +598,7 @@ public sealed partial class EntityDatabase : IDisposable
     public ref readonly T0? Read<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		ref readonly var component = ref chunk.Read<T0>(entityReference.Slot.Index);
-		return ref component;
+		return ref entityReference.Archetype.Read<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -622,9 +616,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref readonly T0? Read<T0>(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		ref readonly var component = ref chunk.Read<T0>(entityReference.Slot.Index);
-		return ref component;
+		return ref entityReference.Archetype.Read<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -639,9 +631,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ReadBuffer<T0> ReadBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
-		return buffer;
+		return entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -659,9 +649,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ReadBuffer<T0> ReadBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
-		return buffer;
+		return entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
     }
 
     /// <summary>
@@ -679,15 +667,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryRead<T0>(Entity entity, out T0? component)
     {
         ref var entityReference = ref GetEntity(entity);
-		if (!entityReference.Archetype.Has<T0>())
-		{
-			component = default;
-			return false;
-		}
-
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        component = chunk.Read<T0>(entityReference.Slot.Index);
-		return true;
+        return entityReference.Archetype.TryRead(entityReference.Slot, out component);
     }
 
     /// <summary>
@@ -708,15 +688,7 @@ public sealed partial class EntityDatabase : IDisposable
     public bool TryRead<T0>(int entityId, out T0? component)
     {
         ref var entityReference = ref GetEntity(entityId);
-        if (!entityReference.Archetype.Has<T0>())
-        {
-            component = default;
-            return false;
-        }
-
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        component = chunk.Read<T0>(entityReference.Slot.Index);
-        return true;
+        return entityReference.Archetype.TryRead(entityReference.Slot, out component);
     }
 
     /// <summary>
@@ -743,8 +715,7 @@ public sealed partial class EntityDatabase : IDisposable
             return false;
         }
 
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
+        buffer = entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
         return true;
     }
 
@@ -775,8 +746,7 @@ public sealed partial class EntityDatabase : IDisposable
             return false;
         }
 
-        ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        buffer = chunk.ReadBuffer<T0>(entityReference.Slot.Index);
+        buffer = entityReference.Archetype.ReadBuffer<T0>(entityReference.Slot);
         return true;
     }
 
@@ -796,9 +766,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref T0? Write<T0>(Entity entity)
 	{
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		ref var component = ref chunk.Write<T0>(entityReference.Slot.Index);
-		return ref component;
+		return ref entityReference.Archetype.Write<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -822,9 +790,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public ref T0? Write<T0>(int entityId)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		ref var component = ref chunk.Write<T0>(entityReference.Slot.Index);
-		return ref component;
+		return ref entityReference.Archetype.Write<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -843,9 +809,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public WriteBuffer<T0> WriteBuffer<T0>(Entity entity) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var buffer = chunk.WriteBuffer<T0>(entityReference.Slot.Index);
-		return buffer;
+		return entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -869,9 +833,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public WriteBuffer<T0> WriteBuffer<T0>(int entityId) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		var buffer = chunk.WriteBuffer<T0>(entityReference.Slot.Index);
-		return buffer;
+		return entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot);
 	}
 
 	/// <summary>
@@ -1189,8 +1151,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(Entity entity, in T0? t0Component)
 	{
         ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+		entityReference.Archetype.Write<T0>(entityReference.Slot) = t0Component;
 	}
 
 	/// <summary>
@@ -1206,8 +1167,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(int entityId, in T0? t0Component)
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.Write<T0>(entityReference.Slot.Index) = t0Component;
+		entityReference.Archetype.Write<T0>(entityReference.Slot) = t0Component;
 	}
 
 	/// <summary>
@@ -1263,8 +1223,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(Entity entity, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
     {
         ref var entityReference = ref GetEntity(entity);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -1286,8 +1245,7 @@ public sealed partial class EntityDatabase : IDisposable
 	public void Set<T0>(int entityId, ReadOnlySpan<T0> t0Components) where T0 : unmanaged
 	{
 		ref var entityReference = ref GetEntity(entityId);
-		ref readonly var chunk = ref entityReference.Archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		chunk.WriteBuffer<T0>(entityReference.Slot.Index).Set(t0Components);
+		entityReference.Archetype.WriteBuffer<T0>(entityReference.Slot).Set(t0Components);
 	}
 
 	/// <summary>
@@ -1341,8 +1299,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal ref EntityReference GetEntity(Entity entity)
 	{
-		ref var entityReference = ref _entityMap.TryGetReference(entity.Id, out var foundEntity);
-		if (!foundEntity || entityReference.Version != entity.Version)
+		ref var entityReference = ref _entityMap.Find(entity.Id);
+		if (entityReference.Archetype is null || entityReference.Version != entity.Version)
 			throw ThrowHelper.EntityNotFound(entity.Id);
 		return ref entityReference;
 	}
@@ -1356,8 +1314,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal ref EntityReference GetEntity(int entityId)
 	{
-		ref var entityReference = ref _entityMap.TryGetReference(entityId, out var foundEntity);
-		if (!foundEntity)
+		ref var entityReference = ref _entityMap.Find(entityId);
+		if (entityReference.Archetype is null)
 			throw ThrowHelper.EntityNotFound(entityId);
 		return ref entityReference;
     }

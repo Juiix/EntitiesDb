@@ -105,7 +105,7 @@ public partial struct Chunk
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
 		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(LocalChangeVersions, GlobalChangeVersions, id);
 		return ref ComponentMeta<T0>.IsUnmanaged
 			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride))
 			: ref ((T0?[])ManagedComponents[offset])[index];
@@ -124,7 +124,7 @@ public partial struct Chunk
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
 		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(LocalChangeVersions, GlobalChangeVersions, id);
 		return new WriteBuffer<T0>((void*)(UnmanagedComponents + offset + index * ComponentMeta<T0>.Stride));
 	}
 
@@ -183,7 +183,7 @@ public partial struct Chunk
 		var id = ComponentSingleWritable<T0>.Id;
 		var offset = IdToOffsets[id];
 		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(LocalChangeVersions, GlobalChangeVersions, id);
 		ref var first = ref ComponentMeta<T0>.IsUnmanaged
 			? ref Unsafe.AsRef<T0?>((void*)(UnmanagedComponents + offset))
 			: ref ((T0?[])ManagedComponents[offset])[0];
@@ -233,7 +233,7 @@ public partial struct Chunk
 		var id = ComponentBufferWritable<T0>.Id;
 		var offset = IdToOffsets[id];
 		if (offset < 0) throw ThrowHelper.ComponentNotFound(typeof(T0));
-		if (ComponentMeta<T0>.TrackChanges) LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		if (ComponentMeta<T0>.TrackChanges) ChangeVersions.Mark(LocalChangeVersions, GlobalChangeVersions, id);
 		var buffer = new WriteBuffer<T0>((void*)(UnmanagedComponents + offset));
 		return new WriteBufferHandle<T0>(buffer);
 	}
@@ -334,7 +334,7 @@ public partial struct Chunk
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal readonly void MarkChanged(int id)
 	{
-		LocalChangeVersions[id] = Interlocked.Increment(ref GlobalChangeVersions[id]);
+		ChangeVersions.Mark(LocalChangeVersions, GlobalChangeVersions, id);
 	}
 
 	/// <summary>

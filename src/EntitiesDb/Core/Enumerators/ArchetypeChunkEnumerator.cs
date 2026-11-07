@@ -56,7 +56,7 @@ public unsafe ref struct ArchetypeChunkEnumerator
 					var chunkVersion = chunk.LocalChangeVersions[_changeFilterId];
 					if ((chunkVersion - _compareVersion) > 0)
 					{
-						Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+						_changeFilter.Observe(chunkVersion);
 						return true;
 					}
 				}

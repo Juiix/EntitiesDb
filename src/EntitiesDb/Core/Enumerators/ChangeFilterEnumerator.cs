@@ -45,7 +45,7 @@ internal ref struct ChangeFilterEnumerator
 					continue;
 				}
 
-				Dangerous.InterlockedExchangeIfGreaterThan(ref _changeFilter.InternalVersion, chunkVersion, chunkVersion);
+				_changeFilter.Observe(chunkVersion);
 				_size++;
 			}
 

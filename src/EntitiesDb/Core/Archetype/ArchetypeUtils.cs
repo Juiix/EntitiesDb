@@ -134,8 +134,9 @@ internal unsafe static class ArchetypeUtils
 	/// <returns></returns>
 	public static int[] BuildChangeVersions(int[] globalChangeVersions)
 	{
-		var changeFilters = ArrayPool<int>.Shared.Rent(globalChangeVersions.Length);
-		Array.Copy(globalChangeVersions, changeFilters, globalChangeVersions.Length);
+		// the global row only: the observed row (see ChangeVersions) belongs to the database
+		var changeFilters = ArrayPool<int>.Shared.Rent(ComponentRegistry.MaxComponents);
+		Array.Copy(globalChangeVersions, changeFilters, ComponentRegistry.MaxComponents);
 		return changeFilters;
 	}
 

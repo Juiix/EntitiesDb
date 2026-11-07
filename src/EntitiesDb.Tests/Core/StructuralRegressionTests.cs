@@ -47,6 +47,20 @@ public sealed class StructuralRegressionTests
 		Assert.Equal(0, archetype.EntityCount);
 	}
 
+	// By-entity access skips the entity map's array bounds check (the live-id count guards it): after
+	// Dispose no id may still count as live, or a stale handle would read freed memory.
+	[Fact]
+	public void Dispose_ThenAccessByEntity_Throws()
+	{
+		var db = new EntityDatabase();
+		var entity = db.Create(new Value(1));
+		db.Dispose();
+
+		Assert.False(db.Exists(entity));
+		Assert.Throws<EntityException>(() => db.Read<Value>(entity));
+		Assert.Throws<EntityException>(() => db.Write<Value>(entity.Id));
+	}
+
 	[Fact]
 	public void TrimExcess_FreesDroppedArchetype_AndQueriesStillRun()
 	{
@@ -127,6 +141,41 @@ public sealed class StructuralRegressionTests
 		Assert.Equal(0, db.Read<Value>(a).V);
 		Assert.Equal(2, db.Read<Value>(b).V);
 		Assert.Equal(3, db.Read<Value>(c).V);
+	}
+
+	// Many existing entities (whole id-map pages wiped at reset), then a reuse on a different mix of
+	// commands: nothing from the first batch may leak into the second, and passes skipped for having no
+	// work (no creates, no changes) must run again once there is some.
+	[Fact]
+	public void CommandBuffer_ReusedAfterDenseBatch_StartsClean()
+	{
+		using var db = new EntityDatabase();
+		var entities = new Entity[3000];
+		for (int i = 0; i < entities.Length; i++)
+			entities[i] = db.Create(new Value(0));
+		var buffer = db.CreateCommandBuffer(16);
+
+		// 1. destroys only: no create pass, no change pass
+		for (int i = 0; i < 1000; i++)
+			buffer.Destroy(entities[i]);
+		buffer.Commit();
+		Assert.Equal(2000, db.EntityCount);
+
+		// 2. sets on the survivors and one create
+		for (int i = 1000; i < entities.Length; i++)
+			buffer.Set(entities[i], new Value(i));
+		var created = buffer.Create(new Value(-1));
+		buffer.Commit();
+		Assert.Equal(2001, db.EntityCount);
+		for (int i = 1000; i < entities.Length; i++)
+			Assert.Equal(i, db.Read<Value>(entities[i]).V);
+
+		// 3. a single add on an entity from batch 2: its old entry is gone, so it registers fresh
+		buffer.Add(entities[2999], new Other(7));
+		buffer.Commit();
+		Assert.Equal(2999, db.Read<Value>(entities[2999]).V);
+		Assert.Equal(7, db.Read<Other>(entities[2999]).V);
+		Assert.False(db.Has<Other>(entities[2998]));
 	}
 
 	// A component set on an entity the same buffer destroys was never consumed, leaving the same stale

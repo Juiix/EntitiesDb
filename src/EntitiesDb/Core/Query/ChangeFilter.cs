@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace EntitiesDb;
 
@@ -11,6 +12,7 @@ public class ChangeFilter
 		Id = id;
 		InternalVersion = version;
 		GlobalChangeVersions = globalChangeVersions;
+		ChangeVersions.Observe(globalChangeVersions, id, version);
 	}
 
 	public int Id { get; }
@@ -19,6 +21,18 @@ public class ChangeFilter
 
 	public void Reset()
 	{
-		InternalVersion = Volatile.Read(ref GlobalChangeVersions[Id]);
+		var version = Volatile.Read(ref GlobalChangeVersions[Id]);
+		InternalVersion = version;
+		ChangeVersions.Observe(GlobalChangeVersions, Id, version);
+	}
+
+	/// <summary>
+	/// Consumes a changed chunk's version: this filter's version becomes at least <paramref name="chunkVersion"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal void Observe(int chunkVersion)
+	{
+		ChangeVersions.InterlockedMax(ref InternalVersion, chunkVersion);
+		ChangeVersions.Observe(GlobalChangeVersions, Id, chunkVersion);
 	}
 }

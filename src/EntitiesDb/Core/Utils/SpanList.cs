@@ -84,6 +84,7 @@ internal struct SpanList<T>
 	}
 
 	/// <summary>Returns a by-ref to the item at index (mutating ref). No copy.</summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref T ItemRef(int index)
 	{
 		if ((uint)index >= (uint)_count) ThrowIndexOutOfRange();
@@ -91,16 +92,34 @@ internal struct SpanList<T>
 	}
 
 	/// <summary>Adds an item (by value).</summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void Add(T item)
+	{
+		// growing is rare: keep it out of line so the common add inlines into hot command paths
+		var items = _items;
+		var count = _count;
+		if ((uint)count < (uint)items.Length)
+		{
+			items[count] = item;
+			_count = count + 1;
+			return;
+		}
+		AddWithResize(item);
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private void AddWithResize(T item)
 	{
 		EnsureCapacity(_count + 1);
 		_items[_count++] = item;
 	}
 
 	/// <summary>Adds an uninitialized slot and returns a ref you can fill.</summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref T AddRef()
 	{
-		EnsureCapacity(_count + 1);
+		if (_count >= _items.Length)
+			EnsureCapacity(_count + 1);
 		_count++;
 		return ref _items[_count - 1];
 	}

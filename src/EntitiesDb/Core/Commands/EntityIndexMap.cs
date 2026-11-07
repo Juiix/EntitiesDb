@@ -17,10 +17,30 @@ internal struct EntityIndexMap
 	/// Pages of (entity index + 1); 0 means not registered
 	/// </summary>
 	private int[]?[] _pages;
+	private int _pageCount;
 
 	public EntityIndexMap()
 	{
 		_pages = [];
+	}
+
+	/// <summary>
+	/// Wiping every allocated page beats removing <paramref name="entryCount"/> entries one by one once the
+	/// pages are reasonably full (a page wipe costs about as much as 64 single removes)
+	/// </summary>
+	public readonly bool ClearIsCheaperThanRemoving(int entryCount) =>
+		_pageCount > 0 && (long)entryCount * 16 >= (long)_pageCount * PageSize;
+
+	/// <summary>
+	/// Unregisters every entity, keeping the pages
+	/// </summary>
+	public readonly void Clear()
+	{
+		foreach (var page in _pages)
+		{
+			if (page is not null)
+				Array.Clear(page, 0, page.Length);
+		}
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -56,7 +76,12 @@ internal struct EntityIndexMap
 			Array.Resize(ref _pages, newLength);
 		}
 
-		var page = _pages[pageIndex] ??= new int[PageSize];
+		var page = _pages[pageIndex];
+		if (page is null)
+		{
+			_pages[pageIndex] = page = new int[PageSize];
+			_pageCount++;
+		}
 		page[entityId & PageMask] = entityIndex + 1;
 	}
 

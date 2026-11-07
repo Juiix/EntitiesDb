@@ -41,7 +41,7 @@ public readonly ref struct UntrackedWriteHandle<T>
 	public void MarkChanged()
 	{
 		if (_localVersions != null)
-			_localVersions[_id] = Interlocked.Increment(ref _globalVersions[_id]);
+			ChangeVersions.Mark(_localVersions, _globalVersions, _id);
 	}
 }
 #else
@@ -74,7 +74,7 @@ public readonly ref struct UntrackedWriteHandle<T>
 	public void MarkChanged()
 	{
 		if (_localVersions != null)
-			_localVersions[_id] = Interlocked.Increment(ref _globalVersions[_id]);
+			ChangeVersions.Mark(_localVersions, _globalVersions, _id);
 	}
 }
 #endif

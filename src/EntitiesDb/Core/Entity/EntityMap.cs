@@ -46,6 +46,18 @@ internal sealed class EntityMap(int maxEntities)
 		return ref _references[entityId];
 	}
 
+	/// <summary>
+	/// The reference for <paramref name="entityId"/>, or a reference with no archetype when the id is out of
+	/// range or dead. Never write through the result without checking its archetype first.
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public ref EntityReference Find(int entityId)
+	{
+		if ((uint)entityId >= (uint)_count)
+			return ref _null;
+		return ref ArrayAccess.At(_references, entityId); // _count <= _references.Length
+	}
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ref EntityReference TryGetReference(int entityId, out bool found)
 	{
@@ -55,7 +67,7 @@ internal sealed class EntityMap(int maxEntities)
 			return ref _null;
 		}
 
-		ref var entityReference = ref _references[entityId];
+		ref var entityReference = ref ArrayAccess.At(_references, entityId);
         found = entityReference.Archetype != null;
 		return ref entityReference;
 	}
@@ -129,6 +141,8 @@ internal sealed class EntityMap(int maxEntities)
 
 	internal void Dispose()
 	{
+		// Find skips the array bounds check on the strength of _count: no id may stay in range
+		_count = 0;
 		if (_references.Length > 0)
 		{
 			ArrayPool<EntityReference>.Shared.Return(_references, true);

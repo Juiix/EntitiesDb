@@ -30,6 +30,14 @@ public sealed partial class CommandBuffer
 	private SpanList<BufferedEntity> _entities;
 
 	/// <summary>
+	/// Buffered creates, existing entities, and whether any non-create entry has a set or remove: Commit
+	/// and Reset skip the passes over <see cref="_entities"/> that would find nothing to do
+	/// </summary>
+	private int _createCount;
+	private int _existingCount;
+	private bool _hasChanges;
+
+	/// <summary>
 	/// Pending set / remove signatures, shared by every entity that ends up with the same one (a batch of
 	/// identical commands stores a single entry). Entries are never changed in place.
 	/// </summary>
@@ -47,11 +55,6 @@ public sealed partial class CommandBuffer
 	/// </summary>
 	private readonly ComponentStore[] _planStores = new ComponentStore[ComponentRegistry.MaxComponents];
 	private readonly int[] _planOffsets = new int[ComponentRegistry.MaxComponents];
-
-	/// <summary>
-	/// Global change versions when the running Commit started
-	/// </summary>
-	private readonly int[] _commitVersions = new int[ComponentRegistry.MaxComponents];
 
 	internal CommandBuffer(EntityDatabase database, int initialCapacity)
 	{
@@ -94,10 +97,9 @@ public sealed partial class CommandBuffer
 		{
 			try
 			{
-				Array.Copy(_database.GlobalChangeVersions, _commitVersions, _commitVersions.Length);
-				CommitCreates();
+				if (_createCount > 0) CommitCreates();
 				CommitDestroys();
-				CommitChanges();
+				if (_hasChanges) CommitChanges();
 
 				// throw exceptions
 				if (_exceptions.Count > 0)
@@ -503,22 +505,11 @@ public sealed partial class CommandBuffer
 		for (int i = 0; i < plan.Count; i++)
 		{
 			var store = stores[i];
+			// a chunk this Commit already marked is newer than any filter's version, so further marks
+			// of it are free (see ChangeVersions.Mark)
 			if (store.WriteTo(entityIndex, ref chunk, offsets[i], row, freshRow) && store.TrackChanges)
-				MarkChangedOnce(ref chunk, store.Id);
+				chunk.MarkChanged(store.Id);
 		}
-	}
-
-	/// <summary>
-	/// Marks a chunk changed for <paramref name="id"/> unless this Commit already did. A Commit holds the
-	/// database exclusively, so no change filter can look between two marks of the same chunk: one
-	/// global version bump per chunk is indistinguishable from one per entity, and skips an interlocked
-	/// increment per written value.
-	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private void MarkChangedOnce(ref Chunk chunk, int id)
-	{
-		if (chunk.LocalChangeVersions[id] - _commitVersions[id] <= 0) // not newer than the Commit start: unmarked
-			chunk.MarkChanged(id);
 	}
 
 	private readonly struct WritePlan(int setIndex, Archetype archetype, int count)
@@ -531,11 +522,21 @@ public sealed partial class CommandBuffer
 	private void Reset()
 	{
 		_exceptions.Clear();
-		foreach (ref readonly var bufferedEntity in _entities.AsSpan())
+		if (_existing.ClearIsCheaperThanRemoving(_existingCount))
 		{
-			if (bufferedEntity.Kind == BufferedEntityKind.Existing)
-				_existing.Remove(bufferedEntity.Entity.Id);
+			_existing.Clear();
 		}
+		else if (_existingCount > 0)
+		{
+			foreach (ref readonly var bufferedEntity in _entities.AsSpan())
+			{
+				if (bufferedEntity.Kind == BufferedEntityKind.Existing)
+					_existing.Remove(bufferedEntity.Entity.Id);
+			}
+		}
+		_createCount = 0;
+		_existingCount = 0;
+		_hasChanges = false;
 		_destroys.Clear();
 		_entities.Clear();
 		_sets.Clear();
@@ -567,6 +568,7 @@ public sealed partial class CommandBuffer
 		var entityIndex = _entities.Count;
 		entity = new Entity(-entityIndex - 1, -1);
 		_entities.Add(new BufferedEntity(entity, -1, -1, BufferedEntityKind.Create));
+		_createCount++;
 		return entityIndex;
 	}
 
@@ -579,6 +581,7 @@ public sealed partial class CommandBuffer
 		var entityIndex = _entities.Count;
 		entity = new Entity(-entityIndex - 1, -1);
 		_entities.Add(new BufferedEntity(entity, Intern(in signature, ref _sets), -1, BufferedEntityKind.Create));
+		_createCount++;
 		return entityIndex;
 	}
 
@@ -608,6 +611,7 @@ public sealed partial class CommandBuffer
 		var entityIndex = _entities.Count;
 		_entities.Add(new BufferedEntity(entity, -1, -1, BufferedEntityKind.Existing));
 		_existing.Add(entity.Id, entityIndex);
+		_existingCount++;
 		return entityIndex;
 	}
 
@@ -626,6 +630,7 @@ public sealed partial class CommandBuffer
 	{
 		ref var bufferedEntity = ref _entities.ItemRef(entityIndex);
 		bufferedEntity.RemoveIndex = Merge(bufferedEntity.RemoveIndex, in signature, ref _removes);
+		if (bufferedEntity.Kind != BufferedEntityKind.Create) _hasChanges = true;
 
 		// Clear pending sets for removed components
 		if (bufferedEntity.SetIndex >= 0)
@@ -649,6 +654,7 @@ public sealed partial class CommandBuffer
 	{
 		ref var bufferedEntity = ref _entities.ItemRef(entityIndex);
 		bufferedEntity.SetIndex = Merge(bufferedEntity.SetIndex, in signature, ref _sets);
+		if (bufferedEntity.Kind != BufferedEntityKind.Create) _hasChanges = true;
 
 		// Clear pending removes for set components
 		if (bufferedEntity.RemoveIndex >= 0)
