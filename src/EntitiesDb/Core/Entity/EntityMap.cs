@@ -60,10 +60,11 @@ internal sealed class EntityMap(int maxEntities)
 		return ref entityReference;
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public void Move(int entityId, in EntitySlot slot)
 	{
-		ref var entityReference = ref _references[entityId];
-        entityReference = new EntityReference(entityReference.Archetype, slot, entityReference.Version);
+		// only the slot changes; rewriting the whole reference would cost a GC write barrier
+		_references[entityId].Slot = slot;
 	}
 
 	public void Remove(int entityId)

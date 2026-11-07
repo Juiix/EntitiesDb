@@ -106,7 +106,7 @@ public sealed class ArchetypeTests
 			// Fill the first chunk
 			for (int i = 0; i < cap; i++)
 			{
-				var slot = arch.AddEntity(new Entity(i, 0), out _);
+				arch.AddEntity(new Entity(i, 0), out var slot);
 				Assert.Equal(0, slot.ChunkIndex);
 				Assert.Equal(i, slot.Index);
 				Assert.Equal(i, arch.GetEntity(slot).Id);
@@ -116,7 +116,7 @@ public sealed class ArchetypeTests
 			Assert.Equal(1, arch.ChunksInUse);
 
 			// Adding one more should create a second chunk at index 0
-			var extra = arch.AddEntity(new Entity(999, 0), out _);
+			arch.AddEntity(new Entity(999, 0), out var extra);
 			Assert.Equal(cap + 1, arch.EntityCount);
 			Assert.Equal(2, arch.ChunksInUse);
 			Assert.Equal(1, extra.ChunkIndex);
@@ -141,7 +141,7 @@ public sealed class ArchetypeTests
 
 			// Ensure 2 chunks exist (cap + 1 entities)
 			for (int i = 0; i < cap; i++) arch.AddEntity(new Entity(i, 0), out _);
-			var last = arch.AddEntity(new Entity(777, 0), out _); // second chunk, index 0
+			arch.AddEntity(new Entity(777, 0), out var last); // second chunk, index 0
 
 			Assert.Equal(2, arch.ChunksInUse);
 
@@ -170,8 +170,8 @@ public sealed class ArchetypeTests
 		try
 		{
 			// Two entities in the same chunk
-			var src = arch.AddEntity(new Entity(1, 0), out var srcChunk);
-			var dst = arch.AddEntity(new Entity(2, 0), out var dstChunk);
+			ref var srcChunk = ref arch.AddEntity(new Entity(1, 0), out var src);
+			ref var dstChunk = ref arch.AddEntity(new Entity(2, 0), out var dst);
 
 			// Seed source component data
 			srcChunk.Write<int>(src.Index) = 1234;
@@ -184,7 +184,7 @@ public sealed class ArchetypeTests
 			dstChunk.Write<ManagedName>(dst.Index) = new ManagedName("z");
 
 			// Act
-			arch.CloneComponents(src, dst);
+			arch.CloneComponents(src, ref dstChunk, dst.Index);
 
 			// Assert: values copied
 			Assert.Equal(1234,		dstChunk.Read<int>(dst.Index));
@@ -200,7 +200,7 @@ public sealed class ArchetypeTests
 	}
 
 	[Fact]
-	public void CopyComponents_ToSubsetArchetype_CopiesOnlyPresentComponents()
+	public void MoveComponents_ToSubsetArchetype_CopiesOnlyPresentComponents()
 	{
 		// Source: int, float, ManagedName
 		var srcArch = BuildArchetype_Int_Float_Name();
@@ -218,8 +218,8 @@ public sealed class ArchetypeTests
 		try
 		{
 			// Make one entity in each
-			var s = srcArch.AddEntity(new Entity(10, 0), out var sChunk);
-			var d = dstArch.AddEntity(new Entity(20, 0), out var dChunk);
+			ref var sChunk = ref srcArch.AddEntity(new Entity(10, 0), out var s);
+			ref var dChunk = ref dstArch.AddEntity(new Entity(20, 0), out var d);
 
 			// Seed source values
 			sChunk.Write<int>(s.Index) = 7;
@@ -231,7 +231,7 @@ public sealed class ArchetypeTests
 			dChunk.Write<ManagedName>(s.Index) = new ManagedName("unset");
 
 			// Act: copy subset (int + name)
-			srcArch.CopyComponents(s, dstArch, d);
+			srcArch.MoveComponents(ref sChunk, s.Index, dstArch, ref dChunk, d.Index);
 
 			// Assert: int and name copied; float intentionally absent in dst archetype
 			Assert.Equal(7, dChunk.Read<int>(d.Index));

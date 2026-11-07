@@ -69,6 +69,11 @@ public sealed partial class EntityDatabase : IDisposable
 	public IParallelJobRunner? ParallelRunner { get; }
 
 	/// <summary>
+	/// Per component id, the latest change version handed to any chunk
+	/// </summary>
+	internal int[] GlobalChangeVersions => _globalChangeVersions;
+
+	/// <summary>
 	/// Adds a component to an entity. Entity components are copied to a new <see cref="Archetype"/>.
 	/// </summary>
 	/// <remarks>
@@ -82,12 +87,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public void Add<T0>(Entity entity, in T0? t0Component = default)
 	{
-		var addedSignature = ComponentSingle<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
-        var dstSignature = srcArchetype.Signature.Or(in addedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentSingle<T0>.Id, in ComponentSingle<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
@@ -116,12 +119,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public void Add<T0>(int entityId, in T0? t0Component = default)
 	{
-		var addedSignature = ComponentSingle<T0>.Signature;
 		ref var entityReference = ref GetEntity(entityId);
 
 		var srcArchetype = entityReference.Archetype;
-		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentSingle<T0>.Id, in ComponentSingle<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
@@ -181,12 +182,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public void Add<T0>(Entity entity, ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
 	{
-		var addedSignature = ComponentBuffer<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
-		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentBuffer<T0>.Id, in ComponentBuffer<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
@@ -215,12 +214,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public void Add<T0>(int entityId, ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
 	{
-		var addedSignature = ComponentBuffer<T0>.Signature;
 		ref var entityReference = ref GetEntity(entityId);
 
 		var srcArchetype = entityReference.Archetype;
-		var dstSignature = srcArchetype.Signature.Or(in addedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(dstSignature);
+		var dstArchetype = Archetypes.GetAddArchetype(srcArchetype, ComponentBuffer<T0>.Id, in ComponentBuffer<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
@@ -408,18 +405,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Clone(Entity entity)
 	{
-		// get entity
 		ref var srcReference = ref GetEntity(entity);
-
-		// get id & copy components
-		var archetype = srcReference.Archetype;
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var dstSlot = archetype.AddEntity(dstEntityId, out _);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
-		archetype.CloneComponents(in srcReference.Slot, in dstSlot);
-		EntityCount++;
-
-		return dstEntityId;
+		return CloneEntity(srcReference.Archetype, srcReference.Slot);
 	}
 
 	/// <summary>
@@ -436,18 +423,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Clone(int entityId)
 	{
-		// get entity
 		ref var srcReference = ref GetEntity(entityId);
-
-		// get id & copy components
-		var archetype = srcReference.Archetype;
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var dstSlot = archetype.AddEntity(dstEntityId, out _);
-		dstReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
-		archetype.CloneComponents(in srcReference.Slot, in dstSlot);
-		EntityCount++;
-
-		return dstEntityId;
+		return CloneEntity(srcReference.Archetype, srcReference.Slot);
 	}
 
 	/// <summary>
@@ -459,12 +436,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Create()
 	{
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(Signature.Empty);
-		var dstSlot = archetype.AddEntity(dstEntityId, out _);
-		entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		CreateEntity(Archetypes.GetOrCreateArchetype(Signature.Empty), out var entity, out _);
+		return entity;
     }
 
     /// <summary>
@@ -476,14 +449,10 @@ public sealed partial class EntityDatabase : IDisposable
     [ChunkChange]
     public Entity Create(in Signature signature)
     {
-        ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-        var archetype = Archetypes.GetOrCreateArchetype(in signature);
-        var dstSlot = archetype.AddEntity(dstEntityId, out var chunk);
-        entityReference = new EntityReference(archetype, dstSlot, dstEntityId.Version);
-		archetype.InitComponents(ref chunk, dstSlot.Index, in signature);
-		archetype.InitBuffers(ref chunk, in dstSlot, in signature);
-        EntityCount++;
-        return dstEntityId;
+		var archetype = Archetypes.GetOrCreateArchetype(in signature);
+		ref var chunk = ref CreateEntity(archetype, out var entity, out var index);
+		archetype.InitEntity(ref chunk, index);
+		return entity;
     }
 
     /// <summary>
@@ -495,14 +464,9 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Create<T0>(in T0? t0Component = default)
 	{
-		var signature = ComponentSingle<T0>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(slot.Index) = t0Component;
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentSingle<T0>.Signature), out var entity, out var index);
+		if (!ComponentMeta<T0>.IsZeroSize) chunk.Write<T0>(index) = t0Component;
+		return entity;
 	}
 
 	/// <summary>
@@ -526,14 +490,9 @@ public sealed partial class EntityDatabase : IDisposable
 	[ChunkChange]
 	public Entity Create<T0>(ReadOnlySpan<T0> t0Components = default) where T0 : unmanaged
 	{
-		var signature = ComponentBuffer<T0>.Signature;
-		ref var dstReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-		dstReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+		return entity;
 	}
 
 	/// <summary>
@@ -544,16 +503,8 @@ public sealed partial class EntityDatabase : IDisposable
 	[StructuralChange]
 	public void Destroy(Entity entity)
 	{
-		// get entity
 		ref var entityReference = ref GetEntity(entity);
-		var archetype = entityReference.Archetype;
-		ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
-		archetype.ClearBuffers(ref chunk, entityReference.Slot.Index, archetype.Signature);
-		archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
-
-		_entityMap.Move(movedEntityId, in entityReference.Slot);
-		_entityMap.Remove(entity.Id);
-		EntityCount--;
+		DestroyEntity(entity.Id, ref entityReference);
 		_recycledEntityIds.Enqueue(entity);
     }
 
@@ -568,17 +519,9 @@ public sealed partial class EntityDatabase : IDisposable
     [StructuralChange]
     public void Destroy(int entityId)
     {
-        // get entity
         ref var entityReference = ref GetEntity(entityId);
-        var archetype = entityReference.Archetype;
-        ref var chunk = ref archetype.GetChunk(entityReference.Slot.ChunkIndex);
-        archetype.ClearBuffers(ref chunk, entityReference.Slot.Index, archetype.Signature);
-        archetype.RemoveEntity(in entityReference.Slot, out var movedEntityId);
-
 		var version = entityReference.Version;
-        _entityMap.Move(movedEntityId, in entityReference.Slot);
-        _entityMap.Remove(entityId);
-        EntityCount--;
+		DestroyEntity(entityId, ref entityReference);
         _recycledEntityIds.Enqueue(new Entity(entityId, version));
     }
 
@@ -1000,12 +943,10 @@ public sealed partial class EntityDatabase : IDisposable
     [StructuralChange]
 	public void Remove<T0>(Entity entity)
 	{
-		var removedSignature = Component<T0>.Signature;
 		ref var entityReference = ref GetEntity(entity);
 
 		var srcArchetype = entityReference.Archetype;
-        var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
+		var dstArchetype = Archetypes.GetRemoveArchetype(srcArchetype, Component<T0>.Id, in Component<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entity.Id, ref entityReference, srcArchetype, dstArchetype);
@@ -1025,12 +966,10 @@ public sealed partial class EntityDatabase : IDisposable
 	[StructuralChange]
 	public void Remove<T0>(int entityId)
 	{
-		var removedSignature = Component<T0>.Signature;
 		ref var entityReference = ref GetEntity(entityId);
 
 		var srcArchetype = entityReference.Archetype;
-		var dstSignature = srcArchetype.Signature.AndNot(in removedSignature);
-		var dstArchetype = Archetypes.GetOrCreateArchetype(in dstSignature);
+		var dstArchetype = Archetypes.GetRemoveArchetype(srcArchetype, Component<T0>.Id, in Component<T0>.Signature);
 
 		// move entity to new archetype
 		MoveEntity(entityId, ref entityReference, srcArchetype, dstArchetype);
@@ -1444,12 +1383,10 @@ public sealed partial class EntityDatabase : IDisposable
 	private ref EntityReference GetNextEntityId(out Entity entity)
 	{
 		// try recycle
-		if (_recycledEntityIds.TryDequeue(out entity))
+		if (_recycledEntityIds.Count != 0)
 		{
-			entity = entity with
-			{
-				Version = entity.Version + 1
-			};
+			var recycled = _recycledEntityIds.Dequeue();
+			entity = new Entity(recycled.Id, recycled.Version + 1);
 			return ref _entityMap.GetReference(entity.Id);
 		}
 
@@ -1465,7 +1402,7 @@ public sealed partial class EntityDatabase : IDisposable
 	/// <param name="entityReference">A reference to the entity reference entry</param>
 	/// <param name="srcArchetype">The <see cref="Archetype"/> to move from</param>
 	/// <param name="dstArchetype">The <see cref="Archetype"/> to move to</param>
-	private void MoveEntity(int entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
+	internal void MoveEntity(int entityId, ref EntityReference entityReference, Archetype srcArchetype, Archetype dstArchetype)
 	{
 		// adding a component the entity already has (or removing one it lacks)
 		// resolves to the same archetype — a self-move would append a duplicate
@@ -1473,25 +1410,65 @@ public sealed partial class EntityDatabase : IDisposable
 		if (ReferenceEquals(srcArchetype, dstArchetype))
 			return;
 
-		// add new slot
+		// add new slot, then carry the shared components over
 		var srcSlot = entityReference.Slot;
-		var dstSlot = dstArchetype.AddEntity(new Entity(entityId, entityReference.Version), out _);
-
-		// clear / init buffers
+		ref var dstChunk = ref dstArchetype.AddEntity(new Entity(entityId, entityReference.Version), out var dstSlot);
 		ref var srcChunk = ref srcArchetype.GetChunk(srcSlot.ChunkIndex);
-		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
-		var removedMask = srcArchetype.Signature.AndNot(dstArchetype.Signature);
-		var addedMask = dstArchetype.Signature.AndNot(srcArchetype.Signature);
-		srcArchetype.ClearBuffers(ref srcChunk, srcSlot.Index, in removedMask);
-		dstArchetype.InitBuffers(ref dstChunk, in dstSlot, in addedMask);
-
-		// copy data
-		srcArchetype.CopyComponents(srcSlot, dstArchetype, dstSlot, clearManaged: true);
+		srcArchetype.MoveComponents(ref srcChunk, srcSlot.Index, dstArchetype, ref dstChunk, dstSlot.Index);
 		srcArchetype.RemoveEntity(srcSlot, out var movedEntity);
 
 		// update reference
-		_entityMap.Move(movedEntity, in srcSlot);
+		if (movedEntity != entityId)
+			_entityMap.Move(movedEntity, in srcSlot);
 		entityReference = new EntityReference(dstArchetype, dstSlot, entityReference.Version);
+	}
+
+	/// <summary>
+	/// Takes a new or recycled id and a row in <paramref name="archetype"/> and records the entity.
+	/// Every Create path funnels through here; the row's component values are left for the caller.
+	/// </summary>
+	/// <param name="archetype">The archetype to create the entity in</param>
+	/// <param name="entity">The created entity</param>
+	/// <param name="index">The entity's row in the returned chunk</param>
+	/// <returns>The chunk holding the new row</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal ref Chunk CreateEntity(Archetype archetype, out Entity entity, out int index)
+	{
+		ref var entityReference = ref GetNextEntityId(out entity);
+		ref var chunk = ref archetype.AddEntity(entity, out var slot);
+		entityReference = new EntityReference(archetype, slot, entity.Version);
+		EntityCount++;
+		index = slot.Index;
+		return ref chunk;
+	}
+
+	/// <summary>
+	/// Creates a copy of the row at <paramref name="srcSlot"/> in <paramref name="archetype"/>
+	/// </summary>
+	private Entity CloneEntity(Archetype archetype, EntitySlot srcSlot)
+	{
+		// srcSlot is taken by value: allocating the id can grow the entity map, which hands the old
+		// reference array back to the pool cleared
+		ref var dstChunk = ref CreateEntity(archetype, out var entity, out var dstIndex);
+		archetype.CloneComponents(in srcSlot, ref dstChunk, dstIndex);
+		return entity;
+	}
+
+	/// <summary>
+	/// Removes an entity's row and frees its id (the caller recycles the id)
+	/// </summary>
+	private void DestroyEntity(int entityId, ref EntityReference entityReference)
+	{
+		var archetype = entityReference.Archetype;
+		var slot = entityReference.Slot;
+		ref var chunk = ref archetype.GetChunk(slot.ChunkIndex);
+		archetype.ClearBuffers(ref chunk, slot.Index);
+		archetype.RemoveEntity(in slot, out var movedEntityId);
+
+		if (movedEntityId != entityId)
+			_entityMap.Move(movedEntityId, in slot);
+		_entityMap.Remove(entityId);
+		EntityCount--;
 	}
 }
 

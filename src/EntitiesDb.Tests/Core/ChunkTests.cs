@@ -133,7 +133,8 @@ public unsafe class ChunkTests : IDisposable
 		src.Write<ManagedName>(srcIndex) = new ManagedName("Alice");
 
 		// Act: transfer entity + all its components via AcceptEntity
-		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex, offsets, types.AsSpan(0, unmanagedCount));
+		ArchetypeUtils.BuildColumns(types, unmanagedCount, offsets, out _, out _, out var columns, out _, out _);
+		int accepted = dst.AcceptEntity(dstIndex, ref src, srcIndex, columns);
 
 		// Assert entity id
 		Assert.Equal(123, accepted);
@@ -145,99 +146,5 @@ public unsafe class ChunkTests : IDisposable
 
 		// Assert managed copied
 		Assert.Equal("Alice", dst.Read<ManagedName>(dstIndex).Name);
-	}
-
-
-	[Fact]
-	public void CloneComponents_SameArchetype_CopiesUnmanagedAndManaged()
-	{
-		// Arrange
-		var (types, unmanagedCount) = BuildComponentTypes();
-		int capacity = ArchetypeUtils.CalculateChunkCapacity(types, 4096);
-		var offsets = ArchetypeUtils.BuildIdOffsetLookup(types, unmanagedCount, capacity);
-		var globalChangeVersions = new int[256];
-		var srcChangeVersions = new int[256];
-		var dstChangeVersions = new int[256];
-
-		int unmanagedBytes = ComputeUnmanagedBytesTotal(types, capacity);
-		_srcBlock = Marshal.AllocHGlobal(unmanagedBytes);
-		_dstBlock = Marshal.AllocHGlobal(unmanagedBytes);
-
-		var srcManaged = CreateManagedArrays(types, capacity, unmanagedCount);
-		var dstManaged = CreateManagedArrays(types, capacity, unmanagedCount);
-
-		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions, offsets);
-		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions, offsets);
-
-		int srcIndex = 1, dstIndex = 7;
-
-		// Seed source values
-		src.Write<int>(srcIndex) = 1001;
-		src.Write<float>(srcIndex) = -2.25f;
-		src.Write<ManagedName>(srcIndex) = new ManagedName("Bob");
-
-		// Act
-		src.CloneComponents(srcIndex, ref dst, dstIndex, offsets, types.AsSpan(0, unmanagedCount));
-
-		// Assert
-		Assert.Equal(1001, dst.Read<int>(dstIndex));
-		Assert.Equal(-2.25f, dst.Read<float>(dstIndex));
-		Assert.Equal("Bob", dst.Read<ManagedName>(dstIndex).Name);
-	}
-
-	[Fact]
-	public void CopyComponents_SubsetSignature_CopiesOnlyPresentTypes()
-	{
-		// Src archetype: int, float, ManagedName
-		var (srcTypes, srcUnmanagedCount) = BuildComponentTypes();
-		int srcCap = ArchetypeUtils.CalculateChunkCapacity(srcTypes, 4096);
-		var srcOffsets = ArchetypeUtils.BuildIdOffsetLookup(srcTypes, srcUnmanagedCount, srcCap);
-		var globalChangeVersions = new int[256];
-		var srcChangeVersions = new int[256];
-		var dstChangeVersions = new int[256];
-
-		// Dst archetype: int, ManagedName (drop float)
-		ref readonly var ctInt = ref Component<int>.ComponentType;
-		ref readonly var ctName = ref Component<ManagedName>.ComponentType;
-
-		var dstTypes = new[] { ctInt, ctName }; // unmanaged first (int), then managed
-		int dstUnmanagedCount = dstTypes.Count(t => t.IsUnmanaged);
-		int dstCap = ArchetypeUtils.CalculateChunkCapacity(dstTypes, 4096);
-		var dstOffsets = ArchetypeUtils.BuildIdOffsetLookup(dstTypes, 1, dstCap);
-
-		// Allocate unmanaged blocks
-		int srcUnmanagedBytes = ComputeUnmanagedBytesTotal(srcTypes, srcCap);
-		int dstUnmanagedBytes = ComputeUnmanagedBytesTotal(dstTypes, dstCap);
-		_srcBlock = Marshal.AllocHGlobal(srcUnmanagedBytes);
-		_dstBlock = Marshal.AllocHGlobal(dstUnmanagedBytes);
-
-		// Managed arrays for each
-		var srcManaged = CreateManagedArrays(srcTypes, srcCap, srcUnmanagedCount);
-		var dstManaged = CreateManagedArrays(dstTypes, dstCap, dstUnmanagedCount);
-
-		var src = new Chunk(_srcBlock, srcManaged, globalChangeVersions, srcChangeVersions, srcOffsets);
-		var dst = new Chunk(_dstBlock, dstManaged, globalChangeVersions, dstChangeVersions, dstOffsets);
-
-		int srcIndex = 0, dstIndex = 3;
-
-		// Seed source values
-		src.Write<int>(srcIndex) = 7;
-		src.Write<float>(srcIndex) = 9.25f;
-		src.Write<ManagedName>(srcIndex) = new ManagedName("Carol");
-
-		// Destination starts with sentinel values
-		dst.Write<int>(dstIndex) = -1;
-		// No float in destination
-		dst.Write<ManagedName>(dstIndex) = new ManagedName("unset");
-
-		// Copy only types present in destination: int + name
-		var dstSig = BuildSignatureFor(ctInt, ctName);
-		src.CopyComponents(srcIndex, srcOffsets,
-			in dstSig, ref dst, dstIndex, dstOffsets,
-			srcTypes.AsSpan(0, srcUnmanagedCount), srcTypes.AsSpan(srcUnmanagedCount));
-
-		// Assert: int copied, name copied, float untouched (no float slot in dst)
-		Assert.Equal(7, dst.Read<int>(dstIndex));
-		Assert.Equal("Carol", dst.Read<ManagedName>(dstIndex).Name);
 	}
 }

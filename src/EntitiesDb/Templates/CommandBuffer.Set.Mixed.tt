@@ -30,12 +30,17 @@ public partial class CommandBuffer
 		<#= Indent(constraints, 8) #>
 	{
 		var signature = ComponentSingle<<#= genericsC #>>.Signature | ComponentBufferWritable<<#= genericsB #>>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(linesC, 12) #>
 			<#= Indent(linesB, 12) #>
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, in T0)"/>

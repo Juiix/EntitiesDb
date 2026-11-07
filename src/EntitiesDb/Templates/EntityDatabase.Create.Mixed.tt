@@ -15,7 +15,7 @@ public partial class EntityDatabase
 		var parametersC = FormatComma(indexC, "in T{0}? t{0}Component = default");
 		var parametersCArr = FormatComma(indexC, "in T{0}? t{0}Component");
 		var argsCArr = FormatComma(indexC, "in t{0}Component");
-		var setsC = FormatLine(indexC, "if (!ComponentMeta<T{0}>.IsZeroSize) chunk.Write<T{0}>(slot.Index) = t{0}Component;");
+		var setsC = FormatLine(indexC, "if (!ComponentMeta<T{0}>.IsZeroSize) chunk.Write<T{0}>(index) = t{0}Component;");
 		for (int indexB = 1; indexC + indexB <= GenericMixedCount; indexB++)
 		{
 			var genericsB = Generics(indexB, indexC);
@@ -23,7 +23,7 @@ public partial class EntityDatabase
 			var parametersBArr = FormatComma(indexB, "T{0}[] t{0}Components", indexC);
 			var constraints = FormatLine(indexB, "where T{0} : unmanaged", indexC);
 			var argsBArr = FormatComma(indexB, "t{0}Components.AsSpan()", indexC);
-			var setsB = FormatLine(indexB, "chunk.WriteBuffer<T{0}>(slot.Index).Init(t{0}Components);", indexC);
+			var setsB = FormatLine(indexB, "chunk.WriteBuffer<T{0}>(index).Init(t{0}Components);", indexC);
 #>
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
@@ -32,14 +32,10 @@ public partial class EntityDatabase
 		<#= Indent(constraints, 8) #>
 	{
 		var signature = ComponentSingle<<#= genericsC #>>.Signature | ComponentBuffer<<#= genericsB #>>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in signature), out var entity, out var index);
 		<#= Indent(setsC, 8) #>
 		<#= Indent(setsB, 8) #>
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]

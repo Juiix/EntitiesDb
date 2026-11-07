@@ -354,10 +354,11 @@ public partial struct Chunk
 	/// <param name="dstIndex">The index to transfer into</param>
 	/// <param name="srcChunk">The source <see cref="Chunk"/></param>
 	/// <param name="srcIndex">the index to transfer from</param>
+	/// <param name="columns">The archetype's unmanaged columns that hold bytes</param>
 	/// <returns>The entity id of the transferred entity</returns>
 	internal readonly unsafe int AcceptEntity(
 		int dstIndex, ref Chunk srcChunk, int srcIndex,
-		int[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
+		ColumnInfo[] columns)
 	{
 		// get src entity
 		var srcEntity = srcChunk.Entity(srcIndex);
@@ -366,147 +367,27 @@ public partial struct Chunk
 		WriteEntity(dstIndex) = srcEntity;
 
 		// copy unmanaged components
-		var srcPtr = srcChunk.UnmanagedComponents;
-		var dstPtr = UnmanagedComponents;
-		foreach (ref readonly var componentType in unmanagedComponentTypes)
+		var srcPtr = (byte*)srcChunk.UnmanagedComponents;
+		var dstPtr = (byte*)UnmanagedComponents;
+		foreach (ref readonly var column in columns.AsSpan())
 		{
-			if (componentType.IsTag)
-			{
-				continue;
-			}
-
-			var offset = offsets[componentType.Id];
-			Unsafe.CopyBlock(
-				(byte*)dstPtr + offset + componentType.Stride * dstIndex,
-				(byte*)srcPtr + offset + componentType.Stride * srcIndex,
-				(uint)componentType.Stride
-			);
+			ChunkMemory.Copy(
+				dstPtr + column.Offset + column.Stride * dstIndex,
+				srcPtr + column.Offset + column.Stride * srcIndex,
+				column.Stride);
 		}
 
 		// copy managed components
-		for (int i = 0; i < ManagedComponents.Length; i++)
+		var srcManaged = srcChunk.ManagedComponents;
+		var dstManaged = ManagedComponents;
+		for (int i = 0; i < dstManaged.Length; i++)
 		{
-			var srcArray = srcChunk.ManagedComponents[i];
-			var dstArray = ManagedComponents[i];
-			Array.Copy(srcArray, srcIndex, dstArray, dstIndex, 1);
+			var srcArray = srcManaged[i];
+			Array.Copy(srcArray, srcIndex, dstManaged[i], dstIndex, 1);
 			Array.Clear(srcArray, srcIndex, 1); // clear managed
 		}
 
 		return srcEntity.Id;
-	}
-
-	/// <summary>
-	/// Clones components to a destination <see cref="Chunk"/> within the same <see cref="Archetype"/>
-	/// </summary>
-	/// <param name="srcIndex">Index of the components to clone</param>
-	/// <param name="dstChunk">The chunk to clone into</param>
-	/// <param name="dstIndex">Index of the destination components</param>
-	internal readonly unsafe void CloneComponents(
-		int srcIndex, ref Chunk dstChunk, int dstIndex,
-		int[] offsets, ReadOnlySpan<ComponentType> unmanagedComponentTypes)
-	{
-		// copy unmanaged components
-		var srcPtr = UnmanagedComponents;
-		var dstPtr = dstChunk.UnmanagedComponents;
-		foreach (ref readonly var componentType in unmanagedComponentTypes)
-		{
-			if (componentType.IsTag)
-			{
-				continue;
-			}
-
-			// copy component
-			var offset = offsets[componentType.Id];
-			if (componentType.IsBuffer)
-			{
-				DynamicBuffer.Clone(
-					(byte*)srcPtr + offset + componentType.Stride * srcIndex,
-					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
-					(uint)componentType.Stride
-				);
-			}
-			else
-			{
-				Unsafe.CopyBlock(
-					(byte*)dstPtr + offset + componentType.Stride * dstIndex,
-					(byte*)srcPtr + offset + componentType.Stride * srcIndex,
-					(uint)componentType.Stride
-				);
-			}
-		}
-
-		// copy managed components
-		var srcMananagedComponents = ManagedComponents;
-		var dstMananagedComponents = dstChunk.ManagedComponents;
-		var length = srcMananagedComponents.Length;
-		for (int i = 0; i < length; i++)
-		{
-			Array.Copy(
-				srcMananagedComponents[i], srcIndex,
-				dstMananagedComponents[i], dstIndex,
-				1
-			);
-		}
-	}
-
-	/// <summary>
-	/// Copies components to any destination <see cref="Chunk"/>
-	/// </summary>
-	/// <param name="srcIndex">Index of the components to copy</param>
-	/// <param name="dstSignature">The <see cref="Signature"/> of <paramref name="dstChunk"/></param>
-	/// <param name="dstChunk">The chunk to copy into</param>
-	/// <param name="dstIndex">Index of the destination components</param>
-	internal readonly unsafe void CopyComponents(
-		int srcIndex, int[] srcOffsets,
-		in Signature dstSignature, ref Chunk dstChunk, int dstIndex, int[] dstOffsets,
-		ReadOnlySpan<ComponentType> unmanagedComponentTypes, ReadOnlySpan<ComponentType> managedComponentTypes,
-		bool clearManaged = false)
-	{
-		// copy unmanaged components
-		var srcPtr = UnmanagedComponents;
-		var dstPtr = dstChunk.UnmanagedComponents;
-		foreach (ref readonly var componentType in unmanagedComponentTypes)
-		{
-			if (!dstSignature.Test(componentType.Id) ||
-				componentType.IsTag)
-			{
-				continue; // component doesn't exist in the destination chunk
-			}
-
-			var srcOffset = srcOffsets[componentType.Id] + componentType.Stride * srcIndex;
-			var dstOffset = dstOffsets[componentType.Id] + componentType.Stride * dstIndex;
-			Unsafe.CopyBlock(
-				(byte*)dstPtr + dstOffset,
-				(byte*)srcPtr + srcOffset,
-				(uint)componentType.Stride
-			);
-		}
-
-		// copy managed components
-		int srcArrayIndex = 0;
-		var srcMananagedComponents = ManagedComponents;
-		var dstMananagedComponents = dstChunk.ManagedComponents;
-		foreach (ref readonly var componentType in managedComponentTypes)
-		{
-			// advance for every source managed type, including ones this move drops — skipping the
-			// increment on `continue` paired every later component with its neighbour's array
-			var srcArray = srcMananagedComponents[srcArrayIndex++];
-			if (!dstSignature.Test(componentType.Id))
-			{
-				continue; // component doesn't exist in the destination chunk
-			}
-
-            var dstArrayIndex = dstOffsets[componentType.Id];
-			Array.Copy(
-                srcArray, srcIndex,
-				dstMananagedComponents[dstArrayIndex], dstIndex,
-				1
-			);
-			if (clearManaged)
-			{
-                Array.Clear(srcArray, srcIndex, 1); // clear managed
-            }
-		}
 	}
 
 	/// <summary>

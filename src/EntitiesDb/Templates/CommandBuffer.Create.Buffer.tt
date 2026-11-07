@@ -22,16 +22,17 @@ public partial class CommandBuffer
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 		<#= Indent(constriants, 8) #>
 	{
-		var signature = ComponentBuffer<T0, T1>.Signature;
-		lock (_lock)
+		var signature = ComponentBuffer<<#= generics #>>.Signature;
+		Enter();
+		try
 		{
-			var entity = new Entity(-_entities.Count - 1, -1);
-			var entityIndex = Register(entity);
-			_creates.Add(entityIndex);
-
-			RegisterSet(entityIndex, in signature);
+			var entityIndex = RegisterCreate(in signature, out var entity);
 			<#= Indent(lines, 12) #>
 			return entity;
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>

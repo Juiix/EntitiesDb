@@ -16,10 +16,15 @@ public partial class CommandBuffer
 	public void Remove<<#= generics #>>(Entity entity)
 	{
 		var signature = Component<<#= generics #>>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterRemove(entityIndex, in signature);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 <#

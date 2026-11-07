@@ -12,21 +12,16 @@ public partial class EntityDatabase
         var generics = Generics(index);
 		var parameters = FormatComma(index, "in T{0}? t{0}Component = default");
 		var args = FormatComma(index, "in t{0}Component");
-		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) chunk.Write<T{0}>(slot.Index) = t{0}Component;");
+		var sets = FormatLine(index, "if (!ComponentMeta<T{0}>.IsZeroSize) chunk.Write<T{0}>(index) = t{0}Component;");
 #>
 	/// <inheritdoc cref="Create{T0}(in T0)"/>
 	[StructuralChange]
 	[ChunkChange]
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 	{
-		var signature = ComponentSingle<<#= generics #>>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentSingle<<#= generics #>>.Signature), out var entity, out var index);
 		<#= Indent(sets, 8) #>
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		return entity;
 	}
 <#
 	}

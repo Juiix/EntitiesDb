@@ -17,15 +17,16 @@ public partial class CommandBuffer
 	public Entity Create<<#= generics #>>(<#= parameters #>)
 	{
 		var signature = ComponentSingle<<#= generics #>>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
-			var entity = new Entity(-_entities.Count - 1, -1);
-			var entityIndex = Register(entity);
-			_creates.Add(entityIndex);
-
-			RegisterSet(entityIndex, in signature);
+			var entityIndex = RegisterCreate(in signature, out var entity);
 			<#= Indent(lines, 12) #>
 			return entity;
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 <#

@@ -23,11 +23,16 @@ public partial class CommandBuffer
 		<#= Indent(constriants, 8) #>
 	{
 		var signature = ComponentBufferWritable<<#= generics #>>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			<#= Indent(lines, 12) #>
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>

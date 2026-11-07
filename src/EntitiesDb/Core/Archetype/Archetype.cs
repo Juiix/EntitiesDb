@@ -44,14 +44,36 @@ public unsafe sealed partial class Archetype
     private readonly int[] _idToOffsets;
 
 	/// <summary>
-	/// Indices of bufferable types
+	/// Unmanaged, non-tag, non-buffer columns (zeroed by <see cref="InitEntity"/>)
 	/// </summary>
-	private readonly int[] _bufferIndices;
+	private readonly ColumnInfo[] _dataColumns;
 
 	/// <summary>
-	/// Indices of types tracking changes
+	/// Buffer columns
 	/// </summary>
-	private readonly int[] _changeTrackingIndices;
+	private readonly ColumnInfo[] _bufferColumns;
+
+	/// <summary>
+	/// Every unmanaged column that holds bytes (data + buffers)
+	/// </summary>
+	private readonly ColumnInfo[] _copyColumns;
+
+	/// <summary>
+	/// Managed component ids, index-aligned with <see cref="Chunk.ManagedComponents"/>
+	/// </summary>
+	private readonly int[] _managedIds;
+
+	/// <summary>
+	/// Ids of components with change tracking
+	/// </summary>
+	private readonly int[] _trackedIds;
+
+	/// <summary>
+	/// Single-component transitions resolved from this archetype, indexed by component id. Lazily
+	/// allocated; lets Add&lt;T&gt;/Remove&lt;T&gt; skip the signature dictionary.
+	/// </summary>
+	private Archetype?[]? _addEdges;
+	private Archetype?[]? _removeEdges;
 
 	/// <summary>
 	/// Array used to store chunks
@@ -77,8 +99,8 @@ public unsafe sealed partial class Archetype
 
 		_chunks = new Chunk[InitialChunkCapacity];
         _idToOffsets = ArchetypeUtils.BuildIdOffsetLookup(componentTypes, unmanagedComponentCount, EntitiesPerChunk);
-		_bufferIndices = ArchetypeUtils.BuildBufferIndices(componentTypes, unmanagedComponentCount);
-		_changeTrackingIndices = ArchetypeUtils.BuildChangeTrackingIndices(componentTypes);
+		ArchetypeUtils.BuildColumns(componentTypes, unmanagedComponentCount, _idToOffsets,
+			out _dataColumns, out _bufferColumns, out _copyColumns, out _managedIds, out _trackedIds);
 
 		AddChunk();
 	}
@@ -131,6 +153,16 @@ public unsafe sealed partial class Archetype
 	internal ReadOnlySpan<Chunk> ChunkSpan => _chunks.AsSpan(0, ChunksInUse);
 
 	/// <summary>
+	/// <see cref="ComponentType.Id"/> to offset lookup table (-1 when absent)
+	/// </summary>
+	internal int[] IdToOffsets => _idToOffsets;
+
+	/// <summary>
+	/// Ids of components with change tracking
+	/// </summary>
+	internal int[] TrackedIds => _trackedIds;
+
+	/// <summary>
 	/// If this <see cref="Archetype"/> contains a given component
 	/// </summary>
 	/// <returns>If this <see cref="Archetype"/> has component with <paramref name="typeId"/></returns>
@@ -172,8 +204,11 @@ public unsafe sealed partial class Archetype
 		for (int i = 0; i < ChunksInUse; i++)
 		{
 			ref var chunk = ref _chunks[i];
-			for (int j = 0; j < chunk.EntityCount; j++)
-				ClearBuffers(ref chunk, j, in Signature);
+			if (_bufferColumns.Length != 0)
+			{
+				for (int j = 0; j < chunk.EntityCount; j++)
+					ClearBuffers(ref chunk, j);
+			}
             foreach (var array in chunk.ManagedComponents)
                 Array.Clear(array, 0, chunk.EntityCount);
             chunk.EntityCount = 0;
@@ -187,6 +222,7 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	/// <param name="id">The component type id</param>
 	/// <returns>Offset of the component type with the given id</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal int GetOffset(int id)
 	{
 		return _idToOffsets[id];
@@ -205,16 +241,9 @@ public unsafe sealed partial class Archetype
 			ReplaceChunkArray(Math.Max(newChunkCount, _chunks.Length * 2));
 
 		for (var i = ChunksAllocated; i < newChunkCount; i++)
-		{
-			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
-			// zero like AddChunk does — reserved chunks must not hold garbage when
-			// they are later brought into use
-			Unsafe.InitBlock((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
-			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
-			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
-			_chunks[i] = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
-		}
-		ChunksAllocated = newChunkCount;
+			_chunks[i] = AllocateChunk();
+		if (newChunkCount > ChunksAllocated)
+			ChunksAllocated = newChunkCount;
 	}
 
 	/// <summary>
@@ -231,11 +260,7 @@ public unsafe sealed partial class Archetype
 		if (count >= ChunksAllocated)
 		{
 			ChunksAllocated++;
-			var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
-			Unsafe.InitBlock((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
-			var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
-			var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
-			chunk = new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
+			chunk = AllocateChunk();
 		}
 
 		ChunksInUse = ++count;
@@ -243,10 +268,23 @@ public unsafe sealed partial class Archetype
 	}
 
 	/// <summary>
+	/// Allocates a zeroed chunk. Reserved chunks must not hold garbage when they are later brought into use.
+	/// </summary>
+	private Chunk AllocateChunk()
+	{
+		var unmanagedComponents = Marshal.AllocHGlobal(_unmanagedChunkByteSize);
+		Unsafe.InitBlockUnaligned((void*)unmanagedComponents, 0, (uint)_unmanagedChunkByteSize);
+		var managedComponents = ArchetypeUtils.CreateManagedComponentArrays(_arrayFactories, EntitiesPerChunk);
+		var changeFilters = ArchetypeUtils.BuildChangeVersions(_globalChangeVersions);
+		return new Chunk(unmanagedComponents, managedComponents, _globalChangeVersions, changeFilters, _idToOffsets);
+	}
+
+	/// <summary>
 	/// Gets a ref to a <see cref="Chunk"/> at a given index
 	/// </summary>
 	/// <param name="index">Index of the <see cref="Chunk"/> to get</param>
 	/// <returns>A reference to the <see cref="Chunk"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal ref Chunk GetChunk(int index)
 	{
 		return ref _chunks[index];
@@ -256,30 +294,33 @@ public unsafe sealed partial class Archetype
 	/// Adds an <see cref="Entity"/> to the last <see cref="Chunk"/>
 	/// </summary>
 	/// <param name="entity">The <see cref="Entity"/> to add</param>
-	/// <returns>The filled <see cref="EntitySlot"/></returns>
-	internal EntitySlot AddEntity(Entity entity, out Chunk chunk)
+	/// <param name="slot">The filled <see cref="EntitySlot"/></param>
+	/// <returns>A reference to the chunk holding the new row; its component values are whatever the slot last held</returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal ref Chunk AddEntity(Entity entity, out EntitySlot slot)
 	{
-		int index;
-		EntityCount++;
-
-		// add to existing
 		var chunkIndex = ChunksInUse - 1;
-		ref var currentChunk = ref _chunks[chunkIndex];
-		if (currentChunk.EntityCount < EntitiesPerChunk)
-		{
-			index = currentChunk.EntityCount++;
-			currentChunk.AddEntity(index, entity);
-			chunk = currentChunk;
-			return new EntitySlot(index, chunkIndex);
-		}
+		ref var chunk = ref _chunks[chunkIndex];
+		var index = chunk.EntityCount;
+		if (index >= EntitiesPerChunk)
+			return ref AddEntityToNewChunk(entity, out slot);
 
-		// new chunk
-		index = 0;
-		currentChunk = ref AddChunk();
-		currentChunk.EntityCount++;
-		currentChunk.AddEntity(index, entity);
-		chunk = currentChunk;
-		return new EntitySlot(index, chunkIndex + 1);
+		chunk.EntityCount = index + 1;
+		chunk.WriteEntity(index) = entity;
+		EntityCount++;
+		slot = new EntitySlot(index, chunkIndex);
+		return ref chunk;
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private ref Chunk AddEntityToNewChunk(Entity entity, out EntitySlot slot)
+	{
+		ref var chunk = ref AddChunk();
+		chunk.EntityCount = 1;
+		chunk.WriteEntity(0) = entity;
+		EntityCount++;
+		slot = new EntitySlot(0, ChunksInUse - 1);
+		return ref chunk;
 	}
 
 	/// <summary>
@@ -294,77 +335,40 @@ public unsafe sealed partial class Archetype
 	}
 
 	/// <summary>
-	/// Initializes non-buffer components to default values for a given entity slot
+	/// Defaults every component of the row at <paramref name="index"/>: unmanaged values zeroed, buffers
+	/// empty, managed values null
 	/// </summary>
-	internal void InitComponents(ref Chunk chunk, int index, in Signature mask)
+	internal void InitEntity(ref Chunk chunk, int index)
 	{
-		for (int i = 0; i < _unmangedComponentCount; i++)
-		{
-			ref readonly var componentType = ref ComponentTypes[i];
-			if (!mask.Test(componentType.Id) ||
-				componentType.IsTag ||
-				componentType.IsBuffer)
-			{
-				continue;
-			}
+		var basePtr = (byte*)chunk.UnmanagedComponents;
+		foreach (ref readonly var column in _dataColumns.AsSpan())
+			ChunkMemory.Zero(basePtr + column.Offset + column.Stride * index, column.Stride);
 
-			var offset = _idToOffsets[componentType.Id];
-			Unsafe.InitBlock(
-				(void*)(chunk.UnmanagedComponents + offset + componentType.Stride * index),
-				0,
-				(uint)componentType.Stride
-			);
-		}
+		foreach (ref readonly var column in _bufferColumns.AsSpan())
+			DynamicBuffer.Init(basePtr + column.Offset + column.Stride * index, column.InternalCapacity);
 
-		for (int i = _unmangedComponentCount; i < ComponentTypes.Length; i++)
-		{
-			ref readonly var componentType = ref ComponentTypes[i];
-			if (!mask.Test(componentType.Id))
-			{
-				continue;
-			}
-
-			var arrayIndex = _idToOffsets[componentType.Id];
-			Array.Clear(chunk.ManagedComponents[arrayIndex], index, 1);
-		}
+		foreach (var array in chunk.ManagedComponents)
+			Array.Clear(array, index, 1);
 	}
 
 	/// <summary>
-	/// Clears buffers for a given entity slot
+	/// Initializes every buffer of the row at <paramref name="index"/> to empty
 	/// </summary>
-	/// <param name="slot"></param>
-	/// <param name="mask"></param>
-	internal void ClearBuffers(ref Chunk chunk, int index, in Signature mask)
+	internal void InitBuffers(ref Chunk chunk, int index)
 	{
-		for (int i = 0; i < _bufferIndices.Length; i++)
-		{
-			var typeIndex = _bufferIndices[i];
-			ref var componentType = ref ComponentTypes[typeIndex];
-			if (!mask.Test(componentType.Id)) continue;
-
-			var offset = _idToOffsets[componentType.Id];
-			var stride = componentType.Stride;
-			DynamicBuffer.Clear((byte*)chunk.UnmanagedComponents + offset + stride * index);
-		}
+		var basePtr = (byte*)chunk.UnmanagedComponents;
+		foreach (ref readonly var column in _bufferColumns.AsSpan())
+			DynamicBuffer.Init(basePtr + column.Offset + column.Stride * index, column.InternalCapacity);
 	}
 
 	/// <summary>
-	/// Initializes buffers for a given entity slot
+	/// Releases every buffer of the row at <paramref name="index"/>
 	/// </summary>
-	/// <param name="slot"></param>
-	/// <param name="mask"></param>
-	internal void InitBuffers(ref Chunk chunk, in EntitySlot slot, in Signature mask)
+	internal void ClearBuffers(ref Chunk chunk, int index)
 	{
-		for (int i = 0; i < _bufferIndices.Length; i++)
-		{
-			var typeIndex = _bufferIndices[i];
-			ref var componentType = ref ComponentTypes[typeIndex];
-			if (!mask.Test(componentType.Id)) continue;
-
-			var offset = _idToOffsets[componentType.Id];
-			var stride = componentType.Stride;
-			DynamicBuffer.Init((byte*)chunk.UnmanagedComponents + offset + stride * slot.Index, componentType.InternalCapacity);
-		}
+		var basePtr = (byte*)chunk.UnmanagedComponents;
+		foreach (ref readonly var column in _bufferColumns.AsSpan())
+			DynamicBuffer.Clear(basePtr + column.Offset + column.Stride * index);
 	}
 
 	/// <summary>
@@ -374,33 +378,37 @@ public unsafe sealed partial class Archetype
 	/// <param name="movedEntityId">The entity id that filled the removed <see cref="EntitySlot"/></param>
 	internal void RemoveEntity(in EntitySlot slot, out int movedEntityId)
 	{
-		ref var chunk = ref _chunks[slot.ChunkIndex];
 		var lastChunkIndex = ChunksInUse - 1;
-		ref var lastChunk = ref GetChunk(lastChunkIndex);
-
-		var removedIndex = lastChunk.EntityCount - 1;
+		ref var lastChunk = ref _chunks[lastChunkIndex];
+		var lastIndex = lastChunk.EntityCount - 1;
 
 		// guard structural invariants: a violation here means the entity map and
 		// chunk storage have diverged — fail loudly instead of corrupting memory
 		// via negative-index copies
-		if (slot.ChunkIndex > lastChunkIndex || removedIndex < 0 || slot.Index >= _chunks[slot.ChunkIndex].EntityCount)
+		if ((uint)slot.ChunkIndex > (uint)lastChunkIndex || lastIndex < 0 || slot.Index >= _chunks[slot.ChunkIndex].EntityCount)
 			throw new EntityException(-1,
 				$"RemoveEntity invariant violation: slot={slot.Index}@chunk{slot.ChunkIndex} (chunkCount={_chunks[slot.ChunkIndex].EntityCount}) " +
 				$"ChunksInUse={ChunksInUse} lastChunkCount={lastChunk.EntityCount} archetypeEntityCount={EntityCount}");
-		movedEntityId = chunk.AcceptEntity(
-			slot.Index, ref lastChunk, removedIndex,
-			_idToOffsets, UnmanagedComponentTypes);
-		InheritChanges(ref chunk, in lastChunk);
 
-		lastChunk.EntityCount--;
-		EntityCount--;
-
-		if (removedIndex > 0 || ChunksInUse <= 0)
+		ref var chunk = ref _chunks[slot.ChunkIndex];
+		if (slot.ChunkIndex == lastChunkIndex && slot.Index == lastIndex)
 		{
-			return;
+			// removing the tail row: nothing moves into the hole, only release its managed references
+			movedEntityId = chunk.Entity(lastIndex).Id;
+			foreach (var array in chunk.ManagedComponents)
+				Array.Clear(array, lastIndex, 1);
+		}
+		else
+		{
+			movedEntityId = chunk.AcceptEntity(slot.Index, ref lastChunk, lastIndex, _copyColumns);
+			InheritChanges(ref chunk, in lastChunk);
 		}
 
-		ChunksInUse = Math.Max(ChunksInUse - 1, 1);
+		lastChunk.EntityCount = lastIndex;
+		EntityCount--;
+
+		if (lastIndex == 0 && ChunksInUse > 1)
+			ChunksInUse--;
 	}
 
 	/// <summary>
@@ -411,62 +419,142 @@ public unsafe sealed partial class Archetype
 	/// </summary>
 	private void InheritChanges(ref Chunk dst, in Chunk src)
 	{
+		var trackedIds = _trackedIds;
+		if (trackedIds.Length == 0) return;
+
 		var srcVersions = src.LocalChangeVersions;
 		var dstVersions = dst.LocalChangeVersions;
 		if (ReferenceEquals(srcVersions, dstVersions)) return;
 
-		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		foreach (var id in trackedIds)
 		{
-			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
-			if (!type.TrackChanges) continue;
-
-			var version = srcVersions[type.Id];
-			if (version - dstVersions[type.Id] > 0) // wrap-safe "newer than"
-				dstVersions[type.Id] = version;
+			var version = srcVersions[id];
+			if (version - dstVersions[id] > 0) // wrap-safe "newer than"
+				dstVersions[id] = version;
 		}
+	}
+
+	/// <summary>
+	/// Marks every tracked component of a chunk changed
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal void MarkTrackedChanged(ref Chunk chunk)
+	{
+		foreach (var id in _trackedIds)
+			chunk.MarkChanged(id);
 	}
 
 	/// <summary>
 	/// Clones components internally
 	/// </summary>
-	internal void CloneComponents(in EntitySlot srcSlot, in EntitySlot dstSlot)
+	internal void CloneComponents(in EntitySlot srcSlot, ref Chunk dstChunk, int dstIndex)
 	{
 		ref var srcChunk = ref GetChunk(srcSlot.ChunkIndex);
-		ref var dstChunk = ref GetChunk(dstSlot.ChunkIndex);
-		srcChunk.CloneComponents(
-			srcSlot.Index, ref dstChunk, dstSlot.Index,
-			_idToOffsets, UnmanagedComponentTypes);
-
-		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		var srcIndex = srcSlot.Index;
+		var srcBase = (byte*)srcChunk.UnmanagedComponents;
+		var dstBase = (byte*)dstChunk.UnmanagedComponents;
+		foreach (ref readonly var column in _copyColumns.AsSpan())
 		{
-			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
-			if (type.TrackChanges)
-			{
-				dstChunk.MarkChanged(type.Id);
-			}
+			var src = srcBase + column.Offset + column.Stride * srcIndex;
+			var dst = dstBase + column.Offset + column.Stride * dstIndex;
+			if (column.InternalCapacity > 0)
+				DynamicBuffer.Clone(src, dst, (uint)column.Stride);
+			else
+				ChunkMemory.Copy(dst, src, column.Stride);
 		}
+
+		var srcManaged = srcChunk.ManagedComponents;
+		var dstManaged = dstChunk.ManagedComponents;
+		for (int i = 0; i < srcManaged.Length; i++)
+			Array.Copy(srcManaged[i], srcIndex, dstManaged[i], dstIndex, 1);
+
+		MarkTrackedChanged(ref dstChunk);
 	}
 
 	/// <summary>
-	/// Copies components into an external <see cref="Archetype"/>
+	/// Moves the components of a row into a row of another <see cref="Archetype"/>: values both
+	/// archetypes share are copied, buffers <paramref name="dstArchetype"/> drops are released, and
+	/// components it adds start defaulted (buffers empty). The source row is left for
+	/// <see cref="RemoveEntity"/> to fill.
 	/// </summary>
-	internal void CopyComponents(in EntitySlot srcSlot, Archetype dstArchetype, in EntitySlot dstSlot, bool clearManaged = true)
+	internal void MoveComponents(ref Chunk srcChunk, int srcIndex, Archetype dstArchetype, ref Chunk dstChunk, int dstIndex)
 	{
-		ref var srcChunk = ref GetChunk(srcSlot.ChunkIndex);
-		ref var dstChunk = ref dstArchetype.GetChunk(dstSlot.ChunkIndex);
-		srcChunk.CopyComponents(
-			srcSlot.Index, _idToOffsets,
-			dstArchetype.Signature, ref dstChunk, dstSlot.Index, dstArchetype._idToOffsets,
-			UnmanagedComponentTypes, ManagedComponentTypes, clearManaged);
+		var dstOffsets = dstArchetype._idToOffsets;
+		var srcBase = (byte*)srcChunk.UnmanagedComponents;
+		var dstBase = (byte*)dstChunk.UnmanagedComponents;
 
-		for (int i = 0; i < _changeTrackingIndices.Length; i++)
+		foreach (ref readonly var column in _copyColumns.AsSpan())
 		{
-			ref var type = ref ComponentTypes[_changeTrackingIndices[i]];
-			if (type.TrackChanges)
+			var src = srcBase + column.Offset + column.Stride * srcIndex;
+			var dstOffset = dstOffsets[column.Id];
+			if (dstOffset >= 0)
+				ChunkMemory.Copy(dstBase + dstOffset + column.Stride * dstIndex, src, column.Stride);
+			else if (column.InternalCapacity > 0)
+				DynamicBuffer.Clear(src); // dropped buffer: release its heap block
+		}
+
+		// components the destination adds start defaulted: the row may still hold a previous occupant's values
+		var srcOffsets = _idToOffsets;
+		foreach (ref readonly var column in dstArchetype._dataColumns.AsSpan())
+		{
+			if (srcOffsets[column.Id] < 0)
+				ChunkMemory.Zero(dstBase + column.Offset + column.Stride * dstIndex, column.Stride);
+		}
+		foreach (ref readonly var column in dstArchetype._bufferColumns.AsSpan())
+		{
+			if (srcOffsets[column.Id] < 0)
+				DynamicBuffer.Init(dstBase + column.Offset + column.Stride * dstIndex, column.InternalCapacity);
+		}
+
+		var managedIds = _managedIds;
+		if (managedIds.Length != 0)
+		{
+			var srcManaged = srcChunk.ManagedComponents;
+			var dstManaged = dstChunk.ManagedComponents;
+			for (int i = 0; i < managedIds.Length; i++)
 			{
-				dstChunk.MarkChanged(type.Id);
+				var dstArrayIndex = dstOffsets[managedIds[i]];
+				if (dstArrayIndex >= 0)
+					Array.Copy(srcManaged[i], srcIndex, dstManaged[dstArrayIndex], dstIndex, 1);
 			}
 		}
+
+		dstArchetype.MarkTrackedChanged(ref dstChunk);
+	}
+
+	/// <summary>
+	/// The archetype reached by adding component <paramref name="id"/>, if already resolved
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal Archetype? GetAddEdge(int id)
+	{
+		var edges = _addEdges;
+		return edges is null ? null : edges[id];
+	}
+
+	/// <summary>
+	/// The archetype reached by removing component <paramref name="id"/>, if already resolved
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal Archetype? GetRemoveEdge(int id)
+	{
+		var edges = _removeEdges;
+		return edges is null ? null : edges[id];
+	}
+
+	internal void SetAddEdge(int id, Archetype archetype) =>
+		(_addEdges ??= new Archetype?[ComponentRegistry.MaxComponents])[id] = archetype;
+
+	internal void SetRemoveEdge(int id, Archetype archetype) =>
+		(_removeEdges ??= new Archetype?[ComponentRegistry.MaxComponents])[id] = archetype;
+
+	/// <summary>
+	/// Forgets resolved transitions (an archetype they may point at was removed)
+	/// </summary>
+	internal void ClearEdges()
+	{
+		_addEdges = null;
+		_removeEdges = null;
 	}
 
 	/// <summary>
@@ -509,13 +597,33 @@ public unsafe sealed partial class Archetype
 		GC.SuppressFinalize(this);
 #pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
 		_disposed = true;
+		// suppressing the finalizer used to be all Dispose did, so the finalizer's free never ran and
+		// every disposed archetype leaked its chunks
+		DoDispose();
 	}
 
+	/// <summary>
+	/// Frees chunk memory and the heap blocks of buffers that outgrew their inline capacity. The
+	/// archetype is left with no chunks, so anything still holding it (a query's match list, an
+	/// enumerator) sees it empty.
+	/// </summary>
 	private void DoDispose()
 	{
-		foreach (ref var chunk in _chunks.AsSpan(0, ChunksAllocated))
+		var chunks = _chunks;
+		for (int i = 0; i < ChunksAllocated; i++)
 		{
+			ref var chunk = ref chunks[i];
+			if (chunk.UnmanagedComponents == 0) continue;
+			if (i < ChunksInUse && _bufferColumns.Length != 0)
+			{
+				for (int row = 0; row < chunk.EntityCount; row++)
+					ClearBuffers(ref chunk, row);
+			}
 			Marshal.FreeHGlobal(chunk.UnmanagedComponents);
+			chunk = default;
 		}
+		ChunksAllocated = 0;
+		ChunksInUse = 0;
+		EntityCount = 0;
 	}
 }

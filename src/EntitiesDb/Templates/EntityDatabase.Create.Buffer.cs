@@ -12,15 +12,10 @@ public partial class EntityDatabase
 		where T0 : unmanaged
         where T1 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -39,16 +34,11 @@ public partial class EntityDatabase
         where T1 : unmanaged
         where T2 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -69,17 +59,12 @@ public partial class EntityDatabase
         where T2 : unmanaged
         where T3 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -102,18 +87,13 @@ public partial class EntityDatabase
         where T3 : unmanaged
         where T4 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -138,19 +118,14 @@ public partial class EntityDatabase
         where T4 : unmanaged
         where T5 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -177,20 +152,15 @@ public partial class EntityDatabase
         where T5 : unmanaged
         where T6 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -219,21 +189,16 @@ public partial class EntityDatabase
         where T6 : unmanaged
         where T7 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -264,22 +229,17 @@ public partial class EntityDatabase
         where T7 : unmanaged
         where T8 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -312,23 +272,18 @@ public partial class EntityDatabase
         where T8 : unmanaged
         where T9 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -363,24 +318,19 @@ public partial class EntityDatabase
         where T9 : unmanaged
         where T10 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -417,25 +367,20 @@ public partial class EntityDatabase
         where T10 : unmanaged
         where T11 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-        chunk.WriteBuffer<T11>(slot.Index).Init(t11Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+        chunk.WriteBuffer<T11>(index).Init(t11Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -474,26 +419,21 @@ public partial class EntityDatabase
         where T11 : unmanaged
         where T12 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-        chunk.WriteBuffer<T11>(slot.Index).Init(t11Components);
-        chunk.WriteBuffer<T12>(slot.Index).Init(t12Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+        chunk.WriteBuffer<T11>(index).Init(t11Components);
+        chunk.WriteBuffer<T12>(index).Init(t12Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -534,27 +474,22 @@ public partial class EntityDatabase
         where T12 : unmanaged
         where T13 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-        chunk.WriteBuffer<T11>(slot.Index).Init(t11Components);
-        chunk.WriteBuffer<T12>(slot.Index).Init(t12Components);
-        chunk.WriteBuffer<T13>(slot.Index).Init(t13Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+        chunk.WriteBuffer<T11>(index).Init(t11Components);
+        chunk.WriteBuffer<T12>(index).Init(t12Components);
+        chunk.WriteBuffer<T13>(index).Init(t13Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -597,28 +532,23 @@ public partial class EntityDatabase
         where T13 : unmanaged
         where T14 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-        chunk.WriteBuffer<T11>(slot.Index).Init(t11Components);
-        chunk.WriteBuffer<T12>(slot.Index).Init(t12Components);
-        chunk.WriteBuffer<T13>(slot.Index).Init(t13Components);
-        chunk.WriteBuffer<T14>(slot.Index).Init(t14Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+        chunk.WriteBuffer<T11>(index).Init(t11Components);
+        chunk.WriteBuffer<T12>(index).Init(t12Components);
+        chunk.WriteBuffer<T13>(index).Init(t13Components);
+        chunk.WriteBuffer<T14>(index).Init(t14Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]
@@ -663,29 +593,24 @@ public partial class EntityDatabase
         where T14 : unmanaged
         where T15 : unmanaged
 	{
-		var signature = ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Signature;
-		ref var entityReference = ref GetNextEntityId(out var dstEntityId);
-		var archetype = Archetypes.GetOrCreateArchetype(in signature);
-		var slot = archetype.AddEntity(dstEntityId, out var chunk);
-		chunk.WriteBuffer<T0>(slot.Index).Init(t0Components);
-        chunk.WriteBuffer<T1>(slot.Index).Init(t1Components);
-        chunk.WriteBuffer<T2>(slot.Index).Init(t2Components);
-        chunk.WriteBuffer<T3>(slot.Index).Init(t3Components);
-        chunk.WriteBuffer<T4>(slot.Index).Init(t4Components);
-        chunk.WriteBuffer<T5>(slot.Index).Init(t5Components);
-        chunk.WriteBuffer<T6>(slot.Index).Init(t6Components);
-        chunk.WriteBuffer<T7>(slot.Index).Init(t7Components);
-        chunk.WriteBuffer<T8>(slot.Index).Init(t8Components);
-        chunk.WriteBuffer<T9>(slot.Index).Init(t9Components);
-        chunk.WriteBuffer<T10>(slot.Index).Init(t10Components);
-        chunk.WriteBuffer<T11>(slot.Index).Init(t11Components);
-        chunk.WriteBuffer<T12>(slot.Index).Init(t12Components);
-        chunk.WriteBuffer<T13>(slot.Index).Init(t13Components);
-        chunk.WriteBuffer<T14>(slot.Index).Init(t14Components);
-        chunk.WriteBuffer<T15>(slot.Index).Init(t15Components);
-		entityReference = new EntityReference(archetype, slot, dstEntityId.Version);
-		EntityCount++;
-		return dstEntityId;
+		ref var chunk = ref CreateEntity(Archetypes.GetOrCreateArchetype(in ComponentBuffer<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Signature), out var entity, out var index);
+		chunk.WriteBuffer<T0>(index).Init(t0Components);
+        chunk.WriteBuffer<T1>(index).Init(t1Components);
+        chunk.WriteBuffer<T2>(index).Init(t2Components);
+        chunk.WriteBuffer<T3>(index).Init(t3Components);
+        chunk.WriteBuffer<T4>(index).Init(t4Components);
+        chunk.WriteBuffer<T5>(index).Init(t5Components);
+        chunk.WriteBuffer<T6>(index).Init(t6Components);
+        chunk.WriteBuffer<T7>(index).Init(t7Components);
+        chunk.WriteBuffer<T8>(index).Init(t8Components);
+        chunk.WriteBuffer<T9>(index).Init(t9Components);
+        chunk.WriteBuffer<T10>(index).Init(t10Components);
+        chunk.WriteBuffer<T11>(index).Init(t11Components);
+        chunk.WriteBuffer<T12>(index).Init(t12Components);
+        chunk.WriteBuffer<T13>(index).Init(t13Components);
+        chunk.WriteBuffer<T14>(index).Init(t14Components);
+        chunk.WriteBuffer<T15>(index).Init(t15Components);
+		return entity;
 	}
 	/// <inheritdoc cref="Create{T0}(ReadOnlySpan{T0})"/>
 	[StructuralChange]

@@ -11,12 +11,17 @@ public partial class CommandBuffer
         where T1 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -33,13 +38,18 @@ public partial class CommandBuffer
         where T2 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
             SetData(entityIndex, t1Components);
             SetData(entityIndex, t2Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -58,7 +68,8 @@ public partial class CommandBuffer
         where T3 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -66,6 +77,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t1Components);
             SetData(entityIndex, t2Components);
             SetData(entityIndex, t3Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -86,7 +101,8 @@ public partial class CommandBuffer
         where T4 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -95,6 +111,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t2Components);
             SetData(entityIndex, t3Components);
             SetData(entityIndex, t4Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -117,7 +137,8 @@ public partial class CommandBuffer
         where T5 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -127,6 +148,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t3Components);
             SetData(entityIndex, t4Components);
             SetData(entityIndex, t5Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -151,7 +176,8 @@ public partial class CommandBuffer
         where T6 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -162,6 +188,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t4Components);
             SetData(entityIndex, t5Components);
             SetData(entityIndex, t6Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -188,7 +218,8 @@ public partial class CommandBuffer
         where T7 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -200,6 +231,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t5Components);
             SetData(entityIndex, t6Components);
             SetData(entityIndex, t7Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -228,7 +263,8 @@ public partial class CommandBuffer
         where T8 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -241,6 +277,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t6Components);
             SetData(entityIndex, t7Components);
             SetData(entityIndex, t8Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -271,7 +311,8 @@ public partial class CommandBuffer
         where T9 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -285,6 +326,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t7Components);
             SetData(entityIndex, t8Components);
             SetData(entityIndex, t9Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -317,7 +362,8 @@ public partial class CommandBuffer
         where T10 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -332,6 +378,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t8Components);
             SetData(entityIndex, t9Components);
             SetData(entityIndex, t10Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -366,7 +416,8 @@ public partial class CommandBuffer
         where T11 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -382,6 +433,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t9Components);
             SetData(entityIndex, t10Components);
             SetData(entityIndex, t11Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -418,7 +473,8 @@ public partial class CommandBuffer
         where T12 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -435,6 +491,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t10Components);
             SetData(entityIndex, t11Components);
             SetData(entityIndex, t12Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -473,7 +533,8 @@ public partial class CommandBuffer
         where T13 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -491,6 +552,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t11Components);
             SetData(entityIndex, t12Components);
             SetData(entityIndex, t13Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -531,7 +596,8 @@ public partial class CommandBuffer
         where T14 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -550,6 +616,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t12Components);
             SetData(entityIndex, t13Components);
             SetData(entityIndex, t14Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>
@@ -592,7 +662,8 @@ public partial class CommandBuffer
         where T15 : unmanaged
 	{
 		var signature = ComponentBufferWritable<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
@@ -612,6 +683,10 @@ public partial class CommandBuffer
             SetData(entityIndex, t13Components);
             SetData(entityIndex, t14Components);
             SetData(entityIndex, t15Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 	/// <inheritdoc cref="Set{T0}(Entity, ReadOnlySpan{T0})"/>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace EntitiesDb;
 
@@ -14,6 +15,7 @@ public sealed partial class ArchetypeCollection
 	private int _archetypeCount = 0;
 	private readonly Dictionary<Signature, Archetype> _archetypeMap = [];
 	private readonly int[] _globalChangeVersions;
+	private Archetype? _lastArchetype;
 
 	internal ArchetypeCollection(int chunkByteSize, int[] globalChangeVersions)
 	{
@@ -55,18 +57,71 @@ public sealed partial class ArchetypeCollection
 	/// <summary>
 	/// Gets an existing or Creates a new <see cref="Archetype"/> for the given <see cref="Signature"/>
 	/// </summary>
+	/// <remarks>
+	/// Structural changes come in runs against the same archetype (spawning a batch, adding a component
+	/// to every match), so the last archetype resolved answers before the dictionary is consulted.
+	/// </remarks>
 	/// <param name="signature">The signature of the <see cref="Archetype"/> to get</param>
 	/// <returns>An <see cref="Archetype"/> for <paramref name="signature"/></returns>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	internal Archetype GetOrCreateArchetype(in Signature signature)
 	{
-		if (_archetypeMap.TryGetValue(signature, out var archetype))
-			return archetype;
+		var last = _lastArchetype;
+		if (last is not null && last.Signature == signature)
+			return last;
+		return GetOrCreateArchetypeSlow(in signature);
+	}
 
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private Archetype GetOrCreateArchetypeSlow(in Signature signature)
+	{
+		if (!_archetypeMap.TryGetValue(signature, out var archetype))
+			archetype = CreateArchetype(in signature);
+		_lastArchetype = archetype;
+		return archetype;
+	}
+
+	/// <summary>
+	/// The archetype reached by adding component <paramref name="id"/> to <paramref name="source"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal Archetype GetAddArchetype(Archetype source, int id, in Signature added)
+	{
+		return source.GetAddEdge(id) ?? ResolveAddEdge(source, id, in added);
+	}
+
+	/// <summary>
+	/// The archetype reached by removing component <paramref name="id"/> from <paramref name="source"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal Archetype GetRemoveArchetype(Archetype source, int id, in Signature removed)
+	{
+		return source.GetRemoveEdge(id) ?? ResolveRemoveEdge(source, id, in removed);
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private Archetype ResolveAddEdge(Archetype source, int id, in Signature added)
+	{
+		var archetype = GetOrCreateArchetype(source.Signature.Or(in added));
+		source.SetAddEdge(id, archetype);
+		return archetype;
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private Archetype ResolveRemoveEdge(Archetype source, int id, in Signature removed)
+	{
+		var archetype = GetOrCreateArchetype(source.Signature.AndNot(in removed));
+		source.SetRemoveEdge(id, archetype);
+		return archetype;
+	}
+
+	private Archetype CreateArchetype(in Signature signature)
+	{
 		var componentTypes = ArchetypeUtils.BuildComponentTypes(in signature, out var unmanagedCount);
 		var managedSpan = componentTypes.AsSpan(unmanagedCount);
 		var arrayFactories = ArchetypeUtils.CompileArrayFactories(managedSpan);
 
-		archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, _chunkByteSize, _globalChangeVersions);
+		var archetype = new Archetype(signature, componentTypes, arrayFactories, unmanagedCount, _chunkByteSize, _globalChangeVersions);
 		if (_archetypeCount >= _archetypes.Length)
 		{
 			var newArr = ArrayPool<Archetype>.Shared.Rent(_archetypes.Length * 2);
@@ -86,6 +141,7 @@ public sealed partial class ArchetypeCollection
 	/// </summary>
 	internal void TrimExcess()
 	{
+		var removedAny = false;
 		for (int i = _archetypeCount - 1; i >= 0; i--)
 		{
 			var archetype = _archetypes[i];
@@ -98,10 +154,19 @@ public sealed partial class ArchetypeCollection
 				}
 				_archetypes[_archetypeCount] = null!;
 				_archetypeMap.Remove(archetype.Signature);
+				removedAny = true;
 				continue;
 			}
 
 			archetype.TrimExcess();
+		}
+
+		if (removedAny)
+		{
+			// cached lookups may point at a dropped archetype
+			_lastArchetype = null;
+			foreach (var archetype in _archetypes.AsSpan(0, _archetypeCount))
+				archetype.ClearEdges();
 		}
 	}
 
@@ -116,5 +181,6 @@ public sealed partial class ArchetypeCollection
 		}
 		Array.Clear(_archetypes, 0, _archetypeCount);
 		_archetypeCount = 0;
+		_lastArchetype = null;
 	}
 }

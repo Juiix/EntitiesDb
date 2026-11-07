@@ -75,67 +75,55 @@ internal unsafe static class ArchetypeUtils
 	}
 
 	/// <summary>
-	/// Builds an array of indices for buffered types in given component types
+	/// Builds the flat column lists the per-entity paths walk (init, copy, clear) so they never test a
+	/// signature or skip a tag per entity
 	/// </summary>
-	/// <param name="componentTypes"></param>
-	/// <returns></returns>
-	public static int[] BuildBufferIndices(ComponentType[] componentTypes, int unmanagedComponentCount)
+	/// <param name="componentTypes">The archetype's component types, (unmanaged | managed) split</param>
+	/// <param name="unmanagedCount">The unmanaged/managed boundary</param>
+	/// <param name="idToOffsets">The archetype's id -> offset lookup</param>
+	/// <param name="dataColumns">Unmanaged, non-tag, non-buffer columns</param>
+	/// <param name="bufferColumns">Buffer columns</param>
+	/// <param name="copyColumns">Every unmanaged column holding bytes (data + buffers), in layout order</param>
+	/// <param name="managedIds">Managed component ids, index-aligned with <see cref="Chunk.ManagedComponents"/></param>
+	/// <param name="trackedIds">Ids of components with change tracking</param>
+	public static void BuildColumns(
+		ComponentType[] componentTypes, int unmanagedCount, int[] idToOffsets,
+		out ColumnInfo[] dataColumns, out ColumnInfo[] bufferColumns, out ColumnInfo[] copyColumns,
+		out int[] managedIds, out int[] trackedIds)
 	{
-		if (unmanagedComponentCount == 0)
-			return [];
-
-		var count = 0;
-		for (int i = 0; i < unmanagedComponentCount; i++)
-		{
-			count += componentTypes[i].IsBuffer ? 1 : 0;
-		}
-
-		if (count == 0)
-			return [];
-
-		var indices = new int[count];
-		int bufferIndex = 0;
-		for (int i = 0; i < unmanagedComponentCount; i++)
-		{
-			if (componentTypes[i].IsBuffer)
-			{
-				indices[bufferIndex++] = i;
-			}
-		}
-
-		return indices;
-	}
-
-	/// <summary>
-	/// Builds an array of indices for types that track changes in given component types
-	/// </summary>
-	/// <param name="componentTypes"></param>
-	/// <returns></returns>
-	public static int[] BuildChangeTrackingIndices(ComponentType[] componentTypes)
-	{
-		if (componentTypes.Length == 0)
-			return [];
-
-		var count = 0;
+		int dataCount = 0, bufferCount = 0, trackedCount = 0;
 		for (int i = 0; i < componentTypes.Length; i++)
 		{
-			count += componentTypes[i].TrackChanges ? 1 : 0;
+			ref readonly var type = ref componentTypes[i];
+			if (type.TrackChanges) trackedCount++;
+			if (i >= unmanagedCount || type.IsTag) continue;
+			if (type.IsBuffer) bufferCount++;
+			else dataCount++;
 		}
 
-		if (count == 0)
-			return [];
+		dataColumns = dataCount == 0 ? [] : new ColumnInfo[dataCount];
+		bufferColumns = bufferCount == 0 ? [] : new ColumnInfo[bufferCount];
+		copyColumns = dataCount + bufferCount == 0 ? [] : new ColumnInfo[dataCount + bufferCount];
+		managedIds = componentTypes.Length == unmanagedCount ? [] : new int[componentTypes.Length - unmanagedCount];
+		trackedIds = trackedCount == 0 ? [] : new int[trackedCount];
 
-		var indices = new int[count];
-		int bufferIndex = 0;
+		int d = 0, b = 0, c = 0, m = 0, t = 0;
 		for (int i = 0; i < componentTypes.Length; i++)
 		{
-			if (componentTypes[i].TrackChanges)
+			ref readonly var type = ref componentTypes[i];
+			if (type.TrackChanges) trackedIds[t++] = type.Id;
+			if (i >= unmanagedCount)
 			{
-				indices[bufferIndex++] = i;
+				managedIds[m++] = type.Id;
+				continue;
 			}
-		}
+			if (type.IsTag) continue;
 
-		return indices;
+			var column = new ColumnInfo(type.Id, idToOffsets[type.Id], type.Stride, type.IsBuffer ? type.InternalCapacity : 0);
+			copyColumns[c++] = column;
+			if (type.IsBuffer) bufferColumns[b++] = column;
+			else dataColumns[d++] = column;
+		}
 	}
 
 	/// <summary>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace EntitiesDb;
 
@@ -10,28 +12,56 @@ namespace EntitiesDb;
 public sealed partial class CommandBuffer
 {
 	private readonly EntityDatabase _database;
-	private readonly Dictionary<int, int> _entityMap;
 	private readonly int _initialCapacity;
-	private readonly object _lock = new();
+	/// <summary>
+	/// Guards every operation. Each recorded command holds it for a few dozen nanoseconds, where an
+	/// uncontended <c>lock</c> costs about as much as the command itself; a spin lock costs less and
+	/// also holds up better when parallel jobs record into one buffer. Never re-entered, so no owner
+	/// tracking. Mutable field: a <see cref="SpinLock"/> must not be copied.
+	/// </summary>
+	private SpinLock _lock = new(enableThreadOwnerTracking: false);
 	private readonly List<Exception> _exceptions = [];
-	private SpanList<int> _creates;
+
+	/// <summary>
+	/// Existing entity id -> entity index. Buffered creates need no lookup: a placeholder's id encodes its index.
+	/// </summary>
+	private EntityIndexMap _existing = new();
 	private SpanList<int> _destroys;
 	private SpanList<BufferedEntity> _entities;
+
+	/// <summary>
+	/// Pending set / remove signatures, shared by every entity that ends up with the same one (a batch of
+	/// identical commands stores a single entry). Entries are never changed in place.
+	/// </summary>
 	private SpanList<Signature> _sets;
 	private SpanList<Signature> _removes;
-	private SpanList<ComponentStore?> _components;
+
+	/// <summary>
+	/// Value stores by component id (null until a value of that type is buffered; tags never get one)
+	/// </summary>
+	private readonly ComponentStore?[] _stores = new ComponentStore?[ComponentRegistry.MaxComponents];
+	private SpanList<ComponentStore> _activeStores = new(8);
+
+	/// <summary>
+	/// The current <see cref="WritePlan"/>: stores to write and their offsets in the target archetype
+	/// </summary>
+	private readonly ComponentStore[] _planStores = new ComponentStore[ComponentRegistry.MaxComponents];
+	private readonly int[] _planOffsets = new int[ComponentRegistry.MaxComponents];
+
+	/// <summary>
+	/// Global change versions when the running Commit started
+	/// </summary>
+	private readonly int[] _commitVersions = new int[ComponentRegistry.MaxComponents];
 
 	internal CommandBuffer(EntityDatabase database, int initialCapacity)
 	{
+		initialCapacity = Math.Max(initialCapacity, 1);
 		_database = database;
-		_entityMap = new(initialCapacity);
 		_initialCapacity = initialCapacity;
-		_creates = new SpanList<int>(initialCapacity);
-		_destroys = new SpanList<int>(initialCapacity);
+		_destroys = new SpanList<int>();
 		_entities = new SpanList<BufferedEntity>(initialCapacity);
-		_sets = new SpanList<Signature>(initialCapacity);
-		_removes = new SpanList<Signature>(initialCapacity);
-		_components = new SpanList<ComponentStore?>(ComponentRegistry.MaxComponents / 4);
+		_sets = new SpanList<Signature>(16);
+		_removes = new SpanList<Signature>();
 	}
 
 	/// <summary>
@@ -39,19 +69,14 @@ public sealed partial class CommandBuffer
 	/// </summary>
 	public void Clear()
 	{
-		lock (_lock)
+		Enter();
+		try
 		{
-			_exceptions.Clear();
-			_entityMap.Clear();
-			_creates.Clear();
-			_destroys.Clear();
-			_entities.Clear();
-			_sets.Clear();
-			_removes.Clear();
-			foreach (var componentStore in _components)
-			{
-				componentStore?.Clear();
-			}
+			Reset();
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -62,138 +87,17 @@ public sealed partial class CommandBuffer
 	/// Exceptions for each command are collected and thrown in an <see cref="AggregateException"/>.
 	/// A single exception won't stop further command execution.
 	/// </remarks>
-	public unsafe void Commit()
+	public void Commit()
 	{
-		lock (_lock)
+		Enter();
+		try
 		{
 			try
 			{
-				// create
-				var entitiesSpan = _entities.AsSpan();
-				foreach (ref var entityIndex in _creates)
-				{
-					try
-					{
-						ref var bufferedEntity = ref entitiesSpan[entityIndex];
-						var signature = bufferedEntity.SetIndex >= 0 ? _sets[bufferedEntity.SetIndex] : default;
-						bufferedEntity = bufferedEntity with
-						{
-							Entity = _database.Create(in signature)
-						};
-					}
-					catch (Exception e)
-					{
-						_exceptions.Add(e);
-					}
-				}
-
-				// destroy
-				foreach (var entityIndex in _destroys)
-				{
-					try
-					{
-						ref var bufferedEntity = ref entitiesSpan[entityIndex];
-						_database.Destroy(bufferedEntity.Entity);
-						bufferedEntity = bufferedEntity with { SetIndex = -1, RemoveIndex = -1 };
-					}
-					catch (Exception e)
-					{
-						_exceptions.Add(e);
-					}
-				}
-
-				// set & remove
-				for (int entityIndex = 0; entityIndex < entitiesSpan.Length; entityIndex++)
-				{
-					ref var bufferedEntity = ref entitiesSpan[entityIndex];
-					if (bufferedEntity.SetIndex < 0 && bufferedEntity.RemoveIndex < 0) continue;
-					try
-					{
-						var archetype = _database.GetArchetype(bufferedEntity.Entity);
-						var remove = bufferedEntity.RemoveIndex >= 0 ? _removes[bufferedEntity.RemoveIndex] : Signature.Empty;
-						var set = bufferedEntity.SetIndex >= 0 ? _sets[bufferedEntity.SetIndex] : Signature.Empty;
-						var targetSignature = archetype.Signature.Or(in set).AndNot(in remove);
-						var targetArchetype = _database.GetArchetype(in targetSignature);
-						
-						// change archetypes (removes components)
-						if (archetype != targetArchetype)
-						{
-							_database.Move(bufferedEntity.Entity, targetArchetype);
-						}
-
-						ref var reference = ref _database.GetEntity(bufferedEntity.Entity);
-						ref readonly var chunk = ref targetArchetype.ChunkSpan[reference.Slot.ChunkIndex];
-
-						// copy components
-						int nextId = 0;
-						set &= targetSignature; // clear removed components
-						while (set.TryGetNextSetBit(nextId, out var id))
-						{
-							nextId = id + 1;
-							var componentStore = id < _components.Count ? _components[id] : null;
-							if (componentStore is null) continue; // ComponentStores for tag components are null
-
-							var offset = targetArchetype.GetOffset(id);
-							if (componentStore.ComponentType.IsUnmanaged)
-							{
-								var stride = componentStore.ComponentType.Stride;
-								var data = chunk.WriteUnmanaged(offset + reference.Slot.Index * stride);
-								if (componentStore.ComponentType.TrackChanges)
-									chunk.MarkChanged(id);
-
-								var sourceData = (byte[])componentStore.Components;
-								var sourceIndex = componentStore.GetComponentIndex(entityIndex) * stride;
-
-								if (componentStore.ComponentType.IsBuffer &&
-									componentStore.IsAppendMode(entityIndex))
-								{
-									// append mode: add source elements to existing buffer
-									fixed (byte* src = &sourceData[sourceIndex])
-									{
-										DynamicBuffer.Append(
-											(void*)data,
-											src,
-											componentStore.ComponentType.ElementSize,
-											componentStore.ComponentType.InternalCapacity);
-									}
-								}
-								else
-								{
-									// set mode: clear existing buffer and copy full stride
-									if (componentStore.ComponentType.IsBuffer &&
-										targetArchetype.Signature.Test(id))
-									{
-										DynamicBuffer.Clear((void*)data);
-									}
-
-									fixed (byte* src = &sourceData[sourceIndex])
-									{
-										Unsafe.CopyBlock((void*)data, src, (uint)stride);
-									}
-								}
-							}
-							else
-							{
-								var array = chunk.WriteManaged(offset);
-								if (componentStore.ComponentType.TrackChanges)
-									chunk.MarkChanged(id);
-
-								var sourceArray = componentStore.Components;
-								var sourceIndex = componentStore.GetComponentIndex(entityIndex);
-								Array.Copy(
-									sourceArray, sourceIndex,
-									array, reference.Slot.Index,
-									1);
-							}
-
-							componentStore.ClearEntityIndex(entityIndex);
-						}
-					}
-					catch (Exception e)
-					{
-						_exceptions.Add(e);
-					}
-				}
+				Array.Copy(_database.GlobalChangeVersions, _commitVersions, _commitVersions.Length);
+				CommitCreates();
+				CommitDestroys();
+				CommitChanges();
 
 				// throw exceptions
 				if (_exceptions.Count > 0)
@@ -203,18 +107,12 @@ public sealed partial class CommandBuffer
 			}
 			finally
 			{
-				_exceptions.Clear();
-				_entityMap.Clear();
-				_creates.Clear();
-				_destroys.Clear();
-				_entities.Clear();
-				_sets.Clear();
-				_removes.Clear();
-				foreach (var componentStore in _components)
-				{
-					componentStore?.Clear();
-				}
+				Reset();
 			}
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -224,13 +122,15 @@ public sealed partial class CommandBuffer
 	/// <returns>An <see cref="Entity"/> representing the buffered entity.</returns>
 	public Entity Create()
 	{
-		lock (_lock)
+		Enter();
+		try
 		{
-			var entity = new Entity(-_entities.Count - 1, -1);
-			var entityIndex = Register(entity);
-			_creates.Add(entityIndex);
-
+			RegisterCreate(out var entity);
 			return entity;
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -241,15 +141,16 @@ public sealed partial class CommandBuffer
 	public Entity Create<T0>(in T0? t0Component = default)
 	{
 		var signature = ComponentSingle<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
-			var entity = new Entity(-_entities.Count - 1, -1);
-			var entityIndex = Register(entity);
-			_creates.Add(entityIndex);
-
-			RegisterSet(entityIndex, in signature);
+			var entityIndex = RegisterCreate(in signature, out var entity);
 			SetData(entityIndex, in t0Component);
 			return entity;
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -271,15 +172,16 @@ public sealed partial class CommandBuffer
 		where T0 : unmanaged
 	{
 		var signature = ComponentBuffer<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
-			var entity = new Entity(-_entities.Count - 1, -1);
-			var entityIndex = Register(entity);
-			_creates.Add(entityIndex);
-
-			RegisterSet(entityIndex, in signature);
+			var entityIndex = RegisterCreate(in signature, out var entity);
 			SetData(entityIndex, t0Components);
 			return entity;
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -289,10 +191,15 @@ public sealed partial class CommandBuffer
 	/// <param name="entity">The target entity</param>
 	public void Destroy(Entity entity)
 	{
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			_destroys.Add(entityIndex);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -337,17 +244,10 @@ public sealed partial class CommandBuffer
 	/// <typeparam name="T0">The type of buffer element</typeparam>
 	/// <param name="entity">The target entity</param>
 	/// <param name="t0Component">The element to append</param>
-	public unsafe void AddOrAppend<T0>(Entity entity, in T0 t0Component)
+	public void AddOrAppend<T0>(Entity entity, in T0 t0Component)
 		where T0 : unmanaged
 	{
-		var signature = ComponentBuffer<T0>.Signature;
-		lock (_lock)
-		{
-			var entityIndex = Register(entity);
-			RegisterSet(entityIndex, in signature);
-			var span = new ReadOnlySpan<T0>(Unsafe.AsPointer(ref Unsafe.AsRef(in t0Component)), 1);
-			AppendData(entityIndex, span);
-		}
+		AddOrAppend(entity, MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in t0Component), 1));
 	}
 
 	/// <summary>
@@ -372,11 +272,16 @@ public sealed partial class CommandBuffer
 		where T0 : unmanaged
 	{
 		var signature = ComponentBuffer<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			AppendData(entityIndex, t0Components);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -388,10 +293,15 @@ public sealed partial class CommandBuffer
 	public void Remove<T0>(Entity entity)
 	{
 		var signature = Component<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterRemove(entityIndex, in signature);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -404,11 +314,16 @@ public sealed partial class CommandBuffer
 	public void Set<T0>(Entity entity, in T0? t0Component = default)
 	{
 		var signature = ComponentSingle<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, in t0Component);
+		}
+		finally
+		{
+			Exit();
 		}
 	}
 
@@ -434,115 +349,380 @@ public sealed partial class CommandBuffer
 		where T0 : unmanaged
 	{
 		var signature = ComponentBuffer<T0>.Signature;
-		lock (_lock)
+		Enter();
+		try
 		{
 			var entityIndex = Register(entity);
 			RegisterSet(entityIndex, in signature);
 			SetData(entityIndex, t0Components);
 		}
+		finally
+		{
+			Exit();
+		}
 	}
 
-	private ComponentStore GetComponentStore(int id)
+	// ---- playback ---------------------------------------------------------------------------
+
+	/// <summary>
+	/// Creates every buffered entity directly in its final archetype and writes its values: a created
+	/// entity's pending sets are its whole signature, and its removes only cancelled sets.
+	/// </summary>
+	private void CommitCreates()
 	{
-		while (id >= _components.Count)
-			_components.Add(null);
-
-		ref var componentStore = ref _components.AsSpan()[id];
-		if (componentStore is null)
+		var database = _database;
+		var archetypes = database.Archetypes;
+		var entities = _entities.AsSpan();
+		var sets = _sets.AsSpan();
+		var plan = new WritePlan(-1, null!, 0);
+		for (int entityIndex = 0; entityIndex < entities.Length; entityIndex++)
 		{
-			var componentType = ComponentRegistry.GetComponentType(id);
-			var arrayFactory = ComponentRegistry.GetArrayFactory(id);
-			componentStore = new ComponentStore(componentType, arrayFactory, _initialCapacity);
+			ref var bufferedEntity = ref entities[entityIndex];
+			if (bufferedEntity.Kind != BufferedEntityKind.Create) continue;
+			try
+			{
+				var setIndex = bufferedEntity.SetIndex;
+				if (setIndex < 0)
+				{
+					database.CreateEntity(archetypes.GetOrCreateArchetype(Signature.Empty), out bufferedEntity.Entity, out _);
+				}
+				else
+				{
+					// a batch of identical creates shares one interned signature, so the plan is built once per run
+					if (setIndex != plan.SetIndex)
+						plan = BuildPlan(setIndex, in sets[setIndex], archetypes.GetOrCreateArchetype(in sets[setIndex]));
+					ref var chunk = ref database.CreateEntity(plan.Archetype, out bufferedEntity.Entity, out var row);
+					Write(in plan, entityIndex, ref chunk, row, freshRow: true);
+				}
+			}
+			catch (Exception e)
+			{
+				_exceptions.Add(e);
+			}
+
+			// nothing is left for the change pass (a failed create would only fail again there)
+			bufferedEntity.SetIndex = -1;
+			bufferedEntity.RemoveIndex = -1;
 		}
-		return componentStore;
 	}
 
-	private int Register(Entity entity)
-    {
-        if (!_entityMap.TryGetValue(entity.Id, out var entityIndex))
+	private void CommitDestroys()
+	{
+		var entities = _entities.AsSpan();
+		foreach (var entityIndex in _destroys.AsSpan())
 		{
-			entityIndex = _entities.Count;
-			_entities.Add(new BufferedEntity(entity, -1, -1));
-			_entityMap.Add(entity.Id, entityIndex);
+			try
+			{
+				ref var bufferedEntity = ref entities[entityIndex];
+				_database.Destroy(bufferedEntity.Entity);
+				bufferedEntity.SetIndex = -1;
+				bufferedEntity.RemoveIndex = -1;
+			}
+			catch (Exception e)
+			{
+				_exceptions.Add(e);
+			}
 		}
+	}
+
+	/// <summary>
+	/// Applies sets and removes to entities that existed before this buffer: one archetype move per
+	/// entity, then the buffered values are written in place
+	/// </summary>
+	private void CommitChanges()
+	{
+		var database = _database;
+		var archetypes = database.Archetypes;
+		var entities = _entities.AsSpan();
+		var sets = _sets.AsSpan();
+		var removes = _removes.AsSpan();
+		var plan = new WritePlan(-1, null!, 0);
+		for (int entityIndex = 0; entityIndex < entities.Length; entityIndex++)
+		{
+			ref var bufferedEntity = ref entities[entityIndex];
+			var setIndex = bufferedEntity.SetIndex;
+			if (setIndex < 0 && bufferedEntity.RemoveIndex < 0) continue;
+			try
+			{
+				ref var reference = ref database.GetEntity(bufferedEntity.Entity);
+				var source = reference.Archetype;
+				var targetSignature = source.Signature;
+				if (setIndex >= 0) targetSignature = targetSignature.Or(in sets[setIndex]);
+				if (bufferedEntity.RemoveIndex >= 0) targetSignature = targetSignature.AndNot(in removes[bufferedEntity.RemoveIndex]);
+
+				// change archetypes (adds / removes components)
+				var target = source;
+				if (targetSignature != source.Signature)
+				{
+					target = archetypes.GetOrCreateArchetype(in targetSignature);
+					database.MoveEntity(bufferedEntity.Entity.Id, ref reference, source, target);
+				}
+
+				if (setIndex >= 0)
+				{
+					// sets and removes never overlap (each cancels the other when buffered)
+					if (setIndex != plan.SetIndex || !ReferenceEquals(target, plan.Archetype))
+						plan = BuildPlan(setIndex, in sets[setIndex], target);
+					ref var chunk = ref target.GetChunk(reference.Slot.ChunkIndex);
+					Write(in plan, entityIndex, ref chunk, reference.Slot.Index, freshRow: false);
+				}
+			}
+			catch (Exception e)
+			{
+				_exceptions.Add(e);
+			}
+		}
+	}
+
+	/// <summary>
+	/// The value stores a signature writes and where each lands in <paramref name="archetype"/>, so a run
+	/// of entities with the same pending sets skips the per-entity bit scan and lookups
+	/// </summary>
+	private WritePlan BuildPlan(int setIndex, in Signature signature, Archetype archetype)
+	{
+		var offsets = archetype.IdToOffsets;
+		int count = 0;
+		int nextId = 0;
+		while (signature.TryGetNextSetBit(nextId, out var id))
+		{
+			nextId = id + 1;
+			var store = _stores[id];
+			if (store is null) continue; // tags have no store
+			_planStores[count] = store;
+			_planOffsets[count] = offsets[id];
+			count++;
+		}
+		return new WritePlan(setIndex, archetype, count);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private void Write(in WritePlan plan, int entityIndex, ref Chunk chunk, int row, bool freshRow)
+	{
+		var stores = _planStores;
+		var offsets = _planOffsets;
+		for (int i = 0; i < plan.Count; i++)
+		{
+			var store = stores[i];
+			if (store.WriteTo(entityIndex, ref chunk, offsets[i], row, freshRow) && store.TrackChanges)
+				MarkChangedOnce(ref chunk, store.Id);
+		}
+	}
+
+	/// <summary>
+	/// Marks a chunk changed for <paramref name="id"/> unless this Commit already did. A Commit holds the
+	/// database exclusively, so no change filter can look between two marks of the same chunk: one
+	/// global version bump per chunk is indistinguishable from one per entity, and skips an interlocked
+	/// increment per written value.
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private void MarkChangedOnce(ref Chunk chunk, int id)
+	{
+		if (chunk.LocalChangeVersions[id] - _commitVersions[id] <= 0) // not newer than the Commit start: unmarked
+			chunk.MarkChanged(id);
+	}
+
+	private readonly struct WritePlan(int setIndex, Archetype archetype, int count)
+	{
+		public readonly int SetIndex = setIndex;
+		public readonly Archetype Archetype = archetype;
+		public readonly int Count = count;
+	}
+
+	private void Reset()
+	{
+		_exceptions.Clear();
+		foreach (ref readonly var bufferedEntity in _entities.AsSpan())
+		{
+			if (bufferedEntity.Kind == BufferedEntityKind.Existing)
+				_existing.Remove(bufferedEntity.Entity.Id);
+		}
+		_destroys.Clear();
+		_entities.Clear();
+		_sets.Clear();
+		_removes.Clear();
+		foreach (var store in _activeStores.AsSpan())
+			store.Clear();
+	}
+
+	// ---- recording --------------------------------------------------------------------------
+
+	/// <summary>
+	/// Takes the lock; call before the <c>try</c> whose <c>finally</c> calls <see cref="Exit"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private void Enter()
+	{
+		bool taken = false;
+		_lock.Enter(ref taken);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private void Exit() => _lock.Exit(useMemoryBarrier: false);
+
+	/// <summary>
+	/// Registers a buffered create with no components
+	/// </summary>
+	private int RegisterCreate(out Entity entity)
+	{
+		var entityIndex = _entities.Count;
+		entity = new Entity(-entityIndex - 1, -1);
+		_entities.Add(new BufferedEntity(entity, -1, -1, BufferedEntityKind.Create));
+		return entityIndex;
+	}
+
+	/// <summary>
+	/// Registers a buffered create with the components of <paramref name="signature"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int RegisterCreate(in Signature signature, out Entity entity)
+	{
+		var entityIndex = _entities.Count;
+		entity = new Entity(-entityIndex - 1, -1);
+		_entities.Add(new BufferedEntity(entity, Intern(in signature, ref _sets), -1, BufferedEntityKind.Create));
+		return entityIndex;
+	}
+
+	/// <summary>
+	/// Finds or registers the buffered entry for <paramref name="entity"/>
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int Register(Entity entity)
+	{
+		var id = entity.Id;
+		if (id < 0)
+		{
+			// a buffered create: its placeholder id encodes its index
+			var index = -(id + 1);
+			if ((uint)index < (uint)_entities.Count && _entities.ItemRef(index).Entity == entity)
+				return index;
+			return RegisterUnknown(entity);
+		}
+
+		if (_existing.TryGet(id, out var entityIndex))
+			return entityIndex;
+		return RegisterExisting(entity);
+	}
+
+	private int RegisterExisting(Entity entity)
+	{
+		var entityIndex = _entities.Count;
+		_entities.Add(new BufferedEntity(entity, -1, -1, BufferedEntityKind.Existing));
+		_existing.Add(entity.Id, entityIndex);
+		return entityIndex;
+	}
+
+	/// <summary>
+	/// A placeholder this buffer did not hand out (another buffer's, or one from before a Commit): it
+	/// gets its own entry, which fails at Commit because no such entity exists
+	/// </summary>
+	private int RegisterUnknown(Entity entity)
+	{
+		var entityIndex = _entities.Count;
+		_entities.Add(new BufferedEntity(entity, -1, -1, BufferedEntityKind.Unknown));
 		return entityIndex;
 	}
 
 	private void RegisterRemove(int entityIndex, in Signature signature)
 	{
-		ref var reference = ref _entities.AsSpan()[entityIndex];
-		reference = reference with
-		{
-			RemoveIndex = RegisterIndex(reference.RemoveIndex, in signature, ref _removes)
-		};
+		ref var bufferedEntity = ref _entities.ItemRef(entityIndex);
+		bufferedEntity.RemoveIndex = Merge(bufferedEntity.RemoveIndex, in signature, ref _removes);
 
 		// Clear pending sets for removed components
-		if (reference.SetIndex >= 0)
+		if (bufferedEntity.SetIndex >= 0)
 		{
-			_sets[reference.SetIndex] = _sets[reference.SetIndex].AndNot(in signature);
+			var set = _sets[bufferedEntity.SetIndex];
+			var cancelled = set.And(in signature);
+			if (cancelled.IsEmpty) return;
+			bufferedEntity.SetIndex = Intern(set.AndNot(in signature), ref _sets);
 
 			int nextId = 0;
-			var sig = signature;
-			while (sig.TryGetNextSetBit(nextId, out var id))
+			while (cancelled.TryGetNextSetBit(nextId, out var id))
 			{
 				nextId = id + 1;
-				if (id < _components.Count)
-					_components[id]?.ClearEntityIndex(entityIndex);
+				_stores[id]?.ClearEntityIndex(entityIndex);
 			}
 		}
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void RegisterSet(int entityIndex, in Signature signature)
 	{
-		ref var reference = ref _entities.AsSpan()[entityIndex];
-		reference = reference with
-		{
-			SetIndex = RegisterIndex(reference.SetIndex, in signature, ref _sets)
-		};
+		ref var bufferedEntity = ref _entities.ItemRef(entityIndex);
+		bufferedEntity.SetIndex = Merge(bufferedEntity.SetIndex, in signature, ref _sets);
 
 		// Clear pending removes for set components
-		if (reference.RemoveIndex >= 0)
+		if (bufferedEntity.RemoveIndex >= 0)
 		{
-			_removes[reference.RemoveIndex] = _removes[reference.RemoveIndex].AndNot(in signature);
+			var remove = _removes[bufferedEntity.RemoveIndex];
+			if (remove.HasAny(in signature))
+				bufferedEntity.RemoveIndex = Intern(remove.AndNot(in signature), ref _removes);
 		}
 	}
 
-	private static int RegisterIndex(int index, in Signature signature, ref SpanList<Signature> list)
+	/// <summary>
+	/// The entry for <c>list[index] | signature</c> (or <paramref name="signature"/> when there is no entry yet)
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static int Merge(int index, in Signature signature, ref SpanList<Signature> list)
 	{
 		if (index < 0)
-		{
-			index = list.Count;
-			list.Add(signature);
-		}
-		else
-		{
-			var existing = list[index];
-			list[index] = existing | signature;
-		}
-		return index;
+			return Intern(in signature, ref list);
+
+		var current = list[index];
+		var merged = current.Or(in signature);
+		return merged == current ? index : Intern(in merged, ref list);
 	}
 
+	/// <summary>
+	/// An entry holding <paramref name="signature"/>: the last entry when it matches (commands come in
+	/// batches), otherwise a new one
+	/// </summary>
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static int Intern(in Signature signature, ref SpanList<Signature> list)
+	{
+		var count = list.Count;
+		if (count != 0 && list.ItemRef(count - 1) == signature)
+			return count - 1;
+		list.Add(signature);
+		return count;
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void SetData<T>(int entityIndex, in T? component)
 	{
-		var componentType = Component<T>.ComponentType;
-		if (componentType.IsTag) return;
-		var componentStore = GetComponentStore(componentType.Id);
-		componentStore.SetData(entityIndex, in component);
+		if (ComponentMeta<T>.IsZeroSize) return; // tags carry no value
+		GetComponentStore<T>().SetData(entityIndex, in component);
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void SetData<T>(int entityIndex, ReadOnlySpan<T> components) where T : unmanaged
 	{
-		var componentType = Component<T>.ComponentType;
-		if (componentType.IsTag) return;
-		var componentStore = GetComponentStore(componentType.Id);
-		componentStore.SetData(entityIndex, components);
+		if (ComponentMeta<T>.IsZeroSize) return;
+		GetComponentStore<T>().SetData(entityIndex, components);
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void AppendData<T>(int entityIndex, ReadOnlySpan<T> components) where T : unmanaged
 	{
-		var componentType = Component<T>.ComponentType;
-		if (componentType.IsTag) return;
-		var componentStore = GetComponentStore(componentType.Id);
-		componentStore.AppendData(entityIndex, components);
+		if (ComponentMeta<T>.IsZeroSize) return;
+		GetComponentStore<T>().AppendData(entityIndex, components);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private ComponentStore GetComponentStore<T>()
+	{
+		var id = Component<T>.Id;
+		return _stores[id] ?? CreateComponentStore(id);
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private ComponentStore CreateComponentStore(int id)
+	{
+		var componentType = ComponentRegistry.GetComponentType(id);
+		var arrayFactory = ComponentRegistry.GetArrayFactory(id);
+		var store = new ComponentStore(componentType, arrayFactory, _initialCapacity);
+		_stores[id] = store;
+		_activeStores.Add(store);
+		return store;
 	}
 }
