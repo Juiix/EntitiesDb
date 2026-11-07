@@ -21,6 +21,7 @@ Every scenario has three implementations that do the *same work* on the *same se
 | `SystemWithTwoComponents`                   | `c1.Value += c2.Value` over every entity (single archetype)                                        | N = 100k, 1M      |
 | `SystemWithTwoComponentsVariedComposition`  | Same as above, entities spread across 4 archetypes that all contain C1 + C2                        | N = 100k, 1M      |
 | `StructuralChanges`                         | `Create` with three components, `Add` / `Remove` a component (one archetype move each) and `Destroy`, directly and through a `CommandBuffer`. EntitiesDb only; no baseline. | N = 100k |
+| `RandomEntityAccess`                        | `Read` / `TryRead` / `Write` / `Set` by `Entity` handle in shuffled order over 4 archetypes, untracked and `[TrackChanges]`. EntitiesDb only; no baseline. | N = 100k |
 | `ParallelScaling`                           | `c1 += c2` with `ForEachParallel` / `ForEachChunkParallel` (+SIMD) vs single-thread `ForEachChunk`, plus dispatch floor | N = 100k, 1M × threads |
 
 EntitiesDb iteration styles used in the `System*` scenarios:
@@ -67,7 +68,7 @@ silently producing bad numbers.
 Ideas that would make the suite more useful, roughly in value order:
 
 1. **More structural changes** — `StructuralChanges` covers `Create`/`Add`/`Remove`/`Destroy` from a single source archetype; still missing are `AddAndRemove`, entities spread over many source archetypes, and creates without `Reserve` (entity-map growth).
-2. **Random access** — `Read<T>(id)` / `Write<T>(id)` over shuffled entity ids.
+2. **Random access at scale** — `RandomEntityAccess` runs at 100k entities only; a 1M row (entity map and chunks out of cache) and a sorted-vs-shuffled pair would show how much is memory latency.
 3. **Change filter** — `WithChangeFilter<T>()` queries at 0 % / 10 % / 100 % dirty chunks.
 4. **Buffer components** — `ReadBuffer`/`WriteBuffer`, `AddOrAppend` throughput.
 5. **Three-component system** and a `ChunkJob` / `IParallelAggregate` reduction row.
